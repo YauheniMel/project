@@ -1,4 +1,5 @@
 import { UserType } from '../../types';
+import { userActionTypes } from '../actions/user-action';
 
 const initState: UserType = {
   id: '123f',
@@ -14,8 +15,13 @@ const initState: UserType = {
   },
 };
 
-function userReducer(action: any, state = initState) {
+function userReducer(state = initState, action: any) {
   switch (action.type) {
+    case userActionTypes.getUser: {
+      return {
+        ...state,
+      };
+    }
     default:
       return state;
   }
