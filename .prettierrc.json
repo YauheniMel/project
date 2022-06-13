@@ -4,7 +4,7 @@
   "useTabs": false,
   "tabWidth": 2,
   "bracketSpacing": true,
-  "trailingComma": "none",
+  "trailingComma": "all",
   "overrides": [
     {
       "files": "*.{scss, css}",
