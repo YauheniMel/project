@@ -1,11 +1,13 @@
 import React from 'react';
-// import SignUpPage from './auth/SignUpPage/SignUpPage';
-// import LoginPage from './auth/LoginPage/LoginPage';
+import LoginPageContainer from './auth/LoginPage/LoginPageContainer';
+import SignUpPageContainer from './auth/SignUpPage/SignUpPageContainer';
+import HomePageContainer from './pages/HomePage/HomePageContainer';
 
 const App = () => (
   <div className="App">
-    {/* <LoginPage /> */}
-    {/* <SignUpPage /> */}
+    <LoginPageContainer />
+    <SignUpPageContainer />
+    <HomePageContainer />
   </div>
 );
 

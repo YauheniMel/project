@@ -18,6 +18,8 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
     "no-debugger": "off",
+    "default-param-last": "off",
+    "@typescript-eslint/default-param-last": ["warn"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

@@ -1,4 +1,5 @@
 import { CollectionsType } from '../../types';
+import { collectionsActionTypes } from '../actions/collections-action';
 
 const initState: CollectionsType[] = [
   {
@@ -100,8 +101,13 @@ const initState: CollectionsType[] = [
   },
 ];
 
-function collectionsReducer(action: any, state = initState) {
+function collectionsReducer(state = initState, action: any) {
   switch (action.type) {
+    case collectionsActionTypes.getCollections: {
+      return {
+        ...state,
+      };
+    }
     default:
       return state;
   }
