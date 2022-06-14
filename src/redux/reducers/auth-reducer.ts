@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { AuthType } from '../../types';
 import { AUTH } from '../actions/auth-action';
 
@@ -6,7 +7,7 @@ const initState: AuthType = {
   isLoading: false,
 };
 
-function authReducer(state = initState, action: any) {
+function authReducer(state = initState, action: AnyAction) {
   switch (action.type) {
     case AUTH.login: {
       return {

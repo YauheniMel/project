@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { AppStateType } from '../../redux';
 import HomePage from './HomePage';
 
 interface IHomePageContainer {
@@ -11,7 +12,7 @@ const HomePageContainer: FC<IHomePageContainer> = ({ name, surname }) => (
   <HomePage name={name} surname={surname} />
 );
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppStateType) => ({
   name: state.user.name,
   surname: state.user.surname,
 });
