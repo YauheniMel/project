@@ -6,8 +6,8 @@ import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import ToolBar from '../../components/ToolBar/ToolBar';
 import { AppStateType } from '../../redux';
-import CollectionPageContainer from '../../pages/CollectionPage/CollectionPageContainer';
-// import HomePageContainer from '../../pages/HomePage/HomePageContainer';
+// import CollectionPageContainer from '../../pages/CollectionPage/CollectionPageContainer';
+import HomePageContainer from '../../pages/HomePage/HomePageContainer';
 
 const useStyles = makeStyles({
   root: {
@@ -49,8 +49,8 @@ const RootPage: FC<IRootPage> = ({ id, name, surname }) => {
           </Grid>
           <Grid item xs={9} sm={8}>
             <Box className={classes.grid_item}>
-              {/* <HomePageContainer /> */}
-              <CollectionPageContainer />
+              <HomePageContainer />
+              {/* <CollectionPageContainer /> */}
             </Box>
           </Grid>
         </Grid>

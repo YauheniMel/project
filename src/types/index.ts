@@ -16,6 +16,7 @@ export interface ItemType {
   title: string;
   tags: Array<string | null>;
   countLike: number;
+  icon: string;
   meta: {
     createAt: string;
     updateAt: string;
@@ -24,6 +25,20 @@ export interface ItemType {
     [type: string]: string | number | boolean;
   } | null;
   comments: Array<CommentType | null>;
+}
+
+export interface CollectionPageType {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+  theme: string;
+  meta: {
+    createAt: string;
+    updateAt: string;
+  };
+  list: ItemType[];
+  targetItem: ItemType | null;
 }
 
 export interface CollectionType {
