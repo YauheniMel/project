@@ -1,18 +1,17 @@
 import React, { FC } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import { Avatar, Chip, Stack } from '@mui/material';
 
 interface ILogo {
-  props?: any;
+  name: string;
+  surname: string;
 }
 
-const Logo: FC<ILogo> = () => (
+const Logo: FC<ILogo> = ({ name, surname }) => (
   <Stack direction="row">
     <Chip
       sx={{ fontSize: '1.2rem', padding: '25px 0' }}
       avatar={<Avatar style={{ height: '40px', width: '40px' }} />}
-      label="Avatar"
+      label={`${name} ${surname}`}
     />
   </Stack>
 );
