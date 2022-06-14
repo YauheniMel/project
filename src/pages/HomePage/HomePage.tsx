@@ -1,27 +1,10 @@
 import React, { FC } from 'react';
-import { Box, Container, makeStyles } from '@material-ui/core';
-import Grid from '@mui/material/Grid';
-import Header from '../../components/Header/Header';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import ToolBar from '../../components/ToolBar/ToolBar';
-import CarouselComponent from '../../components/Carousel/Carousel';
+import { Box, makeStyles } from '@material-ui/core';
 import CardItem from '../../shared/components/CardItem';
+import { CollectionType, ItemType } from '../../types';
+import CarouselComponent from '../../components/Carousel/Carousel';
 
 const useStyles = makeStyles({
-  root: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  grid: {
-    flex: 1,
-  },
-  grid_item: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
   list: {
     flex: 1,
     display: 'flex',
@@ -33,38 +16,39 @@ const useStyles = makeStyles({
 });
 
 interface IHomePage {
+  id: string;
   name: string;
   surname: string;
+  email: string;
+  status: 'active' | 'blocked';
+  isOnline: boolean;
+  meta: { loginDate: string; registerDate: string };
+  collections: CollectionType[];
+  list: ItemType[];
 }
 
-const HomePage: FC<IHomePage> = ({ name, surname }) => {
+const HomePage: FC<IHomePage> = ({
+  id,
+  name,
+  surname,
+  email,
+  status,
+  isOnline,
+  meta,
+  list,
+}) => {
   const classes = useStyles();
-  console.log(name, surname);
+  console.log(id, name, surname, email, status, isOnline, meta, list);
 
   return (
-    <Box className={classes.root}>
-      <Header />
-      <Container className={classes.grid} fixed>
-        <Grid
-          sx={{ height: '100%' }}
-          container
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
-          <Grid item xs={3} sm={4}>
-            <Sidebar />
-          </Grid>
-          <Grid item xs={9} sm={8}>
-            <Box className={classes.grid_item}>
-              <CarouselComponent />
-              <Box className={classes.list}>
-                <CardItem />
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-      <ToolBar />
-    </Box>
+    <>
+      <CarouselComponent />
+      <Box className={classes.list}>
+        {list.map((item: ItemType) => (
+          <CardItem {...item} key={item.id} />
+        ))}
+      </Box>
+    </>
   );
 };
 

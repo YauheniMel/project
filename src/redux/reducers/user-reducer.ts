@@ -10,9 +10,10 @@ const initState: UserType = {
   email: '207melnik@gmail.com',
   status: 'active',
   isOnline: true,
+  theme: 'light',
   meta: {
-    register_date: '23.07.2015',
-    login_date: '10.06.2022',
+    registerDate: '23.07.2015',
+    loginDate: '10.06.2022',
   },
   collections: [
     {
@@ -30,7 +31,8 @@ const initState: UserType = {
           id: '34r',
           title: 'Tom Tom',
           tags: ['tag1', 'tag2', 'tag3'],
-          count_like: 4,
+          countLike: 4,
+          customField: {},
           meta: {
             createAt: '23.07.2021',
             updateAt: '10.05.2022',
@@ -72,7 +74,8 @@ const initState: UserType = {
           id: '33r',
           title: 'Tom Tom',
           tags: ['tag1', 'tag2', 'tag3'],
-          count_like: 4,
+          countLike: 4,
+          customField: {},
           meta: {
             createAt: '23.07.2021',
             updateAt: '10.05.2022',
@@ -109,6 +112,94 @@ const initState: UserType = {
               comments: [],
             },
           ],
+        },
+      ],
+    },
+  ],
+  list: [
+    {
+      id: '34r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: 4,
+      customField: {},
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          comments: [],
+        },
+      ],
+    },
+    {
+      id: '33r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: 4,
+      customField: {},
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          comments: [],
         },
       ],
     },

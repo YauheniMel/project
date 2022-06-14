@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
+import { Paper, Typography } from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
-import { Paper } from '@mui/material';
-import { Typography } from '@material-ui/core';
 
 interface ICarousel {
   props?: any;

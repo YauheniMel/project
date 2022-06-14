@@ -15,11 +15,14 @@ export interface ItemType {
   id: string;
   title: string;
   tags: Array<string | null>;
-  count_like: number;
+  countLike: number;
   meta: {
     createAt: string;
     updateAt: string;
   };
+  customField: {
+    [type: string]: string | number | boolean;
+  } | null;
   comments: Array<CommentType | null>;
 }
 
@@ -41,12 +44,14 @@ export interface UserType {
   isAdmin: boolean;
   name: string;
   surname: string;
+  theme: 'light' | 'dark';
   email: string;
   status: 'active' | 'blocked';
   isOnline: boolean;
   meta: {
-    login_date: string;
-    register_date: string;
+    loginDate: string;
+    registerDate: string;
   };
   collections: CollectionType[];
+  list: ItemType[];
 }

@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
-import { alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import SearchIcon from '@mui/icons-material/Search';
+import {
+  alpha,
+  AppBar,
+  Badge,
+  Box,
+  IconButton,
+  InputBase,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CommentIcon from '@mui/icons-material/Comment';
 import { makeStyles } from '@material-ui/core';
@@ -40,10 +42,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IHeader {
-  props?: any;
+  name: string;
+  surname: string;
 }
 
-const Header: FC<IHeader> = () => {
+const Header: FC<IHeader> = ({ name, surname }) => {
   const classes = useStyles();
 
   return (
@@ -52,7 +55,7 @@ const Header: FC<IHeader> = () => {
         className={classes.toolBar}
         sx={{ justifyContent: 'space-around' }}
       >
-        <Logo />
+        <Logo name={name} surname={surname} />
         <Typography variant="h6" noWrap component="div">
           MUI
         </Typography>
