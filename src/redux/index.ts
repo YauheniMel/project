@@ -1,16 +1,17 @@
-import { combineReducers, legacy_createStore as createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+
 import authReducer from './reducers/auth-reducer';
 import userReducer from './reducers/user-reducer';
 
-const reducer = combineReducers({
-  auth: authReducer,
-  user: userReducer,
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    user: userReducer,
+  },
 });
 
-const store = createStore(reducer);
-
-type RootReducerType = typeof reducer;
-export type AppStateType = ReturnType<RootReducerType>;
+export type AppStateType = ReturnType<typeof store.getState>;
+export type AppDispatchType = typeof store.dispatch;
 
 declare global {
   interface Window {
@@ -18,4 +19,5 @@ declare global {
   }
 }
 window.store = store;
+
 export default store;

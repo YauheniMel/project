@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { AppDispatchType, AppStateType } from '../../redux';
 import { loginAction } from '../../redux/actions/auth-action';
 import LoginPage from './LoginPage';
 
@@ -9,11 +10,11 @@ interface ILoginPageContainer {
 
 const LoginPageContainer: FC<ILoginPageContainer> = () => <LoginPage />;
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppStateType) => ({
   isLoading: state.auth.isLoading,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: AppDispatchType) => ({
   login: () => dispatch(loginAction()),
 });
 

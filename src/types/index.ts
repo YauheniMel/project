@@ -23,7 +23,7 @@ export interface ItemType {
   comments: Array<CommentType | null>;
 }
 
-export interface CollectionsType {
+export interface CollectionType {
   id: string;
   title: string;
   icon: string;
@@ -48,4 +48,5 @@ export interface UserType {
     login_date: string;
     register_date: string;
   };
+  collections: CollectionType[];
 }

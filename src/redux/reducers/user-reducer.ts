@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { UserType } from '../../types';
 import { userActionTypes } from '../actions/user-action';
 
@@ -114,7 +115,7 @@ const initState: UserType = {
   ],
 };
 
-function userReducer(state = initState, action: any) {
+function userReducer(state = initState, action: AnyAction) {
   switch (action.type) {
     case userActionTypes.getUser: {
       return {
