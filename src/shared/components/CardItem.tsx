@@ -14,6 +14,7 @@ interface ICardItem {
     createAt: string;
     updateAt: string;
   };
+  icon: string;
   countLike: number;
   customField: {
     [type: string]: string | number | boolean;
@@ -27,16 +28,14 @@ const CardItem: FC<ICardItem> = ({
   meta,
   customField,
   countLike,
+  icon,
 }) => {
   console.log(customField);
   return (
     <Card variant="outlined" key={id}>
       <CardOverflow>
         <AspectRatio ratio="2">
-          <img
-            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270"
-            alt={title}
-          />
+          <img src={icon} alt={title} />
         </AspectRatio>
         <IconButton
           aria-label="Like minimal photography"

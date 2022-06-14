@@ -36,13 +36,14 @@ const HomePage: FC<IHomePage> = ({
   isOnline,
   meta,
   list,
+  collections,
 }) => {
   const classes = useStyles();
   console.log(id, name, surname, email, status, isOnline, meta, list);
 
   return (
     <>
-      <CarouselComponent />
+      <CarouselComponent collections={collections} />
       <Box className={classes.list}>
         {list.map((item: ItemType) => (
           <CardItem {...item} key={item.id} />
