@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
-import CardItem from '../../shared/components/CardItem';
-import { ItemType } from '../../types';
+import { ItemType, ThemeType } from '../../types';
+import Table from '../../components/Table/Table';
 
 const useStyles = makeStyles({
   list: {
@@ -19,7 +19,7 @@ interface ICollectionPage {
   title: string;
   icon: string;
   description: string;
-  theme: string;
+  theme: ThemeType;
   meta: { createAt: string; updateAt: string };
   list: ItemType[];
   setTargetItem: (id: string) => void;
@@ -40,9 +40,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   console.log(id, title, icon, description, theme, meta);
   return (
     <Box className={classes.list}>
-      {list.map((item: ItemType) => (
-        <CardItem setTargetItem={setTargetItem} {...item} key={item.id} />
-      ))}
+      <Table list={list} setTargetItem={setTargetItem} />
     </Box>
   );
 };

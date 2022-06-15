@@ -7,7 +7,7 @@ const initState: CollectionPageType = {
   title: 'Collection',
   icon: 'https://www.imgonline.com.ua/examples/bee-on-daisy.jpg',
   description: 'Lindsj sjsk hd oaomsa bvsjsa hskm assa ygsagastb!',
-  theme: 'Khasjpcm dkmdkskm',
+  theme: 'Books',
   meta: {
     createAt: '23.07.2015',
     updateAt: '10.06.2022',

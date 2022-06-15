@@ -13,7 +13,7 @@ import {
   getCollectionTheme,
   getCollectionTitle,
 } from '../../redux/selectors/collection-selector';
-import { ItemType } from '../../types';
+import { ItemType, ThemeType } from '../../types';
 import ItemPage from '../ItemPage/ItemPage';
 import CollectionPage from './CollectionPage';
 
@@ -22,7 +22,7 @@ interface IHomePageContainer {
   title: string;
   icon: string;
   description: string;
-  theme: string;
+  theme: ThemeType;
   meta: { createAt: string; updateAt: string };
   list: ItemType[];
   targetItem: ItemType | null;

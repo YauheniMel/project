@@ -21,7 +21,7 @@ const initState: UserType = {
       title: 'Books',
       icon: 'https://st.depositphotos.com/2547675/3009/i/450/depositphotos_30094505-stock-photo-time-clock.jpg',
       description: 'Lorem ipsum dolor, sit amet consectetur adipisicing.',
-      theme: 'Favorite books',
+      theme: 'Books',
       meta: {
         createAt: '23.07.2021',
         updateAt: '10.05.2022',
@@ -122,7 +122,7 @@ const initState: UserType = {
       title: 'Books',
       icon: 'https://st.depositphotos.com/2547675/3009/i/450/depositphotos_30094505-stock-photo-time-clock.jpg',
       description: 'Lorem ipsum dolor, sit amet consectetur adipisicing.',
-      theme: 'Favorite books',
+      theme: 'Books',
       meta: {
         createAt: '23.07.2021',
         updateAt: '10.05.2022',
@@ -223,7 +223,7 @@ const initState: UserType = {
       title: 'Books',
       icon: 'https://st.depositphotos.com/2547675/3009/i/450/depositphotos_30094505-stock-photo-time-clock.jpg',
       description: 'Lorem ipsum dolor, sit amet consectetur adipisicing.',
-      theme: 'Favorite books',
+      theme: 'Books',
       meta: {
         createAt: '23.07.2021',
         updateAt: '10.05.2022',
@@ -324,7 +324,7 @@ const initState: UserType = {
       title: 'Books',
       icon: 'https://st.depositphotos.com/2547675/3009/i/450/depositphotos_30094505-stock-photo-time-clock.jpg',
       description: 'Lorem ipsum dolor, sit amet consectetur adipisicing.',
-      theme: 'Favorite books',
+      theme: 'Books',
       meta: {
         createAt: '23.07.2021',
         updateAt: '10.05.2022',
@@ -425,7 +425,7 @@ const initState: UserType = {
       title: 'Books',
       icon: 'https://st.depositphotos.com/2547675/3009/i/450/depositphotos_30094505-stock-photo-time-clock.jpg',
       description: 'Lorem ipsum dolor, sit amet consectetur adipisicing.',
-      theme: 'Favorite books',
+      theme: 'Books',
       meta: {
         createAt: '23.07.2021',
         updateAt: '10.05.2022',
