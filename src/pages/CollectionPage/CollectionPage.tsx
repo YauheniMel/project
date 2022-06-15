@@ -1,18 +1,15 @@
 import React, { FC } from 'react';
-import { Box, makeStyles } from '@material-ui/core';
+import {
+  Grid,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { ItemType, ThemeType } from '../../types';
+import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
-
-const useStyles = makeStyles({
-  list: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: '2px',
-    flexWrap: 'wrap',
-  },
-});
 
 interface ICollectionPage {
   id: string;
@@ -35,13 +32,33 @@ const CollectionPage: FC<ICollectionPage> = ({
   list,
   setTargetItem,
 }) => {
-  const classes = useStyles();
-
   console.log(id, title, icon, description, theme, meta);
   return (
-    <Box className={classes.list}>
-      <Table list={list} setTargetItem={setTargetItem} />
-    </Box>
+    <Grid
+      sx={{ height: '100%' }}
+      container
+      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+    >
+      <Grid item xs={3} sm={4}>
+        <Sidebar>
+          <ListItemButton sx={{ width: '100%' }}>
+            <ListItemIcon>
+              <AddCircleOutlineIcon />
+            </ListItemIcon>
+            <ListItemText primary="Create new item" />
+          </ListItemButton>
+          <ListItemButton sx={{ width: '100%' }}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Delete item" />
+          </ListItemButton>
+        </Sidebar>
+      </Grid>
+      <Grid item xs={9} sm={8}>
+        <Table list={list} setTargetItem={setTargetItem} />
+      </Grid>
+    </Grid>
   );
 };
 

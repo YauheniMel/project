@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { Routes, Route } from 'react-router-dom';
 import Header from '../../components/Header/Header';
-import Sidebar from '../../components/Sidebar/Sidebar';
 import ToolBar from '../../components/ToolBar/ToolBar';
 import { AppDispatchType, AppStateType } from '../../redux';
 import CollectionPageContainer from '../../pages/CollectionPage/CollectionPageContainer';
@@ -56,31 +55,16 @@ const RootPage: FC<IRootPage> = ({
     <Box className={classes.root}>
       <Header name={name} surname={surname} isAuth={isAuth} />
       <Container className={classes.grid} fixed>
-        <Grid
-          sx={{ height: '100%' }}
-          container
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
-          <Grid item xs={3} sm={4}>
-            <Sidebar />
-          </Grid>
-          <Grid item xs={9} sm={8}>
-            <Box className={classes.grid_item}>
-              <Routes>
-                <Route
-                  path={RoutesApp.Home}
-                  element={<HomePageContainer setTargetItem={setTargetItem} />}
-                />
-                <Route
-                  path={RoutesApp.Collection}
-                  element={
-                    <CollectionPageContainer setTargetItem={setTargetItem} />
-                  }
-                />
-              </Routes>
-            </Box>
-          </Grid>
-        </Grid>
+        <Routes>
+          <Route
+            path={RoutesApp.Home}
+            element={<HomePageContainer setTargetItem={setTargetItem} />}
+          />
+          <Route
+            path={RoutesApp.Collection}
+            element={<CollectionPageContainer setTargetItem={setTargetItem} />}
+          />
+        </Routes>
       </Container>
       <ToolBar />
     </Box>
