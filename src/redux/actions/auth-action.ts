@@ -1,8 +1,8 @@
-export const AUTH = {
-  login: 'LOGIN-USER',
-  signUp: 'SIGN-UP',
-  logOut: 'LOGOUT',
-};
+export enum AUTH {
+  login = 'LOGIN-USER',
+  signUp = 'SIGN-UP',
+  logOut = 'LOGOUT',
+}
 
 export const loginAction = () => ({
   type: AUTH.login,

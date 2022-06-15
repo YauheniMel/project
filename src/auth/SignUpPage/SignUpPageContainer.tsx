@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../redux';
 import { signUpAction } from '../../redux/actions/auth-action';
+import { getIsLoading } from '../../redux/selectors/auth-selector';
 import SignUpPage from './SignUpPage';
 
 interface ILoginPageContainer {
@@ -11,7 +12,7 @@ interface ILoginPageContainer {
 const SignUpPageContainer: FC<ILoginPageContainer> = () => <SignUpPage />;
 
 const mapStateToProps = (state: AppStateType) => ({
-  isLoading: state.auth.isLoading,
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatchType) => ({

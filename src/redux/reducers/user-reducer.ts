@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { UserType } from '../../types';
-import { userActionTypes } from '../actions/user-action';
+import { UserActionTypes } from '../actions/user-action';
 
 const initState: UserType = {
   id: '123f',
@@ -748,7 +748,7 @@ const initState: UserType = {
 
 function userReducer(state = initState, action: AnyAction) {
   switch (action.type) {
-    case userActionTypes.getUser: {
+    case UserActionTypes.getUser: {
       return {
         ...state,
       };

@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { CollectionPageType } from '../../types';
-import { collectionActionTypes } from '../actions/collection-action';
+import { CollectionActionTypes } from '../actions/collection-action';
 
 const initState: CollectionPageType = {
   id: '123mk',
@@ -294,7 +294,7 @@ const initState: CollectionPageType = {
 
 function collectionReducer(state = initState, action: AnyAction) {
   switch (action.type) {
-    case collectionActionTypes.getCollection: {
+    case CollectionActionTypes.getCollection: {
       return {
         ...state,
       };

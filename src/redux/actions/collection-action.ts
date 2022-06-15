@@ -1,7 +1,7 @@
-export const collectionActionTypes = {
-  getCollection: 'GET-COLLECTION',
-};
+export enum CollectionActionTypes {
+  getCollection = 'GET-COLLECTION',
+}
 
 export const getUsersAction = () => ({
-  type: collectionActionTypes.getCollection,
+  type: CollectionActionTypes.getCollection,
 });

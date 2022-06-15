@@ -1,6 +1,16 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
+import {
+  getUserCollections,
+  getUserEmail,
+  getUserId,
+  getUserList,
+  getUserMeta,
+  getUserName,
+  getUserStatus,
+  getUserSurname,
+} from '../../redux/selectors/user-selector';
 import { CollectionType, ItemType } from '../../types';
 import HomePage from './HomePage';
 
@@ -10,7 +20,6 @@ interface IHomePageContainer {
   surname: string;
   email: string;
   status: 'active' | 'blocked';
-  isOnline: boolean;
   meta: { loginDate: string; registerDate: string };
   collections: CollectionType[];
   list: ItemType[];
@@ -21,15 +30,14 @@ const HomePageContainer: FC<IHomePageContainer> = (props) => (
 );
 
 const mapStateToProps = (state: AppStateType) => ({
-  id: state.user.id,
-  name: state.user.name,
-  surname: state.user.surname,
-  email: state.user.email,
-  status: state.user.status,
-  isOnline: state.user.isOnline,
-  meta: state.user.meta,
-  collections: state.user.collections,
-  list: state.user.list,
+  id: getUserId(state),
+  name: getUserName(state),
+  surname: getUserSurname(state),
+  email: getUserEmail(state),
+  status: getUserStatus(state),
+  meta: getUserMeta(state),
+  collections: getUserCollections(state),
+  list: getUserList(state),
 });
 
 export default connect(mapStateToProps)(HomePageContainer);

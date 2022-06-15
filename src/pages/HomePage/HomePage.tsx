@@ -21,7 +21,6 @@ interface IHomePage {
   surname: string;
   email: string;
   status: 'active' | 'blocked';
-  isOnline: boolean;
   meta: { loginDate: string; registerDate: string };
   collections: CollectionType[];
   list: ItemType[];
@@ -33,13 +32,12 @@ const HomePage: FC<IHomePage> = ({
   surname,
   email,
   status,
-  isOnline,
   meta,
   list,
   collections,
 }) => {
   const classes = useStyles();
-  console.log(id, name, surname, email, status, isOnline, meta, list);
+  console.log(id, name, surname, email, status, meta, list);
 
   return (
     <>

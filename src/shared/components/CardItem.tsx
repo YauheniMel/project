@@ -5,6 +5,8 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Link } from 'react-router-dom';
+import RoutesApp from '../../constants/routes';
 
 interface ICardItem {
   id: string;
@@ -33,6 +35,10 @@ const CardItem: FC<ICardItem> = ({
   console.log(customField);
   return (
     <Card variant="outlined" key={id}>
+      <Link to={`${RoutesApp.ItemLink}id-${id}`}>
+        Link-
+        {id}
+      </Link>
       <CardOverflow>
         <AspectRatio ratio="2">
           <img src={icon} alt={title} />
