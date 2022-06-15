@@ -17,7 +17,7 @@ interface ICardItem {
     updateAt: string;
   };
   icon: string;
-  countLike: number;
+  countLike: Array<string | null>;
   customField: {
     [type: string]: string | number | boolean;
   } | null;
@@ -83,7 +83,7 @@ const CardItem: FC<ICardItem> = ({
           level="body3"
           sx={{ fontWeight: 'md', color: 'text.secondary' }}
         >
-          {countLike}
+          {countLike.length}
           {' '}
           likes
         </Typography>

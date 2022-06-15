@@ -1,5 +1,5 @@
 import { AppStateType } from '..';
-import { ItemType } from '../../types';
+import { ItemType, ThemeType } from '../../types';
 
 export function getCollectionId(state: AppStateType): string {
   return state.collection.id;
@@ -17,7 +17,7 @@ export function getCollectionDescription(state: AppStateType): string {
   return state.collection.description;
 }
 
-export function getCollectionTheme(state: AppStateType): string {
+export function getCollectionTheme(state: AppStateType): ThemeType {
   return state.collection.theme;
 }
 

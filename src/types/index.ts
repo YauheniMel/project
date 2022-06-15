@@ -3,6 +3,15 @@ export interface AuthType {
   isLoading: boolean;
 }
 
+export type ThemeType =
+  | 'Books'
+  | 'Bands'
+  | 'Pictures'
+  | 'Movies'
+  | 'Sights'
+  | 'Games'
+  | 'Animals';
+
 export interface CommentType {
   name: string;
   surname: string;
@@ -15,7 +24,7 @@ export interface ItemType {
   id: string;
   title: string;
   tags: Array<string | null>;
-  countLike: number;
+  countLike: Array<string | null>;
   icon: string;
   meta: {
     createAt: string;
@@ -32,7 +41,7 @@ export interface CollectionPageType {
   title: string;
   icon: string;
   description: string;
-  theme: string;
+  theme: ThemeType;
   meta: {
     createAt: string;
     updateAt: string;
@@ -46,7 +55,7 @@ export interface CollectionType {
   title: string;
   icon: string;
   description: string;
-  theme: string;
+  theme: ThemeType;
   meta: {
     createAt: string;
     updateAt: string;
