@@ -2,12 +2,21 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Box, Container, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
+import { Routes, Route } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import ToolBar from '../../components/ToolBar/ToolBar';
-import { AppStateType } from '../../redux';
-// import CollectionPageContainer from '../../pages/CollectionPage/CollectionPageContainer';
+import { AppDispatchType, AppStateType } from '../../redux';
+import CollectionPageContainer from '../../pages/CollectionPage/CollectionPageContainer';
+import {
+  getUserId,
+  getUserName,
+  getUserSurname,
+} from '../../redux/selectors/user-selector';
+import { getIsAuth } from '../../redux/selectors/auth-selector';
 import HomePageContainer from '../../pages/HomePage/HomePageContainer';
+import RoutesApp from '../../constants/routes';
+import { setTargetItemAction } from '../../redux/actions/collection-action';
 
 const useStyles = makeStyles({
   root: {
@@ -30,14 +39,22 @@ interface IRootPage {
   id: string;
   name: string;
   surname: string;
+  isAuth: boolean;
+  setTargetItem: (id: string) => void;
 }
 
-const RootPage: FC<IRootPage> = ({ id, name, surname }) => {
+const RootPage: FC<IRootPage> = ({
+  id,
+  name,
+  surname,
+  isAuth,
+  setTargetItem,
+}) => {
   const classes = useStyles();
   console.log(id);
   return (
     <Box className={classes.root}>
-      <Header name={name} surname={surname} />
+      <Header name={name} surname={surname} isAuth={isAuth} />
       <Container className={classes.grid} fixed>
         <Grid
           sx={{ height: '100%' }}
@@ -49,8 +66,18 @@ const RootPage: FC<IRootPage> = ({ id, name, surname }) => {
           </Grid>
           <Grid item xs={9} sm={8}>
             <Box className={classes.grid_item}>
-              <HomePageContainer />
-              {/* <CollectionPageContainer /> */}
+              <Routes>
+                <Route
+                  path={RoutesApp.Home}
+                  element={<HomePageContainer setTargetItem={setTargetItem} />}
+                />
+                <Route
+                  path={RoutesApp.Collection}
+                  element={
+                    <CollectionPageContainer setTargetItem={setTargetItem} />
+                  }
+                />
+              </Routes>
             </Box>
           </Grid>
         </Grid>
@@ -61,9 +88,14 @@ const RootPage: FC<IRootPage> = ({ id, name, surname }) => {
 };
 
 const mapStateToProps = (state: AppStateType) => ({
-  id: state.user.id,
-  name: state.user.name,
-  surname: state.user.surname,
+  id: getUserId(state),
+  name: getUserName(state),
+  surname: getUserSurname(state),
+  isAuth: getIsAuth(state),
 });
 
-export default connect(mapStateToProps)(RootPage);
+const mapDispatchToProps = (dispatch: AppDispatchType) => ({
+  setTargetItem: (id: string) => dispatch(setTargetItemAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootPage);

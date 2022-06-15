@@ -1,7 +1,13 @@
-export const collectionActionTypes = {
-  getCollection: 'GET-COLLECTION',
-};
+export enum CollectionActionTypes {
+  getCollection = 'GET-COLLECTION',
+  setTargetItem = 'SET-TARGET-ITEM',
+}
 
 export const getUsersAction = () => ({
-  type: collectionActionTypes.getCollection,
+  type: CollectionActionTypes.getCollection,
+});
+
+export const setTargetItemAction = (id: string) => ({
+  type: CollectionActionTypes.setTargetItem,
+  id,
 });

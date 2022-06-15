@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
+import { Link } from 'react-router-dom';
+import RoutesApp from '../../constants/routes';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -49,15 +51,21 @@ const ToolBar: FC<IToolBar> = () => {
         variant="persistent"
       >
         <div className={classes.toolbar} />
-        <IconButton>
-          <HomeIcon fontSize="large" />
-        </IconButton>
-        <IconButton>
-          <CollectionsIcon fontSize="large" />
-        </IconButton>
-        <IconButton>
-          <LogoutIcon fontSize="large" />
-        </IconButton>
+        <Link to={RoutesApp.Home}>
+          <IconButton>
+            <HomeIcon fontSize="large" />
+          </IconButton>
+        </Link>
+        <Link to={RoutesApp.Collection}>
+          <IconButton>
+            <CollectionsIcon fontSize="large" />
+          </IconButton>
+        </Link>
+        <Link to={RoutesApp.Login}>
+          <IconButton>
+            <LogoutIcon fontSize="large" />
+          </IconButton>
+        </Link>
       </Drawer>
     </Box>
   );

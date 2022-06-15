@@ -22,6 +22,7 @@ interface ICollectionPage {
   theme: string;
   meta: { createAt: string; updateAt: string };
   list: ItemType[];
+  setTargetItem: (id: string) => void;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -32,6 +33,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   theme,
   meta,
   list,
+  setTargetItem,
 }) => {
   const classes = useStyles();
 
@@ -39,7 +41,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   return (
     <Box className={classes.list}>
       {list.map((item: ItemType) => (
-        <CardItem {...item} key={item.id} />
+        <CardItem setTargetItem={setTargetItem} {...item} key={item.id} />
       ))}
     </Box>
   );

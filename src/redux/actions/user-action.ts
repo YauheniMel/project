@@ -1,7 +1,7 @@
-export const userActionTypes = {
-  getUser: 'GET-USER',
-};
+export enum UserActionTypes {
+  getUser = 'GET-USER',
+}
 
 export const getUsersAction = () => ({
-  type: userActionTypes.getUser,
+  type: UserActionTypes.getUser,
 });

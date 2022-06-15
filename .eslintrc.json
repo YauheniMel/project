@@ -19,10 +19,14 @@
   "rules": {
     "no-debugger": "off",
     "default-param-last": "off",
+    "react/jsx-no-bind": "off",
     "@typescript-eslint/default-param-last": ["warn"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "no-shadow": "off",
+    "react/destructuring-assignment": "off",
+    "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/no-var-requires": "off",
     "react/jsx-props-no-spreading": "off",
     "import/extensions": [

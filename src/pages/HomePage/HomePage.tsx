@@ -21,10 +21,10 @@ interface IHomePage {
   surname: string;
   email: string;
   status: 'active' | 'blocked';
-  isOnline: boolean;
   meta: { loginDate: string; registerDate: string };
   collections: CollectionType[];
   list: ItemType[];
+  setTargetItem: (id: string) => void;
 }
 
 const HomePage: FC<IHomePage> = ({
@@ -33,20 +33,20 @@ const HomePage: FC<IHomePage> = ({
   surname,
   email,
   status,
-  isOnline,
   meta,
   list,
   collections,
+  setTargetItem,
 }) => {
   const classes = useStyles();
-  console.log(id, name, surname, email, status, isOnline, meta, list);
+  console.log(id, name, surname, email, status, meta, list);
 
   return (
     <>
       <CarouselComponent collections={collections} />
       <Box className={classes.list}>
         {list.map((item: ItemType) => (
-          <CardItem {...item} key={item.id} />
+          <CardItem setTargetItem={setTargetItem} {...item} key={item.id} />
         ))}
       </Box>
     </>

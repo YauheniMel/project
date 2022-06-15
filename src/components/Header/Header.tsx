@@ -13,7 +13,9 @@ import {
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CommentIcon from '@mui/icons-material/Comment';
 import { makeStyles } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import Logo from '../Logo/Logo';
+import RoutesApp from '../../constants/routes';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -44,9 +46,10 @@ const useStyles = makeStyles((theme) => ({
 interface IHeader {
   name: string;
   surname: string;
+  isAuth: boolean;
 }
 
-const Header: FC<IHeader> = ({ name, surname }) => {
+const Header: FC<IHeader> = ({ name, surname, isAuth }) => {
   const classes = useStyles();
 
   return (
@@ -55,7 +58,11 @@ const Header: FC<IHeader> = ({ name, surname }) => {
         className={classes.toolBar}
         sx={{ justifyContent: 'space-around' }}
       >
-        <Logo name={name} surname={surname} />
+        {isAuth ? (
+          <Logo name={name} surname={surname} />
+        ) : (
+          <Link to={RoutesApp.Login}>Login</Link>
+        )}
         <Typography variant="h6" noWrap component="div">
           MUI
         </Typography>

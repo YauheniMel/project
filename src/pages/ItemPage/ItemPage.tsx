@@ -1,25 +1,29 @@
 import React, { FC } from 'react';
 import { Box } from '@material-ui/core';
 import { Typography } from '@mui/material';
-import { ItemType } from '../../types';
 
 interface IItemPage {
-  targetItem: ItemType | null;
+  title: string;
+  countLike: number;
+  meta: { createAt: string; updateAt: string };
+  icon: string;
 }
 
-const ItemPage: FC<IItemPage> = ({ targetItem }) => {
-  console.log(targetItem);
+const ItemPage: FC<IItemPage> = ({
+  title, countLike, meta, icon,
+}) => {
+  console.log('XXXXX');
   return (
     <Box>
-      <Typography variant="h2">{targetItem?.title}</Typography>
+      <Typography variant="h2">{title}</Typography>
       <Typography variant="body1">
-        {targetItem?.countLike}
+        {countLike}
         {' '}
         likes
       </Typography>
-      <Typography variant="body1">{targetItem?.meta.createAt}</Typography>
-      <Typography variant="body1">{targetItem?.meta.updateAt}</Typography>
-      <img src={targetItem?.icon} alt="" />
+      <Typography variant="body1">{meta.createAt}</Typography>
+      <Typography variant="body1">{meta.updateAt}</Typography>
+      <img src={icon} alt="" />
     </Box>
   );
 };
