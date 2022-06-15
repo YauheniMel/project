@@ -244,52 +244,7 @@ const initState: CollectionPageType = {
       ],
     },
   ],
-  targetItem: {
-    id: '35r',
-    title: 'Tom Tom',
-    tags: ['tag1', 'tag2', 'tag3'],
-    countLike: 2,
-    icon: 'https://img1.akspic.ru/previews/6/3/3/7/6/167336/167336-oblako-burya-rastenie-atmosfera-prirodnyj_landshaft-500x.jpg',
-    meta: {
-      createAt: '23.07.2021',
-      updateAt: '10.05.2022',
-    },
-    customField: {
-      year: '1996',
-    },
-    comments: [
-      {
-        name: 'Jack',
-        surname: 'Jackson',
-        createAt: '23.11.2021',
-        content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
-        comments: [],
-      },
-      {
-        name: 'Tiko',
-        surname: 'Tod',
-        createAt: '24.11.2021',
-        content:
-          'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
-        comments: [
-          {
-            name: 'Carl',
-            surname: 'Tanwks',
-            createAt: '24.11.2021',
-            content: 'Loremdolor, sit!',
-            comments: [],
-          },
-        ],
-      },
-      {
-        name: 'Jack',
-        surname: 'Jackson',
-        createAt: '25.11.2021',
-        content: 'Lorem ipsum dolor, sit pisic.',
-        comments: [],
-      },
-    ],
-  },
+  targetItem: null,
 };
 
 function collectionReducer(state = initState, action: AnyAction) {
