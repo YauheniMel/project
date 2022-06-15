@@ -23,6 +23,7 @@ interface IHomePageContainer {
   meta: { loginDate: string; registerDate: string };
   collections: CollectionType[];
   list: ItemType[];
+  setTargetItem: (id: string) => void;
 }
 
 const HomePageContainer: FC<IHomePageContainer> = (props) => (

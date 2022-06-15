@@ -6,7 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import ToolBar from '../../components/ToolBar/ToolBar';
-import { AppStateType } from '../../redux';
+import { AppDispatchType, AppStateType } from '../../redux';
 import CollectionPageContainer from '../../pages/CollectionPage/CollectionPageContainer';
 import {
   getUserId,
@@ -16,6 +16,7 @@ import {
 import { getIsAuth } from '../../redux/selectors/auth-selector';
 import HomePageContainer from '../../pages/HomePage/HomePageContainer';
 import RoutesApp from '../../constants/routes';
+import { setTargetItemAction } from '../../redux/actions/collection-action';
 
 const useStyles = makeStyles({
   root: {
@@ -39,10 +40,15 @@ interface IRootPage {
   name: string;
   surname: string;
   isAuth: boolean;
+  setTargetItem: (id: string) => void;
 }
 
 const RootPage: FC<IRootPage> = ({
-  id, name, surname, isAuth,
+  id,
+  name,
+  surname,
+  isAuth,
+  setTargetItem,
 }) => {
   const classes = useStyles();
   console.log(id);
@@ -61,10 +67,15 @@ const RootPage: FC<IRootPage> = ({
           <Grid item xs={9} sm={8}>
             <Box className={classes.grid_item}>
               <Routes>
-                <Route path={RoutesApp.Home} element={<HomePageContainer />} />
+                <Route
+                  path={RoutesApp.Home}
+                  element={<HomePageContainer setTargetItem={setTargetItem} />}
+                />
                 <Route
                   path={RoutesApp.Collection}
-                  element={<CollectionPageContainer />}
+                  element={
+                    <CollectionPageContainer setTargetItem={setTargetItem} />
+                  }
                 />
               </Routes>
             </Box>
@@ -83,4 +94,8 @@ const mapStateToProps = (state: AppStateType) => ({
   isAuth: getIsAuth(state),
 });
 
-export default connect(mapStateToProps)(RootPage);
+const mapDispatchToProps = (dispatch: AppDispatchType) => ({
+  setTargetItem: (id: string) => dispatch(setTargetItemAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootPage);

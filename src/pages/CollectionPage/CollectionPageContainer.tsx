@@ -26,15 +26,18 @@ interface IHomePageContainer {
   meta: { createAt: string; updateAt: string };
   list: ItemType[];
   targetItem: ItemType | null;
+  setTargetItem: (id: string) => void;
 }
 
 const CollectionPageContainer: FC<IHomePageContainer> = (props) => (
   <Routes>
     <Route path="*" element={<CollectionPage {...props} />} />
-    <Route
-      path={RoutesApp.Item}
-      element={<ItemPage {...props.targetItem!} />}
-    />
+    {props.targetItem && (
+      <Route
+        path={RoutesApp.Item}
+        element={<ItemPage {...props.targetItem} />}
+      />
+    )}
   </Routes>
 );
 

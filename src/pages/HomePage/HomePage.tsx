@@ -24,6 +24,7 @@ interface IHomePage {
   meta: { loginDate: string; registerDate: string };
   collections: CollectionType[];
   list: ItemType[];
+  setTargetItem: (id: string) => void;
 }
 
 const HomePage: FC<IHomePage> = ({
@@ -35,6 +36,7 @@ const HomePage: FC<IHomePage> = ({
   meta,
   list,
   collections,
+  setTargetItem,
 }) => {
   const classes = useStyles();
   console.log(id, name, surname, email, status, meta, list);
@@ -44,7 +46,7 @@ const HomePage: FC<IHomePage> = ({
       <CarouselComponent collections={collections} />
       <Box className={classes.list}>
         {list.map((item: ItemType) => (
-          <CardItem {...item} key={item.id} />
+          <CardItem setTargetItem={setTargetItem} {...item} key={item.id} />
         ))}
       </Box>
     </>

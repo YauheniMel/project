@@ -21,6 +21,7 @@ interface ICardItem {
   customField: {
     [type: string]: string | number | boolean;
   } | null;
+  setTargetItem: (id: string) => void;
 }
 
 const CardItem: FC<ICardItem> = ({
@@ -31,10 +32,16 @@ const CardItem: FC<ICardItem> = ({
   customField,
   countLike,
   icon,
+  setTargetItem,
 }) => {
   console.log(customField);
+
+  function handleClick() {
+    setTargetItem(id);
+  }
+
   return (
-    <Card variant="outlined" key={id}>
+    <Card variant="outlined" key={id} onClick={handleClick}>
       <Link to={`${RoutesApp.ItemLink}id-${id}`}>
         Link-
         {id}

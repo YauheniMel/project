@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { CollectionPageType } from '../../types';
+import { CollectionPageType, ItemType } from '../../types';
 import { CollectionActionTypes } from '../actions/collection-action';
 
 const initState: CollectionPageType = {
@@ -297,6 +297,14 @@ function collectionReducer(state = initState, action: AnyAction) {
     case CollectionActionTypes.getCollection: {
       return {
         ...state,
+      };
+    }
+    case CollectionActionTypes.setTargetItem: {
+      const item = state.list.find((elem: ItemType) => elem.id === action.id);
+
+      return {
+        ...state,
+        targetItem: item ? { ...item } : null,
       };
     }
     default:
