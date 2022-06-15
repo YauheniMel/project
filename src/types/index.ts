@@ -24,7 +24,7 @@ export interface ItemType {
   id: string;
   title: string;
   tags: Array<string | null>;
-  countLike: number;
+  countLike: Array<string | null>;
   icon: string;
   meta: {
     createAt: string;
