@@ -3,15 +3,6 @@ export interface AuthType {
   isLoading: boolean;
 }
 
-export type ThemeType =
-  | 'Books'
-  | 'Bands'
-  | 'Pictures'
-  | 'Movies'
-  | 'Sights'
-  | 'Games'
-  | 'Animals';
-
 export interface CommentType {
   name: string;
   surname: string;
@@ -44,7 +35,7 @@ export interface CollectionType {
   title: string;
   icon: string;
   description: string;
-  theme: ThemeType;
+  theme: string;
   meta: {
     createAt: string;
     updateAt: string;
@@ -63,7 +54,7 @@ export interface CollectionHomePageType {
   title: string;
   icon: string;
   description: string;
-  theme: ThemeType;
+  theme: string;
   meta: {
     createAt: string;
     updateAt: string;
