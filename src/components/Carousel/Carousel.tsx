@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
-import { CollectionType } from '../../types';
+import { CollectionHomePageType } from '../../types';
 
 interface ICarousel {
-  collections: CollectionType[];
+  collections: CollectionHomePageType[];
 }
 
 const CarouselComponent: FC<ICarousel> = ({ collections }) => (
   <Carousel sx={{ flex: 1 }}>
-    {collections.map((collection: CollectionType) => (
+    {collections.map((collection: CollectionHomePageType) => (
       <Paper key={collection.id}>
         <Typography variant="h2">{collection.title}</Typography>
         <Typography variant="h2">{collection.theme}</Typography>

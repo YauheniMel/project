@@ -11,7 +11,7 @@ import {
   getUserStatus,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
-import { CollectionType, ItemType } from '../../types';
+import { CollectionHomePageType, ItemType } from '../../types';
 import HomePage from './HomePage';
 
 interface IHomePageContainer {
@@ -21,7 +21,7 @@ interface IHomePageContainer {
   email: string;
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
-  collections: CollectionType[];
+  collections: CollectionHomePageType[];
   list: ItemType[];
   setTargetItem: (id: string) => void;
 }

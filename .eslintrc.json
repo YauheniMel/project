@@ -25,8 +25,8 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "off",
     "react/destructuring-assignment": "off",
-    "@typescript-eslint/no-shadow": ["error"],
     "@typescript-eslint/no-var-requires": "off",
     "react/jsx-props-no-spreading": "off",
     "import/extensions": [
