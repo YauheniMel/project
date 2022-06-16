@@ -18,9 +18,6 @@ interface ICardItem {
   };
   icon: string;
   countLike: Array<string | null>;
-  customField: {
-    [type: string]: string | number | boolean;
-  } | null;
   setTargetItem: (id: string) => void;
 }
 
@@ -29,13 +26,10 @@ const CardItem: FC<ICardItem> = ({
   title,
   tags,
   meta,
-  customField,
   countLike,
   icon,
   setTargetItem,
 }) => {
-  console.log(customField);
-
   function handleClick() {
     setTargetItem(id);
   }

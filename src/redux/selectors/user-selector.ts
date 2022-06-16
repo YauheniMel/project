@@ -1,5 +1,5 @@
 import { AppStateType } from '..';
-import { CollectionType, ItemType } from '../../types';
+import { CollectionHomePageType, ItemType } from '../../types';
 
 export function getUserId(state: AppStateType): string {
   return state.user.id;
@@ -18,7 +18,9 @@ export function getUserEmail(state: AppStateType): string {
 export function getUserStatus(state: AppStateType): 'active' | 'blocked' {
   return state.user.status;
 }
-export function getUserCollections(state: AppStateType): CollectionType[] {
+export function getUserCollections(
+  state: AppStateType,
+): CollectionHomePageType[] {
   return state.user.collections;
 }
 export function getUserList(state: AppStateType): ItemType[] {

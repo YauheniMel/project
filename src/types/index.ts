@@ -17,6 +17,7 @@ export interface CommentType {
   surname: string;
   createAt: string;
   content: string;
+  state: 'touched' | 'untouched';
   comments: Array<CommentType | null>;
 }
 
@@ -30,24 +31,12 @@ export interface ItemType {
     createAt: string;
     updateAt: string;
   };
-  customField: {
-    [type: string]: string | number | boolean;
-  } | null;
   comments: Array<CommentType | null>;
-}
-
-export interface CollectionPageType {
-  id: string;
-  title: string;
-  icon: string;
-  description: string;
-  theme: ThemeType;
-  meta: {
-    createAt: string;
-    updateAt: string;
-  };
-  list: ItemType[];
-  targetItem: ItemType | null;
+  dateValues: null | { [key: string]: string };
+  multiLineValues: null | { [key: string]: string };
+  numberValues: null | { [key: string]: number };
+  textValues: null | { [key: string]: string };
+  checkboxValues: null | { [key: string]: string };
 }
 
 export interface CollectionType {
@@ -60,6 +49,30 @@ export interface CollectionType {
     createAt: string;
     updateAt: string;
   };
+  dateKeys: null | string[];
+  multiLineKeys: null | string[];
+  numberKeys: null | string[];
+  textKeys: null | string[];
+  checkboxKeys: null | { field: string; count: number; values: string[] }[];
+  list: ItemType[];
+  targetItem: ItemType | null;
+}
+
+export interface CollectionHomePageType {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+  theme: ThemeType;
+  meta: {
+    createAt: string;
+    updateAt: string;
+  };
+  dateKeys: null | string[];
+  multiLineKeys: null | string[];
+  numberKeys: null | string[];
+  textKeys: null | string[];
+  checkboxKeys: null | { field: string; count: number; values: string[] }[];
   list: ItemType[];
 }
 
@@ -76,6 +89,6 @@ export interface UserType {
     loginDate: string;
     registerDate: string;
   };
-  collections: CollectionType[];
+  collections: CollectionHomePageType[];
   list: ItemType[];
 }
