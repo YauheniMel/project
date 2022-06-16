@@ -4,16 +4,21 @@ import { Route, Routes } from 'react-router-dom';
 import RoutesApp from '../../constants/routes';
 import { AppStateType } from '../../redux';
 import {
+  getCollectionCheckboxFields,
+  getCollectionDateFields,
   getCollectionDescription,
   getCollectionIcon,
   getCollectionId,
   getCollectionList,
   getCollectionMeta,
+  getCollectionMultiLineFields,
+  getCollectionNumberFields,
   getCollectionTargetItem,
+  getCollectionTextsFields,
   getCollectionTheme,
   getCollectionTitle,
 } from '../../redux/selectors/collection-selector';
-import { ItemType, ThemeType } from '../../types';
+import { ItemType } from '../../types';
 import ItemPage from '../ItemPage/ItemPage';
 import CollectionPage from './CollectionPage';
 
@@ -22,10 +27,15 @@ interface IHomePageContainer {
   title: string;
   icon: string;
   description: string;
-  theme: ThemeType;
+  theme: string;
   meta: { createAt: string; updateAt: string };
   list: ItemType[];
   targetItem: ItemType | null;
+  dateFields: null | string[];
+  multiLineFields: null | string[];
+  numberFields: null | string[];
+  textFields: null | string[];
+  checkboxFields: null | { field: string; count: number; values: string[] }[];
   setTargetItem: (id: string) => void;
 }
 
@@ -50,6 +60,11 @@ const mapStateToProps = (state: AppStateType) => ({
   meta: getCollectionMeta(state),
   list: getCollectionList(state),
   targetItem: getCollectionTargetItem(state),
+  numberFields: getCollectionNumberFields(state),
+  textFields: getCollectionTextsFields(state),
+  multiLineFields: getCollectionMultiLineFields(state),
+  dateFields: getCollectionDateFields(state),
+  checkboxFields: getCollectionCheckboxFields(state),
 });
 
 export default connect(mapStateToProps)(CollectionPageContainer);
