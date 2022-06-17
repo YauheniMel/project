@@ -11,6 +11,7 @@ interface ICardItem {
   id: string;
   title: string;
   tags: Array<string | null>;
+  collectionId: string;
   meta: {
     createAt: string;
     updateAt: string;
@@ -26,6 +27,7 @@ const CardItem: FC<ICardItem> = ({
   meta,
   countLike,
   setTargetItem,
+  collectionId,
 }) => {
   function handleClick() {
     setTargetItem(id);
@@ -33,7 +35,9 @@ const CardItem: FC<ICardItem> = ({
 
   return (
     <Card variant="outlined" key={id} onClick={handleClick}>
-      <Link to={`${RoutesApp.ItemLink}id-${id}`}>
+      <Link
+        to={`${RoutesApp.CollectionLink}id-${collectionId}${RoutesApp.ItemLink}id-${id}`}
+      >
         Link-
         {id}
       </Link>

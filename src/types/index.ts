@@ -11,10 +11,15 @@ export interface CommentType {
   state: 'touched' | 'untouched';
   comments: Array<CommentType | null>;
 }
-
 export interface ItemType {
+  user: {
+    id: string;
+    name: string;
+    surname: string;
+  };
   id: string;
   title: string;
+  collectionId: string;
   tags: Array<string | null>;
   countLike: Array<string | null>;
   meta: {
@@ -31,6 +36,11 @@ export interface ItemType {
 export interface CollectionInitType {
   id: string;
   title: string;
+  user: {
+    id: string;
+    name: string;
+    surname: string;
+  };
   icon: string;
   description: string;
   theme: string;
@@ -46,8 +56,19 @@ export interface CollectionInitType {
   list: ItemType[];
 }
 
-export interface CollectionType extends CollectionInitType {
+export interface AllCollectionsType {
+  collections: Array<CollectionInitType>;
+  user: {
+    name: string;
+    surname: string;
+    id: string;
+  };
+}
+export interface CollectionType {
   targetItem: ItemType | null;
+  targetCollection: CollectionInitType | null;
+  allCollections: AllCollectionsType[];
+  myCollections: Array<CollectionInitType | null>;
 }
 
 export interface HomePageType {
@@ -68,5 +89,4 @@ export interface UserType {
     loginDate: string;
     registerDate: string;
   };
-  collections: CollectionInitType[];
 }

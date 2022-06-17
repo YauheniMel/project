@@ -4,55 +4,40 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
-import { ItemType } from '../../types';
+// import { useParams } from 'react-router';
+import { CollectionInitType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
 
 interface ICollectionPage {
-  id: string;
-  title: string;
-  description: string;
-  theme: string;
-  meta: { createAt: string; updateAt: string };
-  list: ItemType[];
   setTargetItem: (id: string) => void;
-  dateFields: null | string[];
-  multiLineFields: null | string[];
-  numberFields: null | string[];
-  textFields: null | string[];
-  checkboxFields: null | { field: string; count: number; values: string[] }[];
+  targetCollection: CollectionInitType;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
-  id,
-  title,
-  description,
-  theme,
-  meta,
-  list,
   setTargetItem,
-  dateFields,
-  multiLineFields,
-  numberFields,
-  textFields,
-  checkboxFields,
+  targetCollection,
 }) => {
+  // const { collectionId } = useParams();
+
   const [openForm, setOpenForm] = useState<boolean>(false);
 
-  console.log(id, title, description, theme, meta);
   return (
     <>
+      <Typography variant="h3">{targetCollection.title}</Typography>
+      <Typography variant="h3">{targetCollection.theme}</Typography>
       <ItemForm
-        dateFields={dateFields}
-        multiLineFields={multiLineFields}
-        numberFields={numberFields}
-        textFields={textFields}
-        checkboxFields={checkboxFields}
+        dateFields={targetCollection.dateKeys}
+        multiLineFields={targetCollection.multiLineKeys}
+        numberFields={targetCollection.numberKeys}
+        textFields={targetCollection.textKeys}
+        checkboxFields={targetCollection.checkboxKeys}
         openForm={openForm}
         setOpenForm={setOpenForm}
       />
@@ -87,7 +72,7 @@ const CollectionPage: FC<ICollectionPage> = ({
           </Sidebar>
         </Grid>
         <Grid item xs={9} sm={8}>
-          <Table list={list} setTargetItem={setTargetItem} />
+          <Table list={targetCollection.list} setTargetItem={setTargetItem} />
         </Grid>
       </Grid>
     </>

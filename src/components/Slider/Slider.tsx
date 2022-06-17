@@ -10,7 +10,8 @@ import RoutesApp from '../../constants/routes';
 import { CollectionInitType } from '../../types';
 
 interface ISlider {
-  collections: CollectionInitType[];
+  getCollection: (id: string) => void;
+  collections: Array<CollectionInitType | null>;
 }
 
 const useStyles = makeStyles({
@@ -32,7 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Slider: FC<ISlider> = ({ collections }) => {
+const Slider: FC<ISlider> = ({ collections, getCollection }) => {
   const classes = useStyles();
 
   return (
@@ -40,10 +41,12 @@ const Slider: FC<ISlider> = ({ collections }) => {
       <Link className={classes.link} to={RoutesApp.Collections}>
         Show all collections...
       </Link>
-      {collections.map((collection) => (
+      {collections.map(
+        (collection) => collection && (
         <Link
           to={`${RoutesApp.CollectionLink}id-${collection.id}`}
           key={collection.id}
+          onClick={() => getCollection(collection.id)}
         >
           <Card className={classes.card}>
             <CardMedia
@@ -65,7 +68,8 @@ const Slider: FC<ISlider> = ({ collections }) => {
             </CardContent>
           </Card>
         </Link>
-      ))}
+        ),
+      )}
     </Box>
   );
 };
