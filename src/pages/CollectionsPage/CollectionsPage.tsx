@@ -8,14 +8,19 @@ import { CollectionInitType } from '../../types';
 
 interface ICollectionsPage {
   collections: CollectionInitType[];
+  getCollection: (id: string) => void;
 }
 
-const CollectionsPage: FC<ICollectionsPage> = ({ collections }) => (
+const CollectionsPage: FC<ICollectionsPage> = ({
+  collections,
+  getCollection,
+}) => (
   <Box>
     {collections.map((collection) => (
       <Link
         to={`${RoutesApp.CollectionLink}id-${collection.id}`}
         key={collection.id}
+        onClick={() => getCollection(collection.id)}
       >
         <Card>
           <CardMedia

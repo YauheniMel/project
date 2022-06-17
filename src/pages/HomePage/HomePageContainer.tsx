@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import { getCollections, getItems } from '../../redux/selectors/home-selector';
-
 import { CollectionInitType, ItemType } from '../../types';
 import HomePage from './HomePage';
 

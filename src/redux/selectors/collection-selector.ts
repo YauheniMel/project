@@ -1,59 +1,10 @@
 import { AppStateType } from '..';
-import { ItemType } from '../../types';
+import { CollectionInitType, ItemType } from '../../types';
 
-export function getCollectionId(state: AppStateType): string {
-  return state.collection.id;
-}
-
-export function getCollectionTitle(state: AppStateType): string {
-  return state.collection.title;
-}
-
-export function getCollectionDescription(state: AppStateType): string {
-  return state.collection.description;
-}
-
-export function getCollectionTheme(state: AppStateType): string {
-  return state.collection.theme;
-}
-
-export function getCollectionMeta(state: AppStateType): {
-  createAt: string;
-  updateAt: string;
-} {
-  return state.collection.meta;
-}
-
-export function getCollectionList(state: AppStateType): ItemType[] {
-  return state.collection.list;
+export function getTargetCollection(state: AppStateType): CollectionInitType {
+  return state.collection.targetCollection as CollectionInitType;
 }
 
 export function getCollectionTargetItem(state: AppStateType): ItemType | null {
   return state.collection.targetItem;
-}
-
-export function getCollectionNumberFields(
-  state: AppStateType,
-): string[] | null {
-  return state.collection.numberKeys;
-}
-
-export function getCollectionDateFields(state: AppStateType): string[] | null {
-  return state.collection.dateKeys;
-}
-
-export function getCollectionMultiLineFields(
-  state: AppStateType,
-): string[] | null {
-  return state.collection.multiLineKeys;
-}
-
-export function getCollectionTextsFields(state: AppStateType): string[] | null {
-  return state.collection.textKeys;
-}
-
-export function getCollectionCheckboxFields(
-  state: AppStateType,
-): { field: string; count: number; values: string[] }[] | null {
-  return state.collection.checkboxKeys;
 }

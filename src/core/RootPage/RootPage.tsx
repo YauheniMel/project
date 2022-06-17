@@ -15,9 +15,13 @@ import {
 import { getIsAuth } from '../../redux/selectors/auth-selector';
 import HomePageContainer from '../../pages/HomePage/HomePageContainer';
 import RoutesApp from '../../constants/routes';
-import { setTargetItemAction } from '../../redux/actions/collection-action';
-import UserPageContainer from '../../pages/UserPage/UserPageContainer';
+import {
+  getCollectionAction,
+  setTargetItemAction,
+} from '../../redux/actions/collection-action';
+
 import CollectionsPageContainer from '../../pages/CollectionsPage/CollectionsPageContainer';
+import UserPageContainer from '../../pages/UserPage/UserPageContainer';
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +46,7 @@ interface IRootPage {
   surname: string;
   isAuth: boolean;
   setTargetItem: (id: string) => void;
+  getCollection: (id: string) => void;
 }
 
 const RootPage: FC<IRootPage> = ({
@@ -50,6 +55,7 @@ const RootPage: FC<IRootPage> = ({
   surname,
   isAuth,
   setTargetItem,
+  getCollection,
 }) => {
   const classes = useStyles();
   console.log(id);
@@ -62,14 +68,17 @@ const RootPage: FC<IRootPage> = ({
             path={RoutesApp.Home}
             element={<HomePageContainer setTargetItem={setTargetItem} />}
           />
-          <Route path={RoutesApp.User} element={<UserPageContainer />} />
+          <Route
+            path={RoutesApp.User}
+            element={<UserPageContainer getCollection={getCollection} />}
+          />
           <Route
             path={RoutesApp.Collection}
             element={<CollectionPageContainer setTargetItem={setTargetItem} />}
           />
           <Route
             path={RoutesApp.Collections}
-            element={<CollectionsPageContainer />}
+            element={<CollectionsPageContainer getCollection={getCollection} />}
           />
         </Routes>
       </Container>
@@ -87,6 +96,7 @@ const mapStateToProps = (state: AppStateType) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatchType) => ({
   setTargetItem: (id: string) => dispatch(setTargetItemAction(id)),
+  getCollection: (id: string) => dispatch(getCollectionAction(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootPage);

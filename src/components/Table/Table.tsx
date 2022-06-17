@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
-import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ItemType } from '../../types';
 import RoutesApp from '../../constants/routes';
@@ -27,7 +26,6 @@ const Table: FC<ITable> = ({ list, setTargetItem }) => {
           onClick={() => setTargetItem(params.row.id)}
           to={`${RoutesApp.ItemLink}id-${params.row.id}`}
         >
-          <Avatar src={params.value} />
           {params.row.title}
         </Link>
       ),

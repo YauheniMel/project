@@ -26,6 +26,7 @@ interface IUserPageContainer {
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
   collections: CollectionInitType[];
+  getCollection: (id: string) => void;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => (

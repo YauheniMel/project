@@ -7,6 +7,7 @@ import { CollectionInitType } from '../../types';
 
 interface ICollectionsPageContainer {
   collections: CollectionInitType[];
+  getCollection: (id: string) => void;
 }
 
 const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => (

@@ -46,8 +46,10 @@ export interface CollectionInitType {
   list: ItemType[];
 }
 
-export interface CollectionType extends CollectionInitType {
+export interface CollectionType {
   targetItem: ItemType | null;
+  targetCollection: CollectionInitType | null;
+  collections: Array<CollectionInitType | null>;
 }
 
 export interface HomePageType {
