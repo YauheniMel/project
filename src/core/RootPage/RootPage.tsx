@@ -17,6 +17,7 @@ import HomePageContainer from '../../pages/HomePage/HomePageContainer';
 import RoutesApp from '../../constants/routes';
 import { setTargetItemAction } from '../../redux/actions/collection-action';
 import UserPageContainer from '../../pages/UserPage/UserPageContainer';
+import CollectionsPageContainer from '../../pages/CollectionsPage/CollectionsPageContainer';
 
 const useStyles = makeStyles({
   root: {
@@ -65,6 +66,10 @@ const RootPage: FC<IRootPage> = ({
           <Route
             path={RoutesApp.Collection}
             element={<CollectionPageContainer setTargetItem={setTargetItem} />}
+          />
+          <Route
+            path={RoutesApp.Collections}
+            element={<CollectionsPageContainer />}
           />
         </Routes>
       </Container>
