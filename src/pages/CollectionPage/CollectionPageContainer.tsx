@@ -7,7 +7,6 @@ import {
   getCollectionCheckboxFields,
   getCollectionDateFields,
   getCollectionDescription,
-  getCollectionIcon,
   getCollectionId,
   getCollectionList,
   getCollectionMeta,
@@ -25,7 +24,6 @@ import CollectionPage from './CollectionPage';
 interface IHomePageContainer {
   id: string;
   title: string;
-  icon: string;
   description: string;
   theme: string;
   meta: { createAt: string; updateAt: string };
@@ -54,7 +52,6 @@ const CollectionPageContainer: FC<IHomePageContainer> = (props) => (
 const mapStateToProps = (state: AppStateType) => ({
   id: getCollectionId(state),
   title: getCollectionTitle(state),
-  icon: getCollectionIcon(state),
   description: getCollectionDescription(state),
   theme: getCollectionTheme(state),
   meta: getCollectionMeta(state),

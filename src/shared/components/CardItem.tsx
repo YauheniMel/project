@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
@@ -16,7 +15,6 @@ interface ICardItem {
     createAt: string;
     updateAt: string;
   };
-  icon: string;
   countLike: Array<string | null>;
   setTargetItem: (id: string) => void;
 }
@@ -27,7 +25,6 @@ const CardItem: FC<ICardItem> = ({
   tags,
   meta,
   countLike,
-  icon,
   setTargetItem,
 }) => {
   function handleClick() {
@@ -41,9 +38,6 @@ const CardItem: FC<ICardItem> = ({
         {id}
       </Link>
       <CardOverflow>
-        <AspectRatio ratio="2">
-          <img src={icon} alt={title} />
-        </AspectRatio>
         <IconButton
           aria-label="Like minimal photography"
           size="md"

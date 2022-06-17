@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
 import { ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
@@ -15,7 +16,6 @@ import ItemForm from '../../components/ItemForm/ItemForm';
 interface ICollectionPage {
   id: string;
   title: string;
-  icon: string;
   description: string;
   theme: string;
   meta: { createAt: string; updateAt: string };
@@ -31,7 +31,6 @@ interface ICollectionPage {
 const CollectionPage: FC<ICollectionPage> = ({
   id,
   title,
-  icon,
   description,
   theme,
   meta,
@@ -45,7 +44,7 @@ const CollectionPage: FC<ICollectionPage> = ({
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
 
-  console.log(id, title, icon, description, theme, meta);
+  console.log(id, title, description, theme, meta);
   return (
     <>
       <ItemForm
@@ -72,6 +71,12 @@ const CollectionPage: FC<ICollectionPage> = ({
                 <AddCircleOutlineIcon />
               </ListItemIcon>
               <ListItemText primary="Create new item" />
+            </ListItemButton>
+            <ListItemButton sx={{ width: '100%' }}>
+              <ListItemIcon>
+                <UpgradeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Update item" />
             </ListItemButton>
             <ListItemButton sx={{ width: '100%' }}>
               <ListItemIcon>

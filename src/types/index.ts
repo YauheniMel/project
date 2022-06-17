@@ -17,7 +17,6 @@ export interface ItemType {
   title: string;
   tags: Array<string | null>;
   countLike: Array<string | null>;
-  icon: string;
   meta: {
     createAt: string;
     updateAt: string;
@@ -29,8 +28,7 @@ export interface ItemType {
   textValues: null | { [key: string]: string };
   checkboxValues: null | { [key: string]: string };
 }
-
-export interface CollectionType {
+export interface CollectionInitType {
   id: string;
   title: string;
   icon: string;
@@ -46,24 +44,14 @@ export interface CollectionType {
   textKeys: null | string[];
   checkboxKeys: null | { field: string; count: number; values: string[] }[];
   list: ItemType[];
+}
+
+export interface CollectionType extends CollectionInitType {
   targetItem: ItemType | null;
 }
 
-export interface CollectionHomePageType {
-  id: string;
-  title: string;
-  icon: string;
-  description: string;
-  theme: string;
-  meta: {
-    createAt: string;
-    updateAt: string;
-  };
-  dateKeys: null | string[];
-  multiLineKeys: null | string[];
-  numberKeys: null | string[];
-  textKeys: null | string[];
-  checkboxKeys: null | { field: string; count: number; values: string[] }[];
+export interface HomePageType {
+  collections: CollectionInitType[];
   list: ItemType[];
 }
 
@@ -80,6 +68,5 @@ export interface UserType {
     loginDate: string;
     registerDate: string;
   };
-  collections: CollectionHomePageType[];
-  list: ItemType[];
+  collections: CollectionInitType[];
 }

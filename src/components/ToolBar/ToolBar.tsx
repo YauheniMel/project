@@ -6,6 +6,7 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
 import RoutesApp from '../../constants/routes';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +57,12 @@ const ToolBar: FC<IToolBar> = () => {
             <HomeIcon fontSize="large" />
           </IconButton>
         </Link>
-        <Link to={RoutesApp.Collection}>
+        <Link to={RoutesApp.User}>
+          <IconButton>
+            <PersonIcon fontSize="large" />
+          </IconButton>
+        </Link>
+        <Link to={RoutesApp.Collections}>
           <IconButton>
             <CollectionsIcon fontSize="large" />
           </IconButton>
