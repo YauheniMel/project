@@ -1,20 +1,8 @@
 import { AnyAction } from 'redux';
-import { UserType } from '../../types';
-import { UserActionTypes } from '../actions/user-action';
+import { HomePageType } from '../../types';
+import { HomeActionTypes } from '../actions/home-action';
 
-const initState: UserType = {
-  id: '123f',
-  isAdmin: false,
-  name: 'Yauheni',
-  surname: 'Melnik',
-  email: '207melnik@gmail.com',
-  status: 'active',
-  isOnline: true,
-  theme: 'light',
-  meta: {
-    registerDate: '23.07.2015',
-    loginDate: '10.06.2022',
-  },
+const initState: HomePageType = {
   collections: [
     {
       id: '3d',
@@ -1517,11 +1505,293 @@ const initState: UserType = {
       ],
     },
   ],
+  list: [
+    {
+      id: '34r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: ['1', '2', '3'],
+      dateValues: { date1: '25.10.20' },
+      multiLineValues: {
+        multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
+        multiLine2: 'multiLine2 kmdsn kdns',
+      },
+      checkboxValues: { Checkbox: 'values1' },
+      textValues: null,
+      numberValues: {
+        numbers1: 4,
+      },
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          state: 'touched',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          state: 'touched',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              state: 'touched',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          state: 'untouched',
+          comments: [],
+        },
+      ],
+    },
+    {
+      id: '35r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: [],
+      dateValues: { date1: '25.10.20' },
+      multiLineValues: {
+        multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
+        multiLine2: 'multiLine2 kmdsn kdns',
+      },
+      checkboxValues: { Checkbox: 'values1' },
+      textValues: null,
+      numberValues: {
+        numbers1: 4,
+      },
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          state: 'touched',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          state: 'touched',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              state: 'touched',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          state: 'untouched',
+          comments: [],
+        },
+      ],
+    },
+    {
+      id: '38r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: ['1', '2', '3', '4'],
+      dateValues: { date1: '25.10.20' },
+      multiLineValues: {
+        multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
+        multiLine2: 'multiLine2 kmdsn kdns',
+      },
+      checkboxValues: { Checkbox: 'values1' },
+      textValues: null,
+      numberValues: {
+        numbers1: 4,
+      },
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          state: 'touched',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          state: 'touched',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              state: 'touched',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          state: 'untouched',
+          comments: [],
+        },
+      ],
+    },
+    {
+      id: '37r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: ['1', '2'],
+      dateValues: { date1: '25.10.20' },
+      multiLineValues: {
+        multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
+        multiLine2: 'multiLine2 kmdsn kdns',
+      },
+      checkboxValues: { Checkbox: 'values1' },
+      textValues: null,
+      numberValues: {
+        numbers1: 4,
+      },
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          state: 'touched',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          state: 'touched',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              state: 'touched',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          state: 'untouched',
+          comments: [],
+        },
+      ],
+    },
+    {
+      id: '36r',
+      title: 'Tom Tom',
+      tags: ['tag1', 'tag2', 'tag3'],
+      countLike: ['1', '2', '3'],
+      dateValues: { date1: '25.10.20' },
+      multiLineValues: {
+        multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
+        multiLine2: 'multiLine2 kmdsn kdns',
+      },
+      checkboxValues: { Checkbox: 'values1' },
+      textValues: null,
+      numberValues: {
+        numbers1: 4,
+      },
+      meta: {
+        createAt: '23.07.2021',
+        updateAt: '10.05.2022',
+      },
+      comments: [
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '23.11.2021',
+          content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
+          state: 'touched',
+          comments: [],
+        },
+        {
+          name: 'Tiko',
+          surname: 'Tod',
+          createAt: '24.11.2021',
+          state: 'touched',
+          content:
+            'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
+          comments: [
+            {
+              name: 'Carl',
+              surname: 'Tanwks',
+              createAt: '24.11.2021',
+              content: 'Loremdolor, sit!',
+              state: 'touched',
+              comments: [],
+            },
+          ],
+        },
+        {
+          name: 'Jack',
+          surname: 'Jackson',
+          createAt: '25.11.2021',
+          content: 'Lorem ipsum dolor, sit pisic.',
+          state: 'untouched',
+          comments: [],
+        },
+      ],
+    },
+  ],
 };
 
-function userReducer(state = initState, action: AnyAction) {
+function homeReducer(state = initState, action: AnyAction) {
   switch (action.type) {
-    case UserActionTypes.getUser: {
+    case HomeActionTypes.getCollections: {
       return {
         ...state,
       };
@@ -1531,4 +1801,4 @@ function userReducer(state = initState, action: AnyAction) {
   }
 }
 
-export default userReducer;
+export default homeReducer;

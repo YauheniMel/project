@@ -9,10 +9,6 @@ export function getCollectionTitle(state: AppStateType): string {
   return state.collection.title;
 }
 
-export function getCollectionIcon(state: AppStateType): string {
-  return state.collection.icon;
-}
-
 export function getCollectionDescription(state: AppStateType): string {
   return state.collection.description;
 }

@@ -6,12 +6,9 @@ interface IItemPage {
   title: string;
   countLike: Array<string | null>;
   meta: { createAt: string; updateAt: string };
-  icon: string;
 }
 
-const ItemPage: FC<IItemPage> = ({
-  title, countLike, meta, icon,
-}) => {
+const ItemPage: FC<IItemPage> = ({ title, countLike, meta }) => {
   console.log('XXXXX');
   return (
     <Box>
@@ -23,7 +20,6 @@ const ItemPage: FC<IItemPage> = ({
       </Typography>
       <Typography variant="body1">{meta.createAt}</Typography>
       <Typography variant="body1">{meta.updateAt}</Typography>
-      <img src={icon} alt="" />
     </Box>
   );
 };

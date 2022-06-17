@@ -25,7 +25,6 @@ const initState: CollectionType = {
       title: 'Tom Tom',
       tags: ['tag1', 'tag2', 'tag3'],
       countLike: ['1', '2', '3'],
-      icon: 'https://img1.akspic.ru/previews/6/3/3/7/6/167336/167336-oblako-burya-rastenie-atmosfera-prirodnyj_landshaft-500x.jpg',
       dateValues: { date1: '25.10.20' },
       multiLineValues: {
         multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
@@ -82,7 +81,6 @@ const initState: CollectionType = {
       title: 'Tom Tom',
       tags: ['tag1', 'tag2', 'tag3'],
       countLike: [],
-      icon: 'https://img1.akspic.ru/previews/6/3/3/7/6/167336/167336-oblako-burya-rastenie-atmosfera-prirodnyj_landshaft-500x.jpg',
       dateValues: { date1: '25.10.20' },
       multiLineValues: {
         multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
@@ -139,7 +137,6 @@ const initState: CollectionType = {
       title: 'Tom Tom',
       tags: ['tag1', 'tag2', 'tag3'],
       countLike: ['1', '2', '3', '4'],
-      icon: 'https://img1.akspic.ru/previews/6/3/3/7/6/167336/167336-oblako-burya-rastenie-atmosfera-prirodnyj_landshaft-500x.jpg',
       dateValues: { date1: '25.10.20' },
       multiLineValues: {
         multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
@@ -196,7 +193,6 @@ const initState: CollectionType = {
       title: 'Tom Tom',
       tags: ['tag1', 'tag2', 'tag3'],
       countLike: ['1', '2'],
-      icon: 'https://img1.akspic.ru/previews/6/3/3/7/6/167336/167336-oblako-burya-rastenie-atmosfera-prirodnyj_landshaft-500x.jpg',
       dateValues: { date1: '25.10.20' },
       multiLineValues: {
         multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
@@ -253,7 +249,6 @@ const initState: CollectionType = {
       title: 'Tom Tom',
       tags: ['tag1', 'tag2', 'tag3'],
       countLike: ['1', '2', '3'],
-      icon: 'https://img1.akspic.ru/previews/6/3/3/7/6/167336/167336-oblako-burya-rastenie-atmosfera-prirodnyj_landshaft-500x.jpg',
       dateValues: { date1: '25.10.20' },
       multiLineValues: {
         multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
