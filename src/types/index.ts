@@ -90,3 +90,9 @@ export interface UserType {
     registerDate: string;
   };
 }
+
+export interface AdminType extends UserType {
+  users: UserType[];
+  targetUser: UserType | null;
+  targetCollections: CollectionInitType[] | null;
+}

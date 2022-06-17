@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import adminReducer from './reducers/admin-reducer';
 
 import authReducer from './reducers/auth-reducer';
 import collectionReducer from './reducers/collection-reducer';
@@ -11,6 +12,7 @@ export const store = configureStore({
     user: userReducer,
     home: homeReducer,
     collection: collectionReducer,
+    admin: adminReducer,
   },
 });
 
