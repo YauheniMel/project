@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { AppStateType } from '../../redux';
+import { AppDispatchType, AppStateType } from '../../redux';
 import {
-  getUserCollections,
+  getMyCollectionAction,
+  setTargetCollectionAction,
+} from '../../redux/actions/collection-action';
+import { getMyCollections } from '../../redux/selectors/collection-selector';
+import {
   getUserEmail,
   getUserId,
   getUserIsAdmin,
@@ -25,8 +29,9 @@ interface IUserPageContainer {
   email: string;
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
-  collections: CollectionInitType[];
-  getCollection: (id: string) => void;
+  collections: Array<CollectionInitType | null>;
+  setTargetCollection: (id: string) => void;
+  getMyCollection: (id: string) => void;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => (
@@ -42,7 +47,12 @@ const mapStateToProps = (state: AppStateType) => ({
   meta: getUserMeta(state),
   theme: getUserTheme(state),
   isAdmin: getUserIsAdmin(state),
-  collections: getUserCollections(state),
+  collections: getMyCollections(state),
 });
 
-export default connect(mapStateToProps)(UserPageContainer);
+const mapDispatchToProps = (dispatch: AppDispatchType) => ({
+  setTargetCollection: (id: string) => dispatch(setTargetCollectionAction(id)),
+  getMyCollection: (id: string) => dispatch(getMyCollectionAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserPageContainer);

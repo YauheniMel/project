@@ -24,7 +24,7 @@ const Table: FC<ITable> = ({ list, setTargetItem }) => {
       renderCell: (params) => (
         <Link
           onClick={() => setTargetItem(params.row.id)}
-          to={`${RoutesApp.ItemLink}id-${params.row.id}`}
+          to={`${RoutesApp.CollectionLink}id-${params.row.collectionId}${RoutesApp.ItemLink}id-${params.row.id}`}
         >
           {params.row.title}
         </Link>

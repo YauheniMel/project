@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { FC, useState } from 'react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
@@ -213,7 +214,6 @@ const ItemForm: FC<IItemForm> = ({
               InputProps={{
                 startAdornment: tags.map((tag, idx) => (
                   <Chip
-                    // eslint-disable-next-line react/no-array-index-key
                     key={idx}
                     label={tag}
                     onDelete={() => handleDelete(tag)}
@@ -223,7 +223,6 @@ const ItemForm: FC<IItemForm> = ({
             />
             {dateFields?.map((label, idx: any) => (
               <TextField
-                // eslint-disable-next-line react/no-array-index-key
                 key={idx}
                 type="date"
                 fullWidth
@@ -237,7 +236,6 @@ const ItemForm: FC<IItemForm> = ({
             ))}
             {numberFields?.map((label, idx: any) => (
               <TextField
-                // eslint-disable-next-line react/no-array-index-key
                 key={idx}
                 fullWidth
                 name={label}
@@ -251,7 +249,6 @@ const ItemForm: FC<IItemForm> = ({
             ))}
             {textFields?.map((label, idx: any) => (
               <TextField
-                // eslint-disable-next-line react/no-array-index-key
                 key={idx}
                 fullWidth
                 name={label}
@@ -264,7 +261,6 @@ const ItemForm: FC<IItemForm> = ({
             ))}
             {multiLineFields?.map((label, idx: any) => (
               <TextareaAutosize
-                // eslint-disable-next-line react/no-array-index-key
                 key={idx}
                 name={label}
                 placeholder={label}
@@ -273,12 +269,11 @@ const ItemForm: FC<IItemForm> = ({
               />
             ))}
             {checkboxFields?.map((elem, index: any) => (
-              // eslint-disable-next-line react/no-array-index-key
               <Box key={index}>
                 <span>{elem.field}</span>
                 {elem.values.map((value, idx: any) => (
                   // eslint-disable-next-line jsx-a11y/label-has-associated-control
-                  <label id={idx}>
+                  <label key={idx} id={idx}>
                     <Field
                       id={index}
                       type="checkbox"

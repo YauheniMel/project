@@ -6,9 +6,10 @@ enum RoutesApp {
   User = '/profile',
   Collections = '/collections',
   Collection = '/collection/*',
+  TargetCollection = ':collectionId',
   CollectionLink = '/collection/',
-  Item = '/item/*',
-  ItemLink = '/collection/item/',
+  Item = '/item/:itemId',
+  ItemLink = '/item/',
 }
 
 export default RoutesApp;

@@ -9,6 +9,7 @@ import {
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
+// import { useParams } from 'react-router';
 import { CollectionInitType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
@@ -23,6 +24,8 @@ const CollectionPage: FC<ICollectionPage> = ({
   setTargetItem,
   targetCollection,
 }) => {
+  // const { collectionId } = useParams();
+
   const [openForm, setOpenForm] = useState<boolean>(false);
 
   return (

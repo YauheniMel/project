@@ -12,7 +12,7 @@ import ItemPage from '../ItemPage/ItemPage';
 import CollectionPage from './CollectionPage';
 
 interface IHomePageContainer {
-  targetItem: ItemType | null;
+  targetItem: ItemType;
   targetCollection: CollectionInitType;
   setTargetItem: (id: string) => void;
 }
@@ -21,13 +21,14 @@ const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
   console.log(props);
   return (
     <Routes>
-      <Route path="*" element={<CollectionPage {...props} />} />
-      {props.targetItem && (
-        <Route
-          path={RoutesApp.Item}
-          element={<ItemPage {...props.targetItem} />}
-        />
-      )}
+      <Route
+        path={RoutesApp.TargetCollection}
+        element={<CollectionPage {...props} />}
+      />
+      <Route
+        path={`${RoutesApp.TargetCollection}${RoutesApp.Item}`}
+        element={<ItemPage {...props.targetItem} />}
+      />
     </Routes>
   );
 };

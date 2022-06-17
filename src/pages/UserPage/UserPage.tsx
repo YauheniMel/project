@@ -24,8 +24,8 @@ interface IUserPage {
   email: string;
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
-  collections: CollectionInitType[];
-  getCollection: (id: string) => void;
+  collections: Array<CollectionInitType | null>;
+  getMyCollection: (id: string) => void;
 }
 
 const useStyles = makeStyles({
@@ -46,7 +46,7 @@ const UserPage: FC<IUserPage> = ({
   status,
   meta,
   collections,
-  getCollection,
+  getMyCollection,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
 
@@ -100,7 +100,7 @@ const UserPage: FC<IUserPage> = ({
             <div>{email}</div>
             <div>{isAdmin}</div>
           </Paper>
-          <Slider getCollection={getCollection} collections={collections} />
+          <Slider getCollection={getMyCollection} collections={collections} />
         </Grid>
       </Grid>
     </>

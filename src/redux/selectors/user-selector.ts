@@ -1,5 +1,4 @@
 import { AppStateType } from '..';
-import { CollectionInitType } from '../../types';
 
 export function getUserId(state: AppStateType): string {
   return state.user.id;
@@ -23,9 +22,6 @@ export function getUserTheme(state: AppStateType): 'light' | 'dark' {
 }
 export function getUserIsAdmin(state: AppStateType): boolean {
   return state.user.isAdmin;
-}
-export function getUserCollections(state: AppStateType): CollectionInitType[] {
-  return state.user.collections;
 }
 export function getUserMeta(state: AppStateType): {
   loginDate: string;

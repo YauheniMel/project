@@ -4,23 +4,26 @@ import {
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import RoutesApp from '../../constants/routes';
-import { CollectionInitType } from '../../types';
+import { AllCollectionsType, CollectionInitType } from '../../types';
 
 interface ICollectionsPage {
-  collections: CollectionInitType[];
-  getCollection: (id: string) => void;
+  collections: AllCollectionsType[];
+  myCollections: Array<CollectionInitType | null>;
+  getCollection: (id: string, userId: string) => void;
 }
 
-const CollectionsPage: FC<ICollectionsPage> = ({
-  collections,
-  getCollection,
-}) => (
-  <Box>
+interface ICollection {
+  collections: CollectionInitType[];
+  getCollection: (id: string, userId: string) => void;
+}
+
+const Collection: FC<ICollection> = ({ collections, getCollection }) => (
+  <>
     {collections.map((collection) => (
       <Link
         to={`${RoutesApp.CollectionLink}id-${collection.id}`}
         key={collection.id}
-        onClick={() => getCollection(collection.id)}
+        onClick={() => getCollection(collection.id, collection.user.id)}
       >
         <Card>
           <CardMedia
@@ -43,7 +46,38 @@ const CollectionsPage: FC<ICollectionsPage> = ({
         </Card>
       </Link>
     ))}
-  </Box>
+  </>
+);
+
+const CollectionsPage: FC<ICollectionsPage> = ({
+  collections,
+  getCollection,
+  myCollections,
+}) => (
+  <>
+    {myCollections[0] && (
+      <Box>
+        <Typography variant="h3">My collections</Typography>
+        <Collection
+          collections={myCollections as CollectionInitType[]}
+          getCollection={getCollection}
+        />
+      </Box>
+    )}
+    {collections.map((collection) => (
+      <Box key={collection.user.id}>
+        <Typography variant="h3">
+          {collection.user.name}
+          {' '}
+          {collection.user.surname}
+        </Typography>
+        <Collection
+          collections={collection.collections}
+          getCollection={getCollection}
+        />
+      </Box>
+    ))}
+  </>
 );
 
 export default CollectionsPage;

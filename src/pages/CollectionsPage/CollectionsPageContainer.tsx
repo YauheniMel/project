@@ -1,13 +1,18 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { AppStateType } from '../../redux';
+import { AppDispatchType, AppStateType } from '../../redux';
 import CollectionsPage from './CollectionsPage';
-import { getUserCollections } from '../../redux/selectors/user-selector';
-import { CollectionInitType } from '../../types';
+import { AllCollectionsType, CollectionInitType } from '../../types';
+import {
+  getAllCollections,
+  getMyCollections,
+} from '../../redux/selectors/collection-selector';
+import { getCollectionAction } from '../../redux/actions/collection-action';
 
 interface ICollectionsPageContainer {
-  collections: CollectionInitType[];
-  getCollection: (id: string) => void;
+  collections: AllCollectionsType[];
+  myCollections: Array<CollectionInitType | null>;
+  getCollection: (id: string, userId: string) => void;
 }
 
 const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => (
@@ -15,7 +20,15 @@ const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => (
 );
 
 const mapStateToProps = (state: AppStateType) => ({
-  collections: getUserCollections(state),
+  collections: getAllCollections(state),
+  myCollections: getMyCollections(state),
 });
 
-export default connect(mapStateToProps)(CollectionsPageContainer);
+const mapDispatchToProps = (dispatch: AppDispatchType) => ({
+  getCollection: (id: string, userId: string) => dispatch(getCollectionAction({ id, userId })),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CollectionsPageContainer);
