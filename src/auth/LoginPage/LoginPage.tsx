@@ -3,12 +3,33 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Link, Paper } from '@mui/material';
+import { makeStyles } from '@material-ui/core';
 import RoutesApp from '../../constants/routes';
 
 interface ILoginPage {
   props?: object;
 }
+
+const useStyles = makeStyles({
+  paper: {
+    position: 'fixed',
+    padding: '20px',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
+  form: {
+    '& > *': {
+      margin: '10px 0',
+    },
+  },
+  action: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+});
 
 const validationSchema = yup.object({
   email: yup
@@ -24,6 +45,8 @@ const validationSchema = yup.object({
 });
 
 const LoginPage: FC<ILoginPage> = () => {
+  const classes = useStyles();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -37,9 +60,11 @@ const LoginPage: FC<ILoginPage> = () => {
   });
 
   return (
-    <>
-      <Link to={RoutesApp.Root}>App</Link>
-      <form onSubmit={formik.handleSubmit}>
+    <Paper className={classes.paper}>
+      <Link component={RouterLink} to={RoutesApp.Root}>
+        App
+      </Link>
+      <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth
           id="email"
@@ -62,12 +87,16 @@ const LoginPage: FC<ILoginPage> = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-        <Button color="primary" variant="contained" fullWidth type="submit">
-          Login
-        </Button>
-        <Link to={RoutesApp.SignUp}>Sign Up</Link>
+        <Box className={classes.action}>
+          <Button variant="contained" type="submit">
+            Login
+          </Button>
+          <Link to={RoutesApp.SignUp} component={RouterLink}>
+            Sign Up
+          </Link>
+        </Box>
       </form>
-    </>
+    </Paper>
   );
 };
 

@@ -4,21 +4,19 @@ import { Box, makeStyles } from '@material-ui/core';
 import CardItem from '../../shared/components/CardItem';
 import { CollectionInitType, ItemType } from '../../types';
 import CarouselComponent from '../../components/Carousel/Carousel';
+import TagCloudComponent from '../../shared/TagsCloud/TagCloud';
 
 const useStyles = makeStyles({
   list: {
-    flex: 1,
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: '2px',
-    flexWrap: 'wrap',
+    columnGap: '10px',
+    overflowX: 'auto',
+    padding: '15px 0',
   },
-  grid_item: {
+  item: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: '100%',
   },
 });
 
@@ -32,8 +30,9 @@ const HomePage: FC<IHomePage> = ({ list, collections, setTargetItem }) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.grid_item}>
+    <Box className={classes.item}>
       <CarouselComponent collections={collections} />
+      <TagCloudComponent />
       <Box className={classes.list}>
         {list.map((item: ItemType) => (
           <CardItem setTargetItem={setTargetItem} {...item} key={item.id} />

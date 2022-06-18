@@ -33,7 +33,11 @@ const initState: CollectionType = {
             {
               id: '34r',
               title: 'Tom Tom',
-              collectionId: '4d',
+              collection: {
+                id: '4d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '436d',
                 name: 'Jim',
@@ -94,7 +98,11 @@ const initState: CollectionType = {
             },
             {
               id: '35r',
-              collectionId: '4d',
+              collection: {
+                id: '4d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '436d',
                 name: 'Jim',
@@ -157,7 +165,11 @@ const initState: CollectionType = {
             {
               id: '38r',
               title: 'Tom Tom',
-              collectionId: '4d',
+              collection: {
+                id: '4d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '436d',
                 name: 'Jim',
@@ -219,7 +231,11 @@ const initState: CollectionType = {
             {
               id: '37r',
               title: 'Tom Tom',
-              collectionId: '4d',
+              collection: {
+                id: '4d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '436d',
                 name: 'Jim',
@@ -281,7 +297,11 @@ const initState: CollectionType = {
             {
               id: '36r',
               title: 'Tom Tom',
-              collectionId: '4d',
+              collection: {
+                id: '4d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '436d',
                 name: 'Jim',
@@ -368,7 +388,11 @@ const initState: CollectionType = {
             {
               id: '34r',
               title: 'Tom Tom',
-              collectionId: '5d',
+              collection: {
+                id: '5d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43s6d',
                 name: 'Jack',
@@ -430,7 +454,11 @@ const initState: CollectionType = {
             {
               id: '35r',
               title: 'Tom Tom',
-              collectionId: '5d',
+              collection: {
+                id: '5d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               tags: ['tag1', 'tag2', 'tag3'],
               countLike: null,
               user: {
@@ -492,7 +520,11 @@ const initState: CollectionType = {
             {
               id: '38r',
               title: 'Tom Tom',
-              collectionId: '5d',
+              collection: {
+                id: '5d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43s6d',
                 name: 'Jack',
@@ -554,7 +586,11 @@ const initState: CollectionType = {
             {
               id: '37r',
               title: 'Tom Tom',
-              collectionId: '5d',
+              collection: {
+                id: '5d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43s6d',
                 name: 'Jack',
@@ -616,7 +652,11 @@ const initState: CollectionType = {
             {
               id: '36r',
               title: 'Tom Tom',
-              collectionId: '5d',
+              collection: {
+                id: '5d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43s6d',
                 name: 'Jack',
@@ -703,7 +743,11 @@ const initState: CollectionType = {
             {
               id: '34r',
               title: 'Tom Tom',
-              collectionId: '6d',
+              collection: {
+                id: '6d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43sw6d',
                 name: 'Koam',
@@ -765,7 +809,11 @@ const initState: CollectionType = {
             {
               id: '35r',
               title: 'Tom Tom',
-              collectionId: '6d',
+              collection: {
+                id: '6d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43sw6d',
                 name: 'Koam',
@@ -827,7 +875,11 @@ const initState: CollectionType = {
             {
               id: '38r',
               title: 'Tom Tom',
-              collectionId: '6d',
+              collection: {
+                id: '6d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43sw6d',
                 name: 'Koam',
@@ -889,7 +941,11 @@ const initState: CollectionType = {
             {
               id: '37r',
               title: 'Tom Tom',
-              collectionId: '6d',
+              collection: {
+                id: '6d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43sw6d',
                 name: 'Koam',
@@ -951,7 +1007,11 @@ const initState: CollectionType = {
             {
               id: '36r',
               title: 'Tom Tom',
-              collectionId: '6d',
+              collection: {
+                id: '6d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43sw6d',
                 name: 'Koam',
@@ -1038,7 +1098,11 @@ const initState: CollectionType = {
             {
               id: '34r',
               title: 'Tom Tom',
-              collectionId: '7d',
+              collection: {
+                id: '7d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43swi6d',
                 name: 'Kosasaam',
@@ -1100,7 +1164,11 @@ const initState: CollectionType = {
             {
               id: '35r',
               title: 'Tom Tom',
-              collectionId: '7d',
+              collection: {
+                id: '7d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43swi6d',
                 name: 'Kosasaam',
@@ -1162,7 +1230,11 @@ const initState: CollectionType = {
             {
               id: '38r',
               title: 'Tom Tom',
-              collectionId: '7d',
+              collection: {
+                id: '7d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43swi6d',
                 name: 'Kosasaam',
@@ -1224,7 +1296,11 @@ const initState: CollectionType = {
             {
               id: '37r',
               title: 'Tom Tom',
-              collectionId: '7d',
+              collection: {
+                id: '7d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43swi6d',
                 name: 'Kosasaam',
@@ -1286,7 +1362,11 @@ const initState: CollectionType = {
             {
               id: '36r',
               title: 'Tom Tom',
-              collectionId: '7d',
+              collection: {
+                id: '7d',
+                theme: 'Theme',
+                title: 'Title',
+              },
               user: {
                 id: '43swi6d',
                 name: 'Kosasaam',
@@ -1382,7 +1462,11 @@ const initState: CollectionType = {
       list: [
         {
           id: '34r',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           title: 'Tom Tom',
           user: {
             id: '123f',
@@ -1445,7 +1529,11 @@ const initState: CollectionType = {
         {
           id: '35r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',
@@ -1507,7 +1595,11 @@ const initState: CollectionType = {
         {
           id: '38r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',
@@ -1569,7 +1661,11 @@ const initState: CollectionType = {
         {
           id: '37r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',
@@ -1631,7 +1727,11 @@ const initState: CollectionType = {
         {
           id: '36r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',

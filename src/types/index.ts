@@ -19,9 +19,13 @@ export interface ItemType {
   };
   id: string;
   title: string;
-  collectionId: string;
   tags: string[] | null;
   countLike: string[] | null;
+  collection: {
+    id: string;
+    theme: string;
+    title: string;
+  };
   meta: {
     createAt: string;
     updateAt: string;

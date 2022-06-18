@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import RoutesApp from '../../constants/routes';
 
@@ -52,22 +53,22 @@ const ToolBar: FC<IToolBar> = () => {
         variant="persistent"
       >
         <div className={classes.toolbar} />
-        <Link to={RoutesApp.Home}>
+        <Link component={RouterLink} to={RoutesApp.Home}>
           <IconButton>
             <HomeIcon fontSize="large" />
           </IconButton>
         </Link>
-        <Link to={RoutesApp.User}>
+        <Link component={RouterLink} to={RoutesApp.User}>
           <IconButton>
             <PersonIcon fontSize="large" />
           </IconButton>
         </Link>
-        <Link to={RoutesApp.Collections}>
+        <Link component={RouterLink} to={RoutesApp.Collections}>
           <IconButton>
             <CollectionsIcon fontSize="large" />
           </IconButton>
         </Link>
-        <Link to={RoutesApp.Login}>
+        <Link component={RouterLink} to={RoutesApp.Login}>
           <IconButton>
             <LogoutIcon fontSize="large" />
           </IconButton>

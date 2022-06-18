@@ -8,7 +8,6 @@ import {
   IconButton,
   InputBase,
   Toolbar,
-  Typography,
 } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -20,9 +19,6 @@ import RoutesApp from '../../constants/routes';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-  },
-  toolBar: {
-    backgroundColor: theme.palette.primary.main,
   },
   search: {
     display: 'flex',
@@ -51,21 +47,14 @@ interface IHeader {
 
 const Header: FC<IHeader> = ({ name, surname, isAuth }) => {
   const classes = useStyles();
-
   return (
     <AppBar className={classes.appBar} position="relative">
-      <Toolbar
-        className={classes.toolBar}
-        sx={{ justifyContent: 'space-around' }}
-      >
+      <Toolbar sx={{ justifyContent: 'space-around' }}>
         {isAuth ? (
           <Logo name={name} surname={surname} />
         ) : (
           <Link to={RoutesApp.Login}>Login</Link>
         )}
-        <Typography variant="h6" noWrap component="div">
-          MUI
-        </Typography>
         <Box className={classes.search}>
           <InputBase
             className={classes.input}

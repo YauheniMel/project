@@ -19,7 +19,6 @@ interface IRootPage {
   isAuth: boolean;
   setTargetItem: (id: string) => void;
 }
-
 const App: FC<IRootPage> = ({ setTargetItem, isAuth }) => {
   console.log(isAuth);
 

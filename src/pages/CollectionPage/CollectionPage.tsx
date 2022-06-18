@@ -30,8 +30,6 @@ const CollectionPage: FC<ICollectionPage> = ({
 
   return (
     <>
-      <Typography variant="h3">{targetCollection.title}</Typography>
-      <Typography variant="h3">{targetCollection.theme}</Typography>
       <ItemForm
         dateFields={targetCollection.dateKeys}
         multiLineFields={targetCollection.multiLineKeys}
@@ -72,6 +70,8 @@ const CollectionPage: FC<ICollectionPage> = ({
           </Sidebar>
         </Grid>
         <Grid item xs={9} sm={8}>
+          <Typography variant="h3">{targetCollection.title}</Typography>
+          <Typography variant="h3">{targetCollection.theme}</Typography>
           <Table list={targetCollection.list} setTargetItem={setTargetItem} />
         </Grid>
       </Grid>

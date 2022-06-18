@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@mui/material';
 import { ItemType } from '../../types';
 import RoutesApp from '../../constants/routes';
 
@@ -17,12 +18,13 @@ const Table: FC<ITable> = ({ list, setTargetItem }) => {
       flex: 1,
     },
     {
-      field: 'icon',
-      headerName: 'Icon',
+      field: 'title',
+      headerName: 'Title',
       flex: 3,
       editable: true,
       renderCell: (params) => (
         <Link
+          component={RouterLink}
           onClick={() => setTargetItem(params.row.id)}
           to={`${RoutesApp.CollectionLink}id-${params.row.collectionId}${RoutesApp.ItemLink}id-${params.row.id}`}
         >
@@ -47,10 +49,10 @@ const Table: FC<ITable> = ({ list, setTargetItem }) => {
 
   return (
     <DataGrid
+      autoHeight
       components={{ Toolbar: GridToolbar }}
       rows={list}
       columns={columns}
-      autoPageSize
       checkboxSelection
       disableSelectionOnClick
     />
