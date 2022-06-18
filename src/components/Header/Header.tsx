@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  toolBar: {
-    backgroundColor: theme.palette.primary.main,
-  },
   search: {
     display: 'flex',
     alignItems: 'center',
@@ -54,10 +51,7 @@ const Header: FC<IHeader> = ({ name, surname, isAuth }) => {
 
   return (
     <AppBar className={classes.appBar} position="relative">
-      <Toolbar
-        className={classes.toolBar}
-        sx={{ justifyContent: 'space-around' }}
-      >
+      <Toolbar sx={{ justifyContent: 'space-around' }}>
         {isAuth ? (
           <Logo name={name} surname={surname} />
         ) : (

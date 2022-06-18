@@ -62,7 +62,7 @@ const LoginPage: FC<ILoginPage> = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-        <Button color="primary" variant="contained" fullWidth type="submit">
+        <Button variant="contained" fullWidth type="submit">
           Login
         </Button>
         <Link to={RoutesApp.SignUp}>Sign Up</Link>

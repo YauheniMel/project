@@ -1,17 +1,19 @@
 import React, { FC } from 'react';
-import Card from '@mui/joy/Card';
-import CardOverflow from '@mui/joy/CardOverflow';
-import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 import { Link } from 'react-router-dom';
+import { Chip, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
 import RoutesApp from '../../constants/routes';
 
 interface ICardItem {
   id: string;
   title: string;
   tags: string[] | null;
-  collectionId: string;
+  collection: {
+    id: string;
+    title: string;
+    theme: string;
+  };
   meta: {
     createAt: string;
     updateAt: string;
@@ -27,77 +29,40 @@ const CardItem: FC<ICardItem> = ({
   meta,
   countLike,
   setTargetItem,
-  collectionId,
+  collection,
 }) => {
   function handleClick() {
     setTargetItem(id);
   }
 
   return (
-    <Card variant="outlined" key={id} onClick={handleClick}>
+    <Card onClick={handleClick}>
       <Link
-        to={`${RoutesApp.CollectionLink}id-${collectionId}${RoutesApp.ItemLink}id-${id}`}
+        to={`${RoutesApp.CollectionLink}id-${collection.id}${RoutesApp.ItemLink}id-${id}`}
       >
-        Link-
-        {id}
+        <Typography variant="h4" sx={{ fontSize: 'md', mt: 2 }}>
+          {title}
+        </Typography>
       </Link>
-      <CardOverflow>
-        <IconButton
-          aria-label="Like minimal photography"
-          size="md"
-          variant="solid"
-          sx={{
-            position: 'absolute',
-            zIndex: 2,
-            borderRadius: '50%',
-            right: '.3rem',
-            bottom: 0,
-            transform: 'translateY(50%)',
-          }}
-        >
-          <FavoriteBorderIcon color="error" />
-        </IconButton>
-      </CardOverflow>
-      <Typography level="h2" sx={{ fontSize: 'md', mt: 2 }}>
-        {title}
-      </Typography>
-      <CardOverflow
-        variant="soft"
-        sx={{
-          display: 'flex',
-          gap: 1.5,
-          py: 1.5,
-          px: 'var(--Card-padding)',
-          borderTop: '1px solid',
-        }}
+
+      <Typography
+        variant="body2"
+        sx={{ fontWeight: 'md', color: 'text.secondary' }}
       >
-        <Typography
-          level="body3"
-          sx={{ fontWeight: 'md', color: 'text.secondary' }}
-        >
-          {countLike ? countLike.length : 0}
-          {' '}
-          likes
-        </Typography>
-        <Typography
-          level="body3"
-          sx={{ fontWeight: 'md', color: 'text.secondary' }}
-        >
-          {meta.createAt}
-        </Typography>
-        <Typography
-          level="body3"
-          sx={{ fontWeight: 'md', color: 'text.secondary' }}
-        >
-          {meta.updateAt}
-        </Typography>
-        <Typography
-          level="body3"
-          sx={{ fontWeight: 'md', color: 'text.secondary' }}
-        >
-          {tags}
-        </Typography>
-      </CardOverflow>
+        {countLike ? countLike.length : 0}
+        {' '}
+        likes
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{ fontWeight: 'md', color: 'text.secondary' }}
+      >
+        {meta.createAt}
+      </Typography>
+      {tags?.map((tag, idx: any) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Chip key={idx} label={tag} onClick={handleClick} />
+      ))}
     </Card>
   );
 };

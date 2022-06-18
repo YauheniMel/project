@@ -7,18 +7,14 @@ import CarouselComponent from '../../components/Carousel/Carousel';
 
 const useStyles = makeStyles({
   list: {
-    flex: 1,
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: '2px',
-    flexWrap: 'wrap',
+    columnGap: '10px',
+    overflowX: 'auto',
   },
-  grid_item: {
+  item: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: '100%',
   },
 });
 
@@ -32,7 +28,7 @@ const HomePage: FC<IHomePage> = ({ list, collections, setTargetItem }) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.grid_item}>
+    <Box className={classes.item}>
       <CarouselComponent collections={collections} />
       <Box className={classes.list}>
         {list.map((item: ItemType) => (

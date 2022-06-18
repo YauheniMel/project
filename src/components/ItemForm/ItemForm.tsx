@@ -293,7 +293,7 @@ const ItemForm: FC<IItemForm> = ({
             >
               Reset
             </Button>
-            <Button color="primary" variant="contained" fullWidth type="submit">
+            <Button variant="contained" fullWidth type="submit">
               Confirm
             </Button>
           </form>

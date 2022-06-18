@@ -100,7 +100,11 @@ const initState: AdminType = {
       list: [
         {
           id: '34r',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           title: 'Tom Tom',
           user: {
             id: '123f',
@@ -163,7 +167,11 @@ const initState: AdminType = {
         {
           id: '35r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',
@@ -225,7 +233,11 @@ const initState: AdminType = {
         {
           id: '38r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',
@@ -287,7 +299,11 @@ const initState: AdminType = {
         {
           id: '37r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',
@@ -349,7 +365,11 @@ const initState: AdminType = {
         {
           id: '36r',
           title: 'Tom Tom',
-          collectionId: '3d',
+          collection: {
+            id: '3d',
+            theme: 'Theme',
+            title: 'Title',
+          },
           user: {
             id: '123f',
             name: 'Yauheni',

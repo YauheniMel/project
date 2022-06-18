@@ -121,8 +121,8 @@ const SignUpPage: FC<ILoginPage> = () => {
           error={formik.touched.confirm && Boolean(formik.errors.confirm)}
           helperText={formik.touched.confirm && formik.errors.confirm}
         />
-        <Button color="primary" variant="contained" fullWidth type="submit">
-          Login
+        <Button variant="contained" fullWidth type="submit">
+          Sign Up
         </Button>
         <Link to={RoutesApp.Login}>Login</Link>
       </form>

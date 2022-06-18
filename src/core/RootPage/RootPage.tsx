@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Box, Container } from '@mui/material';
-import { makeStyles } from '@material-ui/core';
+import { Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import ToolBar from '../../components/ToolBar/ToolBar';
@@ -13,23 +12,6 @@ import {
 } from '../../redux/selectors/user-selector';
 import { getIsAuth } from '../../redux/selectors/auth-selector';
 
-const useStyles = makeStyles({
-  root: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  grid: {
-    flex: 1,
-  },
-  grid_item: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: '100%',
-  },
-});
-
 interface IRootPage {
   id: string;
   name: string;
@@ -40,16 +22,15 @@ interface IRootPage {
 const RootPage: FC<IRootPage> = ({
   id, name, surname, isAuth,
 }) => {
-  const classes = useStyles();
   console.log(id);
   return (
-    <Box className={classes.root}>
+    <>
       <Header name={name} surname={surname} isAuth={isAuth} />
-      <Container className={classes.grid} fixed>
+      <Container fixed>
         <Outlet />
       </Container>
       <ToolBar />
-    </Box>
+    </>
   );
 };
 
