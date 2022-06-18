@@ -1,6 +1,7 @@
 enum RoutesApp {
   Login = '/login',
   SignUp = '/signup',
+  Admin = '/admin',
   Root = '/',
   Home = '/home',
   User = '/profile',

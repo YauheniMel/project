@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import { AdminType } from '../../types';
+import { AdminActionTypes } from '../actions/admin-action';
 import { CollectionActionTypes } from '../actions/collection-action';
 
 const initState: AdminType = {
@@ -129,7 +130,7 @@ const initState: AdminType = {
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
-              comments: [],
+              comments: null,
             },
             {
               name: 'Tiko',
@@ -145,7 +146,7 @@ const initState: AdminType = {
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
-                  comments: [],
+                  comments: null,
                 },
               ],
             },
@@ -155,7 +156,7 @@ const initState: AdminType = {
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
-              comments: [],
+              comments: null,
             },
           ],
         },
@@ -169,7 +170,7 @@ const initState: AdminType = {
             surname: 'Melnik',
           },
           tags: ['tag1', 'tag2', 'tag3'],
-          countLike: [],
+          countLike: null,
           dateValues: { date1: '25.10.20' },
           multiLineValues: {
             multiLine1: 'multiLine1 jnsdjn dsnsdj dsnjdsn sdndsds',
@@ -191,7 +192,7 @@ const initState: AdminType = {
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
-              comments: [],
+              comments: null,
             },
             {
               name: 'Tiko',
@@ -207,7 +208,7 @@ const initState: AdminType = {
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
-                  comments: [],
+                  comments: null,
                 },
               ],
             },
@@ -217,7 +218,7 @@ const initState: AdminType = {
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
-              comments: [],
+              comments: null,
             },
           ],
         },
@@ -253,7 +254,7 @@ const initState: AdminType = {
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
-              comments: [],
+              comments: null,
             },
             {
               name: 'Tiko',
@@ -269,7 +270,7 @@ const initState: AdminType = {
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
-                  comments: [],
+                  comments: null,
                 },
               ],
             },
@@ -279,7 +280,7 @@ const initState: AdminType = {
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
-              comments: [],
+              comments: null,
             },
           ],
         },
@@ -315,7 +316,7 @@ const initState: AdminType = {
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
-              comments: [],
+              comments: null,
             },
             {
               name: 'Tiko',
@@ -331,7 +332,7 @@ const initState: AdminType = {
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
-                  comments: [],
+                  comments: null,
                 },
               ],
             },
@@ -341,7 +342,7 @@ const initState: AdminType = {
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
-              comments: [],
+              comments: null,
             },
           ],
         },
@@ -377,7 +378,7 @@ const initState: AdminType = {
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
-              comments: [],
+              comments: null,
             },
             {
               name: 'Tiko',
@@ -393,7 +394,7 @@ const initState: AdminType = {
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
-                  comments: [],
+                  comments: null,
                 },
               ],
             },
@@ -403,7 +404,7 @@ const initState: AdminType = {
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
-              comments: [],
+              comments: null,
             },
           ],
         },
@@ -414,6 +415,11 @@ const initState: AdminType = {
 
 function adminReducer(state = initState, action: AnyAction) {
   switch (action.type) {
+    case AdminActionTypes.setAdminTargetUser: {
+      return {
+        ...state,
+      };
+    }
     case CollectionActionTypes.setTargetCollection: {
       return {
         ...state,

@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 
 interface IItemPage {
   title: string;
-  countLike: Array<string | null>;
+  countLike: string[] | null;
   meta: { createAt: string; updateAt: string };
 }
 
@@ -14,7 +14,7 @@ const ItemPage: FC<IItemPage> = ({ title, countLike, meta }) => {
     <Box>
       <Typography variant="h2">{title}</Typography>
       <Typography variant="body1">
-        {countLike.length}
+        {countLike ? countLike.length : 0}
         {' '}
         likes
       </Typography>

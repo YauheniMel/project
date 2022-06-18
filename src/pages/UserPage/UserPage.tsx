@@ -24,7 +24,7 @@ interface IUserPage {
   email: string;
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
-  collections: Array<CollectionInitType | null>;
+  collections: CollectionInitType[] | null;
   getMyCollection: (id: string) => void;
 }
 

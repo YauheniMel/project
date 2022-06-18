@@ -9,7 +9,7 @@ export interface CommentType {
   createAt: string;
   content: string;
   state: 'touched' | 'untouched';
-  comments: Array<CommentType | null>;
+  comments: null | CommentType[];
 }
 export interface ItemType {
   user: {
@@ -20,13 +20,13 @@ export interface ItemType {
   id: string;
   title: string;
   collectionId: string;
-  tags: Array<string | null>;
-  countLike: Array<string | null>;
+  tags: string[] | null;
+  countLike: string[] | null;
   meta: {
     createAt: string;
     updateAt: string;
   };
-  comments: Array<CommentType | null>;
+  comments: CommentType[] | null;
   dateValues: null | { [key: string]: string };
   multiLineValues: null | { [key: string]: string };
   numberValues: null | { [key: string]: number };
@@ -57,7 +57,7 @@ export interface CollectionInitType {
 }
 
 export interface AllCollectionsType {
-  collections: Array<CollectionInitType>;
+  collections: CollectionInitType[];
   user: {
     name: string;
     surname: string;
@@ -68,7 +68,7 @@ export interface CollectionType {
   targetItem: ItemType | null;
   targetCollection: CollectionInitType | null;
   allCollections: AllCollectionsType[];
-  myCollections: Array<CollectionInitType | null>;
+  myCollections: CollectionInitType[] | null;
 }
 
 export interface HomePageType {

@@ -10,13 +10,13 @@ import RoutesApp from '../../constants/routes';
 interface ICardItem {
   id: string;
   title: string;
-  tags: Array<string | null>;
+  tags: string[] | null;
   collectionId: string;
   meta: {
     createAt: string;
     updateAt: string;
   };
-  countLike: Array<string | null>;
+  countLike: string[] | null;
   setTargetItem: (id: string) => void;
 }
 
@@ -75,7 +75,7 @@ const CardItem: FC<ICardItem> = ({
           level="body3"
           sx={{ fontWeight: 'md', color: 'text.secondary' }}
         >
-          {countLike.length}
+          {countLike ? countLike.length : 0}
           {' '}
           likes
         </Typography>

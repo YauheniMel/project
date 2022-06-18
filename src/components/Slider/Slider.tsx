@@ -11,7 +11,7 @@ import { CollectionInitType } from '../../types';
 
 interface ISlider {
   getCollection: (id: string) => void;
-  collections: Array<CollectionInitType | null>;
+  collections: CollectionInitType[] | null;
 }
 
 const useStyles = makeStyles({
@@ -41,35 +41,36 @@ const Slider: FC<ISlider> = ({ collections, getCollection }) => {
       <Link className={classes.link} to={RoutesApp.Collections}>
         Show all collections...
       </Link>
-      {collections.map(
-        (collection) => collection && (
-        <Link
-          to={`${RoutesApp.CollectionLink}id-${collection.id}`}
-          key={collection.id}
-          onClick={() => getCollection(collection.id)}
-        >
-          <Card className={classes.card}>
-            <CardMedia
-              component="img"
-              height="194"
-              image={collection.icon}
-              alt="Paella dish"
-            />
-            <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                {collection.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {collection.theme}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {collection.description}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Link>
-        ),
-      )}
+      {collections
+        && collections.map(
+          (collection) => collection && (
+          <Link
+            to={`${RoutesApp.CollectionLink}id-${collection.id}`}
+            key={collection.id}
+            onClick={() => getCollection(collection.id)}
+          >
+            <Card className={classes.card}>
+              <CardMedia
+                component="img"
+                height="194"
+                image={collection.icon}
+                alt="Paella dish"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {collection.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {collection.theme}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {collection.description}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Link>
+          ),
+        )}
     </Box>
   );
 };

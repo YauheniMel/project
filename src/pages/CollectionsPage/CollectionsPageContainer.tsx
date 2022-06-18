@@ -11,7 +11,7 @@ import { getCollectionAction } from '../../redux/actions/collection-action';
 
 interface ICollectionsPageContainer {
   collections: AllCollectionsType[];
-  myCollections: Array<CollectionInitType | null>;
+  myCollections: CollectionInitType[] | null;
   getCollection: (id: string, userId: string) => void;
 }
 

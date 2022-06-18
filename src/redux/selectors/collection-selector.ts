@@ -7,7 +7,7 @@ export function getTargetCollection(state: AppStateType): CollectionInitType {
 
 export function getMyCollections(
   state: AppStateType,
-): Array<CollectionInitType | null> {
+): CollectionInitType[] | null {
   return state.collection.myCollections;
 }
 

@@ -11,6 +11,8 @@ import { AppDispatchType, AppStateType } from './redux';
 import { setTargetItemAction } from './redux/actions/collection-action';
 import UserPageContainer from './pages/UserPage/UserPageContainer';
 import CollectionPageContainer from './pages/CollectionPage/CollectionPageContainer';
+
+import AdminPageContainer from './pages/AdminPage/AdminPageContainer';
 import CollectionsPageContainer from './pages/CollectionsPage/CollectionsPageContainer';
 
 interface IRootPage {
@@ -39,6 +41,7 @@ const App: FC<IRootPage> = ({ setTargetItem, isAuth }) => {
             element={<CollectionsPageContainer />}
           />
         </Route>
+        <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
         <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
         <Route path={RoutesApp.SignUp} element={<SignUpPageContainer />} />
       </Routes>
