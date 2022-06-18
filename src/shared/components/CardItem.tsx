@@ -3,7 +3,16 @@ import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Chip, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
+import TagIcon from '@mui/icons-material/Tag';
+import { makeStyles } from '@material-ui/core';
 import RoutesApp from '../../constants/routes';
+
+const useStyles = makeStyles({
+  card: {
+    padding: '5px',
+    minWidth: '240px',
+  },
+});
 
 interface ICardItem {
   id: string;
@@ -35,8 +44,10 @@ const CardItem: FC<ICardItem> = ({
     setTargetItem(id);
   }
 
+  const classes = useStyles();
+
   return (
-    <Card onClick={handleClick}>
+    <Card className={classes.card} onClick={handleClick}>
       <Link
         to={`${RoutesApp.CollectionLink}id-${collection.id}${RoutesApp.ItemLink}id-${id}`}
       >
@@ -44,7 +55,6 @@ const CardItem: FC<ICardItem> = ({
           {title}
         </Typography>
       </Link>
-
       <Typography
         variant="body2"
         sx={{ fontWeight: 'md', color: 'text.secondary' }}
@@ -60,8 +70,15 @@ const CardItem: FC<ICardItem> = ({
         {meta.createAt}
       </Typography>
       {tags?.map((tag, idx: any) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <Chip key={idx} label={tag} onClick={handleClick} />
+        <Chip
+          icon={<TagIcon />}
+          variant="outlined"
+          color="warning"
+          // eslint-disable-next-line react/no-array-index-key
+          key={idx}
+          label={tag}
+          onClick={handleClick}
+        />
       ))}
     </Card>
   );

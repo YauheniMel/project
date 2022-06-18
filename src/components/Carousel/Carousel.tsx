@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import { Link } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { alpha, Box } from '@mui/material';
 import { CollectionInitType } from '../../types';
 import RoutesApp from '../../constants/routes';
 
@@ -13,12 +13,16 @@ interface ICarousel {
 const useStyles = makeStyles((theme) => ({
   carousel: {
     position: 'relative',
+    marginTop: '20px',
   },
   paper: {
     position: 'absolute',
     top: 0,
     width: '40%',
+    padding: '10px',
     right: 0,
+    backgroundColor: alpha(theme.palette.common.white, 0.35),
+
     '& > *': {
       margin: '10px 0',
     },
@@ -26,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
   image: {
     display: 'flex',
     justifyContent: 'center',
-  },
-  theme: {
-    backgroundColor: theme.palette.common.white,
   },
 }));
 
@@ -44,9 +45,7 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => {
               <Typography variant="body2">{collection.user.surname}</Typography>
             </Box>
             <Typography variant="h2">{collection.title}</Typography>
-            <Typography className={classes.theme} variant="h3">
-              {collection.theme}
-            </Typography>
+            <Typography variant="h3">{collection.theme}</Typography>
             <Typography variant="body2">{collection.description}</Typography>
           </Paper>
           <Box className={classes.image}>
