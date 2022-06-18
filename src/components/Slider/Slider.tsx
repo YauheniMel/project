@@ -3,14 +3,14 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import RoutesApp from '../../constants/routes';
 import { CollectionInitType } from '../../types';
 
 interface ISlider {
-  getCollection: (id: string) => void;
+  getCollection: (id: string, userId: string) => void;
   collections: CollectionInitType[] | null;
 }
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     position: 'relative',
     display: 'flex',
     maxWidth: '100%',
-    overflowX: 'scroll',
+    overflowX: 'auto',
     alignItems: 'center',
   },
   card: {
@@ -29,7 +29,6 @@ const useStyles = makeStyles({
     position: 'absolute',
     top: 0,
     right: 0,
-    backgroundColor: 'gray',
   },
 });
 
@@ -38,16 +37,21 @@ const Slider: FC<ISlider> = ({ collections, getCollection }) => {
 
   return (
     <Box className={classes.wrap}>
-      <Link className={classes.link} to={RoutesApp.Collections}>
+      <Link
+        component={RouterLink}
+        className={classes.link}
+        to={RoutesApp.Collections}
+      >
         Show all collections...
       </Link>
       {collections
         && collections.map(
           (collection) => collection && (
           <Link
+            component={RouterLink}
             to={`${RoutesApp.CollectionLink}id-${collection.id}`}
             key={collection.id}
-            onClick={() => getCollection(collection.id)}
+            onClick={() => getCollection(collection.id, collection.user.id)}
           >
             <Card className={classes.card}>
               <CardMedia

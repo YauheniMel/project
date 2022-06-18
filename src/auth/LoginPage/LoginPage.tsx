@@ -3,7 +3,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@mui/material';
 import RoutesApp from '../../constants/routes';
 
 interface ILoginPage {
@@ -38,7 +39,9 @@ const LoginPage: FC<ILoginPage> = () => {
 
   return (
     <>
-      <Link to={RoutesApp.Root}>App</Link>
+      <Link component={RouterLink} to={RoutesApp.Root}>
+        App
+      </Link>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth
@@ -65,7 +68,9 @@ const LoginPage: FC<ILoginPage> = () => {
         <Button variant="contained" fullWidth type="submit">
           Login
         </Button>
-        <Link to={RoutesApp.SignUp}>Sign Up</Link>
+        <Link to={RoutesApp.SignUp} component={RouterLink}>
+          Sign Up
+        </Link>
       </form>
     </>
   );

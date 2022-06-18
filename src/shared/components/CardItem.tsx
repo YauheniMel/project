@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
-
-import { Link } from 'react-router-dom';
-import { Chip, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Chip, Link, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import TagIcon from '@mui/icons-material/Tag';
 import { makeStyles } from '@material-ui/core';
@@ -49,6 +48,7 @@ const CardItem: FC<ICardItem> = ({
   return (
     <Card className={classes.card} onClick={handleClick}>
       <Link
+        component={RouterLink}
         to={`${RoutesApp.CollectionLink}id-${collection.id}${RoutesApp.ItemLink}id-${id}`}
       >
         <Typography variant="h4" sx={{ fontSize: 'md', mt: 2 }}>

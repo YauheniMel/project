@@ -1,5 +1,4 @@
 import {
-  Button,
   Grid,
   ListItemButton,
   ListItemIcon,
@@ -9,7 +8,6 @@ import React, { FC, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { makeStyles, Paper } from '@material-ui/core';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import CollectionForm from '../../components/CollectionForm/CollectionForm';
 import Slider from '../../components/Slider/Slider';
@@ -28,14 +26,6 @@ interface IUserPage {
   getMyCollection: (id: string) => void;
 }
 
-const useStyles = makeStyles({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  btn: {},
-});
-
 const UserPage: FC<IUserPage> = ({
   id,
   name,
@@ -50,8 +40,7 @@ const UserPage: FC<IUserPage> = ({
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
 
-  const classes = useStyles();
-
+  console.log(id, theme, email, status, name, surname, meta, isAdmin);
   return (
     <>
       <CollectionForm openForm={openForm} setOpenForm={setOpenForm} />
@@ -86,20 +75,6 @@ const UserPage: FC<IUserPage> = ({
           </Sidebar>
         </Grid>
         <Grid item xs={9} sm={8}>
-          <Paper className={classes.paper}>
-            <Button>
-              Edit profile
-              <EditIcon />
-            </Button>
-            <div>{id}</div>
-            <div>{name}</div>
-            <div>{surname}</div>
-            <div>{meta.loginDate}</div>
-            <div>{status}</div>
-            <div>{theme}</div>
-            <div>{email}</div>
-            <div>{isAdmin}</div>
-          </Paper>
           <Slider getCollection={getMyCollection} collections={collections} />
         </Grid>
       </Grid>

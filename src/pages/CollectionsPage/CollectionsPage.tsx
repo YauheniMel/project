@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Typography } from '@mui/material';
-import Collection from '../../shared/Collection/Collection';
 import { AllCollectionsType, CollectionInitType } from '../../types';
+import Slider from '../../components/Slider/Slider';
 
 interface ICollectionsPage {
   collections: AllCollectionsType[];
@@ -18,7 +18,7 @@ const CollectionsPage: FC<ICollectionsPage> = ({
     {myCollections && (
       <Box>
         <Typography variant="h3">My collections</Typography>
-        <Collection collections={myCollections} getCollection={getCollection} />
+        <Slider collections={myCollections} getCollection={getCollection} />
       </Box>
     )}
     {collections.map((collection) => (
@@ -28,7 +28,7 @@ const CollectionsPage: FC<ICollectionsPage> = ({
           {' '}
           {collection.user.surname}
         </Typography>
-        <Collection
+        <Slider
           collections={collection.collections}
           getCollection={getCollection}
         />

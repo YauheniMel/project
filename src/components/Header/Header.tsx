@@ -8,7 +8,6 @@ import {
   IconButton,
   InputBase,
   Toolbar,
-  Typography,
 } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -48,7 +47,6 @@ interface IHeader {
 
 const Header: FC<IHeader> = ({ name, surname, isAuth }) => {
   const classes = useStyles();
-
   return (
     <AppBar className={classes.appBar} position="relative">
       <Toolbar sx={{ justifyContent: 'space-around' }}>
@@ -57,9 +55,6 @@ const Header: FC<IHeader> = ({ name, surname, isAuth }) => {
         ) : (
           <Link to={RoutesApp.Login}>Login</Link>
         )}
-        <Typography variant="h6" noWrap component="div">
-          MUI
-        </Typography>
         <Box className={classes.search}>
           <InputBase
             className={classes.input}

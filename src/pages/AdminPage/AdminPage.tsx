@@ -13,7 +13,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CollectionInitType, UserType } from '../../types';
-import Collection from '../../shared/Collection/Collection';
+import Slider from '../../components/Slider/Slider';
 
 interface IAdminPage {
   id: string;
@@ -92,7 +92,7 @@ const AdminPage: FC<IAdminPage> = ({
         {targetCollections && (
           <Box>
             <Typography variant="h3">My collections</Typography>
-            <Collection
+            <Slider
               collections={targetCollections}
               getCollection={getCollection}
             />

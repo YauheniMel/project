@@ -47,6 +47,11 @@ const theme = createTheme({
         },
       },
     },
+    MuiLink: {
+      defaultProps: {
+        // color: 'red',
+      },
+    },
   },
 });
 

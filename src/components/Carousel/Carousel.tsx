@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
-import { Link } from 'react-router-dom';
-import { alpha, Box } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { alpha, Box, Link } from '@mui/material';
 import { CollectionInitType } from '../../types';
 import RoutesApp from '../../constants/routes';
 
@@ -38,7 +38,11 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => {
   return (
     <Carousel className={classes.carousel}>
       {collections.map((collection: CollectionInitType) => (
-        <Link to={RoutesApp.Collections} key={collection.id}>
+        <Link
+          component={RouterLink}
+          to={RoutesApp.Collections}
+          key={collection.id}
+        >
           <Paper className={classes.paper}>
             <Box>
               <Typography variant="body2">{collection.user.name}</Typography>
