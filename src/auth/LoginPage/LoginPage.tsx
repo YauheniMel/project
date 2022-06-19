@@ -4,12 +4,18 @@ import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Link, Paper } from '@mui/material';
+import {
+  Box, IconButton, Link, Paper,
+} from '@mui/material';
 import { makeStyles } from '@material-ui/core';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
 import RoutesApp from '../../constants/routes';
+import login from '../services/login';
+import { signInWithGoogle, signInWithFacebook } from '../firebase-config';
 
 interface ILoginPage {
-  props?: object;
+  loginUser: () => void;
 }
 
 const useStyles = makeStyles({
@@ -18,6 +24,7 @@ const useStyles = makeStyles({
     padding: '20px',
     top: '50%',
     left: '50%',
+    minWidth: '280px',
     transform: 'translate(-50%, -50%)',
   },
   form: {
@@ -44,7 +51,7 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-const LoginPage: FC<ILoginPage> = () => {
+const LoginPage: FC<ILoginPage> = ({ loginUser }) => {
   const classes = useStyles();
 
   const formik = useFormik({
@@ -53,11 +60,35 @@ const LoginPage: FC<ILoginPage> = () => {
       password: '',
     },
     validationSchema,
-    onSubmit: (values, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
-      resetForm({ values: { email: '', password: '' } });
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await login(values.email, values.password);
+        console.log(res);
+        loginUser();
+        resetForm({ values: { email: '', password: '' } });
+      } catch (error) {
+        alert(error);
+      }
     },
   });
+
+  async function handleLoginGoogle() {
+    try {
+      const res = await signInWithGoogle();
+      console.log(res);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  async function handleLoginFacebook() {
+    try {
+      const res = await signInWithFacebook();
+      console.log(res);
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -91,6 +122,12 @@ const LoginPage: FC<ILoginPage> = () => {
           <Button variant="contained" type="submit">
             Login
           </Button>
+          <IconButton onClick={handleLoginFacebook}>
+            <FacebookIcon />
+          </IconButton>
+          <IconButton onClick={handleLoginGoogle}>
+            <GoogleIcon />
+          </IconButton>
           <Link to={RoutesApp.SignUp} component={RouterLink}>
             Sign Up
           </Link>

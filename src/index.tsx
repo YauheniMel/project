@@ -7,6 +7,7 @@ import App from './App';
 import { store } from './redux';
 import reportWebVitals from './reportWebVitals';
 import theme from './theme';
+import './auth/firebase-config';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

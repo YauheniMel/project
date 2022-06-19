@@ -8,7 +8,6 @@ const initState: AdminType = {
   isAdmin: false,
   name: 'Yauheni',
   surname: 'Melnik',
-  email: '207melnik@gmail.com',
   status: 'active',
   isOnline: true,
   theme: 'light',
@@ -22,7 +21,6 @@ const initState: AdminType = {
       isAdmin: false,
       name: 'Yauheni',
       surname: 'Melnik',
-      email: '207melnik@gmail.com',
       status: 'active',
       isOnline: true,
       theme: 'light',
@@ -36,7 +34,6 @@ const initState: AdminType = {
       isAdmin: false,
       name: 'Yauheni',
       surname: 'Melnik',
-      email: '207melnik@gmail.com',
       status: 'active',
       isOnline: true,
       theme: 'light',
@@ -50,7 +47,6 @@ const initState: AdminType = {
       isAdmin: false,
       name: 'Yauheni',
       surname: 'Melnik',
-      email: '207melnik@gmail.com',
       status: 'active',
       isOnline: true,
       theme: 'light',
@@ -65,7 +61,6 @@ const initState: AdminType = {
     isAdmin: false,
     name: 'Yauheni',
     surname: 'Melnik',
-    email: '207melnik@gmail.com',
     status: 'active',
     isOnline: true,
     theme: 'light',
@@ -129,24 +124,33 @@ const initState: AdminType = {
           },
           comments: [
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
               comments: null,
             },
             {
-              name: 'Tiko',
-              surname: 'Tod',
+              user: {
+                id: 'ndassj',
+                name: 'Tiko',
+                surname: 'Tod',
+              },
               createAt: '24.11.2021',
               state: 'touched',
               content:
                 'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
               comments: [
                 {
-                  name: 'Carl',
-                  surname: 'Tanwks',
+                  user: {
+                    id: 'ndsj',
+                    name: 'Carl',
+                    surname: 'Tanwks',
+                  },
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
@@ -155,8 +159,11 @@ const initState: AdminType = {
               ],
             },
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsdsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
@@ -195,24 +202,33 @@ const initState: AdminType = {
           },
           comments: [
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
               comments: null,
             },
             {
-              name: 'Tiko',
-              surname: 'Tod',
+              user: {
+                id: 'ndassj',
+                name: 'Tiko',
+                surname: 'Tod',
+              },
               createAt: '24.11.2021',
               state: 'touched',
               content:
                 'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
               comments: [
                 {
-                  name: 'Carl',
-                  surname: 'Tanwks',
+                  user: {
+                    id: 'ndsj',
+                    name: 'Carl',
+                    surname: 'Tanwks',
+                  },
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
@@ -221,8 +237,11 @@ const initState: AdminType = {
               ],
             },
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsdsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
@@ -261,24 +280,33 @@ const initState: AdminType = {
           },
           comments: [
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
               comments: null,
             },
             {
-              name: 'Tiko',
-              surname: 'Tod',
+              user: {
+                id: 'ndassj',
+                name: 'Tiko',
+                surname: 'Tod',
+              },
               createAt: '24.11.2021',
               state: 'touched',
               content:
                 'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
               comments: [
                 {
-                  name: 'Carl',
-                  surname: 'Tanwks',
+                  user: {
+                    id: 'ndsj',
+                    name: 'Carl',
+                    surname: 'Tanwks',
+                  },
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
@@ -287,8 +315,11 @@ const initState: AdminType = {
               ],
             },
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsdsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
@@ -327,24 +358,33 @@ const initState: AdminType = {
           },
           comments: [
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
               comments: null,
             },
             {
-              name: 'Tiko',
-              surname: 'Tod',
+              user: {
+                id: 'ndassj',
+                name: 'Tiko',
+                surname: 'Tod',
+              },
               createAt: '24.11.2021',
               state: 'touched',
               content:
                 'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
               comments: [
                 {
-                  name: 'Carl',
-                  surname: 'Tanwks',
+                  user: {
+                    id: 'ndsj',
+                    name: 'Carl',
+                    surname: 'Tanwks',
+                  },
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
@@ -353,8 +393,11 @@ const initState: AdminType = {
               ],
             },
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsdsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',
@@ -393,24 +436,33 @@ const initState: AdminType = {
           },
           comments: [
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '23.11.2021',
               content: 'Lorem ipsum dolor, sit amet consectetur adipisic.',
               state: 'touched',
               comments: null,
             },
             {
-              name: 'Tiko',
-              surname: 'Tod',
+              user: {
+                id: 'ndassj',
+                name: 'Tiko',
+                surname: 'Tod',
+              },
               createAt: '24.11.2021',
               state: 'touched',
               content:
                 'Loremdolor, sit amet consec ipsum dolor, sit amet consectetur adipisic.',
               comments: [
                 {
-                  name: 'Carl',
-                  surname: 'Tanwks',
+                  user: {
+                    id: 'ndsj',
+                    name: 'Carl',
+                    surname: 'Tanwks',
+                  },
                   createAt: '24.11.2021',
                   content: 'Loremdolor, sit!',
                   state: 'touched',
@@ -419,8 +471,11 @@ const initState: AdminType = {
               ],
             },
             {
-              name: 'Jack',
-              surname: 'Jackson',
+              user: {
+                id: 'ndsdsj',
+                name: 'Jack',
+                surname: 'Jackson',
+              },
               createAt: '25.11.2021',
               content: 'Lorem ipsum dolor, sit pisic.',
               state: 'untouched',

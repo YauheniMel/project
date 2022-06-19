@@ -9,6 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import RoutesApp from '../../constants/routes';
+import logout from '../../auth/services/logout';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -27,16 +28,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IToolBar {
-  props?: any;
+  logOutUser: () => void;
 }
 
-const ToolBar: FC<IToolBar> = () => {
+const ToolBar: FC<IToolBar> = ({ logOutUser }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const classes = useStyles();
 
   const toggleDrawer = () => {
     setIsVisible(!isVisible);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      logOutUser();
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -69,7 +80,7 @@ const ToolBar: FC<IToolBar> = () => {
           </IconButton>
         </Link>
         <Link component={RouterLink} to={RoutesApp.Login}>
-          <IconButton>
+          <IconButton onClick={handleLogout}>
             <LogoutIcon fontSize="large" />
           </IconButton>
         </Link>

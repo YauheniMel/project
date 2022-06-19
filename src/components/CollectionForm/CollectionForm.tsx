@@ -15,7 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const useStyles = makeStyles((theme) => ({
   back: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
   },
   form: {
     position: 'relative',
@@ -148,8 +148,13 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
   });
 
   return (
-    <Backdrop className={classes.back} open={openForm} invisible>
-      <Paper className={classes.form}>
+    <Backdrop
+      className={classes.back}
+      open={openForm}
+      invisible
+      style={{ overflowY: 'auto' }}
+    >
+      <Paper style={{ maxHeight: '100%' }} className={classes.form}>
         <IconButton className={classes.btn} onClick={handleClose}>
           <CloseIcon />
         </IconButton>

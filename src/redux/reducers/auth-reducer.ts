@@ -3,7 +3,7 @@ import { AuthType } from '../../types';
 import { AUTH } from '../actions/auth-action';
 
 const initState: AuthType = {
-  isAuth: true,
+  isAuth: false,
   isLoading: false,
 };
 

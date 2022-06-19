@@ -6,17 +6,19 @@ import { getIsLoading } from '../../redux/selectors/auth-selector';
 import SignUpPage from './SignUpPage';
 
 interface ILoginPageContainer {
-  props?: string;
+  signUpUser: () => void;
 }
 
-const SignUpPageContainer: FC<ILoginPageContainer> = () => <SignUpPage />;
+const SignUpPageContainer: FC<ILoginPageContainer> = (props) => (
+  <SignUpPage {...props} />
+);
 
 const mapStateToProps = (state: AppStateType) => ({
   isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatchType) => ({
-  signUp: () => dispatch(signUpAction()),
+  signUpUser: () => dispatch(signUpAction()),
 });
 
 export default connect(

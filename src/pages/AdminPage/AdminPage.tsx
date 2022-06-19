@@ -21,7 +21,6 @@ interface IAdminPage {
   surname: string;
   isAdmin: boolean;
   theme: 'light' | 'dark';
-  email: string;
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
   targetCollections: CollectionInitType[] | null;
@@ -38,7 +37,6 @@ const AdminPage: FC<IAdminPage> = ({
   surname,
   isAdmin,
   theme,
-  email,
   status,
   meta,
   targetCollections,
@@ -48,7 +46,7 @@ const AdminPage: FC<IAdminPage> = ({
   setTargetCollections,
   getCollection,
 }) => {
-  console.log(id, name, surname, isAdmin, theme, email, status, meta);
+  console.log(id, name, surname, isAdmin, theme, status, meta);
 
   return (
     <Grid
