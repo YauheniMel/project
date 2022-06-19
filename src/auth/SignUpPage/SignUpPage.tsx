@@ -6,12 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Link, Paper } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
+import { getAuth, updateProfile } from 'firebase/auth';
 
 import RoutesApp from '../../constants/routes';
 import signup from '../services/signup';
 
 interface ILoginPage {
-  props?: object;
+  signUpUser: () => void;
 }
 
 const useStyles = makeStyles({
@@ -64,7 +65,7 @@ const validationSchema = yup.object({
     .oneOf([yup.ref('password')], 'Your passwords do not match.'),
 });
 
-const SignUpPage: FC<ILoginPage> = () => {
+const SignUpPage: FC<ILoginPage> = ({ signUpUser }) => {
   const classes = useStyles();
   const formik = useFormik({
     initialValues: {
@@ -77,8 +78,19 @@ const SignUpPage: FC<ILoginPage> = () => {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const res = await signup(values.email, values.password);
-        console.log(res);
+        await signup(values.email, values.password);
+
+        const auth = getAuth();
+
+        const user = auth.currentUser;
+        if (user) {
+          await updateProfile(auth.currentUser, {
+            displayName: `${values.name} ${values.surname}`,
+            photoURL: 'https://example.com/jane-q-user/profile.jpg',
+          });
+
+          signUpUser();
+        }
 
         resetForm({
           values: {

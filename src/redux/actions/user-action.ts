@@ -1,7 +1,10 @@
+import { UserPersonalInfoType } from '../../types';
+
 export enum UserActionTypes {
-  getUser = 'GET-USER',
+  setUserPersonalInfo = 'SET-USER-PERSONAL-INFO',
 }
 
-export const getUsersAction = () => ({
-  type: UserActionTypes.getUser,
+export const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
+  type: UserActionTypes.setUserPersonalInfo,
+  payload,
 });

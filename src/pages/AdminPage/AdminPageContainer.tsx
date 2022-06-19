@@ -7,7 +7,6 @@ import {
 } from '../../redux/actions/admin-action';
 import { getCollectionAction } from '../../redux/actions/collection-action';
 import {
-  getAdminEmail,
   getAdminId,
   getAdminIsAdmin,
   getAdminMeta,
@@ -28,7 +27,6 @@ interface IAdminPageContainer {
   surname: string;
   isAdmin: boolean;
   theme: 'light' | 'dark';
-  email: string;
   status: 'active' | 'blocked';
   meta: { loginDate: string; registerDate: string };
   targetCollections: CollectionInitType[] | null;
@@ -47,7 +45,6 @@ const mapStateToProps = (state: AppStateType) => ({
   id: getAdminId(state),
   name: getAdminName(state),
   surname: getAdminSurname(state),
-  email: getAdminEmail(state),
   status: getAdminStatus(state),
   theme: getAdminTheme(state),
   isAdmin: getAdminIsAdmin(state),

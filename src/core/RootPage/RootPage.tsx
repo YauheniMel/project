@@ -4,23 +4,25 @@ import { Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import ToolBar from '../../components/ToolBar/ToolBar';
-import { AppStateType } from '../../redux';
+import { AppDispatchType, AppStateType } from '../../redux';
 import {
   getUserId,
   getUserName,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
 import { getIsAuth } from '../../redux/selectors/auth-selector';
+import { logOutAction } from '../../redux/actions/auth-action';
 
 interface IRootPage {
   id: string;
   name: string;
   surname: string;
   isAuth: boolean;
+  logOutUser: () => void;
 }
 
 const RootPage: FC<IRootPage> = ({
-  id, name, surname, isAuth,
+  id, name, surname, isAuth, logOutUser,
 }) => {
   console.log(id);
   return (
@@ -29,7 +31,7 @@ const RootPage: FC<IRootPage> = ({
       <Container fixed>
         <Outlet />
       </Container>
-      <ToolBar />
+      <ToolBar logOutUser={logOutUser} />
     </>
   );
 };
@@ -41,4 +43,8 @@ const mapStateToProps = (state: AppStateType) => ({
   isAuth: getIsAuth(state),
 });
 
-export default connect(mapStateToProps)(RootPage);
+const mapDispatchToProps = (dispatch: AppDispatchType) => ({
+  logOutUser: () => dispatch(logOutAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootPage);

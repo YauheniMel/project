@@ -1,5 +1,11 @@
-import { getAuth } from 'firebase/auth';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  FacebookAuthProvider,
+} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
+import 'firebase/compat/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAe6zYdE_tJoD7oH0yzI3rBchNnzVZP0-8',
@@ -14,3 +20,13 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+
+const providerGoogle = new GoogleAuthProvider();
+providerGoogle.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+const providerFacebook = new FacebookAuthProvider();
+providerFacebook.addScope('user_birthday');
+
+export const signInWithGoogle = () => signInWithPopup(auth, providerGoogle);
+
+export const signInWithFacebook = () => signInWithPopup(auth, providerFacebook);

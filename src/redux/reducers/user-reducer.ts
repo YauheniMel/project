@@ -7,9 +7,8 @@ const initState: UserType = {
   isAdmin: false,
   name: 'Yauheni',
   surname: 'Melnik',
-  email: '207melnik@gmail.com',
   status: 'active',
-  isOnline: true,
+  isOnline: false,
   theme: 'light',
   meta: {
     registerDate: '23.07.2015',
@@ -19,9 +18,10 @@ const initState: UserType = {
 
 function userReducer(state = initState, action: AnyAction) {
   switch (action.type) {
-    case UserActionTypes.getUser: {
+    case UserActionTypes.setUserPersonalInfo: {
       return {
         ...state,
+        ...action.payload,
       };
     }
     default:

@@ -15,26 +15,41 @@ import UserPageContainer from './pages/UserPage/UserPageContainer';
 import CollectionPageContainer from './pages/CollectionPage/CollectionPageContainer';
 import AdminPageContainer from './pages/AdminPage/AdminPageContainer';
 import CollectionsPageContainer from './pages/CollectionsPage/CollectionsPageContainer';
+import { setUserPersonalInfoAction } from './redux/actions/user-action';
+import { UserPersonalInfoType } from './types';
 import { loginAction } from './redux/actions/auth-action';
-// import { auth } from './auth/firebase-config';
 
 interface IRootPage {
   isAuth: boolean;
   setTargetItem: (id: string) => void;
-  login: () => void;
+  loginUser: () => void;
+  setUserPersonalInfo: (payload: UserPersonalInfoType) => void;
 }
-const App: FC<IRootPage> = ({ setTargetItem, isAuth, login }) => {
+const App: FC<IRootPage> = ({
+  setTargetItem,
+  isAuth,
+  loginUser,
+  setUserPersonalInfo,
+}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid } = user;
-        console.log(uid);
-        login();
+        const { uid, displayName } = user;
 
-        navigate(RoutesApp.Home);
+        if (displayName) {
+          const [name, surname] = displayName.split(' ');
+
+          setUserPersonalInfo({
+            id: uid,
+            name,
+            surname,
+          });
+          loginUser();
+          navigate(RoutesApp.Home);
+        }
       } else {
         navigate(RoutesApp.Login);
       }
@@ -44,6 +59,8 @@ const App: FC<IRootPage> = ({ setTargetItem, isAuth, login }) => {
   return (
     <div className="App">
       <Routes>
+        <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
+        <Route path={RoutesApp.SignUp} element={<SignUpPageContainer />} />
         <Route path={RoutesApp.Root} element={<RootPage />}>
           <Route
             path={RoutesApp.Home}
@@ -60,8 +77,6 @@ const App: FC<IRootPage> = ({ setTargetItem, isAuth, login }) => {
           />
         </Route>
         <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
-        <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
-        <Route path={RoutesApp.SignUp} element={<SignUpPageContainer />} />
       </Routes>
     </div>
   );
@@ -73,7 +88,10 @@ const mapStateToProps = (state: AppStateType) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatchType) => ({
   setTargetItem: (id: string) => dispatch(setTargetItemAction(id)),
-  login: () => dispatch(loginAction()),
+  setUserPersonalInfo(payload: UserPersonalInfoType) {
+    dispatch(setUserPersonalInfoAction(payload));
+  },
+  loginUser: () => dispatch(loginAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

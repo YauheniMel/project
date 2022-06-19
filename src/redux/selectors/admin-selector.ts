@@ -22,9 +22,7 @@ export function getAdminName(state: AppStateType): string {
 export function getAdminSurname(state: AppStateType): string {
   return state.admin.surname;
 }
-export function getAdminEmail(state: AppStateType): string {
-  return state.admin.email;
-}
+
 export function getAdminStatus(state: AppStateType): 'active' | 'blocked' {
   return state.admin.status;
 }
