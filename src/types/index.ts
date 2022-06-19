@@ -4,8 +4,11 @@ export interface AuthType {
 }
 
 export interface CommentType {
-  name: string;
-  surname: string;
+  user: {
+    id: string;
+    name: string;
+    surname: string;
+  };
   createAt: string;
   content: string;
   state: 'touched' | 'untouched';

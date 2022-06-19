@@ -6,7 +6,9 @@ import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Link, Paper } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
+
 import RoutesApp from '../../constants/routes';
+import signup from '../services/signup';
 
 interface ILoginPage {
   props?: object;
@@ -18,6 +20,7 @@ const useStyles = makeStyles({
     padding: '20px',
     top: '50%',
     left: '50%',
+    minWidth: '280px',
     transform: 'translate(-50%, -50%)',
   },
   form: {
@@ -72,17 +75,23 @@ const SignUpPage: FC<ILoginPage> = () => {
       confirm: '',
     },
     validationSchema,
-    onSubmit: (values, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
-      resetForm({
-        values: {
-          name: '',
-          surname: '',
-          email: '',
-          password: '',
-          confirm: '',
-        },
-      });
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await signup(values.email, values.password);
+        console.log(res);
+
+        resetForm({
+          values: {
+            name: '',
+            surname: '',
+            email: '',
+            password: '',
+            confirm: '',
+          },
+        });
+      } catch (error) {
+        alert(error);
+      }
     },
   });
 

@@ -7,6 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Link, Paper } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import RoutesApp from '../../constants/routes';
+import login from '../services/login';
 
 interface ILoginPage {
   props?: object;
@@ -18,6 +19,7 @@ const useStyles = makeStyles({
     padding: '20px',
     top: '50%',
     left: '50%',
+    minWidth: '280px',
     transform: 'translate(-50%, -50%)',
   },
   form: {
@@ -53,9 +55,15 @@ const LoginPage: FC<ILoginPage> = () => {
       password: '',
     },
     validationSchema,
-    onSubmit: (values, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
-      resetForm({ values: { email: '', password: '' } });
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await login(values.email, values.password);
+        console.log(res);
+
+        resetForm({ values: { email: '', password: '' } });
+      } catch (error) {
+        alert(error);
+      }
     },
   });
 
