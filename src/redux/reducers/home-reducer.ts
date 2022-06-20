@@ -28,7 +28,7 @@ const initState: HomePageType = {
       },
       list: [
         {
-          id: '34r',
+          id: '3ds4r',
           collection: {
             id: '3d',
             theme: 'Theme',
@@ -131,7 +131,7 @@ const initState: HomePageType = {
       },
       list: [
         {
-          id: '34r',
+          id: '3dsaa4r',
           collection: {
             id: '3d',
             theme: 'Theme',
@@ -234,7 +234,7 @@ const initState: HomePageType = {
       },
       list: [
         {
-          id: '34r',
+          id: 'ffd34r',
           collection: {
             id: '3d',
             theme: 'Theme',
@@ -337,7 +337,7 @@ const initState: HomePageType = {
       },
       list: [
         {
-          id: '34r',
+          id: 'weew34r',
           collection: {
             id: '3d',
             theme: 'Theme',
@@ -419,7 +419,7 @@ const initState: HomePageType = {
   ],
   list: [
     {
-      id: '34r',
+      id: '3q4r',
       collection: {
         id: '3d',
         theme: 'Theme',
@@ -497,7 +497,7 @@ const initState: HomePageType = {
       ],
     },
     {
-      id: '34r',
+      id: '34dsr',
       collection: {
         id: '3d',
         theme: 'Theme',
@@ -575,7 +575,7 @@ const initState: HomePageType = {
       ],
     },
     {
-      id: '34r',
+      id: 'as34r',
       collection: {
         id: '3d',
         theme: 'Theme',
@@ -653,7 +653,7 @@ const initState: HomePageType = {
       ],
     },
     {
-      id: '34r',
+      id: '3ds4r',
       collection: {
         id: '3d',
         theme: 'Theme',
@@ -731,7 +731,7 @@ const initState: HomePageType = {
       ],
     },
     {
-      id: '34r',
+      id: '3as4r',
       collection: {
         id: '3d',
         theme: 'Theme',

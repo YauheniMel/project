@@ -88,7 +88,7 @@ export interface UserType {
   isAdmin: boolean;
   name: string;
   surname: string;
-  theme: 'light' | 'dark';
+  theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
   isOnline: boolean;
   meta: {
@@ -97,7 +97,7 @@ export interface UserType {
   };
 }
 
-export interface AdminType extends UserType {
+export interface AdminType {
   users: UserType[];
   targetUser: UserType | null;
   targetCollections: CollectionInitType[] | null;
