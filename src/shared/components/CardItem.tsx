@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import TagIcon from '@mui/icons-material/Tag';
 import { makeStyles } from '@material-ui/core';
 import RoutesApp from '../../constants/routes';
+import { ItemType } from '../../types';
 
 const useStyles = makeStyles({
   card: {
@@ -14,33 +15,13 @@ const useStyles = makeStyles({
 });
 
 interface ICardItem {
-  id: string;
-  title: string;
-  tags: string[] | null;
-  collection: {
-    id: string;
-    title: string;
-    theme: string;
-  };
-  meta: {
-    createAt: string;
-    updateAt: string;
-  };
-  countLike: string[] | null;
-  setTargetItem: (id: string) => void;
+  item: ItemType;
+  setTargetItem: (item: ItemType) => void;
 }
 
-const CardItem: FC<ICardItem> = ({
-  id,
-  title,
-  tags,
-  meta,
-  countLike,
-  setTargetItem,
-  collection,
-}) => {
+const CardItem: FC<ICardItem> = ({ item, setTargetItem }) => {
   function handleClick() {
-    setTargetItem(id);
+    setTargetItem(item);
   }
 
   const classes = useStyles();
@@ -49,17 +30,17 @@ const CardItem: FC<ICardItem> = ({
     <Card className={classes.card} onClick={handleClick}>
       <Link
         component={RouterLink}
-        to={`${RoutesApp.CollectionLink}id-${collection.id}${RoutesApp.ItemLink}id-${id}`}
+        to={`${RoutesApp.CollectionLink}${item.collectionId}${RoutesApp.ItemLink}${item.id}`}
       >
         <Typography variant="h4" sx={{ fontSize: 'md', mt: 2 }}>
-          {title}
+          {item.title}
         </Typography>
       </Link>
       <Typography
         variant="body2"
         sx={{ fontWeight: 'md', color: 'text.secondary' }}
       >
-        {countLike ? countLike.length : 0}
+        {item.countLike ? item.countLike.length : 0}
         {' '}
         likes
       </Typography>
@@ -67,9 +48,9 @@ const CardItem: FC<ICardItem> = ({
         variant="body2"
         sx={{ fontWeight: 'md', color: 'text.secondary' }}
       >
-        {meta.createAt}
+        {item.createdAt}
       </Typography>
-      {tags?.map((tag, idx: any) => (
+      {item.tags?.split(',').map((tag, idx: any) => (
         <Chip
           icon={<TagIcon />}
           variant="outlined"

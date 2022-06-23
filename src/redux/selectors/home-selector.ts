@@ -1,10 +1,12 @@
 import { AppStateType } from '..';
-import { CollectionInitType, ItemType } from '../../types';
+import { CollectionType, ItemType } from '../../types';
 
-export function getCollections(state: AppStateType): CollectionInitType[] {
+export function getCollectionsSelector(
+  state: AppStateType,
+): CollectionType[] | null {
   return state.home.collections;
 }
 
-export function getItems(state: AppStateType): ItemType[] {
+export function getItemsSelector(state: AppStateType): ItemType[] | null {
   return state.home.list;
 }

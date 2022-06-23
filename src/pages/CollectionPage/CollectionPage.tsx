@@ -9,35 +9,48 @@ import {
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
-// import { useParams } from 'react-router';
-import { CollectionInitType } from '../../types';
+import MDEditor from '@uiw/react-md-editor';
+import { ItemInitType, ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
 
 interface ICollectionPage {
-  setTargetItem: (id: string) => void;
-  targetCollection: CollectionInitType;
+  id: string;
+  icon: any;
+  description: string;
+  theme: string;
+  customFields: any;
+  createdAt: string;
+  updatedAt: string;
+  list: ItemType[] | null;
+  createNewItem: (itemInfo: ItemInitType) => void;
+  deleteItem: (itemId: string) => void;
+  setTargetItem: (item: ItemType) => void;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
+  id,
+  icon,
+  description,
+  theme,
+  customFields,
+  createdAt,
+  updatedAt,
   setTargetItem,
-  targetCollection,
+  createNewItem,
+  deleteItem,
+  list,
 }) => {
-  // const { collectionId } = useParams();
-
   const [openForm, setOpenForm] = useState<boolean>(false);
-
   return (
     <>
       <ItemForm
-        dateFields={targetCollection.dateKeys}
-        multiLineFields={targetCollection.multiLineKeys}
-        numberFields={targetCollection.numberKeys}
-        textFields={targetCollection.textKeys}
-        checkboxFields={targetCollection.checkboxKeys}
+        customFields={customFields}
+        collectionId={id}
         openForm={openForm}
         setOpenForm={setOpenForm}
+        createNewItem={createNewItem}
       />
       <Grid
         sx={{ height: '100%' }}
@@ -61,7 +74,10 @@ const CollectionPage: FC<ICollectionPage> = ({
               </ListItemIcon>
               <ListItemText primary="Update item" />
             </ListItemButton>
-            <ListItemButton sx={{ width: '100%' }}>
+            <ListItemButton
+              sx={{ width: '100%' }}
+              onClick={() => deleteItem('1')}
+            >
               <ListItemIcon>
                 <DeleteIcon />
               </ListItemIcon>
@@ -70,9 +86,18 @@ const CollectionPage: FC<ICollectionPage> = ({
           </Sidebar>
         </Grid>
         <Grid item xs={9} sm={8}>
-          <Typography variant="h3">{targetCollection.title}</Typography>
-          <Typography variant="h3">{targetCollection.theme}</Typography>
-          <Table list={targetCollection.list} setTargetItem={setTargetItem} />
+          <Typography variant="h3">{theme}</Typography>
+          <Typography variant="h3">{createdAt}</Typography>
+          <Typography variant="h3">{updatedAt}</Typography>
+          {description && (
+            <MDEditor.Markdown source={description.replace(/&/gim, '\n')} />
+          )}
+          {list && <Table list={list} setTargetItem={setTargetItem} />}
+          <img
+            width="200"
+            src={`data:application/pdf;base64,${icon}`}
+            alt="mmmmm"
+          />
         </Grid>
       </Grid>
     </>

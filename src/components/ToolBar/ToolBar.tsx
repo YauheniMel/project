@@ -28,10 +28,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IToolBar {
-  logOutUser: () => void;
+  id: string;
+  logOutUser: (id: string) => void;
 }
 
-const ToolBar: FC<IToolBar> = ({ logOutUser }) => {
+const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const classes = useStyles();
@@ -44,7 +45,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser }) => {
     try {
       await logout();
 
-      logOutUser();
+      logOutUser(id);
     } catch (error) {
       alert(error);
     }

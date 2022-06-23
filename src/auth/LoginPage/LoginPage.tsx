@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Box, IconButton, Link, Paper,
 } from '@mui/material';
@@ -15,7 +15,8 @@ import login from '../services/login';
 import { signInWithGoogle, signInWithFacebook } from '../firebase-config';
 
 interface ILoginPage {
-  loginUser: () => void;
+  id: string;
+  loginUser: (userId: string) => void;
 }
 
 const useStyles = makeStyles({
@@ -51,8 +52,10 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-const LoginPage: FC<ILoginPage> = ({ loginUser }) => {
+const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   const classes = useStyles();
+
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -64,7 +67,11 @@ const LoginPage: FC<ILoginPage> = ({ loginUser }) => {
       try {
         const res = await login(values.email, values.password);
         console.log(res);
-        loginUser();
+
+        loginUser(id);
+
+        navigate(RoutesApp.User);
+
         resetForm({ values: { email: '', password: '' } });
       } catch (error) {
         alert(error);

@@ -3,16 +3,17 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Link, Paper } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { getAuth, updateProfile } from 'firebase/auth';
 
 import RoutesApp from '../../constants/routes';
 import signup from '../services/signup';
+import { CredentialsType } from '../../redux/actions/auth-action';
 
-interface ILoginPage {
-  signUpUser: () => void;
+interface ISignUpPage {
+  signUpUser: (credentials: CredentialsType) => void;
 }
 
 const useStyles = makeStyles({
@@ -65,8 +66,10 @@ const validationSchema = yup.object({
     .oneOf([yup.ref('password')], 'Your passwords do not match.'),
 });
 
-const SignUpPage: FC<ILoginPage> = ({ signUpUser }) => {
+const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -89,7 +92,13 @@ const SignUpPage: FC<ILoginPage> = ({ signUpUser }) => {
             photoURL: 'https://example.com/jane-q-user/profile.jpg',
           });
 
-          signUpUser();
+          signUpUser({
+            id: user.uid,
+            name: values.name,
+            surname: values.surname,
+          });
+
+          navigate(RoutesApp.User);
         }
 
         resetForm({

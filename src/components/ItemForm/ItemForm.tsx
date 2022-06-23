@@ -1,20 +1,18 @@
 /* eslint-disable react/no-array-index-key */
 import React, { FC, useState } from 'react';
-import { Field, FormikProvider, useFormik } from 'formik';
-import * as yup from 'yup';
+import { FormikProvider, useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {
   Backdrop,
-  Box,
   Chip,
   IconButton,
   Input,
   makeStyles,
   Paper,
-  TextareaAutosize,
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
+import CustomField from '../CustomField/CustomField';
 
 const useStyles = makeStyles((theme) => ({
   back: {
@@ -32,102 +30,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IItemForm {
+  collectionId: string;
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
-  dateFields: null | string[];
-  multiLineFields: null | string[];
-  numberFields: null | string[];
-  textFields: null | string[];
-  checkboxFields: null | { field: string; count: number; values: string[] }[];
+  customFields: any;
+  createNewItem: (itemInfo: any) => void;
 }
-
-const validationSchema = yup.object({
-  title: yup
-    .string()
-    .trim()
-    .min(2, 'Title must have more than 2 letters')
-    .max(30, 'Title must have less than 30 letters')
-    .required('Title is required'),
-  icon: yup.string().trim().required('Icon is required'),
-  description: yup
-    .string()
-    .trim()
-    .min(2, 'Description must have more than 2 letters')
-    .max(30, 'Description must have less than 30 letters')
-    .required('Description is required'),
-  tags: yup
-    .string()
-    .trim()
-    .min(2, 'Theme must have more than 2 letters')
-    .max(30, 'Theme must have less than 30 letters')
-    .required('Theme is required'),
-});
 
 const ItemForm: FC<IItemForm> = ({
   openForm,
   setOpenForm,
-  dateFields,
-  multiLineFields,
-  numberFields,
-  textFields,
-  checkboxFields,
+  customFields,
+  createNewItem,
+  collectionId,
 }) => {
   const [tags, setTags] = useState<string[]>([]);
+  const [image, setImage] = useState<any>();
 
   const classes = useStyles();
-  console.log(
-    dateFields,
-    multiLineFields,
-    numberFields,
-    textFields,
-    checkboxFields,
-  );
 
-  function getInitFields(): { [key: string]: string } {
-    const initObj = {
-      title: '',
-      icon: '',
-      tags: '',
-      description: '',
-    };
-
+  function getInitFields(customFields: any) {
     let obj = {};
-    dateFields?.forEach((field) => {
+
+    customFields?.forEach((customField: any) => {
+      const [key] = Object.keys(customField);
       obj = {
-        ...initObj,
         ...obj,
-        [field]: '',
+        [key]: '',
       };
     });
-    multiLineFields?.forEach((field) => {
-      obj = {
-        ...initObj,
-        ...obj,
-        [field]: '',
-      };
-    });
-    numberFields?.forEach((field) => {
-      obj = {
-        ...initObj,
-        ...obj,
-        [field]: '',
-      };
-    });
-    textFields?.forEach((field) => {
-      obj = {
-        ...initObj,
-        ...obj,
-        [field]: '',
-      };
-    });
-    checkboxFields?.forEach((elem) => {
-      obj = {
-        ...initObj,
-        ...obj,
-        [elem.field]: [],
-      };
-    });
-    console.log(obj);
+
     return obj;
   }
 
@@ -140,12 +72,28 @@ const ItemForm: FC<IItemForm> = ({
   };
 
   const formik = useFormik({
-    initialValues: getInitFields(),
-    validationSchema,
+    initialValues: {
+      title: '',
+      description: '',
+      tags: '',
+      ...getInitFields(customFields),
+    },
     onSubmit: (values, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      createNewItem({
+        collectionId,
+        icon: image,
+        ...values,
+        tags,
+      });
+
       resetForm({
-        values: { ...getInitFields() },
+        values: {
+          title: '',
+          tags: '',
+          description: '',
+          ...getInitFields(customFields),
+        },
       });
 
       handleClose();
@@ -191,9 +139,7 @@ const ItemForm: FC<IItemForm> = ({
               id="icon"
               name="icon"
               type="file"
-              value={formik.values.icon}
-              onChange={formik.handleChange}
-              error={formik.touched.icon && Boolean(formik.errors.icon)}
+              onChange={(e: any) => setImage(e.target.files[0])}
             />
             <TextField
               fullWidth
@@ -221,70 +167,9 @@ const ItemForm: FC<IItemForm> = ({
                 )),
               }}
             />
-            {dateFields?.map((label, idx: any) => (
-              <TextField
-                key={idx}
-                type="date"
-                fullWidth
-                name={label}
-                label={label}
-                value={formik.values.label}
-                onChange={formik.handleChange}
-                error={formik.touched.label && Boolean(formik.errors.label)}
-                helperText={formik.touched.label && formik.errors.label}
-              />
-            ))}
-            {numberFields?.map((label, idx: any) => (
-              <TextField
-                key={idx}
-                fullWidth
-                name={label}
-                type="number"
-                label={label}
-                value={formik.values.label}
-                onChange={formik.handleChange}
-                error={formik.touched.label && Boolean(formik.errors.label)}
-                helperText={formik.touched.label && formik.errors.label}
-              />
-            ))}
-            {textFields?.map((label, idx: any) => (
-              <TextField
-                key={idx}
-                fullWidth
-                name={label}
-                label={label}
-                value={formik.values.label}
-                onChange={formik.handleChange}
-                error={formik.touched.label && Boolean(formik.errors.label)}
-                helperText={formik.touched.label && formik.errors.label}
-              />
-            ))}
-            {multiLineFields?.map((label, idx: any) => (
-              <TextareaAutosize
-                key={idx}
-                name={label}
-                placeholder={label}
-                value={formik.values.label}
-                onChange={formik.handleChange}
-              />
-            ))}
-            {checkboxFields?.map((elem, index: any) => (
-              <Box key={index}>
-                <span>{elem.field}</span>
-                {elem.values.map((value, idx: any) => (
-                  // eslint-disable-next-line jsx-a11y/label-has-associated-control
-                  <label key={idx} id={idx}>
-                    <Field
-                      id={index}
-                      type="checkbox"
-                      name={elem.field}
-                      value={value}
-                    />
-                    {value}
-                  </label>
-                ))}
-              </Box>
-            ))}
+            {customFields && (
+              <CustomField fields={customFields} formik={formik} />
+            )}
             <Button
               color="primary"
               fullWidth

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 
 import CardItem from '../../shared/components/CardItem';
-import { CollectionInitType, ItemType } from '../../types';
+import { CollectionType, ItemType } from '../../types';
 import CarouselComponent from '../../components/Carousel/Carousel';
 import TagCloudComponent from '../../shared/TagsCloud/TagCloud';
 
@@ -21,9 +21,9 @@ const useStyles = makeStyles({
 });
 
 interface IHomePage {
-  collections: CollectionInitType[];
-  list: ItemType[];
-  setTargetItem: (id: string) => void;
+  collections: CollectionType[] | null;
+  list: ItemType[] | null;
+  setTargetItem: (item: ItemType) => void;
 }
 
 const HomePage: FC<IHomePage> = ({ list, collections, setTargetItem }) => {
@@ -34,8 +34,8 @@ const HomePage: FC<IHomePage> = ({ list, collections, setTargetItem }) => {
       <CarouselComponent collections={collections} />
       <TagCloudComponent />
       <Box className={classes.list}>
-        {list.map((item: ItemType) => (
-          <CardItem setTargetItem={setTargetItem} {...item} key={item.id} />
+        {list?.map((item: ItemType) => (
+          <CardItem setTargetItem={setTargetItem} item={item} key={item.id} />
         ))}
       </Box>
     </Box>

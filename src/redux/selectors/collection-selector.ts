@@ -1,20 +1,42 @@
 import { AppStateType } from '..';
-import { AllCollectionsType, CollectionInitType, ItemType } from '../../types';
+import { ItemType } from '../../types';
 
-export function getTargetCollection(state: AppStateType): CollectionInitType {
-  return state.collection.targetCollection as CollectionInitType;
+export function getCollectionIdSelector(state: AppStateType): string {
+  return state.collection.id as string;
 }
 
-export function getMyCollections(
+export function getCollectionIconSelector(state: AppStateType): any {
+  return state.collection.icon;
+}
+
+export function getCollectionDescriptionSelector(state: AppStateType): string {
+  return state.collection.description as string;
+}
+
+export function getCollectionThemeSelector(state: AppStateType): string {
+  return state.collection.theme as string;
+}
+
+export function getCollectionCreatedAtSelector(state: AppStateType): string {
+  return state.collection.createdAt as string;
+}
+
+export function getCollectionUpdatedAtSelector(state: AppStateType): string {
+  return state.collection.updatedAt as string;
+}
+
+export function getCollectionCustomFieldsSelector(state: AppStateType): any {
+  return state.collection.customFields;
+}
+
+export function getCollectionListSelector(
   state: AppStateType,
-): CollectionInitType[] | null {
-  return state.collection.myCollections;
+): ItemType[] | null {
+  return state.collection.list;
 }
 
-export function getAllCollections(state: AppStateType): AllCollectionsType[] {
-  return state.collection.allCollections;
-}
-
-export function getCollectionTargetItem(state: AppStateType): ItemType {
-  return state.collection.targetItem as ItemType;
+export function getCollectionTargetItemSelector(
+  state: AppStateType,
+): ItemType | null {
+  return state.collection.targetItem;
 }

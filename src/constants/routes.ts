@@ -6,11 +6,11 @@ enum RoutesApp {
   Home = '/home',
   User = '/profile',
   Collections = '/collections',
-  Collection = '/collection/*',
-  TargetCollection = ':collectionId',
+  Collection = '/collection/:collectionId/*',
   CollectionLink = '/collection/',
   Item = '/item/:itemId',
   ItemLink = '/item/',
+  Search = '/search/',
 }
 
 export default RoutesApp;

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
+import MDEditor from '@uiw/react-md-editor';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import {
   Backdrop,
   Box,
@@ -12,6 +12,9 @@ import {
   Paper,
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
+import { TextField } from '@mui/material';
+import { CollectionInitType } from '../../types';
+import FormArray from '../FormArray/FormArray';
 
 const useStyles = makeStyles((theme) => ({
   back: {
@@ -28,76 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IFormArray {
-  formik: any;
-  type: 'numbers' | 'texts' | 'multiLines' | 'dates';
-}
-
-const FormArray: FC<IFormArray> = ({ formik, type }) => (
-  <>
-    <span>{type}</span>
-    <FieldArray
-      name={type}
-      render={(fieldArrayProps) => {
-        const { push, remove, form } = fieldArrayProps;
-        const { values } = form;
-        return (
-          <>
-            {values[`${type}`].map((number: string, idx: any) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Box key={idx}>
-                <Button
-                  onClick={() => {
-                    const countFields = formik.values[`${type}`].length;
-                    if (countFields === 1) return;
-                    remove(idx);
-                  }}
-                >
-                  -
-                </Button>
-                <Button
-                  onClick={() => {
-                    const countFields = formik.values[`${type}`].length;
-                    if (countFields === 3) return;
-                    push('');
-                  }}
-                >
-                  +
-                </Button>
-                <TextField
-                  name={`${type}[${idx}]`}
-                  label="Name field"
-                  value={formik.values[`${type}`][idx]}
-                  onChange={formik.handleChange}
-                />
-              </Box>
-            ))}
-          </>
-        );
-      }}
-    />
-  </>
-);
-
 interface ICollectionForm {
+  userId: string;
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
+  createNewCollection: (collectionInfo: CollectionInitType) => void;
 }
 
 const validationSchema = yup.object({
-  title: yup
-    .string()
-    .trim()
-    .min(2, 'Title must have more than 2 letters')
-    .max(30, 'Title must have less than 30 letters')
-    .required('Title is required'),
-  icon: yup.string().trim().required('Icon is required'),
-  description: yup
-    .string()
-    .trim()
-    .min(2, 'Description must have more than 2 letters')
-    .max(30, 'Description must have less than 30 letters')
-    .required('Description is required'),
   theme: yup
     .string()
     .trim()
@@ -106,7 +47,15 @@ const validationSchema = yup.object({
     .required('Theme is required'),
 });
 
-const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
+const CollectionForm: FC<ICollectionForm> = ({
+  userId,
+  openForm,
+  setOpenForm,
+  createNewCollection,
+}) => {
+  const [description, setDescription] = useState<any>('');
+  const [image, setImage] = useState<any>();
+
   const classes = useStyles();
 
   const handleClose = () => {
@@ -115,9 +64,6 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      icon: '',
-      description: '',
       theme: '',
       numbers: [''],
       dates: [''],
@@ -127,13 +73,27 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
-      console.log(values);
+      console.log(image);
+      createNewCollection({
+        userId,
+        icon: image,
+        description: description.replace(/\n/gim, '&'),
+        theme: values.theme,
+        dateKeys: values.dates[0] ? values.dates : null,
+        multiLineKeys: values.multiLines[0] ? values.multiLines : null,
+        numberKeys: values.numbers[0] ? values.numbers : null,
+        textKeys: values.texts[0] ? values.texts : null,
+        checkboxKeys: values.checkboxes[0].field
+          ? values.checkboxes.map((checkbox, idx) => ({
+            [`checkboxKey${idx + 1}`]: `${checkbox.field}:${checkbox.values}`,
+          }))
+          : null,
+      });
+
+      setDescription('');
+
       resetForm({
         values: {
-          title: '',
-          icon: '',
-          description: '',
           theme: '',
           numbers: [''],
           dates: [''],
@@ -144,6 +104,9 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
       });
 
       handleClose();
+    },
+    onReset: () => {
+      setDescription('');
     },
   });
 
@@ -159,34 +122,8 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
           <CloseIcon />
         </IconButton>
         <FormikProvider value={formik}>
-          <form onSubmit={formik.handleSubmit}>
+          <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
             <TextField
-              fullWidth
-              id="title"
-              name="title"
-              label="Title"
-              autoFocus
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              error={formik.touched.title && Boolean(formik.errors.title)}
-              helperText={formik.touched.title && formik.errors.title}
-            />
-            <TextField
-              fullWidth
-              id="description"
-              name="description"
-              label="Description"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-              helperText={
-                formik.touched.description && formik.errors.description
-              }
-            />
-            <TextField
-              fullWidth
               id="theme"
               name="theme"
               label="Theme"
@@ -195,14 +132,16 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
               error={formik.touched.theme && Boolean(formik.errors.theme)}
               helperText={formik.touched.theme && formik.errors.theme}
             />
+            <MDEditor value={description} onChange={setDescription} />
             <Input
-              fullWidth
               id="icon"
               name="icon"
+              inputProps={{ accept: 'image/*' }}
               type="file"
-              value={formik.values.icon}
-              onChange={formik.handleChange}
-              error={formik.touched.icon && Boolean(formik.errors.icon)}
+              onChange={(e: any) => {
+                console.log(e.target.files[0]);
+                setImage(e.target.files[0]);
+              }}
             />
             <FormArray formik={formik} type="numbers" />
             <FormArray formik={formik} type="texts" />
@@ -296,7 +235,7 @@ const CollectionForm: FC<ICollectionForm> = ({ openForm, setOpenForm }) => {
             >
               Reset
             </Button>
-            <Button variant="contained" fullWidth type="submit">
+            <Button variant="contained" type="submit" fullWidth>
               Confirm
             </Button>
           </form>

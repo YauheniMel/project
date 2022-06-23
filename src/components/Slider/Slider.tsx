@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import { Box, Link } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
+import MDEditor from '@uiw/react-md-editor';
 import RoutesApp from '../../constants/routes';
-import { CollectionInitType } from '../../types';
+import { CollectionType } from '../../types';
 
 interface ISlider {
-  getCollection: (id: string, userId: string) => void;
-  collections: CollectionInitType[] | null;
+  collections: CollectionType[];
+  setCollection: (collection: CollectionType) => void;
 }
 
 const useStyles = makeStyles({
@@ -32,9 +33,8 @@ const useStyles = makeStyles({
   },
 });
 
-const Slider: FC<ISlider> = ({ collections, getCollection }) => {
+const Slider: FC<ISlider> = ({ collections, setCollection }) => {
   const classes = useStyles();
-
   return (
     <Box className={classes.wrap}>
       <Link
@@ -44,37 +44,33 @@ const Slider: FC<ISlider> = ({ collections, getCollection }) => {
       >
         Show all collections...
       </Link>
-      {collections
-        && collections.map(
-          (collection) => collection && (
-          <Link
-            component={RouterLink}
-            to={`${RoutesApp.CollectionLink}id-${collection.id}`}
-            key={collection.id}
-            onClick={() => getCollection(collection.id, collection.user.id)}
-          >
-            <Card className={classes.card}>
-              <CardMedia
-                component="img"
-                height="194"
-                image={collection.icon}
-                alt="Paella dish"
+      {collections.map(
+        (collection) => collection && (
+        <Link
+          component={RouterLink}
+          to={`${RoutesApp.CollectionLink}${collection.id}`}
+          key={collection.id}
+          onClick={() => setCollection(collection)}
+        >
+          <Card className={classes.card}>
+            <CardMedia
+              component="img"
+              height="194"
+              image={`data:application/pdf;base64,${collection.icon}`}
+              alt="Paella dish"
+            />
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                {collection.theme}
+              </Typography>
+              <MDEditor.Markdown
+                source={collection.description?.replace(/&/gim, '\n')}
               />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {collection.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {collection.theme}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {collection.description}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Link>
-          ),
-        )}
+            </CardContent>
+          </Card>
+        </Link>
+        ),
+      )}
     </Box>
   );
 };

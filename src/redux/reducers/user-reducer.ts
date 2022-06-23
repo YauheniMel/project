@@ -1,19 +1,19 @@
 import { AnyAction } from 'redux';
-import { UserType } from '../../types';
+import { UserPageType } from '../../types';
 import { UserActionTypes } from '../actions/user-action';
 
-const initState: UserType = {
-  id: '123f',
+const initState: UserPageType = {
+  id: null,
+  userId: null,
   isAdmin: false,
-  name: 'Yauheni',
-  surname: 'Melnik',
+  name: null,
+  surname: null,
   status: 'active',
   isOnline: false,
   theme: 'light',
-  meta: {
-    registerDate: '23.07.2015',
-    loginDate: '10.06.2022',
-  },
+  createdAt: null,
+  updatedAt: null,
+  myCollections: null,
 };
 
 function userReducer(state = initState, action: AnyAction) {
@@ -22,6 +22,12 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         ...action.payload,
+      };
+    }
+    case UserActionTypes.setMyCollections: {
+      return {
+        ...state,
+        myCollections: [...action.collections],
       };
     }
     default:

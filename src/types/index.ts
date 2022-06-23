@@ -14,93 +14,134 @@ export interface CommentType {
   state: 'touched' | 'untouched';
   comments: null | CommentType[];
 }
+export interface ItemInitType {
+  collectionId: string;
+  title: string;
+  tags: string;
+  countLike: string[] | null;
+  icon: any;
+  comments: CommentType[] | null;
+  dateValue1?: string;
+  dateValue2?: string;
+  dateValue3?: string;
+  multiLineValue1?: string;
+  multiLineValue2?: string;
+  multiLineValue3?: string;
+  numberValue1?: string;
+  numberValue2?: string;
+  numberValue3?: string;
+  textValue1?: string;
+  textValue2?: string;
+  textValue3?: string;
+  checkboxValues1?: string;
+  checkboxValues2?: string;
+  checkboxValues3?: string;
+}
 export interface ItemType {
-  user: {
-    id: string;
-    name: string;
-    surname: string;
-  };
   id: string;
   title: string;
-  tags: string[] | null;
+  tags: string;
   countLike: string[] | null;
-  collection: {
-    id: string;
-    theme: string;
-    title: string;
-  };
-  meta: {
-    createAt: string;
-    updateAt: string;
-  };
+  icon: any;
+  collectionId?: string;
   comments: CommentType[] | null;
-  dateValues: null | { [key: string]: string };
-  multiLineValues: null | { [key: string]: string };
-  numberValues: null | { [key: string]: number };
-  textValues: null | { [key: string]: string };
-  checkboxValues: null | { [key: string]: string };
+  dateValue1?: string;
+  dateValue2?: string;
+  dateValue3?: string;
+  multiLineValue1?: string;
+  multiLineValue2?: string;
+  multiLineValue3?: string;
+  numberValue1?: string;
+  numberValue2?: string;
+  numberValue3?: string;
+  textValue1?: string;
+  textValue2?: string;
+  textValue3?: string;
+  checkboxValues1?: string;
+  checkboxValues2?: string;
+  checkboxValues3?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 export interface CollectionInitType {
-  id: string;
-  title: string;
-  user: {
-    id: string;
-    name: string;
-    surname: string;
-  };
-  icon: string;
-  description: string;
+  userId: string;
   theme: string;
-  meta: {
-    createAt: string;
-    updateAt: string;
-  };
+  icon: any;
+  description: string;
   dateKeys: null | string[];
   multiLineKeys: null | string[];
   numberKeys: null | string[];
   textKeys: null | string[];
-  checkboxKeys: null | { field: string; count: number; values: string[] }[];
-  list: ItemType[];
+  checkboxKeys: null | { [keys: string]: string }[];
 }
 
-export interface AllCollectionsType {
-  collections: CollectionInitType[];
-  user: {
-    name: string;
-    surname: string;
-    id: string;
-  };
-}
 export interface CollectionType {
+  id: string | null;
+  icon: any;
+  description: string | null;
+  theme: string | null;
+  allFields: string[];
+  customFields: any;
+  createdAt: string | null;
+  updatedAt: string | null;
+  list: ItemType[] | null;
   targetItem: ItemType | null;
-  targetCollection: CollectionInitType | null;
-  allCollections: AllCollectionsType[];
-  myCollections: CollectionInitType[] | null;
+}
+
+export interface CollectionsPageType {
+  allCollections: CollectionType[] | null;
+  myCollections: CollectionType[] | null;
 }
 
 export interface HomePageType {
-  collections: CollectionInitType[];
-  list: ItemType[];
+  collections: CollectionType[] | null;
+  list: ItemType[] | null;
 }
 
 export interface UserType {
+  id: string | null;
+  userId: null | string;
+  isAdmin: boolean;
+  name: string | null;
+  surname: string | null;
+  theme?: 'light' | 'dark';
+  status: 'active' | 'blocked';
+  isOnline: boolean;
+  createdAt: null | string;
+  updatedAt: null | string;
+}
+
+export interface UserPageType {
+  id: string | null;
+  userId: null | string;
+  isAdmin: boolean;
+  name: string | null;
+  surname: string | null;
+  theme?: 'light' | 'dark';
+  status: 'active' | 'blocked';
+  isOnline: boolean;
+  createdAt: null | string;
+  updatedAt: null | string;
+  myCollections: null | CollectionType[];
+}
+
+export interface TargetUserType {
   id: string;
+  userId: string;
   isAdmin: boolean;
   name: string;
   surname: string;
-  theme: 'light' | 'dark';
+  theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
   isOnline: boolean;
-  meta: {
-    loginDate: string;
-    registerDate: string;
-  };
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface AdminType extends UserType {
-  users: UserType[];
+export interface AdminType {
+  users: UserType[] | null;
   targetUser: UserType | null;
-  targetCollections: CollectionInitType[] | null;
+  targetCollections: CollectionType[] | null;
 }
 
 export interface UserPersonalInfoType {

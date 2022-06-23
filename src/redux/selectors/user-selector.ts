@@ -1,4 +1,5 @@
 import { AppStateType } from '..';
+import { CollectionType } from '../../types';
 
 export function getUserId(state: AppStateType): string {
   return state.user.id;
@@ -11,21 +12,19 @@ export function getUserName(state: AppStateType): string {
 export function getUserSurname(state: AppStateType): string {
   return state.user.surname;
 }
-export function getUserEmail(state: AppStateType): string {
-  return state.user.email;
-}
+
 export function getUserStatus(state: AppStateType): 'active' | 'blocked' {
   return state.user.status;
 }
+
 export function getUserTheme(state: AppStateType): 'light' | 'dark' {
   return state.user.theme;
 }
+
 export function getUserIsAdmin(state: AppStateType): boolean {
   return state.user.isAdmin;
 }
-export function getUserMeta(state: AppStateType): {
-  loginDate: string;
-  registerDate: string;
-} {
-  return state.user.meta;
+
+export function getMyCollections(state: AppStateType): CollectionType[] | null {
+  return state.user.myCollections;
 }

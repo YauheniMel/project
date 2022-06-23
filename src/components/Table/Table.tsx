@@ -7,7 +7,7 @@ import RoutesApp from '../../constants/routes';
 
 interface ITable {
   list: ItemType[];
-  setTargetItem: (id: string) => void;
+  setTargetItem: (item: ItemType) => void;
 }
 
 const Table: FC<ITable> = ({ list, setTargetItem }) => {
@@ -25,8 +25,8 @@ const Table: FC<ITable> = ({ list, setTargetItem }) => {
       renderCell: (params) => (
         <Link
           component={RouterLink}
-          onClick={() => setTargetItem(params.row.id)}
-          to={`${RoutesApp.CollectionLink}id-${params.row.collectionId}${RoutesApp.ItemLink}id-${params.row.id}`}
+          onClick={() => setTargetItem(params.row)}
+          to={`${RoutesApp.CollectionLink}${params.row.collectionId}${RoutesApp.ItemLink}${params.row.id}`}
         >
           {params.row.title}
         </Link>
