@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { CredentialsType } from '../redux/actions/auth-action';
 
-const baseUrl = 'https://course-project-melnik.herokuapp.com/';
+const baseUrl = 'https://course-project-melnik.herokuapp.com';
 
 export const API = {
   SignUpUser: `${baseUrl}/api/signUpUser`,
