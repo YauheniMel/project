@@ -59,6 +59,12 @@ function collectionReducer(state = initState, action: AnyAction) {
         list: [...action.items],
       };
     }
+    case CollectionActionTypes.DeleteItem: {
+      return {
+        ...state,
+        list: [...state.list!.filter((item) => item.id !== action.itemId)],
+      };
+    }
     default:
       return state;
   }

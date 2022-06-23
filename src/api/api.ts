@@ -1,23 +1,25 @@
 import axios from 'axios';
 import type { CredentialsType } from '../redux/actions/auth-action';
 
-export enum API {
-  SignUpUser = '/api/signUpUser',
-  LoginUser = '/api/loginUser',
-  LogOutUser = '/api/logOutUser',
-  GetUserInfo = '/api/getUserInfo',
-  CreateCollection = '/api/createCollection',
-  GetMyCollections = '/api/getMyCollections',
-  GetAllCollections = '/api/getAllCollections',
-  CreateItem = '/api/createItem',
-  DeleteCollection = '/api/deleteCollection',
-  DeleteItem = '/api/deleteItem',
-  GetCollection = '/api/getCollection',
-  GetItem = '/api/getItem',
-  GetCollectionItems = '/api/getCollectionItems',
-  GetBigCollections = '/api/getBigCollections',
-  GetLastAddItems = '/api/getLastAddItems',
-}
+const baseUrl = 'https://course-project-melnik.herokuapp.com/';
+
+export const API = {
+  SignUpUser: `${baseUrl}/api/signUpUser`,
+  LoginUser: `${baseUrl}/api/loginUser`,
+  LogOutUser: `${baseUrl}/api/logOutUser`,
+  GetUserInfo: `${baseUrl}/api/getUserInfo`,
+  CreateCollection: `${baseUrl}/api/createCollection`,
+  GetMyCollections: `${baseUrl}/api/getMyCollections`,
+  GetAllCollections: `${baseUrl}/api/getAllCollections`,
+  CreateItem: `${baseUrl}/api/createItem`,
+  DeleteCollection: `${baseUrl}/api/deleteCollection`,
+  DeleteItem: `${baseUrl}/api/deleteItem`,
+  GetCollection: `${baseUrl}/api/getCollection`,
+  GetItem: `${baseUrl}/api/getItem`,
+  GetCollectionItems: `${baseUrl}/api/getCollectionItems`,
+  GetBigCollections: `${baseUrl}/api/getBigCollections`,
+  GetLastAddItems: `${baseUrl}/api/getLastAddItems`,
+};
 
 export const requestAPI = {
   signUpUser(credentials: CredentialsType) {
@@ -151,7 +153,7 @@ export const requestAPI = {
     return axios
       .delete(API.DeleteItem, {
         params: {
-          id: itemId,
+          itemId,
         },
       })
       .then((response) => response.data)

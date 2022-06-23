@@ -155,4 +155,23 @@ router.post('/api/createItem', upload.single('icon'), (req, res) => {
     }));
 });
 
+router.delete('/api/deleteItem/', (req, res) => {
+  const { itemId } = req.query;
+
+  console.log(itemId);
+
+  sqlz.Item.destroy({
+    where: {
+      id: itemId,
+    },
+  })
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
 module.exports = router;
