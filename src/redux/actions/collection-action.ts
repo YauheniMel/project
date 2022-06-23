@@ -8,6 +8,7 @@ import {
 
 export enum CollectionActionTypes {
   SetTargetItem = 'SET-TARGET-ITEM',
+  DeleteItem = 'DELETE-ITEM',
   SetTargetCollection = 'SET-TARGET-COLLECTION',
   SetTargetCollectionItems = 'SET-TARGET-COLLECTION-ITEMS',
 }
@@ -15,6 +16,11 @@ export enum CollectionActionTypes {
 export const setTargetItemAction = (item: ItemType) => ({
   type: CollectionActionTypes.SetTargetItem,
   item,
+});
+
+export const deleteItemAction = (itemId: string) => ({
+  type: CollectionActionTypes.DeleteItem,
+  itemId,
 });
 
 export const setTargetCollectionAction = (collection: CollectionType) => ({
@@ -52,6 +58,11 @@ export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => 
     .then((response) => console.log(response));
 };
 
+export const delItemThunk = (itemId: string) => (dispatch: any) => {
+  console.log(dispatch);
+  requestAPI.deleteItem(itemId).then((response) => console.log(response));
+};
+
 export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) => {
   console.log(dispatch);
 
@@ -67,7 +78,7 @@ export const deleteCollectionThunk = (collectionId: string) => (dispatch: any) =
 };
 
 export const deleteItemThunk = (itemId: string) => (dispatch: any) => {
-  console.log(dispatch);
-
-  requestAPI.deleteItem(itemId).then((response) => console.log(response));
+  requestAPI
+    .deleteItem(itemId)
+    .then((response) => dispatch(deleteItemAction(response)));
 };

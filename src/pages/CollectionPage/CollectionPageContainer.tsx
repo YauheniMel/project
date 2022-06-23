@@ -66,6 +66,7 @@ const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
           <ItemPage
             getTargetItem={props.getTargetItem}
             targetItem={props.targetItem as ItemType}
+            deleteItem={props.deleteItem}
           />
         )}
       />
@@ -87,13 +88,15 @@ const mapStateToProps = (state: AppStateType) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   createNewItem: (itemInfo: ItemInitType) => dispatch(createNewItemThunk(itemInfo)),
-  deleteItem: (itemId: string) => dispatch(deleteItemThunk(itemId)),
   getTargetCollection: (collectionId: string) => dispatch(getTargetCollectionThunk(collectionId)),
   getTargetItem: (itemId: string, collectionId: string) => {
     dispatch(getTargetItemThunk(itemId, collectionId));
   },
   getCollectionItems: (collectionId: string) => {
     dispatch(getCollectionItemsThunk(collectionId));
+  },
+  deleteItem: (itemId: string) => {
+    dispatch(deleteItemThunk(itemId));
   },
   setTargetItem: (item: ItemType) => {
     dispatch(setTargetItemAction(item));
