@@ -13,12 +13,12 @@ router.post('/api/signUpUser', (req, res) => {
     isOnline: true,
   })
     .then(() => {
-      res.status(200).send({
+      res.sendStatus(200).send({
         code: 1,
         message: 'SignUp success!',
       });
     })
-    .catch((err) => res.status(400).send({
+    .catch((err) => res.sendStatus(400).send({
       code: 0,
       message: err,
     }));
@@ -34,11 +34,11 @@ router.get('/api/getUserInfo/', (req, res) => {
           name,
           surname,
           isOnline: true,
-        }).then((newUser) => res.status(200).send(newUser));
+        }).then((newUser) => res.sendStatus(200).send(newUser));
       }
-      return res.status(200).json(response);
+      return res.sendStatus(200).json(response);
     })
-    .catch((err) => res.status(400).send({
+    .catch((err) => res.sendStatus(400).send({
       code: 0,
       message: err,
     }));
@@ -49,12 +49,12 @@ router.post('/api/loginUser', (req, res) => {
 
   sqlz.User.update({ isOnline: true, loginDate: new Date() }, { where: { id } })
     .then(() => {
-      res.status(200).send({
+      res.sendStatus(200).send({
         code: 1,
         message: 'Logout success!',
       });
     })
-    .catch((err) => res.status(400).send({
+    .catch((err) => res.sendStatus(400).send({
       code: 0,
       message: err,
     }));
@@ -65,12 +65,12 @@ router.post('/api/logOutUser', (req, res) => {
 
   sqlz.User.update({ isOnline: false }, { where: { id } })
     .then(() => {
-      res.status(200).send({
+      res.sendStatus(200).send({
         code: 1,
         message: 'Logout success!',
       });
     })
-    .catch((err) => res.status(400).send({
+    .catch((err) => res.sendStatus(400).send({
       code: 0,
       message: err,
     }));

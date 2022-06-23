@@ -1,9 +1,14 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('course_project', 'root', 'melnik123', {
-  dialect: 'mysql',
-  host: 'localhost',
-});
+const sequelize = new Sequelize(
+  'heroku_a2bd434709364ef',
+  'b76365a37ff35f',
+  'f3c65d82',
+  {
+    dialect: 'mysql',
+    host: 'eu-cdbr-west-02.cleardb.net',
+  },
+);
 
 const User = sequelize.define('user', {
   id: {
