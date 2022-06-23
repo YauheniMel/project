@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { CredentialsType } from '../redux/actions/auth-action';
 
-const baseUrl = 'https://course-project-melnik.herokuapp.com';
+const baseUrl = '';
 
 export const API = {
   SignUpUser: `${baseUrl}/api/signUpUser`,
@@ -129,7 +129,6 @@ export const requestAPI = {
 
     // need to find another way
     Object.keys(itemInfo).forEach((key: string) => formData.append(key, itemInfo[key]));
-
     return axios
       .post(API.CreateItem, formData, {
         headers: {

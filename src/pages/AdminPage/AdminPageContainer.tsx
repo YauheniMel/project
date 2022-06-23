@@ -38,5 +38,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   setTargetCollections: (id: string) => dispatch(setAdminTargetCollectons(id)),
   getCollection: (collection: CollectionType) => dispatch(setTargetCollectionAction(collection)),
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPageContainer);

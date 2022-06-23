@@ -21,9 +21,8 @@ export const getMyCollectionsThunk = (userId: string) => (dispatch: any) => {
     .getMyCollections(userId)
     .then((response) => dispatch(setMyCollectionsAction(response as CollectionType[])));
 };
-
 export const getAllCollectionsThunk = (userIds: string[]) => (dispatch: any) => {
-  requestAPI
-    .getAllCollections(userIds)
-    .then((response) => dispatch(setAllCollectionsAction(response as CollectionType[])));
+  requestAPI.getAllCollections(userIds).then((response) => {
+    dispatch(setAllCollectionsAction(response as CollectionType[]));
+  });
 };

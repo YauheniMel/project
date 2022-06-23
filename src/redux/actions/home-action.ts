@@ -22,14 +22,13 @@ const getLastAddItemsAction = (items: ItemType[]) => ({
 });
 
 export const getBigCollectionsThunk = () => (dispatch: any) => {
-  requestAPI
-    .getBigCollections()
-    .then((response) => dispatch(setBigCollectionsAction(response as CollectionType[])));
+  requestAPI.getBigCollections().then((response) => {
+    dispatch(setBigCollectionsAction(response as CollectionType[]));
+  });
 };
 
 export const getLastAddItemsThunk = () => (dispatch: any) => {
-  requestAPI
-    .getLastAddItems()
-    .then((response) => dispatch(getLastAddItemsAction(response as ItemType[])));
+  requestAPI.getLastAddItems().then((response) => {
+    dispatch(getLastAddItemsAction(response as ItemType[]));
+  });
 };
-// export const getLastItemsThunk = () => {}
