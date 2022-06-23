@@ -1,26 +1,26 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { AppDispatchType, AppStateType } from '../../redux';
+import { AppStateType } from '../../redux';
 import {
   setAdminTargetCollectons,
   setAdminTargetUser,
 } from '../../redux/actions/admin-action';
-import { getCollectionAction } from '../../redux/actions/collection-action';
+import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
   getAdminTargetCollections,
   getAdminTargetUser,
   getAdminUsers,
 } from '../../redux/selectors/admin-selector';
-import { CollectionInitType, UserType } from '../../types';
+import { CollectionType, TargetUserType } from '../../types';
 import AdminPage from './AdminPage';
 
 interface IAdminPageContainer {
-  targetCollections: CollectionInitType[] | null;
-  targetUser: UserType | null;
+  targetCollections: CollectionType[] | null;
+  targetUser: TargetUserType | null;
+  users: TargetUserType[] | null;
   setTargetUser: (id: string) => void;
   setTargetCollections: (id: string) => void;
-  users: UserType[] | null;
-  getCollection: (id: string, userId: string) => void;
+  getCollection: (collection: CollectionType) => void;
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => (
@@ -33,10 +33,10 @@ const mapStateToProps = (state: AppStateType) => ({
   users: getAdminUsers(state),
 });
 
-const mapDispatchToProps = (dispatch: AppDispatchType) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   setTargetUser: (id: string) => dispatch(setAdminTargetUser(id)),
   setTargetCollections: (id: string) => dispatch(setAdminTargetCollectons(id)),
-  getCollection: (id: string, userId: string) => dispatch(getCollectionAction({ id, userId })),
+  getCollection: (collection: CollectionType) => dispatch(setTargetCollectionAction(collection)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPageContainer);

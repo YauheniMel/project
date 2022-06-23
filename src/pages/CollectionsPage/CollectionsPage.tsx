@@ -1,39 +1,33 @@
 import React, { FC } from 'react';
 import { Box, Typography } from '@mui/material';
-import { AllCollectionsType, CollectionInitType } from '../../types';
+import { CollectionType } from '../../types';
 import Slider from '../../components/Slider/Slider';
 
 interface ICollectionsPage {
-  collections: AllCollectionsType[];
-  myCollections: CollectionInitType[] | null;
-  getCollection: (id: string, userId: string) => void;
+  collections: CollectionType[] | null;
+  myCollections: CollectionType[] | null;
+  setCollection: (collectionId: CollectionType) => void;
 }
 
 const CollectionsPage: FC<ICollectionsPage> = ({
   collections,
-  getCollection,
   myCollections,
+  setCollection,
 }) => (
   <>
     {myCollections && (
       <Box>
         <Typography variant="h3">My collections</Typography>
-        <Slider collections={myCollections} getCollection={getCollection} />
+        <Slider collections={myCollections} setCollection={setCollection} />
       </Box>
     )}
-    {collections.map((collection) => (
-      <Box key={collection.user.id}>
-        <Typography variant="h3">
-          {collection.user.name}
-          {' '}
-          {collection.user.surname}
-        </Typography>
-        <Slider
-          collections={collection.collections}
-          getCollection={getCollection}
-        />
+    {collections && (
+      <Box>
+        {JSON.stringify(collections, null, 2)}
+        <Typography variant="h3">My collections</Typography>
+        <Slider collections={collections} setCollection={setCollection} />
       </Box>
-    ))}
+    )}
   </>
 );
 

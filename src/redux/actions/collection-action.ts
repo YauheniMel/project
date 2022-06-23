@@ -1,26 +1,73 @@
+import { requestAPI } from '../../api/api';
+import {
+  CollectionInitType,
+  CollectionType,
+  ItemInitType,
+  ItemType,
+} from '../../types';
+
 export enum CollectionActionTypes {
-  getCollection = 'GET-COLLECTION',
-  setTargetItem = 'SET-TARGET-ITEM',
-  getMyCollection = 'GET-MY-COLLECTION',
-  setTargetCollection = 'SET-TARGET-COLLECTION',
+  SetTargetItem = 'SET-TARGET-ITEM',
+  SetTargetCollection = 'SET-TARGET-COLLECTION',
+  SetTargetCollectionItems = 'SET-TARGET-COLLECTION-ITEMS',
 }
 
-export const getMyCollectionAction = (id: string) => ({
-  type: CollectionActionTypes.getMyCollection,
-  id,
+export const setTargetItemAction = (item: ItemType) => ({
+  type: CollectionActionTypes.SetTargetItem,
+  item,
 });
 
-export const getCollectionAction = (ids: { id: string; userId: string }) => ({
-  type: CollectionActionTypes.getCollection,
-  ids,
+export const setTargetCollectionAction = (collection: CollectionType) => ({
+  type: CollectionActionTypes.SetTargetCollection,
+  collection,
 });
 
-export const setTargetItemAction = (id: string) => ({
-  type: CollectionActionTypes.setTargetItem,
-  id,
+export const setTargetCollectionItemsAction = (items: ItemType[]) => ({
+  type: CollectionActionTypes.SetTargetCollectionItems,
+  items,
 });
 
-export const setTargetCollectionAction = (id: string) => ({
-  type: CollectionActionTypes.setTargetCollection,
-  id,
-});
+export const getCollectionItemsThunk = (collectionId: string) => (dispatch: any) => {
+  requestAPI.getCollectionItems(collectionId).then((response) => {
+    dispatch(setTargetCollectionItemsAction(response as ItemType[]));
+  });
+};
+
+export const getTargetCollectionThunk = (collectionId: string) => (dispatch: any) => {
+  requestAPI.getCollection(collectionId).then((response) => {
+    dispatch(setTargetCollectionAction(response as CollectionType));
+  });
+};
+
+export const getTargetItemThunk = (itemId: string, collectionId: string) => (dispatch: any) => {
+  requestAPI.getItem(itemId, collectionId).then((response) => {
+    dispatch(setTargetItemAction(response as ItemType));
+  });
+};
+
+export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => (dispatch: any) => {
+  console.log(dispatch);
+  requestAPI
+    .createCollection(collectionInfo)
+    .then((response) => console.log(response));
+};
+
+export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) => {
+  console.log(dispatch);
+
+  requestAPI.createItem(itemInfo).then((response) => console.log(response));
+};
+
+export const deleteCollectionThunk = (collectionId: string) => (dispatch: any) => {
+  console.log(dispatch);
+
+  requestAPI
+    .deleteCollection(collectionId)
+    .then((response) => console.log(response));
+};
+
+export const deleteItemThunk = (itemId: string) => (dispatch: any) => {
+  console.log(dispatch);
+
+  requestAPI.deleteItem(itemId).then((response) => console.log(response));
+};

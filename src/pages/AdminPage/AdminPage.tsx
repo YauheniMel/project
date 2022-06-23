@@ -12,16 +12,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import BlockIcon from '@mui/icons-material/Block';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CollectionInitType, UserType } from '../../types';
+import { CollectionType, TargetUserType } from '../../types';
 import Slider from '../../components/Slider/Slider';
 
 interface IAdminPage {
-  targetCollections: CollectionInitType[] | null;
-  targetUser: UserType | null;
+  targetCollections: CollectionType[] | null;
+  targetUser: TargetUserType | null;
   setTargetUser: (id: string) => void;
   setTargetCollections: (id: string) => void;
-  users: UserType[] | null;
-  getCollection: (id: string, userId: string) => void;
+  users: TargetUserType[] | null;
+  getCollection: (collection: CollectionType) => void;
 }
 
 const AdminPage: FC<IAdminPage> = ({
@@ -75,20 +75,22 @@ const AdminPage: FC<IAdminPage> = ({
           <Typography variant="h3">My collections</Typography>
           <Slider
             collections={targetCollections}
-            getCollection={getCollection}
+            setCollection={getCollection}
           />
         </Box>
       )}
     </Grid>
     <Grid item xs={2} sx={{ backgroundColor: 'green', height: '70%' }}>
-      <ListItemButton
-        onClick={() => setTargetCollections(targetUser!.id)}
-        sx={{ backgroundColor: 'white' }}
-      >
-        {targetUser!.name}
-        {' '}
-        {targetUser!.surname}
-      </ListItemButton>
+      {targetUser && (
+        <ListItemButton
+          onClick={() => setTargetCollections(targetUser.id)}
+          sx={{ backgroundColor: 'white' }}
+        >
+          {targetUser.name}
+          {' '}
+          {targetUser.surname}
+        </ListItemButton>
+      )}
       <Box sx={{ width: '100%', backgroundColor: 'gray' }}>
         {users
           && users.map((user) => (

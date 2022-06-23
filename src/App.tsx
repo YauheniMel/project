@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 import 'firebase/compat/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -9,52 +9,46 @@ import RoutesApp from './constants/routes';
 import SignUpPageContainer from './auth/SignUpPage/SignUpPageContainer';
 import HomePageContainer from './pages/HomePage/HomePageContainer';
 import { getIsAuth } from './redux/selectors/auth-selector';
-import { AppDispatchType, AppStateType } from './redux';
 import { setTargetItemAction } from './redux/actions/collection-action';
 import UserPageContainer from './pages/UserPage/UserPageContainer';
 import CollectionPageContainer from './pages/CollectionPage/CollectionPageContainer';
 import AdminPageContainer from './pages/AdminPage/AdminPageContainer';
 import CollectionsPageContainer from './pages/CollectionsPage/CollectionsPageContainer';
-import { setUserPersonalInfoAction } from './redux/actions/user-action';
-import { UserPersonalInfoType } from './types';
-import { loginAction } from './redux/actions/auth-action';
+import { getUserPersonalInfoThunk } from './redux/actions/user-action';
+import { CredentialsType, loginAction } from './redux/actions/auth-action';
+import SearchPageContainer from './pages/SearchPage/SearchPageContainer';
+import { AppStateType } from './redux';
+import { ItemType } from './types';
 
 interface IRootPage {
-  isAuth: boolean;
-  setTargetItem: (id: string) => void;
+  setTargetItem: (item: ItemType) => void;
   loginUser: () => void;
-  setUserPersonalInfo: (payload: UserPersonalInfoType) => void;
+  getUserPersonalInfo: (payload: CredentialsType) => void;
 }
 const App: FC<IRootPage> = ({
   setTargetItem,
-  isAuth,
   loginUser,
-  setUserPersonalInfo,
+  getUserPersonalInfo,
 }) => {
-  const navigate = useNavigate();
-
   useEffect(() => {
     const auth = getAuth();
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, displayName } = user;
-
         if (displayName) {
           const [name, surname] = displayName.split(' ');
 
-          setUserPersonalInfo({
+          getUserPersonalInfo({
             id: uid,
             name,
             surname,
           });
           loginUser();
-          navigate(RoutesApp.Home);
         }
-      } else {
-        navigate(RoutesApp.Login);
       }
     });
-  }, [isAuth]);
+  }, []);
 
   return (
     <div className="App">
@@ -69,12 +63,13 @@ const App: FC<IRootPage> = ({
           <Route path={RoutesApp.User} element={<UserPageContainer />} />
           <Route
             path={RoutesApp.Collection}
-            element={<CollectionPageContainer setTargetItem={setTargetItem} />}
+            element={<CollectionPageContainer />}
           />
           <Route
             path={RoutesApp.Collections}
             element={<CollectionsPageContainer />}
           />
+          <Route path={RoutesApp.Search} element={<SearchPageContainer />} />
         </Route>
         <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
       </Routes>
@@ -86,11 +81,9 @@ const mapStateToProps = (state: AppStateType) => ({
   isAuth: getIsAuth(state),
 });
 
-const mapDispatchToProps = (dispatch: AppDispatchType) => ({
-  setTargetItem: (id: string) => dispatch(setTargetItemAction(id)),
-  setUserPersonalInfo(payload: UserPersonalInfoType) {
-    dispatch(setUserPersonalInfoAction(payload));
-  },
+const mapDispatchToProps = (dispatch: any) => ({
+  setTargetItem: (item: ItemType) => dispatch(setTargetItemAction(item)),
+  getUserPersonalInfo: (payload: CredentialsType) => dispatch(getUserPersonalInfoThunk(payload)),
   loginUser: () => dispatch(loginAction()),
 });
 

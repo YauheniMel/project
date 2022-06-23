@@ -1,23 +1,46 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
-import { getCollections, getItems } from '../../redux/selectors/home-selector';
-import { CollectionInitType, ItemType } from '../../types';
+import {
+  getBigCollectionsThunk,
+  getLastAddItemsThunk,
+} from '../../redux/actions/home-action';
+import {
+  getCollectionsSelector,
+  getItemsSelector,
+} from '../../redux/selectors/home-selector';
+import { CollectionType, ItemType } from '../../types';
 import HomePage from './HomePage';
 
 interface IHomePageContainer {
-  collections: CollectionInitType[];
-  list: ItemType[];
-  setTargetItem: (id: string) => void;
+  collections: CollectionType[] | null;
+  list: ItemType[] | null;
+  setTargetItem: (item: ItemType) => void;
+  getBigCollections: () => void;
+  getLastAddItems: () => void;
 }
 
-const HomePageContainer: FC<IHomePageContainer> = (props) => (
-  <HomePage {...props} />
-);
+const HomePageContainer: FC<IHomePageContainer> = (props) => {
+  useEffect(() => {
+    const {
+      collections, list, getBigCollections, getLastAddItems,
+    } = props;
+
+    if (!collections) getBigCollections();
+
+    if (!list) getLastAddItems();
+  }, []);
+  return <HomePage {...props} />;
+};
 
 const mapStateToProps = (state: AppStateType) => ({
-  collections: getCollections(state),
-  list: getItems(state),
+  collections: getCollectionsSelector(state),
+  list: getItemsSelector(state),
 });
 
-export default connect(mapStateToProps)(HomePageContainer);
+const mapDispatchToProps = (dispatch: any) => ({
+  getBigCollections: () => dispatch(getBigCollectionsThunk()),
+  getLastAddItems: () => dispatch(getLastAddItemsThunk()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);

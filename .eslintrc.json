@@ -25,10 +25,12 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-shadow": "off",
+    "no-param-reassign": "off",
     "@typescript-eslint/no-shadow": "off",
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-var-requires": "off",
     "react/jsx-props-no-spreading": "off",
+    "no-plusplus": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
