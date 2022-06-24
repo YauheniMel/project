@@ -33,9 +33,9 @@ router.get('/api/getItem/', (req, res) => {
         }
       }
 
-      res.sendStatus(200).send(response);
+      res.status(200).send(response);
     })
-    .catch((err) => res.sendStatus(400).send({
+    .catch((err) => res.status(400).send({
       code: 0,
       message: err,
     }));
@@ -57,9 +57,9 @@ router.get('/api/getLastAddItems', (req, res) => {
           return item;
         });
       }
-      res.sendStatus(200).send(resWithImg);
+      res.status(200).send(resWithImg);
     })
-    .catch((err) => res.sendStatus(400).send({
+    .catch((err) => res.status(400).send({
       code: 0,
       message: err,
     }));
@@ -86,9 +86,9 @@ router.get('/api/getCollectionItems/', (req, res) => {
           return item;
         });
       }
-      res.sendStatus(200).send(resWithImg);
+      res.status(200).send(resWithImg);
     })
-    .catch((err) => res.sendStatus(400).send({
+    .catch((err) => res.status(400).send({
       code: 0,
       message: err,
     }));
@@ -118,7 +118,10 @@ router.post('/api/createItem', upload.single('icon'), (req, res) => {
     checkboxKey3: checkboxValue3 = null,
   } = JSON.parse(JSON.stringify(req.body));
 
-  const profilePicture = Buffer.from(fs.readFileSync(req.file.path));
+  let profilePicture = null;
+  if (req.file) {
+    profilePicture = Buffer.from(fs.readFileSync(req.file.path));
+  }
 
   sqlz.Item.create({
     icon: profilePicture || null,
@@ -144,12 +147,12 @@ router.post('/api/createItem', upload.single('icon'), (req, res) => {
     collectionId,
   })
     .then(() => {
-      res.sendStatus(200).send({
+      res.status(200).send({
         code: 1,
         message: 'Create item success!',
       });
     })
-    .catch((err) => res.sendStatus(400).send({
+    .catch((err) => res.status(400).send({
       code: 0,
       message: err,
     }));
@@ -166,9 +169,9 @@ router.delete('/api/deleteItem/', (req, res) => {
     },
   })
     .then((response) => {
-      res.sendStatus(200).send(response);
+      res.status(200).send(response);
     })
-    .catch((err) => res.sendStatus(400).send({
+    .catch((err) => res.status(400).send({
       code: 0,
       message: err,
     }));

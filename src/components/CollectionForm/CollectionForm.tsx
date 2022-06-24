@@ -73,7 +73,7 @@ const CollectionForm: FC<ICollectionForm> = ({
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log(image);
+      console.log(values);
       createNewCollection({
         userId,
         icon: image,
