@@ -11,20 +11,17 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(
-  cors({
-    origin: '*',
-  }),
-);
+app.use(cors());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 connection.connect((err) => {
   if (err) {
-    console.log('Error occurred', err);
+    console.log('ROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO', err);
   }
 });
+
 sqlz.sequelize.sync().catch((err) => console.log(err));
 
 app.use(routerUser);
