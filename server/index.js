@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 connection.connect((err) => {
   if (err) {
-    console.log('ROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO', err);
+    console.log('Error occurred', err);
   }
 });
 
