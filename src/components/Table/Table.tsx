@@ -1,16 +1,24 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '@mui/material';
+import { Box, Button, Link } from '@mui/material';
 import { ItemType } from '../../types';
 import RoutesApp from '../../constants/routes';
 
 interface ITable {
   list: ItemType[];
   setTargetItem: (item: ItemType) => void;
+  setEditItems: (itemIds: string[]) => void;
+  setDeleteItems: (itemIds: string[]) => void;
 }
 
-const Table: FC<ITable> = ({ list, setTargetItem }) => {
+const Table: FC<ITable> = ({
+  list,
+  setTargetItem,
+  setEditItems,
+  setDeleteItems,
+}) => {
+  const [selectRows, setSelectRows] = useState([]);
   const columns: GridColDef[] = [
     {
       field: 'id',
@@ -47,15 +55,36 @@ const Table: FC<ITable> = ({ list, setTargetItem }) => {
     },
   ];
 
+  function handleChangeStateTable(e: any) {
+    setSelectRows(e.selection);
+  }
+
   return (
-    <DataGrid
-      autoHeight
-      components={{ Toolbar: GridToolbar }}
-      rows={list}
-      columns={columns}
-      checkboxSelection
-      disableSelectionOnClick
-    />
+    <Box sx={{ position: 'relative' }}>
+      <Button
+        onClick={() => setDeleteItems(selectRows)}
+        color="error"
+        disabled={selectRows.length === 0}
+      >
+        Put Delete
+      </Button>
+      <Button
+        onClick={() => setEditItems(selectRows)}
+        disabled={selectRows.length === 0}
+        color="warning"
+      >
+        Put Update
+      </Button>
+      <DataGrid
+        autoHeight
+        components={{ Toolbar: GridToolbar }}
+        rows={list}
+        columns={columns}
+        checkboxSelection
+        onStateChange={handleChangeStateTable}
+        disableSelectionOnClick
+      />
+    </Box>
   );
 };
 

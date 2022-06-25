@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Chip, Link, Typography } from '@mui/material';
+import {
+  CardMedia, Chip, Link, Typography,
+} from '@mui/material';
 import Card from '@mui/material/Card';
 import TagIcon from '@mui/icons-material/Tag';
 import { makeStyles } from '@material-ui/core';
@@ -44,6 +46,12 @@ const CardItem: FC<ICardItem> = ({ item, setTargetItem }) => {
         {' '}
         likes
       </Typography>
+      <CardMedia
+        component="img"
+        height="194"
+        image={`data:application/pdf;base64,${item.icon}`}
+        alt="Paella dish"
+      />
       <Typography
         variant="body2"
         sx={{ fontWeight: 'md', color: 'text.secondary' }}

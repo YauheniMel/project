@@ -50,7 +50,7 @@ const Header: FC<IHeader> = ({ name, surname, isAuth }) => {
   return (
     <AppBar className={classes.appBar} position="relative">
       <Toolbar sx={{ justifyContent: 'space-around' }}>
-        {isAuth ? (
+        {isAuth && name ? (
           <Logo name={name} surname={surname} />
         ) : (
           <Link to={RoutesApp.Login}>Login</Link>

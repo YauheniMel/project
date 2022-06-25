@@ -7,8 +7,12 @@ import {
   createNewItemThunk,
   deleteItemThunk,
   getCollectionItemsThunk,
+  getDeleteItemsThunk,
+  getEditItemsThunk,
   getTargetCollectionThunk,
   getTargetItemThunk,
+  setDeleteItemsThunk,
+  setEditItemsThunk,
   setTargetItemAction,
 } from '../../redux/actions/collection-action';
 import {
@@ -21,6 +25,8 @@ import {
   getCollectionTargetItemSelector,
   getCollectionThemeSelector,
   getCollectionUpdatedAtSelector,
+  getDeleteItemList,
+  getEditItemList,
 } from '../../redux/selectors/collection-selector';
 import { ItemInitType, ItemType } from '../../types';
 import ItemPage from '../ItemPage/ItemPage';
@@ -42,16 +48,32 @@ interface IHomePageContainer {
   setTargetItem: (item: ItemType) => void;
   getTargetCollection: (collectionId: string) => void;
   getTargetItem: (itemId: string, collectionId: string) => void;
+  listEditItems: Array<ItemType | null>;
+  listDeleteItems: Array<ItemType | null>;
+  setEditItems: (itemIds: string[]) => void;
+  setDeleteItems: (itemIds: string[]) => void;
+  getEditItems: (collectionId: string) => void;
+  getDeleteItems: (collectionId: string) => void;
 }
 
 const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
   const { collectionId } = useParams();
 
   useEffect(() => {
-    const { id, getCollectionItems, getTargetCollection } = props;
+    const {
+      id,
+      getCollectionItems,
+      getTargetCollection,
+      getEditItems,
+      getDeleteItems,
+    } = props;
 
     if (collectionId) {
-      if (!id) getTargetCollection(collectionId);
+      if (!id) {
+        getTargetCollection(collectionId);
+        getEditItems(collectionId);
+        getDeleteItems(collectionId);
+      }
 
       getCollectionItems(collectionId);
     }
@@ -84,6 +106,8 @@ const mapStateToProps = (state: AppStateType) => ({
   updatedAt: getCollectionUpdatedAtSelector(state),
   list: getCollectionListSelector(state),
   targetItem: getCollectionTargetItemSelector(state),
+  listEditItems: getEditItemList(state),
+  listDeleteItems: getDeleteItemList(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -100,6 +124,18 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   setTargetItem: (item: ItemType) => {
     dispatch(setTargetItemAction(item));
+  },
+  setEditItems: (itemIds: string[]) => {
+    dispatch(setEditItemsThunk(itemIds));
+  },
+  setDeleteItems: (itemIds: string[]) => {
+    dispatch(setDeleteItemsThunk(itemIds));
+  },
+  getEditItems: (collectionId: string) => {
+    dispatch(getEditItemsThunk(collectionId));
+  },
+  getDeleteItems: (collectionId: string) => {
+    dispatch(getDeleteItemsThunk(collectionId));
   },
 });
 

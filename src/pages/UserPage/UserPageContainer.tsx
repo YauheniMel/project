@@ -6,8 +6,16 @@ import {
   deleteCollectionThunk,
   setTargetCollectionAction,
 } from '../../redux/actions/collection-action';
-import { getMyCollectionsThunk } from '../../redux/actions/user-action';
 import {
+  getDeleteCollectionsThunk,
+  getEditCollectionsThunk,
+  getMyCollectionsThunk,
+  setDeleteCollectionThunk,
+  setEditCollectionThunk,
+} from '../../redux/actions/user-action';
+import {
+  getDeleteCollections,
+  getEditCollections,
   getMyCollections,
   getUserId,
   getUserIsAdmin,
@@ -31,13 +39,27 @@ interface IUserPageContainer {
   getMyCollections: (userId: string) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
   deleteCollection: (collectionId: string) => void;
+  setEditCollection: (collectionId: string) => void;
+  setDeleteCollection: (collectionId: string) => void;
+  getEditCollections: (userId: string) => void;
+  getDeleteCollections: (userId: string) => void;
+  editCollections: Array<CollectionType | null>;
+  deleteCollections: Array<CollectionType | null>;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => {
   useEffect(() => {
-    const { id, getMyCollections } = props;
+    const {
+      id, getMyCollections, getEditCollections, getDeleteCollections,
+    } = props;
 
-    if (id) getMyCollections(id);
+    if (id) {
+      getEditCollections(id);
+
+      getDeleteCollections(id);
+
+      getMyCollections(id);
+    }
   }, [props.id]);
 
   return <UserPage {...props} />;
@@ -51,6 +73,8 @@ const mapStateToProps = (state: AppStateType) => ({
   theme: getUserTheme(state),
   isAdmin: getUserIsAdmin(state),
   collections: getMyCollections(state),
+  editCollections: getEditCollections(state),
+  deleteCollections: getDeleteCollections(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -65,6 +89,18 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   deleteCollection: (collectionId: string) => {
     dispatch(deleteCollectionThunk(collectionId));
+  },
+  setEditCollection: (collectionId: string) => {
+    dispatch(setEditCollectionThunk(collectionId));
+  },
+  setDeleteCollection: (collectionId: string) => {
+    dispatch(setDeleteCollectionThunk(collectionId));
+  },
+  getEditCollections: (userId: string) => {
+    dispatch(getEditCollectionsThunk(userId));
+  },
+  getDeleteCollections: (userId: string) => {
+    dispatch(getDeleteCollectionsThunk(userId));
   },
 });
 

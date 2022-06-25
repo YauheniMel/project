@@ -19,6 +19,14 @@ export const API = {
   GetCollectionItems: `${baseUrl}/api/getCollectionItems`,
   GetBigCollections: `${baseUrl}/api/getBigCollections`,
   GetLastAddItems: `${baseUrl}/api/getLastAddItems`,
+  SetEditCollection: `${baseUrl}/api/setEditCollection`,
+  SetDeleteCollection: `${baseUrl}/api/setDeleteCollection`,
+  GetEditCollections: `${baseUrl}/api/getEditCollections`,
+  GetDeleteCollections: `${baseUrl}/api/getDeleteCollections`,
+  SetEditItems: `${baseUrl}/api/setEditItems`,
+  GetEditItems: `${baseUrl}/api/getEditItems`,
+  SetDeleteItems: `${baseUrl}/api/setDeleteItems`,
+  GetDeleteItems: `${baseUrl}/api/getDeleteItems`,
 };
 
 export const requestAPI = {
@@ -154,6 +162,65 @@ export const requestAPI = {
         params: {
           itemId,
         },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setEditCollection(collectionId: string) {
+    console.log(collectionId);
+    return axios
+      .put(API.SetEditCollection, { collectionId })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setEditItems(itemIds: string[]) {
+    return axios
+      .put(API.SetEditItems, itemIds)
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getEditItems(collectionId: string) {
+    return axios
+      .get(API.GetEditItems, {
+        params: { collectionId },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getEditCollections(userId: string) {
+    console.log(userId);
+    return axios
+      .get(API.GetEditCollections, {
+        params: { userId },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setDeleteCollection(collectionId: string) {
+    return axios
+      .put(API.SetDeleteCollection, { collectionId })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setDeleteItems(itemIds: string[]) {
+    return axios
+      .put(API.SetDeleteItems, itemIds)
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getDeleteItems(collectionId: string) {
+    return axios
+      .get(API.GetDeleteItems, {
+        params: { collectionId },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getDeleteCollections(userId: string) {
+    console.log(userId);
+    return axios
+      .get(API.GetDeleteCollections, {
+        params: { userId },
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));

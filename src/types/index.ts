@@ -86,6 +86,8 @@ export interface CollectionType {
   updatedAt: string | null;
   list: ItemType[] | null;
   targetItem: ItemType | null;
+  listEditItems: Array<ItemType | null>;
+  listDeleteItems: Array<ItemType | null>;
 }
 
 export interface CollectionsPageType {
@@ -123,6 +125,8 @@ export interface UserPageType {
   createdAt: null | string;
   updatedAt: null | string;
   myCollections: null | CollectionType[];
+  listEditCollections: Array<CollectionType | null>;
+  listDeleteCollections: Array<CollectionType | null>;
 }
 
 export interface TargetUserType {

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import {
+  Badge,
   Grid,
   ListItemButton,
   ListItemIcon,
@@ -14,6 +15,8 @@ import { ItemInitType, ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
+import ModalEdit from '../../components/ModalEdit/ModalEdit';
+import ModalDelete from '../../components/ModalDelete/ModalDelete';
 
 interface ICollectionPage {
   id: string;
@@ -25,8 +28,12 @@ interface ICollectionPage {
   updatedAt: string;
   list: ItemType[] | null;
   createNewItem: (itemInfo: ItemInitType) => void;
-  deleteItem: (itemId: string) => void;
+  // deleteItem: (itemId: string) => void;
   setTargetItem: (item: ItemType) => void;
+  listEditItems: Array<ItemType | null>;
+  listDeleteItems: Array<ItemType | null>;
+  setEditItems: (itemIds: string[]) => void;
+  setDeleteItems: (itemIds: string[]) => void;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -39,12 +46,30 @@ const CollectionPage: FC<ICollectionPage> = ({
   updatedAt,
   setTargetItem,
   createNewItem,
-  deleteItem,
   list,
+  listEditItems,
+  listDeleteItems,
+  setEditItems,
+  setDeleteItems,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
+  const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+
   return (
     <>
+      <ModalEdit
+        type="items"
+        openModal={openModalEdit}
+        setOpen={setOpenModalEdit}
+        editItems={listEditItems}
+      />
+      <ModalDelete
+        type="items"
+        openModal={openModalDelete}
+        setOpen={setOpenModalDelete}
+        deleteItems={listDeleteItems}
+      />
       <ItemForm
         customFields={customFields}
         collectionId={id}
@@ -68,20 +93,27 @@ const CollectionPage: FC<ICollectionPage> = ({
               </ListItemIcon>
               <ListItemText primary="Create new item" />
             </ListItemButton>
-            <ListItemButton sx={{ width: '100%' }}>
+            <ListItemButton
+              sx={{ width: '100%' }}
+              onClick={() => setOpenModalEdit(true)}
+            >
               <ListItemIcon>
-                <UpgradeIcon />
+                <Badge badgeContent={listEditItems.length} color="warning">
+                  <UpgradeIcon />
+                </Badge>
               </ListItemIcon>
-              <ListItemText primary="Update item" />
+              <ListItemText primary="Update" />
             </ListItemButton>
             <ListItemButton
               sx={{ width: '100%' }}
-              onClick={() => deleteItem('1')}
+              onClick={() => setOpenModalDelete(true)}
             >
               <ListItemIcon>
-                <DeleteIcon />
+                <Badge badgeContent={listDeleteItems.length} color="error">
+                  <DeleteIcon />
+                </Badge>
               </ListItemIcon>
-              <ListItemText primary="Delete item" />
+              <ListItemText primary="Delete" />
             </ListItemButton>
           </Sidebar>
         </Grid>
@@ -92,7 +124,14 @@ const CollectionPage: FC<ICollectionPage> = ({
           {description && (
             <MDEditor.Markdown source={description.replace(/&/gim, '\n')} />
           )}
-          {list && <Table list={list} setTargetItem={setTargetItem} />}
+          {list && (
+            <Table
+              list={list}
+              setTargetItem={setTargetItem}
+              setEditItems={setEditItems}
+              setDeleteItems={setDeleteItems}
+            />
+          )}
           <img
             width="200"
             src={`data:application/pdf;base64,${icon}`}

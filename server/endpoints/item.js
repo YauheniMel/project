@@ -33,7 +33,7 @@ router.get('/api/getItem/', (req, res) => {
         }
       }
 
-      res.status(200).send(response);
+      return res.status(200).send(response);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -57,7 +57,7 @@ router.get('/api/getLastAddItems', (req, res) => {
           return item;
         });
       }
-      res.status(200).send(resWithImg);
+      return res.status(200).send(resWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -86,7 +86,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
           return item;
         });
       }
-      res.status(200).send(resWithImg);
+      return res.status(200).send(resWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -170,6 +170,84 @@ router.delete('/api/deleteItem/', (req, res) => {
   })
     .then((response) => {
       res.status(200).send(response);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setEditItems/', (req, res) => {
+  const ids = req.body;
+
+  sqlz.Item.update({ isEdit: true, isDelete: false }, { where: { id: ids } })
+    .then((response) => res.status(200).send({
+      code: 1,
+      ids: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setDeleteItems/', (req, res) => {
+  const ids = req.body;
+
+  sqlz.Item.update({ isEdit: false, isDelete: true }, { where: { id: ids } })
+    .then((response) => res.status(200).send({
+      code: 1,
+      ids: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getEditItems/', (req, res) => {
+  const { collectionId } = req.query;
+
+  sqlz.Item.findAll({ where: { isEdit: true, collectionId } })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((item) => {
+          const { icon } = item;
+          if (icon) {
+            item.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return item;
+        });
+      }
+
+      return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getDeleteItems/', (req, res) => {
+  const { collectionId } = req.query;
+
+  sqlz.Item.findAll({ where: { isDelete: true, collectionId } })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((item) => {
+          const { icon } = item;
+          if (icon) {
+            item.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return item;
+        });
+      }
+
+      return res.status(200).send(resWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,

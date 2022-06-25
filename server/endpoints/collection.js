@@ -56,7 +56,7 @@ router.get('/api/getCollection/', (req, res) => {
         }
       }
 
-      res.status(200).send(response);
+      return res.status(200).send(response);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -85,7 +85,89 @@ router.get('/api/getMyCollections/', (req, res) => {
           return collection;
         });
       }
-      res.status(200).send(resWithImg);
+      return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setEditCollection/', (req, res) => {
+  const { collectionId } = req.body;
+
+  sqlz.Collection.update(
+    { isEdit: true, isDelete: false },
+    { where: { id: +collectionId } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setDeleteCollection/', (req, res) => {
+  const { collectionId } = req.body;
+
+  sqlz.Collection.update(
+    { isDelete: true, isEdit: false },
+    { where: { id: collectionId } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getEditCollections/', (req, res) => {
+  const { userId } = req.query;
+
+  sqlz.Collection.findAll({ where: { isEdit: true, userId } })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((collection) => {
+          const { icon } = collection;
+          if (icon) {
+            collection.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return collection;
+        });
+      }
+      return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getDeleteCollections/', (req, res) => {
+  const { userId } = req.query;
+
+  sqlz.Collection.findAll({ where: { isDelete: true, userId } })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((collection) => {
+          const { icon } = collection;
+          if (icon) {
+            collection.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return collection;
+        });
+      }
+      return res.status(200).send(resWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -109,8 +191,6 @@ router.post('/api/createCollection', upload.single('icon'), (req, res) => {
   if (req.file) {
     profilePicture = Buffer.from(fs.readFileSync(req.file.path));
   }
-
-  console.log(dateKeys, multiLineKeys, numberKeys, textKeys, checkboxKeys);
 
   function prepareFields(data, type) {
     const obj = {};
@@ -149,12 +229,10 @@ router.post('/api/createCollection', upload.single('icon'), (req, res) => {
     ...customFields,
     userId,
   })
-    .then(() => {
-      res.status(200).send({
-        code: 1,
-        message: 'Create collection success!',
-      });
-    })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Create collection success!',
+    }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,

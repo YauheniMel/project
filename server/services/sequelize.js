@@ -65,6 +65,16 @@ const Collection = sequelize.define('collection', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  isEdit: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  isDelete: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   dateKey1: {
     type: Sequelize.STRING,
     allowNull: true,
@@ -148,6 +158,16 @@ const Item = sequelize.define('item', {
   countLike: {
     type: Sequelize.TEXT,
     allowNull: true,
+  },
+  isEdit: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  isDelete: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
   dateValue1: {
     type: Sequelize.TEXT,

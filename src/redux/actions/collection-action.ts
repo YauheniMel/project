@@ -11,6 +11,10 @@ export enum CollectionActionTypes {
   DeleteItem = 'DELETE-ITEM',
   SetTargetCollection = 'SET-TARGET-COLLECTION',
   SetTargetCollectionItems = 'SET-TARGET-COLLECTION-ITEMS',
+  UpdateEditListItems = 'UPDATE-EDIT-LIST-ITEMS',
+  SetEditListItems = 'SET-EDIT-LIST-ITEMS',
+  UpdateDeleteListItems = 'UPDATE-DELETE-LIST-ITEMS',
+  SetDeleteListItems = 'SET-DELETE-LIST-ITEMS',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -30,6 +34,26 @@ export const setTargetCollectionAction = (collection: CollectionType) => ({
 
 export const setTargetCollectionItemsAction = (items: ItemType[]) => ({
   type: CollectionActionTypes.SetTargetCollectionItems,
+  items,
+});
+
+export const updateEditListItemsAction = (itemIds: string[]) => ({
+  type: CollectionActionTypes.UpdateEditListItems,
+  itemIds,
+});
+
+export const setEditListItemsAction = (items: ItemType[]) => ({
+  type: CollectionActionTypes.SetEditListItems,
+  items,
+});
+
+export const updateDeleteListItemsAction = (itemIds: string[]) => ({
+  type: CollectionActionTypes.UpdateDeleteListItems,
+  itemIds,
+});
+
+export const setDeleteListItemsAction = (items: ItemType[]) => ({
+  type: CollectionActionTypes.SetDeleteListItems,
   items,
 });
 
@@ -81,4 +105,28 @@ export const deleteItemThunk = (itemId: string) => (dispatch: any) => {
   requestAPI
     .deleteItem(itemId)
     .then((response) => dispatch(deleteItemAction(response)));
+};
+
+export const setEditItemsThunk = (itemIds: string[]) => (dispatch: any) => {
+  requestAPI
+    .setEditItems(itemIds)
+    .then(() => dispatch(updateEditListItemsAction(itemIds)));
+};
+
+export const setDeleteItemsThunk = (itemIds: string[]) => (dispatch: any) => {
+  requestAPI
+    .setDeleteItems(itemIds)
+    .then(() => dispatch(updateDeleteListItemsAction(itemIds)));
+};
+
+export const getEditItemsThunk = (collectionId: string) => (dispatch: any) => {
+  requestAPI
+    .getEditItems(collectionId)
+    .then((response) => dispatch(setEditListItemsAction(response as ItemType[])));
+};
+
+export const getDeleteItemsThunk = (collectionId: string) => (dispatch: any) => {
+  requestAPI
+    .getDeleteItems(collectionId)
+    .then((response) => dispatch(setDeleteListItemsAction(response as ItemType[])));
 };
