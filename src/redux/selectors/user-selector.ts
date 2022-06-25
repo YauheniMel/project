@@ -28,3 +28,15 @@ export function getUserIsAdmin(state: AppStateType): boolean {
 export function getMyCollections(state: AppStateType): CollectionType[] | null {
   return state.user.myCollections;
 }
+
+export function getEditCollections(
+  state: AppStateType,
+): Array<CollectionType | null> {
+  return state.user.listEditCollections;
+}
+
+export function getDeleteCollections(
+  state: AppStateType,
+): Array<CollectionType | null> {
+  return state.user.listDeleteCollections;
+}

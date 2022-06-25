@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import {
+  Badge,
   Grid,
   ListItemButton,
   ListItemIcon,
@@ -8,10 +9,25 @@ import {
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDrop } from 'react-dnd';
+import { makeStyles } from '@material-ui/core';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import CollectionForm from '../../components/CollectionForm/CollectionForm';
 import Slider from '../../components/Slider/Slider';
 import { CollectionInitType, CollectionType } from '../../types';
+import ModalEdit from '../../components/ModalEdit/ModalEdit';
+import ModalDelete from '../../components/ModalDelete/ModalDelete';
+
+const useStyles = makeStyles((theme) => ({
+  edit: {
+    color: theme.palette.warning.main,
+    width: '100%',
+  },
+  delete: {
+    color: theme.palette.error.main,
+    width: '100%',
+  },
+}));
 
 interface IUserPage {
   isAdmin: boolean;
@@ -20,8 +36,12 @@ interface IUserPage {
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
-  deleteCollection: (collectionId: string) => void;
+  // deleteCollection: (collectionId: string) => void;
   setTargetCollection: (collection: CollectionType) => void;
+  setEditCollection: (collectionId: string) => void;
+  setDeleteCollection: (collectionId: string) => void;
+  editCollections: Array<CollectionType | null>;
+  deleteCollections: Array<CollectionType | null>;
 }
 
 const UserPage: FC<IUserPage> = ({
@@ -31,10 +51,37 @@ const UserPage: FC<IUserPage> = ({
   status,
   collections,
   createNewCollection,
-  deleteCollection,
   setTargetCollection,
+  setEditCollection,
+  setDeleteCollection,
+  editCollections,
+  deleteCollections,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
+  const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+
+  const classes = useStyles();
+
+  const [{ isOver: overEdit }, dropEdit] = useDrop({
+    accept: 'avatar',
+    drop: (item: { id: string }) => {
+      setEditCollection(item.id);
+    },
+    collect: (monitor: any) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
+
+  const [{ isOver: overDelete }, dropDelete] = useDrop({
+    accept: 'avatar',
+    drop: (item: { id: string }) => {
+      setDeleteCollection(item.id);
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
 
   console.log(theme, status, isAdmin);
   return (
@@ -44,6 +91,18 @@ const UserPage: FC<IUserPage> = ({
         openForm={openForm}
         setOpenForm={setOpenForm}
         createNewCollection={createNewCollection}
+      />
+      <ModalEdit
+        type="collections"
+        openModal={openModalEdit}
+        setOpen={setOpenModalEdit}
+        editCollections={editCollections}
+      />
+      <ModalDelete
+        type="collections"
+        openModal={openModalDelete}
+        setOpen={setOpenModalDelete}
+        deleteCollections={deleteCollections}
       />
       <Grid
         sx={{ height: '100%' }}
@@ -61,20 +120,29 @@ const UserPage: FC<IUserPage> = ({
               </ListItemIcon>
               <ListItemText primary="Create new collection" />
             </ListItemButton>
-            <ListItemButton sx={{ width: '100%' }}>
+            <ListItemButton
+              sx={{ width: '100%' }}
+              onClick={() => setOpenModalEdit(true)}
+              ref={dropEdit}
+            >
               <ListItemIcon>
-                <EditIcon />
+                <Badge badgeContent={editCollections.length} color="warning">
+                  <EditIcon className={overEdit ? classes.edit : ''} />
+                </Badge>
               </ListItemIcon>
-              <ListItemText primary="Edit collection" />
+              <ListItemText primary="Edit" />
             </ListItemButton>
             <ListItemButton
               sx={{ width: '100%' }}
-              onClick={() => deleteCollection('1')}
+              onClick={() => setOpenModalDelete(true)}
+              ref={dropDelete}
             >
               <ListItemIcon>
-                <DeleteIcon />
+                <Badge badgeContent={deleteCollections.length} color="error">
+                  <DeleteIcon className={overDelete ? classes.delete : ''} />
+                </Badge>
               </ListItemIcon>
-              <ListItemText primary="Delete collection" />
+              <ListItemText primary="Delete" />
             </ListItemButton>
           </Sidebar>
         </Grid>

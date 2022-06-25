@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import {
+  CardMedia, makeStyles, Paper, Typography,
+} from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import MDEditor from '@uiw/react-md-editor';
 import { Link as RouterLink } from 'react-router-dom';
@@ -15,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
   carousel: {
     position: 'relative',
     marginTop: '20px',
+    padding: '40px',
   },
   paper: {
     position: 'absolute',
     top: 0,
-    width: '40%',
     padding: '10px',
     right: 0,
     backgroundColor: alpha(theme.palette.common.white, 0.35),
@@ -27,10 +29,6 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: '10px 0',
     },
-  },
-  image: {
-    display: 'flex',
-    justifyContent: 'center',
   },
 }));
 
@@ -54,12 +52,12 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => {
               />
             </Box>
           </Paper>
-          <Box className={classes.image}>
-            <img
-              src={`data:application/pdf;base64,${collection.icon}`}
-              alt="mmmmm"
-            />
-          </Box>
+          <CardMedia
+            component="img"
+            height="194"
+            image={`data:application/pdf;base64,${collection.icon}`}
+            alt="Paella dish"
+          />
         </Link>
       ))}
     </Carousel>

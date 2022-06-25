@@ -4,11 +4,11 @@
     "es2021": true
   },
   "extends": [
+    "react-app",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "airbnb-typescript",
-    "airbnb",
-    "react-app"
+    "airbnb"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -19,11 +19,12 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
     "no-debugger": "off",
+    "react/require-default-props": "off",
     "default-param-last": "off",
     "react/jsx-no-bind": "off",
     "@typescript-eslint/default-param-last": ["warn"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
-    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "warn",
     "no-shadow": "off",
     "no-param-reassign": "off",

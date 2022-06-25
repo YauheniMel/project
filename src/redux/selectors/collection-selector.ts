@@ -40,3 +40,11 @@ export function getCollectionTargetItemSelector(
 ): ItemType | null {
   return state.collection.targetItem;
 }
+
+export function getEditItemList(state: AppStateType): Array<ItemType | null> {
+  return state.collection.listEditItems;
+}
+
+export function getDeleteItemList(state: AppStateType): Array<ItemType | null> {
+  return state.collection.listDeleteItems;
+}
