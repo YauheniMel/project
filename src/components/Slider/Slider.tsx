@@ -70,7 +70,9 @@ const Slider: FC<ISlider> = ({ collections, setCollection }) => {
             setShowImage(0);
           },
         });
-
+        const src = collection.id && +showImage === +collection.id
+          ? `data:application/pdf;base64,${collection.icon}`
+          : null;
         return (
           collection && (
             <Box key={collection.id} className={classes.card}>
@@ -80,11 +82,7 @@ const Slider: FC<ISlider> = ({ collections, setCollection }) => {
                 onClick={() => setCollection(collection)}
               >
                 <Avatar
-                  src={
-                    +showImage === +collection.id
-                      ? `data:application/pdf;base64,${collection.icon}`
-                      : null
-                  }
+                  src={src?.toString()}
                   sx={{
                     position: 'absolute',
                     cursor: 'move',
@@ -92,10 +90,16 @@ const Slider: FC<ISlider> = ({ collections, setCollection }) => {
                     top: 0,
                     backgroundColor: 'transparent',
                   }}
-                  onMouseDown={() => setShowImage(+collection.id)}
+                  onMouseDown={() => {
+                    if (collection.id) setShowImage(+collection.id);
+                  }}
                   ref={drag}
                 >
-                  {+showImage === +collection.id ? '' : <VscMove />}
+                  {collection.id && +showImage === +collection.id ? (
+                    ''
+                  ) : (
+                    <VscMove />
+                  )}
                 </Avatar>
                 <Card sx={{ opacity }} title="mmkmkmk">
                   <CardMedia
