@@ -15,11 +15,11 @@ import { ItemInitType, ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
-import ModalEdit from '../../components/ModalEdit/ModalEdit';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
+import ModalEditItem from '../../components/ModalEditItem/ModalEditItem';
 
 interface ICollectionPage {
-  id: string;
+  id: number;
   icon: any;
   description: string;
   theme: string;
@@ -28,12 +28,14 @@ interface ICollectionPage {
   updatedAt: string;
   list: ItemType[] | null;
   createNewItem: (itemInfo: ItemInitType) => void;
-  // deleteItem: (itemId: string) => void;
+  deleteItem: (itemId: number) => void;
   setTargetItem: (item: ItemType) => void;
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
-  setEditItems: (itemIds: string[]) => void;
-  setDeleteItems: (itemIds: string[]) => void;
+  setEditItems: (itemIds: number[]) => void;
+  setDeleteItems: (itemIds: number[]) => void;
+  pullOutItem: (itemId: number) => void;
+  updateItem: (item: any) => void;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -51,6 +53,9 @@ const CollectionPage: FC<ICollectionPage> = ({
   listDeleteItems,
   setEditItems,
   setDeleteItems,
+  pullOutItem,
+  deleteItem,
+  updateItem,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
@@ -58,17 +63,20 @@ const CollectionPage: FC<ICollectionPage> = ({
 
   return (
     <>
-      <ModalEdit
-        type="items"
+      <ModalEditItem
         openModal={openModalEdit}
         setOpen={setOpenModalEdit}
         editItems={listEditItems}
+        pullOutItem={pullOutItem}
+        updateItem={updateItem}
       />
       <ModalDelete
         type="items"
         openModal={openModalDelete}
         setOpen={setOpenModalDelete}
         deleteItems={listDeleteItems}
+        pullOutItem={pullOutItem}
+        deleteItem={deleteItem}
       />
       <ItemForm
         customFields={customFields}

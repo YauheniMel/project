@@ -1,8 +1,8 @@
 import { AppStateType } from '..';
 import { ItemType } from '../../types';
 
-export function getCollectionIdSelector(state: AppStateType): string {
-  return state.collection.id as string;
+export function getCollectionIdSelector(state: AppStateType): number {
+  return state.collection.id as number;
 }
 
 export function getCollectionIconSelector(state: AppStateType): any {

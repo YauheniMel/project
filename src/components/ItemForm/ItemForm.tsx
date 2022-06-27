@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IItemForm {
-  collectionId: string;
+  collectionId: number;
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
   customFields: any;
@@ -79,7 +79,6 @@ const ItemForm: FC<IItemForm> = ({
       ...getInitFields(customFields),
     },
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
       createNewItem({
         collectionId,
         icon: image,

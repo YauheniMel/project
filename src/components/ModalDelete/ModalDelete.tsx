@@ -16,6 +16,10 @@ interface IModalDelete {
   setOpen: (state: boolean) => void;
   deleteCollections?: Array<CollectionType | null>;
   deleteItems?: Array<ItemType | null>;
+  pullOutCollection?: (collectionId: number) => void;
+  deleteCollection?: (collectionId: number) => void;
+  pullOutItem?: (itemId: number) => void;
+  deleteItem?: (itemId: number) => void;
 }
 
 const style = {
@@ -36,6 +40,10 @@ const ModalDelete: FC<IModalDelete> = ({
   deleteCollections,
   deleteItems,
   type,
+  pullOutCollection,
+  deleteCollection,
+  pullOutItem,
+  deleteItem,
 }) => {
   console.log(type);
   return (
@@ -71,11 +79,24 @@ const ModalDelete: FC<IModalDelete> = ({
                   source={collection.description!.replace(/&/gim, '\n')}
                 />
               </ListItem>
-              <Button color="error">Delete</Button>
-              <Button>Pull out</Button>
+              <Button
+                onClick={() => {
+                  if (collection.id) deleteCollection!(collection.id);
+                }}
+                color="error"
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={() => {
+                  if (collection.id) pullOutCollection!(collection.id);
+                }}
+              >
+                Pull out
+              </Button>
             </ListItem>
           ) : (
-            <Box>Empty</Box>
+            <Box>Empty</Box> // it doesn't work
           )))}
           {deleteItems?.map((item) => (item ? (
             <ListItem
@@ -88,11 +109,24 @@ const ModalDelete: FC<IModalDelete> = ({
               <ListItem key={`Collection-${item.createdAt}`}>
                 {item.createdAt}
               </ListItem>
-              <Button color="warning">Update</Button>
-              <Button>Pull out</Button>
+              <Button
+                onClick={() => {
+                  if (item.id) deleteItem!(item.id);
+                }}
+                color="warning"
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={() => {
+                  if (item.id) pullOutItem!(item.id);
+                }}
+              >
+                Pull out
+              </Button>
             </ListItem>
           ) : (
-            <Box>Empty</Box>
+            <Box>Empty</Box> // it doesn't work
           )))}
         </List>
       </Box>

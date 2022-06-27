@@ -23,18 +23,15 @@ interface IRootPage {
 
 const RootPage: FC<IRootPage> = ({
   id, name, surname, isAuth, logOutUser,
-}) => {
-  console.log(id);
-  return (
-    <>
-      <Header name={name} surname={surname} isAuth={isAuth} />
-      <Container fixed>
-        <Outlet />
-      </Container>
-      <ToolBar logOutUser={logOutUser} id={id} />
-    </>
-  );
-};
+}) => (
+  <>
+    <Header name={name} surname={surname} isAuth={isAuth} />
+    <Container fixed>
+      <Outlet />
+    </Container>
+    <ToolBar logOutUser={logOutUser} id={id} />
+  </>
+);
 
 const mapStateToProps = (state: AppStateType) => ({
   id: getUserId(state),

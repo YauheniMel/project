@@ -5,7 +5,7 @@ export interface AuthType {
 
 export interface CommentType {
   user: {
-    id: string;
+    id: number;
     name: string;
     surname: string;
   };
@@ -15,7 +15,7 @@ export interface CommentType {
   comments: null | CommentType[];
 }
 export interface ItemInitType {
-  collectionId: string;
+  collectionId: number;
   title: string;
   tags: string;
   countLike: string[] | null;
@@ -38,11 +38,13 @@ export interface ItemInitType {
   checkboxValues3?: string;
 }
 export interface ItemType {
-  id: string;
+  id: number;
   title: string;
   tags: string;
   countLike: string[] | null;
   icon: any;
+  isEdit: boolean;
+  isDelete: boolean;
   collectionId?: string;
   comments: CommentType[] | null;
   dateValue1?: string;
@@ -76,18 +78,36 @@ export interface CollectionInitType {
 }
 
 export interface CollectionType {
-  id: string | null;
+  id: number | null;
   icon: any;
   description: string | null;
   theme: string | null;
   allFields: string[];
+  isEdit: boolean;
+  isDelete: boolean;
   customFields: any;
   createdAt: string | null;
   updatedAt: string | null;
   list: ItemType[] | null;
+  dateKey1: string | null;
+  dateKey2: string | null;
+  dateKey3: string | null;
+  multiLineKey1: string | null;
+  multiLineKey2: string | null;
+  multiLineKey3: string | null;
+  numberKey1: string | null;
+  numberKey2: string | null;
+  numberKey3: string | null;
+  textKey1: string | null;
+  textKey2: string | null;
+  textKey3: string | null;
+  checkboxKey1: string | null;
+  checkboxKey2: string | null;
+  checkboxKey3: string | null;
   targetItem: ItemType | null;
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
+  userId: number | null;
 }
 
 export interface CollectionsPageType {
@@ -101,7 +121,7 @@ export interface HomePageType {
 }
 
 export interface UserType {
-  id: string | null;
+  id: number | null;
   userId: null | string;
   isAdmin: boolean;
   name: string | null;
@@ -114,7 +134,7 @@ export interface UserType {
 }
 
 export interface UserPageType {
-  id: string | null;
+  id: number | null;
   userId: null | string;
   isAdmin: boolean;
   name: string | null;
@@ -130,7 +150,7 @@ export interface UserPageType {
 }
 
 export interface TargetUserType {
-  id: string;
+  id: number;
   userId: string;
   isAdmin: boolean;
   name: string;
@@ -149,7 +169,7 @@ export interface AdminType {
 }
 
 export interface UserPersonalInfoType {
-  id: string;
+  id: number;
   name: string;
   surname: string;
 }

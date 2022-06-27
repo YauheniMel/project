@@ -9,6 +9,7 @@ export enum UserActionTypes {
   updateEditCollections = 'UPDATE-EDIT-COLLECTIONS',
   setDeleteCollections = 'SET-DELETE-COLLECTIONS',
   updateDeleteCollections = 'UPDATE-DELETE-COLLECTIONS',
+  pullOutCollectionAction = 'PULL-OUT-COLLECTION',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
@@ -31,8 +32,13 @@ const setDeleteCollectionsAction = (collections: CollectionType[]) => ({
   collections,
 });
 
-const updateEditCollections = (collectionId: CollectionType) => ({
+const updateEditCollectionsAction = (collectionId: CollectionType) => ({
   type: UserActionTypes.updateEditCollections,
+  collectionId,
+});
+
+const pullOutCollectionAction = (collectionId: CollectionType) => ({
+  type: UserActionTypes.pullOutCollectionAction,
   collectionId,
 });
 
@@ -53,9 +59,9 @@ export const getMyCollectionsThunk = (userId: string) => (dispatch: any) => {
     .then((response) => dispatch(setMyCollectionsAction(response as CollectionType[])));
 };
 
-export const setEditCollectionThunk = (collectionId: string) => (dispatch: any) => {
+export const setEditCollectionThunk = (collectionId: number) => (dispatch: any) => {
   requestAPI.setEditCollection(collectionId).then((response) => {
-    dispatch(updateEditCollections(response.id));
+    dispatch(updateEditCollectionsAction(response.id));
   });
 };
 
@@ -65,7 +71,7 @@ export const getEditCollectionsThunk = (userId: string) => (dispatch: any) => {
     .then((response) => dispatch(setEditCollectionsAction(response as CollectionType[])));
 };
 
-export const setDeleteCollectionThunk = (collectionId: string) => (dispatch: any) => {
+export const setDeleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
   requestAPI
     .setDeleteCollection(collectionId)
     .then((response) => dispatch(updateDeleteCollections(response.id)));
@@ -75,4 +81,16 @@ export const getDeleteCollectionsThunk = (userId: string) => (dispatch: any) => 
   requestAPI
     .getDeleteCollections(userId)
     .then((response) => dispatch(setDeleteCollectionsAction(response as CollectionType[])));
+};
+
+export const updateCollectionThunk = (collection: any) => () => {
+  requestAPI
+    .updateCollection(collection)
+    .then((response) => console.log(response));
+};
+
+export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => {
+  requestAPI
+    .pullOutCollection(collectionId)
+    .then((response) => dispatch(pullOutCollectionAction(response.id)));
 };

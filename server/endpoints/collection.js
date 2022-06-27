@@ -110,11 +110,83 @@ router.put('/api/setEditCollection/', (req, res) => {
     }));
 });
 
+router.delete('/api/deleteCollection/', (req, res) => {
+  const { id } = req.query;
+
+  sqlz.Collection.destroy({
+    where: {
+      id,
+    },
+  })
+    .then((response) => res.status(200).send(response))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/pullOutCollection/', (req, res) => {
+  const { collectionId } = req.body;
+
+  sqlz.Collection.update(
+    { isEdit: false, isDelete: false },
+    { where: { id: +collectionId } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
 router.put('/api/setDeleteCollection/', (req, res) => {
   const { collectionId } = req.body;
 
   sqlz.Collection.update(
     { isDelete: true, isEdit: false },
+    { where: { id: collectionId } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/updateCollection/', upload.single('icon'), (req, res) => {
+  const { collectionId } = req.body;
+
+  const allProperties = {
+    ...req.body,
+  };
+
+  const newCollectionField = Object.keys(allProperties).filter(
+    (propertie) => allProperties[propertie],
+  );
+
+  const dataForUpdate = {};
+  newCollectionField.forEach((field) => {
+    if (allProperties[field] && allProperties[field] !== 'null') {
+      // need to change 'null'
+      dataForUpdate[field] = allProperties[field];
+    }
+  });
+
+  if (req.file) {
+    dataForUpdate.icon = Buffer.from(fs.readFileSync(req.file.path));
+  }
+
+  sqlz.Collection.update(
+    {
+      id: collectionId,
+      ...dataForUpdate,
+    },
     { where: { id: collectionId } },
   )
     .then(([response]) => res.status(200).send({
@@ -220,10 +292,8 @@ router.post('/api/createCollection', upload.single('icon'), (req, res) => {
     ...prepareFields(checkboxKeys, 'checkboxKey'),
   };
 
-  console.log(customFields);
-
   sqlz.Collection.create({
-    icon: profilePicture || null,
+    icon: profilePicture,
     description,
     theme,
     ...customFields,

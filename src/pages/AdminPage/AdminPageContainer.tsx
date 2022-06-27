@@ -18,8 +18,8 @@ interface IAdminPageContainer {
   targetCollections: CollectionType[] | null;
   targetUser: TargetUserType | null;
   users: TargetUserType[] | null;
-  setTargetUser: (id: string) => void;
-  setTargetCollections: (id: string) => void;
+  setTargetUser: (id: number) => void;
+  setTargetCollections: (id: number) => void;
   getCollection: (collection: CollectionType) => void;
 }
 
@@ -34,8 +34,8 @@ const mapStateToProps = (state: AppStateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  setTargetUser: (id: string) => dispatch(setAdminTargetUser(id)),
-  setTargetCollections: (id: string) => dispatch(setAdminTargetCollectons(id)),
+  setTargetUser: (id: number) => dispatch(setAdminTargetUser(id)),
+  setTargetCollections: (id: number) => dispatch(setAdminTargetCollectons(id)),
   getCollection: (collection: CollectionType) => dispatch(setTargetCollectionAction(collection)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPageContainer);

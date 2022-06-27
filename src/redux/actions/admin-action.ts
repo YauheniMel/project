@@ -3,12 +3,12 @@ export enum AdminActionTypes {
   setAdminTargetCollections = 'SET-ADMIN-TARGET-COLLECTIONS',
 }
 
-export const setAdminTargetUser = (id: string) => ({
+export const setAdminTargetUser = (id: number) => ({
   type: AdminActionTypes.setAdminTargetUser,
   id,
 });
 
-export const setAdminTargetCollectons = (id: string) => ({
+export const setAdminTargetCollectons = (id: number) => ({
   type: AdminActionTypes.setAdminTargetCollections,
   id,
 });

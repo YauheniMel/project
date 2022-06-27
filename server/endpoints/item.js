@@ -33,7 +33,7 @@ router.get('/api/getItem/', (req, res) => {
         }
       }
 
-      return res.status(200).send(response);
+      res.status(200).send(response);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -57,8 +57,147 @@ router.get('/api/getLastAddItems', (req, res) => {
           return item;
         });
       }
+      res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/pullOutItem/', (req, res) => {
+  const { itemId } = req.body;
+
+  sqlz.Item.update(
+    { isEdit: false, isDelete: false },
+    { where: { id: +itemId } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getDeleteItems/', (req, res) => {
+  const { collectionId } = req.query;
+
+  sqlz.Item.findAll({ where: { isDelete: true, collectionId } })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((collection) => {
+          const { icon } = collection;
+          if (icon) {
+            collection.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return collection;
+        });
+      }
       return res.status(200).send(resWithImg);
     })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getEditItems/', (req, res) => {
+  const { collectionId } = req.query;
+
+  sqlz.Item.findAll({ where: { isEdit: true, collectionId } })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((collection) => {
+          const { icon } = collection;
+          if (icon) {
+            collection.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return collection;
+        });
+      }
+      return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setEditItems/', (req, res) => {
+  const itemIds = req.body;
+
+  sqlz.Item.update(
+    { isEdit: true, isDelete: false },
+    { where: { id: itemIds } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/updateItem/', upload.single('icon'), (req, res) => {
+  const { itemId } = req.body;
+
+  const allProperties = {
+    ...req.body,
+  };
+
+  const newCollectionField = Object.keys(allProperties).filter(
+    (propertie) => allProperties[propertie],
+  );
+
+  const dataForUpdate = {};
+  newCollectionField.forEach((field) => {
+    if (allProperties[field] && allProperties[field] !== 'null') {
+      // need to change 'null'
+      dataForUpdate[field] = allProperties[field];
+    }
+  });
+
+  if (req.file) {
+    dataForUpdate.icon = Buffer.from(fs.readFileSync(req.file.path));
+  }
+
+  sqlz.Item.update(
+    {
+      id: itemId,
+      ...dataForUpdate,
+    },
+    { where: { id: itemId } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setDeleteItems/', (req, res) => {
+  const itemIds = req.body;
+
+  sqlz.Item.update(
+    { isEdit: false, isDelete: true },
+    { where: { id: itemIds } },
+  )
+    .then(([response]) => res.status(200).send({
+      code: 1,
+      id: response,
+    }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -86,7 +225,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
           return item;
         });
       }
-      return res.status(200).send(resWithImg);
+      res.status(200).send(resWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -161,8 +300,6 @@ router.post('/api/createItem', upload.single('icon'), (req, res) => {
 router.delete('/api/deleteItem/', (req, res) => {
   const { itemId } = req.query;
 
-  console.log(itemId);
-
   sqlz.Item.destroy({
     where: {
       id: itemId,
@@ -170,84 +307,6 @@ router.delete('/api/deleteItem/', (req, res) => {
   })
     .then((response) => {
       res.status(200).send(response);
-    })
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.put('/api/setEditItems/', (req, res) => {
-  const ids = req.body;
-
-  sqlz.Item.update({ isEdit: true, isDelete: false }, { where: { id: ids } })
-    .then((response) => res.status(200).send({
-      code: 1,
-      ids: response,
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.put('/api/setDeleteItems/', (req, res) => {
-  const ids = req.body;
-
-  sqlz.Item.update({ isEdit: false, isDelete: true }, { where: { id: ids } })
-    .then((response) => res.status(200).send({
-      code: 1,
-      ids: response,
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.get('/api/getEditItems/', (req, res) => {
-  const { collectionId } = req.query;
-
-  sqlz.Item.findAll({ where: { isEdit: true, collectionId } })
-    .then((response) => {
-      let resWithImg;
-      if (response) {
-        resWithImg = response.map((item) => {
-          const { icon } = item;
-          if (icon) {
-            item.icon = Buffer.from(icon).toString('base64');
-          }
-
-          return item;
-        });
-      }
-
-      return res.status(200).send(resWithImg);
-    })
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.get('/api/getDeleteItems/', (req, res) => {
-  const { collectionId } = req.query;
-
-  sqlz.Item.findAll({ where: { isDelete: true, collectionId } })
-    .then((response) => {
-      let resWithImg;
-      if (response) {
-        resWithImg = response.map((item) => {
-          const { icon } = item;
-          if (icon) {
-            item.icon = Buffer.from(icon).toString('base64');
-          }
-
-          return item;
-        });
-      }
-
-      return res.status(200).send(resWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,

@@ -25,22 +25,19 @@ const logOutAction = () => ({
 });
 
 export const signUpThunk = (credentials: CredentialsType) => (dispatch: any) => {
-  requestAPI.signUpUser(credentials).then((response) => {
-    console.log(response);
+  requestAPI.signUpUser(credentials).then(() => {
     dispatch(signUpAction());
   });
 };
 
 export const logOutThunk = (userId: string) => (dispatch: any) => {
-  requestAPI.logOutUser(userId).then((response) => {
-    console.log(response);
+  requestAPI.logOutUser(userId).then(() => {
     dispatch(logOutAction());
   });
 };
 
 export const loginThunk = (userId: string) => (dispatch: any) => {
-  requestAPI.loginUser(userId).then((response) => {
-    console.log(response);
+  requestAPI.loginUser(userId).then(() => {
     dispatch(loginAction());
   });
 };

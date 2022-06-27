@@ -8,8 +8,8 @@ import RoutesApp from '../../constants/routes';
 interface ITable {
   list: ItemType[];
   setTargetItem: (item: ItemType) => void;
-  setEditItems: (itemIds: string[]) => void;
-  setDeleteItems: (itemIds: string[]) => void;
+  setEditItems: (itemIds: number[]) => void;
+  setDeleteItems: (itemIds: number[]) => void;
 }
 
 const Table: FC<ITable> = ({

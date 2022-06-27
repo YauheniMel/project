@@ -62,6 +62,17 @@ function userReducer(state = initState, action: AnyAction) {
         ),
       };
     }
+    case UserActionTypes.pullOutCollectionAction: {
+      return {
+        ...state,
+        listEditCollections: state.listEditCollections.filter(
+          (collection) => collection?.id !== action.collectionId,
+        ),
+        listDeleteCollections: state.listDeleteCollections.filter(
+          (collection) => collection?.id !== action.collectionId,
+        ),
+      };
+    }
     case UserActionTypes.updateDeleteCollections: {
       const [collection] = state.myCollections!.filter(
         (collection) => collection.id === action.collectionId,

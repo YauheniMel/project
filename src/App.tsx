@@ -76,7 +76,6 @@ const App: FC<IRootPage> = ({
     </div>
   );
 };
-
 const mapStateToProps = (state: AppStateType) => ({
   isAuth: getIsAuth(state),
 });

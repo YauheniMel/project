@@ -73,7 +73,6 @@ const CollectionForm: FC<ICollectionForm> = ({
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
       createNewCollection({
         userId,
         icon: image,
@@ -139,7 +138,6 @@ const CollectionForm: FC<ICollectionForm> = ({
               inputProps={{ accept: 'image/*' }}
               type="file"
               onChange={(e: any) => {
-                console.log(e.target.files[0]);
                 setImage(e.target.files[0]);
               }}
             />

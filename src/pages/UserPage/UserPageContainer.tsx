@@ -10,8 +10,10 @@ import {
   getDeleteCollectionsThunk,
   getEditCollectionsThunk,
   getMyCollectionsThunk,
+  pullOutCollectionThunk,
   setDeleteCollectionThunk,
   setEditCollectionThunk,
+  updateCollectionThunk,
 } from '../../redux/actions/user-action';
 import {
   getDeleteCollections,
@@ -28,7 +30,7 @@ import { CollectionInitType, CollectionType } from '../../types';
 import UserPage from './UserPage';
 
 interface IUserPageContainer {
-  id: string;
+  userId: string;
   name: string;
   surname: string;
   isAdmin: boolean;
@@ -38,35 +40,40 @@ interface IUserPageContainer {
   setTargetCollection: (collection: CollectionType) => void;
   getMyCollections: (userId: string) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
-  deleteCollection: (collectionId: string) => void;
-  setEditCollection: (collectionId: string) => void;
-  setDeleteCollection: (collectionId: string) => void;
+  deleteCollection: (collectionId: number) => void;
+  setEditCollection: (collectionId: number) => void;
+  setDeleteCollection: (collectionId: number) => void;
   getEditCollections: (userId: string) => void;
   getDeleteCollections: (userId: string) => void;
   editCollections: Array<CollectionType | null>;
   deleteCollections: Array<CollectionType | null>;
+  updateCollection: (collection: any) => void;
+  pullOutCollection: (collectionId: number) => void;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => {
   useEffect(() => {
     const {
-      id, getMyCollections, getEditCollections, getDeleteCollections,
+      userId,
+      getMyCollections,
+      getEditCollections,
+      getDeleteCollections,
     } = props;
 
-    if (id) {
-      getEditCollections(id);
+    if (userId) {
+      getEditCollections(userId);
 
-      getDeleteCollections(id);
+      getDeleteCollections(userId);
 
-      getMyCollections(id);
+      getMyCollections(userId);
     }
-  }, [props.id]);
+  }, [props.userId]);
 
   return <UserPage {...props} />;
 };
 
 const mapStateToProps = (state: AppStateType) => ({
-  id: getUserId(state),
+  userId: getUserId(state),
   name: getUserName(state),
   surname: getUserSurname(state),
   status: getUserStatus(state),
@@ -87,13 +94,13 @@ const mapDispatchToProps = (dispatch: any) => ({
   createNewCollection: (collectionInfo: CollectionInitType) => {
     dispatch(createNewCollectionThunk(collectionInfo));
   },
-  deleteCollection: (collectionId: string) => {
+  deleteCollection: (collectionId: number) => {
     dispatch(deleteCollectionThunk(collectionId));
   },
-  setEditCollection: (collectionId: string) => {
+  setEditCollection: (collectionId: number) => {
     dispatch(setEditCollectionThunk(collectionId));
   },
-  setDeleteCollection: (collectionId: string) => {
+  setDeleteCollection: (collectionId: number) => {
     dispatch(setDeleteCollectionThunk(collectionId));
   },
   getEditCollections: (userId: string) => {
@@ -101,6 +108,12 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   getDeleteCollections: (userId: string) => {
     dispatch(getDeleteCollectionsThunk(userId));
+  },
+  updateCollection: (collection: any) => {
+    dispatch(updateCollectionThunk(collection));
+  },
+  pullOutCollection: (collectionId: number) => {
+    dispatch(pullOutCollectionThunk(collectionId));
   },
 });
 

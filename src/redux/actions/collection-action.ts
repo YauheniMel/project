@@ -15,6 +15,7 @@ export enum CollectionActionTypes {
   SetEditListItems = 'SET-EDIT-LIST-ITEMS',
   UpdateDeleteListItems = 'UPDATE-DELETE-LIST-ITEMS',
   SetDeleteListItems = 'SET-DELETE-LIST-ITEMS',
+  PullOutItem = 'PULL-OUT-ITEM',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -22,8 +23,13 @@ export const setTargetItemAction = (item: ItemType) => ({
   item,
 });
 
-export const deleteItemAction = (itemId: string) => ({
+export const deleteItemAction = (itemId: number) => ({
   type: CollectionActionTypes.DeleteItem,
+  itemId,
+});
+
+export const pullOutItemAction = (itemId: number) => ({
+  type: CollectionActionTypes.PullOutItem,
   itemId,
 });
 
@@ -37,7 +43,7 @@ export const setTargetCollectionItemsAction = (items: ItemType[]) => ({
   items,
 });
 
-export const updateEditListItemsAction = (itemIds: string[]) => ({
+export const updateEditListItemsAction = (itemIds: number[]) => ({
   type: CollectionActionTypes.UpdateEditListItems,
   itemIds,
 });
@@ -47,7 +53,7 @@ export const setEditListItemsAction = (items: ItemType[]) => ({
   items,
 });
 
-export const updateDeleteListItemsAction = (itemIds: string[]) => ({
+export const updateDeleteListItemsAction = (itemIds: number[]) => ({
   type: CollectionActionTypes.UpdateDeleteListItems,
   itemIds,
 });
@@ -57,76 +63,82 @@ export const setDeleteListItemsAction = (items: ItemType[]) => ({
   items,
 });
 
-export const getCollectionItemsThunk = (collectionId: string) => (dispatch: any) => {
+export const getCollectionItemsThunk = (collectionId: number) => (dispatch: any) => {
   requestAPI.getCollectionItems(collectionId).then((response) => {
     dispatch(setTargetCollectionItemsAction(response as ItemType[]));
   });
 };
 
-export const getTargetCollectionThunk = (collectionId: string) => (dispatch: any) => {
+export const getTargetCollectionThunk = (collectionId: number) => (dispatch: any) => {
   requestAPI.getCollection(collectionId).then((response) => {
     dispatch(setTargetCollectionAction(response as CollectionType));
   });
 };
 
-export const getTargetItemThunk = (itemId: string, collectionId: string) => (dispatch: any) => {
+export const getTargetItemThunk = (itemId: number, collectionId: number) => (dispatch: any) => {
   requestAPI.getItem(itemId, collectionId).then((response) => {
     dispatch(setTargetItemAction(response as ItemType));
   });
 };
 
-export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => (dispatch: any) => {
-  console.log(dispatch);
+export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => () => {
   requestAPI
     .createCollection(collectionInfo)
     .then((response) => console.log(response));
 };
 
-export const delItemThunk = (itemId: string) => (dispatch: any) => {
-  console.log(dispatch);
+export const delItemThunk = (itemId: number) => () => {
   requestAPI.deleteItem(itemId).then((response) => console.log(response));
 };
 
-export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) => {
-  console.log(dispatch);
-
+export const createNewItemThunk = (itemInfo: ItemInitType) => () => {
   requestAPI.createItem(itemInfo).then((response) => console.log(response));
 };
 
-export const deleteCollectionThunk = (collectionId: string) => (dispatch: any) => {
-  console.log(dispatch);
-
+export const deleteCollectionThunk = (collectionId: number) => () => {
   requestAPI
     .deleteCollection(collectionId)
     .then((response) => console.log(response));
 };
 
-export const deleteItemThunk = (itemId: string) => (dispatch: any) => {
+export const deleteItemThunk = (itemId: number) => (dispatch: any) => {
   requestAPI
     .deleteItem(itemId)
     .then((response) => dispatch(deleteItemAction(response)));
 };
 
-export const setEditItemsThunk = (itemIds: string[]) => (dispatch: any) => {
-  requestAPI
-    .setEditItems(itemIds)
-    .then(() => dispatch(updateEditListItemsAction(itemIds)));
+export const setEditItemsThunk = (itemIds: number[]) => (dispatch: any) => {
+  requestAPI.setEditItems(itemIds).then(() => {
+    dispatch(updateEditListItemsAction(itemIds));
+  });
 };
 
-export const setDeleteItemsThunk = (itemIds: string[]) => (dispatch: any) => {
+export const setDeleteItemsThunk = (itemIds: number[]) => (dispatch: any) => {
   requestAPI
     .setDeleteItems(itemIds)
     .then(() => dispatch(updateDeleteListItemsAction(itemIds)));
 };
 
-export const getEditItemsThunk = (collectionId: string) => (dispatch: any) => {
-  requestAPI
-    .getEditItems(collectionId)
-    .then((response) => dispatch(setEditListItemsAction(response as ItemType[])));
+export const getEditItemsThunk = (collectionId: number) => (dispatch: any) => {
+  requestAPI.getEditItems(collectionId).then((response) => {
+    dispatch(setEditListItemsAction(response as ItemType[]));
+  });
 };
 
-export const getDeleteItemsThunk = (collectionId: string) => (dispatch: any) => {
+export const getDeleteItemsThunk = (collectionId: number) => (dispatch: any) => {
+  requestAPI.getDeleteItems(collectionId).then((response) => {
+    dispatch(setDeleteListItemsAction(response as ItemType[]));
+  });
+};
+
+export const pullOutItemThunk = (itemId: number) => (dispatch: any) => {
   requestAPI
-    .getDeleteItems(collectionId)
-    .then((response) => dispatch(setDeleteListItemsAction(response as ItemType[])));
+    .pullOutItem(itemId)
+    .then((response) => dispatch(pullOutItemAction(response.id)));
+};
+
+export const updateItemThunk = (item: any) => (dispatch: any) => {
+  requestAPI
+    .updateItem(item)
+    .then((response) => dispatch(pullOutItemAction(response.id)));
 };

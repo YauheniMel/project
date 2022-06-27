@@ -18,8 +18,8 @@ import Slider from '../../components/Slider/Slider';
 interface IAdminPage {
   targetCollections: CollectionType[] | null;
   targetUser: TargetUserType | null;
-  setTargetUser: (id: string) => void;
-  setTargetCollections: (id: string) => void;
+  setTargetUser: (id: number) => void;
+  setTargetCollections: (id: number) => void;
   users: TargetUserType[] | null;
   getCollection: (collection: CollectionType) => void;
 }

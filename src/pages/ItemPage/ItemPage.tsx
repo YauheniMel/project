@@ -14,18 +14,16 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 
 interface IItemPage {
   targetItem: ItemType;
-  getTargetItem: (itemId: string, collectionId: string) => void;
-  deleteItem: (itemId: string) => void;
+  getTargetItem: (itemId: number, collectionId: number) => void;
+  deleteItem: (itemId: number) => void;
 }
 
 const ItemPage: FC<IItemPage> = ({ targetItem, getTargetItem, deleteItem }) => {
   const { collectionId, itemId } = useParams();
 
   useEffect(() => {
-    console.log(collectionId, itemId);
-
     if (collectionId && itemId) {
-      if (!targetItem) getTargetItem(itemId, collectionId);
+      if (!targetItem) getTargetItem(+itemId, +collectionId);
     }
   }, []);
 
