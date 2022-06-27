@@ -18,8 +18,9 @@ import {
 import {
   getDeleteCollections,
   getEditCollections,
-  getMyCollections,
+  getMyCollectionsSelector,
   getUserId,
+  getUserIdFirebase,
   getUserIsAdmin,
   getUserName,
   getUserStatus,
@@ -30,6 +31,7 @@ import { CollectionInitType, CollectionType } from '../../types';
 import UserPage from './UserPage';
 
 interface IUserPageContainer {
+  id: number;
   userId: string;
   name: string;
   surname: string;
@@ -38,7 +40,7 @@ interface IUserPageContainer {
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
   setTargetCollection: (collection: CollectionType) => void;
-  getMyCollections: (userId: string) => void;
+  getMyCollections: (userId: number, page?: number) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
   deleteCollection: (collectionId: number) => void;
   setEditCollection: (collectionId: number) => void;
@@ -54,32 +56,30 @@ interface IUserPageContainer {
 const UserPageContainer: FC<IUserPageContainer> = (props) => {
   useEffect(() => {
     const {
-      userId,
-      getMyCollections,
-      getEditCollections,
-      getDeleteCollections,
+      id, getMyCollections, getEditCollections, getDeleteCollections,
     } = props;
 
-    if (userId) {
-      getEditCollections(userId);
+    if (id) {
+      getEditCollections(id.toString());
 
-      getDeleteCollections(userId);
+      getDeleteCollections(id.toString());
 
-      getMyCollections(userId);
+      getMyCollections(id);
     }
-  }, [props.userId]);
+  }, [props.id]);
 
   return <UserPage {...props} />;
 };
 
 const mapStateToProps = (state: AppStateType) => ({
-  userId: getUserId(state),
+  id: getUserId(state),
+  userId: getUserIdFirebase(state),
   name: getUserName(state),
   surname: getUserSurname(state),
   status: getUserStatus(state),
   theme: getUserTheme(state),
   isAdmin: getUserIsAdmin(state),
-  collections: getMyCollections(state),
+  collections: getMyCollectionsSelector(state),
   editCollections: getEditCollections(state),
   deleteCollections: getDeleteCollections(state),
 });
@@ -88,8 +88,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   setTargetCollection: (collection: CollectionType) => {
     dispatch(setTargetCollectionAction(collection));
   },
-  getMyCollections: (userId: string) => {
-    dispatch(getMyCollectionsThunk(userId));
+  getMyCollections: (userId: number, page?: number) => {
+    dispatch(getMyCollectionsThunk(userId, page));
   },
   createNewCollection: (collectionInfo: CollectionInitType) => {
     dispatch(createNewCollectionThunk(collectionInfo));

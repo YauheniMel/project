@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const { Op } = require('sequelize');
 const sqlz = require('../services/sequelize');
 
 const storage = multer.diskStorage({
@@ -65,13 +66,42 @@ router.get('/api/getCollection/', (req, res) => {
 });
 
 router.get('/api/getMyCollections/', (req, res) => {
-  const { userId } = req.query;
+  const { userId, page } = req.query;
 
   sqlz.Collection.findAll({
     where: {
       userId,
     },
-    limit: 5,
+    limit: 2 * page,
+  })
+    .then((response) => {
+      let resWithImg;
+      if (response) {
+        resWithImg = response.map((collection) => {
+          const { icon } = collection;
+          if (icon) {
+            collection.icon = Buffer.from(icon).toString('base64');
+          }
+
+          return collection;
+        });
+      }
+      return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getUserCollections/', (req, res) => {
+  const { userId, page } = req.query;
+
+  sqlz.Collection.findAll({
+    where: {
+      userId,
+    },
+    limit: 2 * page,
   })
     .then((response) => {
       let resWithImg;
@@ -216,6 +246,50 @@ router.get('/api/getEditCollections/', (req, res) => {
         });
       }
       return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getAllCollections/', (req, res) => {
+  const { userId } = req.query;
+
+  sqlz.User.findAll({
+    include: [
+      {
+        model: sqlz.Collection,
+        limit: 2,
+      },
+    ],
+    where: {
+      id: {
+        [Op.ne]: userId,
+      },
+    },
+  })
+    .then((response) => {
+      const dataWithImg = response.map((data) => {
+        let resWithImg;
+
+        if (data.collections) {
+          resWithImg = data.collections.map((collection) => {
+            const { icon } = collection;
+            if (icon) {
+              collection.icon = Buffer.from(icon).toString('base64');
+            }
+
+            return collection;
+          });
+        }
+
+        data.collections = resWithImg;
+
+        return data;
+      });
+
+      return res.status(200).send(dataWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,

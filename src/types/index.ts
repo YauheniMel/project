@@ -111,7 +111,9 @@ export interface CollectionType {
 }
 
 export interface CollectionsPageType {
-  allCollections: CollectionType[] | null;
+  allCollections:
+  | [{ name: string; surname: string; collections: CollectionType[] | null }]
+  | null;
   myCollections: CollectionType[] | null;
 }
 

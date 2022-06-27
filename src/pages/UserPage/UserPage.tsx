@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IUserPage {
+  id: number;
   isAdmin: boolean;
   theme: 'light' | 'dark';
   userId: string;
@@ -44,6 +45,7 @@ interface IUserPage {
   deleteCollections: Array<CollectionType | null>;
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
+  getMyCollections: (userId: number, page?: number) => void;
 }
 
 const UserPage: FC<IUserPage> = ({
@@ -61,6 +63,8 @@ const UserPage: FC<IUserPage> = ({
   deleteCollections,
   updateCollection,
   pullOutCollection,
+  getMyCollections,
+  id,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
@@ -157,8 +161,10 @@ const UserPage: FC<IUserPage> = ({
         <Grid item xs={9} sm={8}>
           {collections && (
             <Slider
+              id={id}
               collections={collections}
               setCollection={setTargetCollection}
+              getUserCollections={getMyCollections}
             />
           )}
         </Grid>

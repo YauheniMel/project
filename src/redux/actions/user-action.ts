@@ -53,10 +53,10 @@ export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch:
   });
 };
 
-export const getMyCollectionsThunk = (userId: string) => (dispatch: any) => {
-  requestAPI
-    .getMyCollections(userId)
-    .then((response) => dispatch(setMyCollectionsAction(response as CollectionType[])));
+export const getMyCollectionsThunk = (userId: number, page = 1) => (dispatch: any) => {
+  requestAPI.getMyCollections(userId, page).then((response) => {
+    dispatch(setMyCollectionsAction(response as CollectionType[]));
+  });
 };
 
 export const setEditCollectionThunk = (collectionId: number) => (dispatch: any) => {

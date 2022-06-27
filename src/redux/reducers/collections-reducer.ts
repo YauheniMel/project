@@ -1,18 +1,47 @@
 import { AnyAction } from 'redux';
-import { CollectionsPageType } from '../../types';
+import { CollectionType } from '../../types';
 import { CollectionsActionTypes } from '../actions/collections-action';
 
-const initState: CollectionsPageType = {
+const initState: any = {
   allCollections: null,
-  myCollections: null,
 };
 
 function collectionsReducer(state = initState, action: AnyAction) {
   switch (action.type) {
-    case CollectionsActionTypes.setMyCollections: {
+    case CollectionsActionTypes.setAllCollections: {
+      const allCollections = action.users.map((user: any) => ({
+        id: user.id,
+        name: user.name,
+        surname: user.surname,
+        collections: user.collections,
+      }));
       return {
         ...state,
-        myCollections: [...action.collections],
+        allCollections: allCollections ? [...allCollections] : null,
+      };
+    }
+    case CollectionsActionTypes.setAllUserCollections: {
+      const allCollections = state.allCollections.map(
+        (
+          user: {
+            id: string;
+            name: string;
+            surname: string;
+            collections: CollectionType[] | null;
+          } | null,
+        ) => {
+          if (user && user.id === action.user.id) {
+            user.collections = [...action.user.collections];
+
+            return user;
+          }
+
+          return user;
+        },
+      );
+      return {
+        ...state,
+        allCollections: [...allCollections],
       };
     }
     default:

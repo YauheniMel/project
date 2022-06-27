@@ -1,7 +1,11 @@
 import { AppStateType } from '..';
 import { CollectionType } from '../../types';
 
-export function getUserId(state: AppStateType): string {
+export function getUserIdFirebase(state: AppStateType): string {
+  return state.user.userId;
+}
+
+export function getUserId(state: AppStateType): number {
   return state.user.id;
 }
 
@@ -25,7 +29,9 @@ export function getUserIsAdmin(state: AppStateType): boolean {
   return state.user.isAdmin;
 }
 
-export function getMyCollections(state: AppStateType): CollectionType[] | null {
+export function getMyCollectionsSelector(
+  state: AppStateType,
+): CollectionType[] | null {
   return state.user.myCollections;
 }
 

@@ -6,7 +6,7 @@ import Header from '../../components/Header/Header';
 import ToolBar from '../../components/ToolBar/ToolBar';
 import { AppStateType } from '../../redux';
 import {
-  getUserId,
+  getUserIdFirebase,
   getUserName,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
@@ -34,7 +34,7 @@ const RootPage: FC<IRootPage> = ({
 );
 
 const mapStateToProps = (state: AppStateType) => ({
-  id: getUserId(state),
+  id: getUserIdFirebase(state),
   name: getUserName(state),
   surname: getUserSurname(state),
   isAuth: getIsAuth(state),

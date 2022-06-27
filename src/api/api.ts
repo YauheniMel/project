@@ -11,6 +11,7 @@ export const API = {
   CreateCollection: `${baseUrl}/api/createCollection`,
   GetMyCollections: `${baseUrl}/api/getMyCollections`,
   GetAllCollections: `${baseUrl}/api/getAllCollections`,
+  GetUserCollections: `${baseUrl}/api/getUserCollections`,
   CreateItem: `${baseUrl}/api/createItem`,
   DeleteCollection: `${baseUrl}/api/deleteCollection`,
   DeleteItem: `${baseUrl}/api/deleteItem`,
@@ -31,6 +32,7 @@ export const API = {
   UpdateItem: `${baseUrl}/api/updateItem`,
   PullOutCollection: `${baseUrl}/api/pullOutCollection`,
   PullOutItem: `${baseUrl}/api/pullOutItem`,
+  GetTargetUser: `${baseUrl}/api/getTargetUser`,
 };
 
 export const requestAPI = {
@@ -64,10 +66,18 @@ export const requestAPI = {
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },
-  getMyCollections(userId: string) {
+  getMyCollections(userId: number, page: number) {
     return axios
       .get(API.GetMyCollections, {
-        params: { userId },
+        params: { userId, page },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getUserCollections(userId: number, page: number) {
+    return axios
+      .get(API.GetUserCollections, {
+        params: { userId, page },
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
@@ -84,10 +94,10 @@ export const requestAPI = {
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },
-  getAllCollections(userIds: string[]) {
+  getAllCollections(userId: number) {
     return axios
       .get(API.GetAllCollections, {
-        params: userIds,
+        params: { userId },
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
@@ -186,6 +196,14 @@ export const requestAPI = {
     return axios
       .get(API.GetEditItems, {
         params: { collectionId },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getTargetUser(userId: number) {
+    return axios
+      .get(API.GetTargetUser, {
+        params: { userId },
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));

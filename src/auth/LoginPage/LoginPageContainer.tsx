@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import { loginThunk } from '../../redux/actions/auth-action';
 import { getIsLoading } from '../../redux/selectors/auth-selector';
-import { getUserId } from '../../redux/selectors/user-selector';
+import { getUserIdFirebase } from '../../redux/selectors/user-selector';
 import LoginPage from './LoginPage';
 
 interface ILoginPageContainer {
@@ -16,7 +16,7 @@ const LoginPageContainer: FC<ILoginPageContainer> = (props) => (
 );
 
 const mapStateToProps = (state: AppStateType) => ({
-  id: getUserId(state),
+  id: getUserIdFirebase(state),
   isLoading: getIsLoading(state),
 });
 
