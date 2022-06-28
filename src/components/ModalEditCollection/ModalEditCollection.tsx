@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
+import moment from 'moment';
 import { CollectionType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
 
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     rowGap: '50px',
-    width: '100%',
+    padding: 0,
 
     '& > *': {
       display: 'flex',
@@ -40,9 +41,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  maxHeight: 400,
-  overflow: 'scroll',
   bgcolor: 'background.paper',
   boxShadow: 24,
 };
@@ -84,7 +82,7 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
       updateCollection({
         collectionId,
         icon: image,
-        description: description.replace(/\n/gim, '&'),
+        description: description.replace(/\n/gim, '&&#&&'),
         theme: values.theme,
         numberKey1: values.numberKey1 ? values.numberKey1 : null,
         numberKey2: values.numberKey2 ? values.numberKey2 : null,
@@ -140,11 +138,10 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
             <List
               sx={{
                 bgcolor: 'background.paper',
-                position: 'relative',
+
                 overflow: 'auto',
                 minHeight: 200,
                 maxHeight: '80vh',
-                m: 1,
                 '& ul': { padding: 0 },
               }}
               subheader={<li />}
@@ -164,7 +161,9 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                       field="theme"
                     />
                     <Typography variant="body2">
-                      {collection.createdAt}
+                      Created:
+                      {' '}
+                      {moment(collection.createdAt).format('DD MMMM YYYY')}
                     </Typography>
                     <UpdateFormField
                       formik={formik}
@@ -174,7 +173,9 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                       setImage={setImage}
                     />
                     <Typography variant="body2">
-                      {collection.updatedAt}
+                      Updated:
+                      {' '}
+                      {moment(collection.updatedAt).format('DD MMMM YYYY')}
                     </Typography>
                     <UpdateFormField
                       formik={formik}

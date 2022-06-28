@@ -47,8 +47,8 @@ const UpdateFormField: FC<any> = ({
           <MDEditor.Markdown
             source={
               description
-                ? description.replace(/&/gim, '\n')
-                : value.replace(/&/gim, '\n')
+                ? description.replace(/&&#&&/gim, '\n')
+                : value.replace(/&&#&&/gim, '\n')
             }
           />
         ) : (

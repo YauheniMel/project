@@ -6,6 +6,7 @@ import {
 import Card from '@mui/material/Card';
 import TagIcon from '@mui/icons-material/Tag';
 import { makeStyles } from '@material-ui/core';
+import moment from 'moment';
 import RoutesApp from '../../constants/routes';
 import { ItemType } from '../../types';
 
@@ -56,7 +57,9 @@ const CardItem: FC<ICardItem> = ({ item, setTargetItem }) => {
         variant="body2"
         sx={{ fontWeight: 'md', color: 'text.secondary' }}
       >
-        {item.createdAt}
+        Created:
+        {' '}
+        {moment(item.createdAt).format('DD MMMM YYYY')}
       </Typography>
       {item.tags?.split(',').map((tag, idx: any) => (
         <Chip

@@ -2,29 +2,41 @@
 import React, { FC, useState } from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import {
   Backdrop,
   Chip,
   IconButton,
-  Input,
   makeStyles,
   Paper,
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
+import { TextField } from '@mui/material';
 import CustomField from '../CustomField/CustomField';
+import InputFile from '../../shared/InputFile/InputFile';
 
 const useStyles = makeStyles((theme) => ({
   back: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
   },
   form: {
+    display: 'flex',
+    flexDirection: 'column',
+    rowGap: '20px',
+    padding: '20px',
+    height: '300px',
+    overflowY: 'scroll',
+  },
+  paper: {
     position: 'relative',
+    width: '60%',
+    minWidth: '300px',
   },
   btn: {
     position: 'absolute',
     top: 0,
     right: 0,
+    backgroundColor: theme.palette.primary.light,
+    transform: 'translate(50%, -50%)',
     zIndex: theme.zIndex.drawer + 1,
   },
 }));
@@ -79,6 +91,8 @@ const ItemForm: FC<IItemForm> = ({
       ...getInitFields(customFields),
     },
     onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      if (!tags.length) return;
       createNewItem({
         collectionId,
         icon: image,
@@ -102,12 +116,12 @@ const ItemForm: FC<IItemForm> = ({
 
   return (
     <Backdrop className={classes.back} open={openForm} invisible>
-      <Paper className={classes.form}>
+      <Paper className={classes.paper}>
         <IconButton className={classes.btn} onClick={handleClose}>
-          <CloseIcon />
+          <CloseIcon fontSize="large" />
         </IconButton>
         <FormikProvider value={formik}>
-          <form onSubmit={formik.handleSubmit}>
+          <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
               fullWidth
               id="title"
@@ -133,13 +147,7 @@ const ItemForm: FC<IItemForm> = ({
                 formik.touched.description && formik.errors.description
               }
             />
-            <Input
-              fullWidth
-              id="icon"
-              name="icon"
-              type="file"
-              onChange={(e: any) => setImage(e.target.files[0])}
-            />
+            <InputFile setImage={setImage} image={image} />
             <TextField
               fullWidth
               name="tags"

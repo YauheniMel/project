@@ -6,6 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import MDEditor from '@uiw/react-md-editor';
 import { Link as RouterLink } from 'react-router-dom';
 import { alpha, Box, Link } from '@mui/material';
+import moment from 'moment';
 import RoutesApp from '../../constants/routes';
 import { CollectionType } from '../../types';
 
@@ -45,10 +46,18 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => {
           <Paper className={classes.paper}>
             <Box>
               <Typography variant="h3">{collection.theme}</Typography>
-              <Typography variant="body2">{collection.createdAt}</Typography>
-              <Typography variant="body2">{collection.updatedAt}</Typography>
+              <Typography variant="body2">
+                Created:
+                {' '}
+                {moment(collection.createdAt).format('DD MMMM YYYY')}
+              </Typography>
+              <Typography variant="body2">
+                Updated:
+                {' '}
+                {moment(collection.updatedAt).format('DD MMMM YYYY')}
+              </Typography>
               <MDEditor.Markdown
-                source={collection.description?.replace(/&/gim, '\n')}
+                source={collection.description?.replace(/&&#&&/gim, '\n')}
               />
             </Box>
           </Paper>

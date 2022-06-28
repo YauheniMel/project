@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const { Op } = require('sequelize');
+const sharp = require('sharp');
 const sqlz = require('../services/sequelize');
 
 const storage = multer.diskStorage({
@@ -335,7 +336,9 @@ router.post('/api/createCollection', upload.single('icon'), (req, res) => {
 
   let profilePicture = null;
   if (req.file) {
-    profilePicture = Buffer.from(fs.readFileSync(req.file.path));
+    profilePicture = sharp(Buffer.from(fs.readFileSync(req.file.path))).resize(
+      220,
+    );
   }
 
   function prepareFields(data, type) {

@@ -19,6 +19,7 @@ interface ISlider {
   collections: CollectionType[];
   setCollection: (collection: CollectionType) => void;
   getUserCollections: (userId: number, page?: number) => void;
+  type?: 'private';
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Slider: FC<ISlider> = ({
+  type = 'public',
   collections,
   setCollection,
   getUserCollections,
@@ -120,25 +122,27 @@ const Slider: FC<ISlider> = ({
                   to={`${RoutesApp.CollectionLink}${collection.id}`}
                   onClick={() => setCollection(collection)}
                 >
-                  <Avatar
-                    src={src?.toString()}
-                    sx={{
-                      position: 'absolute',
-                      cursor: 'grab',
-                      top: 0,
-                      backgroundColor: 'transparent',
-                    }}
-                    onMouseDown={() => {
-                      if (collection.id) setShowImage(+collection.id);
-                    }}
-                    ref={drag}
-                  >
-                    {collection.id && +showImage === +collection.id ? (
-                      ''
-                    ) : (
-                      <VscMove size="30" />
-                    )}
-                  </Avatar>
+                  {type !== 'public' && (
+                    <Avatar
+                      src={src?.toString()}
+                      sx={{
+                        position: 'absolute',
+                        cursor: 'grab',
+                        top: 0,
+                        backgroundColor: 'transparent',
+                      }}
+                      onMouseDown={() => {
+                        if (collection.id) setShowImage(+collection.id);
+                      }}
+                      ref={drag}
+                    >
+                      {collection.id && +showImage === +collection.id ? (
+                        ''
+                      ) : (
+                        <VscMove size="30" />
+                      )}
+                    </Avatar>
+                  )}
                   <Card
                     variant="outlined"
                     sx={{ opacity }}
@@ -159,7 +163,10 @@ const Slider: FC<ISlider> = ({
                         {collection.theme}
                       </Typography>
                       <MDEditor.Markdown
-                        source={collection.description?.replace(/&/gim, '\n')}
+                        source={collection.description?.replace(
+                          /&&#&&/gim,
+                          '\n',
+                        )}
                       />
                     </CardContent>
                   </Card>

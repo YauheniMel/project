@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
+import moment from 'moment';
 import { ItemType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
 // import UpdateFormField from '../UpdateFormField/UpdateFormField';
@@ -321,8 +322,16 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     {item.title}
                   </ListSubheader>
                   <Box className={classes.listItem}>
-                    <Typography>{item.createdAt}</Typography>
-                    <Typography>{item.updatedAt}</Typography>
+                    <Typography>
+                      Created:
+                      {' '}
+                      {moment(item.createdAt).format('DD MMMM YYYY')}
+                    </Typography>
+                    <Typography>
+                      Updated:
+                      {' '}
+                      {moment(item.updatedAt).format('DD MMMM YYYY')}
+                    </Typography>
                     <UpdateFormField
                       formik={formik}
                       value={item.title}

@@ -121,7 +121,7 @@ const UserPage: FC<IUserPage> = ({
         container
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
-        <Grid item xs={3} sm={4}>
+        <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
           <Sidebar>
             <ListItemButton
               onClick={() => setOpenForm(true)}
@@ -130,12 +130,13 @@ const UserPage: FC<IUserPage> = ({
               <ListItemIcon>
                 <AddCircleOutlineIcon />
               </ListItemIcon>
-              <ListItemText primary="Create new collection" />
+              <ListItemText primary="Create collection" />
             </ListItemButton>
             <ListItemButton
               sx={{ width: '100%' }}
               onClick={() => setOpenModalEdit(true)}
               ref={dropEdit}
+              // disabled={editCollections.length === 0}
             >
               <ListItemIcon>
                 <Badge badgeContent={editCollections.length} color="warning">
@@ -148,6 +149,7 @@ const UserPage: FC<IUserPage> = ({
               sx={{ width: '100%' }}
               onClick={() => setOpenModalDelete(true)}
               ref={dropDelete}
+              // disabled={editCollections.length === 0}
             >
               <ListItemIcon>
                 <Badge badgeContent={deleteCollections.length} color="error">
@@ -158,9 +160,10 @@ const UserPage: FC<IUserPage> = ({
             </ListItemButton>
           </Sidebar>
         </Grid>
-        <Grid item xs={9} sm={8}>
-          {collections && (
+        <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
+          {!!collections?.length && (
             <Slider
+              type="private"
               id={id}
               collections={collections}
               setCollection={setTargetCollection}

@@ -8,6 +8,7 @@ import {
   Button,
 } from '@mui/material';
 import MDEditor from '@uiw/react-md-editor';
+import moment from 'moment';
 import { CollectionType, ItemType } from '../../types';
 
 interface IModalDelete {
@@ -76,7 +77,7 @@ const ModalDelete: FC<IModalDelete> = ({
               </ListSubheader>
               <ListItem key={`Collection-${collection.createdAt}`}>
                 <MDEditor.Markdown
-                  source={collection.description!.replace(/&/gim, '\n')}
+                  source={collection.description!.replace(/&&#&&/gim, '\n')}
                 />
               </ListItem>
               <Button
@@ -107,7 +108,9 @@ const ModalDelete: FC<IModalDelete> = ({
                 {item.title}
               </ListSubheader>
               <ListItem key={`Collection-${item.createdAt}`}>
-                {item.createdAt}
+                Created:
+                {' '}
+                {moment(item.createdAt).format('DD MMMM YYYY')}
               </ListItem>
               <Button
                 onClick={() => {

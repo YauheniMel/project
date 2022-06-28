@@ -26,7 +26,7 @@ const RootPage: FC<IRootPage> = ({
 }) => (
   <>
     <Header name={name} surname={surname} isAuth={isAuth} />
-    <Container fixed>
+    <Container>
       <Outlet />
     </Container>
     <ToolBar logOutUser={logOutUser} id={id} />
