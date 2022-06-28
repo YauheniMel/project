@@ -1,7 +1,6 @@
 {
   "env": {
-    "browser": true,
-    "es2021": true
+    "browser": true
   },
   "extends": [
     "react-app",
@@ -27,6 +26,7 @@
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "warn",
     "no-shadow": "off",
+    "no-nested-ternary": "off",
     "no-param-reassign": "off",
     "@typescript-eslint/no-shadow": "off",
     "react/destructuring-assignment": "off",

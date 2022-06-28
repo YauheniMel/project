@@ -18,19 +18,19 @@ import Slider from '../../components/Slider/Slider';
 interface IAdminPage {
   targetCollections: CollectionType[] | null;
   targetUser: TargetUserType | null;
-  setTargetUser: (id: string) => void;
-  setTargetCollections: (id: string) => void;
+  getTargetUser: (id: number) => void;
+  getTargetUserCollections: (id: number, page?: number) => void;
   users: TargetUserType[] | null;
-  getCollection: (collection: CollectionType) => void;
+  setCollection: (collectionId: CollectionType) => void;
 }
 
 const AdminPage: FC<IAdminPage> = ({
   targetCollections,
   targetUser,
   users,
-  setTargetUser,
-  setTargetCollections,
-  getCollection,
+  getTargetUser,
+  setCollection,
+  getTargetUserCollections,
 }) => (
   <Grid
     container
@@ -74,8 +74,10 @@ const AdminPage: FC<IAdminPage> = ({
         <Box>
           <Typography variant="h3">My collections</Typography>
           <Slider
+            id={1}
+            getUserCollections={getTargetUserCollections}
             collections={targetCollections}
-            setCollection={getCollection}
+            setCollection={setCollection}
           />
         </Box>
       )}
@@ -83,7 +85,7 @@ const AdminPage: FC<IAdminPage> = ({
     <Grid item xs={2} sx={{ backgroundColor: 'green', height: '70%' }}>
       {targetUser && (
         <ListItemButton
-          onClick={() => setTargetCollections(targetUser.id)}
+          onClick={() => getTargetUser(targetUser.id)}
           sx={{ backgroundColor: 'white' }}
         >
           {targetUser.name}
@@ -96,7 +98,7 @@ const AdminPage: FC<IAdminPage> = ({
           && users.map((user) => (
             <div>
               <ListItemButton
-                onClick={() => setTargetUser(user.id)}
+                onClick={() => getTargetUser(user.id)}
                 key={user.id}
               >
                 {user.name}

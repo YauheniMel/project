@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import {
-  setAdminTargetCollectons,
-  setAdminTargetUser,
+  getTargetUserCollectionsThunk,
+  getTargetUserThunk,
 } from '../../redux/actions/admin-action';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
@@ -18,9 +18,9 @@ interface IAdminPageContainer {
   targetCollections: CollectionType[] | null;
   targetUser: TargetUserType | null;
   users: TargetUserType[] | null;
-  setTargetUser: (id: string) => void;
-  setTargetCollections: (id: string) => void;
-  getCollection: (collection: CollectionType) => void;
+  getTargetUser: (id: number) => void;
+  getTargetUserCollections: (id: number) => void;
+  setCollection: (collectionId: CollectionType) => void;
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => (
@@ -34,8 +34,12 @@ const mapStateToProps = (state: AppStateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  setTargetUser: (id: string) => dispatch(setAdminTargetUser(id)),
-  setTargetCollections: (id: string) => dispatch(setAdminTargetCollectons(id)),
-  getCollection: (collection: CollectionType) => dispatch(setTargetCollectionAction(collection)),
+  getTargetUser: (id: number) => dispatch(getTargetUserThunk(id)),
+  getTargetUserCollections: (userId: number, page?: number) => {
+    dispatch(getTargetUserCollectionsThunk(userId, page));
+  },
+  setCollection: (collection: CollectionType) => {
+    dispatch(setTargetCollectionAction(collection));
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPageContainer);

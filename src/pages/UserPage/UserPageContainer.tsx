@@ -10,14 +10,17 @@ import {
   getDeleteCollectionsThunk,
   getEditCollectionsThunk,
   getMyCollectionsThunk,
+  pullOutCollectionThunk,
   setDeleteCollectionThunk,
   setEditCollectionThunk,
+  updateCollectionThunk,
 } from '../../redux/actions/user-action';
 import {
   getDeleteCollections,
   getEditCollections,
-  getMyCollections,
+  getMyCollectionsSelector,
   getUserId,
+  getUserIdFirebase,
   getUserIsAdmin,
   getUserName,
   getUserStatus,
@@ -28,7 +31,8 @@ import { CollectionInitType, CollectionType } from '../../types';
 import UserPage from './UserPage';
 
 interface IUserPageContainer {
-  id: string;
+  id: number;
+  userId: string;
   name: string;
   surname: string;
   isAdmin: boolean;
@@ -36,15 +40,17 @@ interface IUserPageContainer {
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
   setTargetCollection: (collection: CollectionType) => void;
-  getMyCollections: (userId: string) => void;
+  getMyCollections: (userId: number, page?: number) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
-  deleteCollection: (collectionId: string) => void;
-  setEditCollection: (collectionId: string) => void;
-  setDeleteCollection: (collectionId: string) => void;
+  deleteCollection: (collectionId: number) => void;
+  setEditCollection: (collectionId: number) => void;
+  setDeleteCollection: (collectionId: number) => void;
   getEditCollections: (userId: string) => void;
   getDeleteCollections: (userId: string) => void;
   editCollections: Array<CollectionType | null>;
   deleteCollections: Array<CollectionType | null>;
+  updateCollection: (collection: any) => void;
+  pullOutCollection: (collectionId: number) => void;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => {
@@ -54,9 +60,9 @@ const UserPageContainer: FC<IUserPageContainer> = (props) => {
     } = props;
 
     if (id) {
-      getEditCollections(id);
+      getEditCollections(id.toString());
 
-      getDeleteCollections(id);
+      getDeleteCollections(id.toString());
 
       getMyCollections(id);
     }
@@ -67,12 +73,13 @@ const UserPageContainer: FC<IUserPageContainer> = (props) => {
 
 const mapStateToProps = (state: AppStateType) => ({
   id: getUserId(state),
+  userId: getUserIdFirebase(state),
   name: getUserName(state),
   surname: getUserSurname(state),
   status: getUserStatus(state),
   theme: getUserTheme(state),
   isAdmin: getUserIsAdmin(state),
-  collections: getMyCollections(state),
+  collections: getMyCollectionsSelector(state),
   editCollections: getEditCollections(state),
   deleteCollections: getDeleteCollections(state),
 });
@@ -81,19 +88,19 @@ const mapDispatchToProps = (dispatch: any) => ({
   setTargetCollection: (collection: CollectionType) => {
     dispatch(setTargetCollectionAction(collection));
   },
-  getMyCollections: (userId: string) => {
-    dispatch(getMyCollectionsThunk(userId));
+  getMyCollections: (userId: number, page?: number) => {
+    dispatch(getMyCollectionsThunk(userId, page));
   },
   createNewCollection: (collectionInfo: CollectionInitType) => {
     dispatch(createNewCollectionThunk(collectionInfo));
   },
-  deleteCollection: (collectionId: string) => {
+  deleteCollection: (collectionId: number) => {
     dispatch(deleteCollectionThunk(collectionId));
   },
-  setEditCollection: (collectionId: string) => {
+  setEditCollection: (collectionId: number) => {
     dispatch(setEditCollectionThunk(collectionId));
   },
-  setDeleteCollection: (collectionId: string) => {
+  setDeleteCollection: (collectionId: number) => {
     dispatch(setDeleteCollectionThunk(collectionId));
   },
   getEditCollections: (userId: string) => {
@@ -101,6 +108,12 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   getDeleteCollections: (userId: string) => {
     dispatch(getDeleteCollectionsThunk(userId));
+  },
+  updateCollection: (collection: any) => {
+    dispatch(updateCollectionThunk(collection));
+  },
+  pullOutCollection: (collectionId: number) => {
+    dispatch(pullOutCollectionThunk(collectionId));
   },
 });
 

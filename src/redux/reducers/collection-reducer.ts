@@ -9,6 +9,8 @@ const initState: CollectionType = {
   theme: null,
   createdAt: null,
   updatedAt: null,
+  isEdit: false,
+  isDelete: false,
   allFields: [
     'dateKey1',
     'dateKey2',
@@ -26,11 +28,27 @@ const initState: CollectionType = {
     'checkboxKey2',
     'checkboxKey3',
   ],
+  dateKey1: null,
+  dateKey2: null,
+  dateKey3: null,
+  multiLineKey1: null,
+  multiLineKey2: null,
+  multiLineKey3: null,
+  numberKey1: null,
+  numberKey2: null,
+  numberKey3: null,
+  textKey1: null,
+  textKey2: null,
+  textKey3: null,
+  checkboxKey1: null,
+  checkboxKey2: null,
+  checkboxKey3: null,
   list: null,
   targetItem: null,
   customFields: null,
   listEditItems: [],
   listDeleteItems: [],
+  userId: null,
 };
 
 function collectionReducer(state = initState, action: AnyAction) {
@@ -71,7 +89,7 @@ function collectionReducer(state = initState, action: AnyAction) {
       const listEditItems = state.list?.filter((item) => {
         let isItemExist = false;
         action.itemIds.forEach((id: string) => {
-          if (id === item.id) isItemExist = true;
+          if (+id === item.id) isItemExist = true;
         });
 
         return isItemExist;
@@ -105,7 +123,7 @@ function collectionReducer(state = initState, action: AnyAction) {
       const listDeleteItems = state.list?.filter((item) => {
         let isItemExist = false;
         action.itemIds.forEach((id: string) => {
-          if (id === item.id) isItemExist = true;
+          if (+id === item.id) isItemExist = true;
         });
 
         return isItemExist;
@@ -131,6 +149,17 @@ function collectionReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         listDeleteItems: [...action.items],
+      };
+    }
+    case CollectionActionTypes.PullOutItem: {
+      return {
+        ...state,
+        listEditItems: state.listEditItems.filter(
+          (collection) => collection?.id !== action.itemId,
+        ),
+        listDeleteItems: state.listDeleteItems.filter(
+          (collection) => collection?.id !== action.itemId,
+        ),
       };
     }
     default:

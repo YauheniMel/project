@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
 import {
+  Avatar,
   Badge,
+  Box,
   Grid,
   ListItemButton,
   ListItemIcon,
@@ -11,15 +13,16 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import MDEditor from '@uiw/react-md-editor';
+import moment from 'moment';
 import { ItemInitType, ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
-import ModalEdit from '../../components/ModalEdit/ModalEdit';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
+import ModalEditItem from '../../components/ModalEditItem/ModalEditItem';
 
 interface ICollectionPage {
-  id: string;
+  id: number;
   icon: any;
   description: string;
   theme: string;
@@ -28,12 +31,14 @@ interface ICollectionPage {
   updatedAt: string;
   list: ItemType[] | null;
   createNewItem: (itemInfo: ItemInitType) => void;
-  // deleteItem: (itemId: string) => void;
   setTargetItem: (item: ItemType) => void;
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
-  setEditItems: (itemIds: string[]) => void;
-  setDeleteItems: (itemIds: string[]) => void;
+  setEditItems: (itemIds: number[]) => void;
+  setDeleteItems: (itemIds: number[]) => void;
+  pullOutItem: (itemId: number) => void;
+  deleteItem: (itemId: number) => void;
+  updateItem: (item: any) => void;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -51,24 +56,32 @@ const CollectionPage: FC<ICollectionPage> = ({
   listDeleteItems,
   setEditItems,
   setDeleteItems,
+  pullOutItem,
+  deleteItem,
+  updateItem,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
 
+  console.log(updatedAt);
+
   return (
     <>
-      <ModalEdit
-        type="items"
+      <ModalEditItem
         openModal={openModalEdit}
         setOpen={setOpenModalEdit}
         editItems={listEditItems}
+        pullOutItem={pullOutItem}
+        updateItem={updateItem}
       />
       <ModalDelete
         type="items"
         openModal={openModalDelete}
         setOpen={setOpenModalDelete}
         deleteItems={listDeleteItems}
+        pullOutItem={pullOutItem}
+        deleteItem={deleteItem}
       />
       <ItemForm
         customFields={customFields}
@@ -82,7 +95,7 @@ const CollectionPage: FC<ICollectionPage> = ({
         container
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
-        <Grid item xs={3} sm={4}>
+        <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
           <Sidebar>
             <ListItemButton
               onClick={() => setOpenForm(true)}
@@ -91,9 +104,10 @@ const CollectionPage: FC<ICollectionPage> = ({
               <ListItemIcon>
                 <AddCircleOutlineIcon />
               </ListItemIcon>
-              <ListItemText primary="Create new item" />
+              <ListItemText primary="Create item" />
             </ListItemButton>
             <ListItemButton
+              // disabled={listEditItems.length === 0}
               sx={{ width: '100%' }}
               onClick={() => setOpenModalEdit(true)}
             >
@@ -105,6 +119,7 @@ const CollectionPage: FC<ICollectionPage> = ({
               <ListItemText primary="Update" />
             </ListItemButton>
             <ListItemButton
+              // disabled={listDeleteItems.length === 0}
               sx={{ width: '100%' }}
               onClick={() => setOpenModalDelete(true)}
             >
@@ -117,12 +132,32 @@ const CollectionPage: FC<ICollectionPage> = ({
             </ListItemButton>
           </Sidebar>
         </Grid>
-        <Grid item xs={9} sm={8}>
-          <Typography variant="h3">{theme}</Typography>
-          <Typography variant="h3">{createdAt}</Typography>
-          <Typography variant="h3">{updatedAt}</Typography>
+        <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
+          <Box
+            sx={{
+              display: 'flex',
+              columnGap: '30px',
+              padding: '20px',
+            }}
+          >
+            <Avatar
+              src={`data:application/pdf;base64,${icon}`}
+              alt="mmmmm"
+              sx={{ width: '10rem', height: '10rem' }}
+            >
+              {icon && 'Empty'}
+            </Avatar>
+            <Box>
+              <Typography variant="h2">{theme}</Typography>
+              <Typography variant="body2">
+                Created:
+                {' '}
+                {moment(createdAt).format('DD MMMM YYYY')}
+              </Typography>
+            </Box>
+          </Box>
           {description && (
-            <MDEditor.Markdown source={description.replace(/&/gim, '\n')} />
+            <MDEditor.Markdown source={description.replace(/&&#&&/gim, '\n')} />
           )}
           {list && (
             <Table
@@ -132,11 +167,6 @@ const CollectionPage: FC<ICollectionPage> = ({
               setDeleteItems={setDeleteItems}
             />
           )}
-          <img
-            width="200"
-            src={`data:application/pdf;base64,${icon}`}
-            alt="mmmmm"
-          />
         </Grid>
       </Grid>
     </>

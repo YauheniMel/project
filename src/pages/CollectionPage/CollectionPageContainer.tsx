@@ -11,9 +11,11 @@ import {
   getEditItemsThunk,
   getTargetCollectionThunk,
   getTargetItemThunk,
+  pullOutItemThunk,
   setDeleteItemsThunk,
   setEditItemsThunk,
   setTargetItemAction,
+  updateItemThunk,
 } from '../../redux/actions/collection-action';
 import {
   getCollectionCreatedAtSelector,
@@ -33,7 +35,7 @@ import ItemPage from '../ItemPage/ItemPage';
 import CollectionPage from './CollectionPage';
 
 interface IHomePageContainer {
-  id: string;
+  id: number;
   icon: any;
   description: string;
   theme: string;
@@ -43,17 +45,19 @@ interface IHomePageContainer {
   targetItem: ItemType | null;
   list: ItemType[] | null;
   createNewItem: (itemInfo: ItemInitType) => void;
-  deleteItem: (itemId: string) => void;
-  getCollectionItems: (collectionId: string) => void;
+  deleteItem: (itemId: number) => void;
+  getCollectionItems: (collectionId: number) => void;
   setTargetItem: (item: ItemType) => void;
-  getTargetCollection: (collectionId: string) => void;
-  getTargetItem: (itemId: string, collectionId: string) => void;
+  getTargetCollection: (collectionId: number) => void;
+  getTargetItem: (itemId: number, collectionId: number) => void;
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
-  setEditItems: (itemIds: string[]) => void;
-  setDeleteItems: (itemIds: string[]) => void;
-  getEditItems: (collectionId: string) => void;
-  getDeleteItems: (collectionId: string) => void;
+  setEditItems: (itemIds: number[]) => void;
+  setDeleteItems: (itemIds: number[]) => void;
+  getEditItems: (collectionId: number) => void;
+  getDeleteItems: (collectionId: number) => void;
+  pullOutItem: (itemId: number) => void;
+  updateItem: (item: any) => void;
 }
 
 const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
@@ -70,12 +74,12 @@ const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
 
     if (collectionId) {
       if (!id) {
-        getTargetCollection(collectionId);
-        getEditItems(collectionId);
-        getDeleteItems(collectionId);
+        getTargetCollection(+collectionId);
+        getEditItems(+collectionId);
+        getDeleteItems(+collectionId);
       }
 
-      getCollectionItems(collectionId);
+      getCollectionItems(+collectionId);
     }
   }, []);
 
@@ -112,30 +116,36 @@ const mapStateToProps = (state: AppStateType) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   createNewItem: (itemInfo: ItemInitType) => dispatch(createNewItemThunk(itemInfo)),
-  getTargetCollection: (collectionId: string) => dispatch(getTargetCollectionThunk(collectionId)),
-  getTargetItem: (itemId: string, collectionId: string) => {
+  getTargetCollection: (collectionId: number) => dispatch(getTargetCollectionThunk(collectionId)),
+  getTargetItem: (itemId: number, collectionId: number) => {
     dispatch(getTargetItemThunk(itemId, collectionId));
   },
-  getCollectionItems: (collectionId: string) => {
+  getCollectionItems: (collectionId: number) => {
     dispatch(getCollectionItemsThunk(collectionId));
   },
-  deleteItem: (itemId: string) => {
+  deleteItem: (itemId: number) => {
     dispatch(deleteItemThunk(itemId));
   },
   setTargetItem: (item: ItemType) => {
     dispatch(setTargetItemAction(item));
   },
-  setEditItems: (itemIds: string[]) => {
+  setEditItems: (itemIds: number[]) => {
     dispatch(setEditItemsThunk(itemIds));
   },
-  setDeleteItems: (itemIds: string[]) => {
+  setDeleteItems: (itemIds: number[]) => {
     dispatch(setDeleteItemsThunk(itemIds));
   },
-  getEditItems: (collectionId: string) => {
+  getEditItems: (collectionId: number) => {
     dispatch(getEditItemsThunk(collectionId));
   },
-  getDeleteItems: (collectionId: string) => {
+  getDeleteItems: (collectionId: number) => {
     dispatch(getDeleteItemsThunk(collectionId));
+  },
+  pullOutItem: (itemId: number) => {
+    dispatch(pullOutItemThunk(itemId));
+  },
+  updateItem: (item: any) => {
+    dispatch(updateItemThunk(item));
   },
 });
 

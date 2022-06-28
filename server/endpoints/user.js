@@ -12,12 +12,10 @@ router.post('/api/signUpUser', (req, res) => {
     surname,
     isOnline: true,
   })
-    .then(() => {
-      res.status(200).send({
-        code: 1,
-        message: 'SignUp success!',
-      });
-    })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'SignUp success!',
+    }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -37,8 +35,19 @@ router.get('/api/getUserInfo/', (req, res) => {
           isOnline: true,
         }).then((newUser) => res.status(200).send(newUser));
       }
-      return res.status(200).json(response);
+      return res.status(200).send(response);
     })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getTargetUser/', (req, res) => {
+  const { userId } = req.query;
+
+  sqlz.User.findOne({ where: { id: userId } })
+    .then((response) => res.status(200).send(response))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -49,12 +58,10 @@ router.post('/api/loginUser', (req, res) => {
   const { id } = req.body;
 
   sqlz.User.update({ isOnline: true, loginDate: new Date() }, { where: { id } })
-    .then(() => {
-      res.status(200).send({
-        code: 1,
-        message: 'Logout success!',
-      });
-    })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Login success!',
+    }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -65,12 +72,10 @@ router.post('/api/logOutUser', (req, res) => {
   const { id } = req.body;
 
   sqlz.User.update({ isOnline: false }, { where: { id } })
-    .then(() => {
-      res.status(200).send({
-        code: 1,
-        message: 'Logout success!',
-      });
-    })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Logout success!',
+    }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
-import React, { FC } from 'react';
-import { TextareaAutosize, TextField } from '@mui/material';
+import React, { FC, useState } from 'react';
+import { Checkbox, TextareaAutosize, TextField } from '@mui/material';
 import { Field } from 'formik';
 
 interface ICustomField {
@@ -21,21 +21,36 @@ const CustomField: FC<ICustomField> = ({ formik, fields }) => fields.map((field:
           placeholder={field[key]}
           value={formik.values.field}
           onChange={formik.handleChange}
+          style={{
+            minHeight: '100px',
+            padding: '.7rem',
+          }}
         />
       );
     }
 
     if (type === 'checkbox') {
+      const [state, setState] = useState('');
       const str = field[key];
       const [fieldValue] = str.split(':');
       const checkboxes = str.split(':')[1].split(',');
+
       return (
         <>
           <span>{fieldValue}</span>
           {checkboxes.map((value: string, index: any) => (
             // eslint-disable-next-line jsx-a11y/label-has-associated-control
-            <label key={index}>
-              <Field type="checkbox" required name={key} value={value} />
+            <label style={{ marginLeft: '20px' }} key={index}>
+              <Field
+                component={Checkbox}
+                name={key}
+                value={value}
+                checked={value === state}
+                onChange={() => {
+                  setState(value);
+                  formik.values[key] = value;
+                }}
+              />
               {value}
             </label>
           ))}
@@ -48,6 +63,7 @@ const CustomField: FC<ICustomField> = ({ formik, fields }) => fields.map((field:
         type={type}
         required
         name={key}
+        InputLabelProps={{ shrink: true }}
         label={field[key]}
         value={formik.values.field}
         onChange={formik.handleChange}

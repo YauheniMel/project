@@ -10,9 +10,18 @@ const initState: AdminType = {
 
 function adminReducer(state = initState, action: AnyAction) {
   switch (action.type) {
-    case AdminActionTypes.setAdminTargetUser: {
+    case AdminActionTypes.setTargetUser: {
       return {
         ...state,
+        targetUser: {
+          ...action.user,
+        },
+      };
+    }
+    case AdminActionTypes.setTargetCollections: {
+      return {
+        ...state,
+        targetCollections: [...action.collections],
       };
     }
     default:
