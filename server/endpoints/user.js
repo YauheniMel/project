@@ -25,18 +25,8 @@ router.post('/api/signUpUser', (req, res) => {
 router.get('/api/getUserInfo/', (req, res) => {
   const { id, name, surname } = req.query;
   console.log(id, name, surname);
-  sqlz.User.findOne({ where: { userId: id } })
-    .then((response) => {
-      if (!response) {
-        return sqlz.User.create({
-          userId: id,
-          name,
-          surname,
-          isOnline: true,
-        }).then((newUser) => res.status(200).send(newUser));
-      }
-      return res.status(200).send(response);
-    })
+  sqlz.User.findOrCreate({ where: { userId: id } })
+    .then((response) => res.status(200).send(response))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,

@@ -149,6 +149,14 @@ export interface UserPageType {
   myCollections: null | CollectionType[];
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
+  itemsSearch: ItemType[] | null;
+  usersSearch:
+  | {
+    name: string;
+    surname: string;
+    collections: Array<CollectionType | null>;
+  }[]
+  | null;
 }
 
 export interface TargetUserType {
