@@ -1,5 +1,5 @@
 import { AppStateType } from '..';
-import { CollectionType } from '../../types';
+import { CollectionType, ItemType } from '../../types';
 
 export function getUserIdFirebase(state: AppStateType): string {
   return state.user.userId;
@@ -45,4 +45,16 @@ export function getDeleteCollections(
   state: AppStateType,
 ): Array<CollectionType | null> {
   return state.user.listDeleteCollections;
+}
+
+export function getSearchItemsSelector(state: AppStateType): ItemType[] | null {
+  return state.user.itemsSearch;
+}
+
+export function getSearchUsersSelector(state: AppStateType): {
+  name: string;
+  surname: string;
+  collections: Array<CollectionType | null>;
+} {
+  return state.user.usersSearch;
 }

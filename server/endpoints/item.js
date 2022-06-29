@@ -314,4 +314,88 @@ router.delete('/api/deleteItem/', (req, res) => {
     }));
 });
 
+router.get('/api/search/', (req, res) => {
+  const { substr } = req.query;
+  console.log(substr);
+  sqlz.Item.findAll({
+    where: sqlz.sequelize.literal(`
+    MATCH(
+      title,
+      dateValue1,
+      dateValue2,
+      dateValue3, multiLineValue1,
+      multiLineValue2,
+      multiLineValue3,
+      numberValue1,
+      numberValue2,
+      numberValue3,
+      textValue1,
+      textValue2,
+      textValue3,
+      checkboxValue1,
+      checkboxValue2,
+      checkboxValue3
+      ) AGAINST('${substr
+    .split(' ')
+    .map((reg) => `${reg}*`)}' IN BOOLEAN MODE)`),
+  })
+    .then((result) => {
+      let resWithImg = '';
+
+      if (!result.length) {
+        return sqlz.User.findAll({
+          where: sqlz.sequelize.literal(
+            `MATCH(name, surname) AGAINST('${substr
+              .split(' ')
+              .map((reg) => `${reg}*`)}' IN BOOLEAN MODE)`,
+          ),
+          include: [
+            {
+              model: sqlz.Collection,
+              limit: 2,
+            },
+          ],
+        }).then((result) => {
+          resWithImg = result.map((user) => {
+            const collectionsWithImg = user.collections.map((collection) => {
+              const { icon } = collection;
+              if (icon) {
+                collection.icon = Buffer.from(icon).toString('base64');
+              }
+
+              return collection;
+            });
+
+            user.collections = collectionsWithImg;
+
+            return user;
+          });
+
+          res.status(200).send({
+            type: 'users',
+            result: resWithImg,
+          });
+        });
+      }
+
+      resWithImg = result.map((item) => {
+        const { icon } = item;
+        if (icon) {
+          item.icon = Buffer.from(icon).toString('base64');
+        }
+
+        return item;
+      });
+
+      return res.status(200).send({
+        type: 'items',
+        result: resWithImg,
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
 module.exports = router;

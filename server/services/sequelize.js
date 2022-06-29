@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize(
   'heroku_a2bd434709364ef',
@@ -12,221 +12,221 @@ const sequelize = new Sequelize(
 
 const User = sequelize.define('user', {
   id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
   },
   userId: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   isAdmin: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
   name: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   surname: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   theme: {
-    type: Sequelize.ENUM('light', 'dark'),
+    type: DataTypes.ENUM('light', 'dark'),
     defaultValue: 'light',
   },
   status: {
-    type: Sequelize.ENUM('active', 'blocked'),
+    type: DataTypes.ENUM('active', 'blocked'),
     defaultValue: 'active',
   },
   isOnline: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
 });
 const Collection = sequelize.define('collection', {
   id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
   },
   icon: {
-    type: Sequelize.BLOB('medium'),
+    type: DataTypes.BLOB('medium'),
     allowNull: true,
   },
   description: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   theme: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   isEdit: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   isDelete: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   dateKey1: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   dateKey2: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   dateKey3: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   multiLineKey1: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   multiLineKey2: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   multiLineKey3: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   numberKey1: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   numberKey2: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   numberKey3: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   textKey1: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   textKey2: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   textKey3: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   checkboxKey1: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   checkboxKey2: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   checkboxKey3: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: true,
   },
 });
 const Item = sequelize.define('item', {
   id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
   },
   icon: {
-    type: Sequelize.BLOB('medium'),
+    type: DataTypes.BLOB('medium'),
     allowNull: true,
   },
   title: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   tags: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   countLike: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   isEdit: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   isDelete: {
-    type: Sequelize.BOOLEAN,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
   },
   dateValue1: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   dateValue2: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   dateValue3: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   multiLineValue1: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   multiLineValue2: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   multiLineValue3: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   numberValue1: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   numberValue2: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   numberValue3: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   textValue1: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   textValue2: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   textValue3: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   checkboxValue1: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   checkboxValue2: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   checkboxValue3: {
-    type: Sequelize.TEXT,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
 });

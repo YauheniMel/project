@@ -33,6 +33,7 @@ export const API = {
   PullOutCollection: `${baseUrl}/api/pullOutCollection`,
   PullOutItem: `${baseUrl}/api/pullOutItem`,
   GetTargetUser: `${baseUrl}/api/getTargetUser`,
+  Search: `${baseUrl}/api/search`,
 };
 
 export const requestAPI = {
@@ -62,6 +63,14 @@ export const requestAPI = {
     return axios
       .get(API.GetUserInfo, {
         params: payload,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  search(substr: string) {
+    return axios
+      .get(API.Search, {
+        params: { substr },
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
