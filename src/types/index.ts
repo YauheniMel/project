@@ -66,7 +66,7 @@ export interface ItemType {
   updatedAt: string;
 }
 export interface CollectionInitType {
-  userId: string;
+  userId: number;
   theme: string;
   icon: any;
   description: string;
@@ -111,10 +111,12 @@ export interface CollectionType {
 }
 
 export interface CollectionsPageType {
-  allCollections:
-  | [{ name: string; surname: string; collections: CollectionType[] | null }]
-  | null;
-  myCollections: CollectionType[] | null;
+  allCollections: any;
+  targetCollections: {
+    name: string;
+    surname: string;
+    collections: Array<CollectionType[] | null>;
+  } | null;
 }
 
 export interface HomePageType {
@@ -149,8 +151,19 @@ export interface UserPageType {
   myCollections: null | CollectionType[];
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
-  itemsSearch: ItemType[] | null;
+}
+
+export interface SearchPageType {
+  itemsSearch: any;
   usersSearch:
+  | {
+    name: string;
+    surname: string;
+    collections: Array<CollectionType | null>;
+  }[]
+  | null;
+  listSearch:
+  | ItemType[]
   | {
     name: string;
     surname: string;

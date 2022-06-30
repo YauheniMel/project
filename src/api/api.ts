@@ -33,6 +33,7 @@ export const API = {
   PullOutCollection: `${baseUrl}/api/pullOutCollection`,
   PullOutItem: `${baseUrl}/api/pullOutItem`,
   GetTargetUser: `${baseUrl}/api/getTargetUser`,
+  GetTargetCollections: `${baseUrl}/api/getTargetCollections`,
   Search: `${baseUrl}/api/search`,
 };
 
@@ -86,6 +87,14 @@ export const requestAPI = {
   getUserCollections(userId: number, page: number) {
     return axios
       .get(API.GetUserCollections, {
+        params: { userId, page },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getTargetCollections(userId: number | string, page: number) {
+    return axios
+      .get(API.GetTargetCollections, {
         params: { userId, page },
       })
       .then((response) => response.data)
@@ -160,6 +169,7 @@ export const requestAPI = {
 
     // need to find another way
     Object.keys(itemInfo).forEach((key: string) => formData.append(key, itemInfo[key]));
+
     return axios
       .post(API.CreateItem, formData, {
         headers: {

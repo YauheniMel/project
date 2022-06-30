@@ -91,8 +91,8 @@ const ItemForm: FC<IItemForm> = ({
       ...getInitFields(customFields),
     },
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
       if (!tags.length) return;
+
       createNewItem({
         collectionId,
         icon: image,

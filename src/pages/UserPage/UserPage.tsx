@@ -69,7 +69,7 @@ const UserPage: FC<IUserPage> = ({
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
-
+  console.log(userId);
   const classes = useStyles();
 
   const [{ isOver: overEdit }, dropEdit] = useDrop({
@@ -96,7 +96,7 @@ const UserPage: FC<IUserPage> = ({
   return (
     <>
       <CollectionForm
-        userId={userId}
+        userId={id}
         openForm={openForm}
         setOpenForm={setOpenForm}
         createNewCollection={createNewCollection}

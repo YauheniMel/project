@@ -21,7 +21,7 @@ function adminReducer(state = initState, action: AnyAction) {
     case AdminActionTypes.setTargetCollections: {
       return {
         ...state,
-        targetCollections: [...action.collections],
+        // targetCollections: [...action.collections],
       };
     }
     default:

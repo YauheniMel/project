@@ -37,6 +37,8 @@ interface IHeader {
     icons: string[];
   }[]
   | undefined;
+  clearSearchData: () => void;
+  setSearchList: () => void;
 }
 
 const Header: FC<IHeader> = ({
@@ -46,6 +48,8 @@ const Header: FC<IHeader> = ({
   isAuth,
   itemsSearch,
   usersSearch,
+  clearSearchData,
+  setSearchList,
 }) => {
   const classes = useStyles();
 
@@ -61,6 +65,8 @@ const Header: FC<IHeader> = ({
           search={search}
           itemsSearch={itemsSearch}
           usersSearch={usersSearch}
+          clearSearchData={clearSearchData}
+          setSearchList={setSearchList}
         />
         <Box>
           <IconButton

@@ -1,13 +1,11 @@
 import { requestAPI } from '../../api/api';
-import { CollectionType, ItemType, UserPersonalInfoType } from '../../types';
+import { CollectionType, UserPersonalInfoType } from '../../types';
 import { CredentialsType } from './auth-action';
 
 export enum UserActionTypes {
   setUserPersonalInfo = 'SET-USER-PERSONAL-INFO',
   setMyCollections = 'SET-MY-COLLECTIONS',
   setEditCollections = 'SET-EDIT-COLLECTIONS',
-  setSearchUsers = 'SET-SEARCH-USERS',
-  setSearchItems = 'SET-SEARCH-ITEMS',
   updateEditCollections = 'UPDATE-EDIT-COLLECTIONS',
   setDeleteCollections = 'SET-DELETE-COLLECTIONS',
   updateDeleteCollections = 'UPDATE-DELETE-COLLECTIONS',
@@ -22,21 +20,6 @@ const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
 const setMyCollectionsAction = (collections: CollectionType[]) => ({
   type: UserActionTypes.setMyCollections,
   collections,
-});
-
-// another type!
-const setSearchUsersAction = (users: {
-  name: string;
-  surname: string;
-  collections: Array<CollectionType | null>;
-}) => ({
-  type: UserActionTypes.setSearchUsers,
-  users,
-});
-
-const setSearchItemsAction = (items: ItemType[]) => ({
-  type: UserActionTypes.setSearchItems,
-  items,
 });
 
 const setEditCollectionsAction = (collections: CollectionType[]) => ({
@@ -110,15 +93,4 @@ export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => 
   requestAPI
     .pullOutCollection(collectionId)
     .then((response) => dispatch(pullOutCollectionAction(response.id)));
-};
-
-export const searchThunk = (substr: string) => (dipatch: any) => {
-  requestAPI.search(substr).then((response) => {
-    if (!response.result.length) return null;
-
-    if (response.type === 'users') {
-      return dipatch(setSearchUsersAction(response.result));
-    }
-    return dipatch(setSearchItemsAction(response.result));
-  });
 };

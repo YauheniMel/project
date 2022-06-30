@@ -1,7 +1,7 @@
 import { AppStateType } from '..';
 import { CollectionType } from '../../types';
 
-export default function getAllCollectionsSelector(state: AppStateType):
+export function getAllCollectionsSelector(state: AppStateType):
 | {
   id: number;
   name: string;
@@ -10,4 +10,10 @@ export default function getAllCollectionsSelector(state: AppStateType):
 }[]
 | null {
   return state.collections.allCollections;
+}
+
+export function getTargetCollectionsSelector(
+  state: AppStateType,
+): CollectionType[] | null {
+  return state.collections.targetCollections;
 }

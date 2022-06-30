@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const fs = require('fs');
+const sharp = require('sharp');
 const sqlz = require('../services/sequelize');
 
 const storage = multer.diskStorage({
@@ -147,7 +147,7 @@ router.put('/api/setEditItems/', (req, res) => {
     }));
 });
 
-router.put('/api/updateItem/', upload.single('icon'), (req, res) => {
+router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
   const { itemId } = req.body;
 
   const allProperties = {
@@ -167,7 +167,7 @@ router.put('/api/updateItem/', upload.single('icon'), (req, res) => {
   });
 
   if (req.file) {
-    dataForUpdate.icon = Buffer.from(fs.readFileSync(req.file.path));
+    dataForUpdate.icon = await sharp(req.file.path).resize(300).toBuffer();
   }
 
   sqlz.Item.update(
@@ -233,7 +233,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
     }));
 });
 
-router.post('/api/createItem', upload.single('icon'), (req, res) => {
+router.post('/api/createItem', upload.single('icon'), async (req, res) => {
   const {
     collectionId,
     title,
@@ -259,7 +259,7 @@ router.post('/api/createItem', upload.single('icon'), (req, res) => {
 
   let profilePicture = null;
   if (req.file) {
-    profilePicture = Buffer.from(fs.readFileSync(req.file.path));
+    profilePicture = await sharp(req.file.path).resize(300).toBuffer();
   }
 
   sqlz.Item.create({
@@ -316,7 +316,7 @@ router.delete('/api/deleteItem/', (req, res) => {
 
 router.get('/api/search/', (req, res) => {
   const { substr } = req.query;
-  console.log(substr);
+
   sqlz.Item.findAll({
     where: sqlz.sequelize.literal(`
     MATCH(
@@ -352,7 +352,7 @@ router.get('/api/search/', (req, res) => {
           include: [
             {
               model: sqlz.Collection,
-              limit: 2,
+              limit: 5,
             },
           ],
         }).then((result) => {

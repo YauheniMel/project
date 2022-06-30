@@ -16,8 +16,6 @@ const initState: UserPageType = {
   myCollections: null,
   listEditCollections: [],
   listDeleteCollections: [],
-  itemsSearch: null,
-  usersSearch: null,
 };
 
 function userReducer(state = initState, action: AnyAction) {
@@ -32,20 +30,6 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         myCollections: [...action.collections],
-      };
-    }
-    case UserActionTypes.setSearchItems: {
-      return {
-        ...state,
-        itemsSearch: [...action.items],
-        usersSearch: null,
-      };
-    }
-    case UserActionTypes.setSearchUsers: {
-      return {
-        ...state,
-        usersSearch: [...action.users],
-        itemsSearch: null,
       };
     }
     case UserActionTypes.setEditCollections: {
