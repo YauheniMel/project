@@ -18,7 +18,6 @@ export interface ItemInitType {
   collectionId: number;
   title: string;
   tags: string;
-  countLike: string[] | null;
   icon: any;
   comments: CommentType[] | null;
   dateValue1?: string;
@@ -41,7 +40,7 @@ export interface ItemType {
   id: number;
   title: string;
   tags: string;
-  countLike: string[] | null;
+  likes: { itemId: number }[] | null;
   icon: any;
   isEdit: boolean;
   isDelete: boolean;
@@ -151,6 +150,7 @@ export interface UserPageType {
   myCollections: null | CollectionType[];
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
+  likes: { itemId: number }[] | null;
 }
 
 export interface SearchPageType {

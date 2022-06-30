@@ -5,6 +5,7 @@ import {
   Avatar,
   Box,
   Button,
+  Checkbox,
   Chip,
   IconButton,
   Link,
@@ -13,14 +14,18 @@ import {
 import { alpha, styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { MdOutlineChangeCircle } from 'react-icons/md';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemType } from '../../types';
 import RoutesApp from '../../constants/routes';
 
 interface ITable {
+  userId: number;
   list: ItemType[];
   setTargetItem: (item: ItemType) => void;
   setEditItems: (itemIds: number[]) => void;
   setDeleteItems: (itemIds: number[]) => void;
+  toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const ODD_OPACITY = 0.2;
@@ -62,6 +67,9 @@ const Table: FC<ITable> = ({
   setTargetItem,
   setEditItems,
   setDeleteItems,
+  toogleLike,
+  userId,
+  likes,
 }) => {
   const [selectRows, setSelectRows] = useState([]);
   const columns: GridColDef[] = [
@@ -98,17 +106,18 @@ const Table: FC<ITable> = ({
       renderCell: (params) => params.row.tags.split(',').map((tag: string) => <Chip label={tag} />),
     },
     {
-      field: 'countLike',
+      field: 'likes',
       headerName: 'Likes',
       type: 'number',
       width: 60,
       editable: true,
+      renderCell: (params) => params.row.likes && params.row.likes.length,
     },
     {
       field: 'actions',
       headerName: 'Actions',
       sortable: false,
-      width: 100,
+      width: 150,
       renderCell: (params) => (
         <>
           <IconButton onClick={() => setEditItems([params.row.id])}>
@@ -117,6 +126,17 @@ const Table: FC<ITable> = ({
           <IconButton onClick={() => setDeleteItems([params.row.id])}>
             <DeleteIcon />
           </IconButton>
+          <Checkbox
+            checked={!!likes?.find((like) => like.itemId === params.row.id)}
+            color="error"
+            icon={<FavoriteBorder color="error" />}
+            checkedIcon={<Favorite color="error" />}
+            onChange={() => {
+              if (userId && params.row.id) {
+                toogleLike(userId, params.row.id);
+              }
+            }}
+          />
         </>
       ),
     },

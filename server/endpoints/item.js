@@ -19,6 +19,12 @@ router.get('/api/getItem/', (req, res) => {
   const { itemId, collectionId } = req.query;
 
   sqlz.Item.findOne({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['itemId'],
+      },
+    ],
     where: {
       id: itemId,
       collectionId,
@@ -43,6 +49,12 @@ router.get('/api/getItem/', (req, res) => {
 
 router.get('/api/getLastAddItems', (req, res) => {
   sqlz.Item.findAll({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['itemId'],
+      },
+    ],
     limit: 5,
   })
     .then((response) => {
@@ -72,9 +84,8 @@ router.put('/api/pullOutItem/', (req, res) => {
     { isEdit: false, isDelete: false },
     { where: { id: +itemId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -208,6 +219,12 @@ router.get('/api/getCollectionItems/', (req, res) => {
   const { collectionId } = req.query;
 
   sqlz.Item.findAll({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['itemId'],
+      },
+    ],
     where: {
       collectionId,
     },
@@ -239,7 +256,6 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     title,
     tags,
     comments,
-    countLike,
     dateKey1: dateValue1 = null,
     dateKey2: dateValue2 = null,
     dateKey3: dateValue3 = null,
@@ -267,7 +283,6 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     title,
     tags,
     comments,
-    countLike,
     dateValue1,
     dateValue2,
     dateValue3,
@@ -285,11 +300,14 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     checkboxValue3,
     collectionId,
   })
-    .then(() => {
-      res.status(200).send({
-        code: 1,
-        message: 'Create item success!',
-      });
+    .then((response) => {
+      const { icon } = response;
+
+      if (icon) {
+        response.icon = Buffer.from(icon).toString('base64');
+      }
+
+      return res.status(200).send(response);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -390,6 +408,38 @@ router.get('/api/search/', (req, res) => {
       return res.status(200).send({
         type: 'items',
         result: resWithImg,
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/toogleLike/', (req, res) => {
+  const { userId, itemId } = req.body;
+
+  sqlz.Like.findOrCreate({
+    where: {
+      userId,
+      itemId,
+    },
+  })
+    .then(([, created]) => {
+      if (!created) {
+        return sqlz.Like.destroy({
+          where: {
+            userId,
+            itemId,
+          },
+        }).then(() => res.status(200).send({
+          code: 1,
+          message: 'dislike',
+        }));
+      }
+      return res.status(200).send({
+        code: 1,
+        message: 'like',
       });
     })
     .catch((err) => res.status(400).send({

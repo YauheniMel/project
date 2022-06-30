@@ -9,6 +9,10 @@ import {
   getCollectionsSelector,
   getItemsSelector,
 } from '../../redux/selectors/home-selector';
+import {
+  getLikesSelector,
+  getUserId,
+} from '../../redux/selectors/user-selector';
 import { CollectionType, ItemType } from '../../types';
 import HomePage from './HomePage';
 
@@ -18,6 +22,9 @@ interface IHomePageContainer {
   setTargetItem: (item: ItemType) => void;
   getBigCollections: () => void;
   getLastAddItems: () => void;
+  toogleLike: (userId: number, itemId: number) => void;
+  userId: number;
+  likes: { itemId: number }[] | null;
 }
 
 const HomePageContainer: FC<IHomePageContainer> = (props) => {
@@ -34,8 +41,10 @@ const HomePageContainer: FC<IHomePageContainer> = (props) => {
 };
 
 const mapStateToProps = (state: AppStateType) => ({
+  userId: getUserId(state),
   collections: getCollectionsSelector(state),
   list: getItemsSelector(state),
+  likes: getLikesSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

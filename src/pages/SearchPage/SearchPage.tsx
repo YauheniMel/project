@@ -1,14 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import Slider from '../../components/Slider/Slider';
-import CardItem from '../../shared/components/CardItem';
+import CardItem from '../../shared/components/CardItem/CardItem';
 import { CollectionType, ItemType } from '../../types';
 
 interface ISearchPage {
+  userId: number;
   listSearch: any;
   setTargetCollection: (collection: CollectionType) => void;
   getTargetUserCollections: (id: number, page?: number) => void;
   setTargetItem: (item: ItemType) => void;
+  toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const SearchPage: FC<ISearchPage> = ({
@@ -16,6 +19,9 @@ const SearchPage: FC<ISearchPage> = ({
   setTargetCollection,
   getTargetUserCollections,
   setTargetItem,
+  userId,
+  toogleLike,
+  likes,
 }) => {
   if (!listSearch) return <Box>0 result</Box>;
 
@@ -41,7 +47,13 @@ const SearchPage: FC<ISearchPage> = ({
           />
         </>
       ) : (
-        <CardItem item={data as ItemType} setTargetItem={setTargetItem} />
+        <CardItem
+          likes={likes}
+          item={data as ItemType}
+          setTargetItem={setTargetItem}
+          userId={userId}
+          toogleLike={toogleLike}
+        />
       )))}
     </>
   );

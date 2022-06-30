@@ -12,7 +12,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { TextField } from '@mui/material';
 import CustomField from '../CustomField/CustomField';
-import InputFile from '../../shared/InputFile/InputFile';
+import InputFile from '../../shared/components/InputFile/InputFile';
 
 const useStyles = makeStyles((theme) => ({
   back: {

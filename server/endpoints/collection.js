@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const sharp = require('sharp');
 const sqlz = require('../services/sequelize');
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 2; // suppose that need 'findAndCountAll'
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -46,6 +46,11 @@ router.get('/api/getCollection/', (req, res) => {
   const { collectionId } = req.query;
 
   sqlz.Collection.findOne({
+    include: [
+      {
+        model: sqlz.Item,
+      },
+    ],
     where: {
       id: collectionId,
     },
@@ -176,9 +181,8 @@ router.put('/api/setEditCollection/', (req, res) => {
     { isEdit: true, isDelete: false },
     { where: { id: +collectionId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -208,9 +212,8 @@ router.put('/api/pullOutCollection/', (req, res) => {
     { isEdit: false, isDelete: false },
     { where: { id: +collectionId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -225,9 +228,8 @@ router.put('/api/setDeleteCollection/', (req, res) => {
     { isDelete: true, isEdit: false },
     { where: { id: collectionId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -427,10 +429,15 @@ router.post(
       ...customFields,
       userId,
     })
-      .then(() => res.status(200).send({
-        code: 1,
-        message: 'Create collection success!',
-      }))
+      .then((response) => {
+        const { icon } = response;
+
+        if (icon) {
+          response.icon = Buffer.from(icon).toString('base64');
+        }
+
+        return res.status(200).send(response);
+      })
       .catch((err) => res.status(400).send({
         code: 0,
         message: err,

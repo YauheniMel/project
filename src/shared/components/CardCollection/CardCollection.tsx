@@ -9,8 +9,8 @@ import { makeStyles } from '@material-ui/core';
 import { VscMove } from 'react-icons/vsc';
 import MDEditor from '@uiw/react-md-editor';
 import { useDrag } from 'react-dnd';
-import RoutesApp from '../../constants/routes';
-import { CollectionType } from '../../types';
+import RoutesApp from '../../../constants/routes';
+import { CollectionType } from '../../../types';
 
 const useStyles = makeStyles((theme) => ({
   card: {

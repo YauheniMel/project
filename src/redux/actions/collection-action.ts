@@ -1,10 +1,5 @@
 import { requestAPI } from '../../api/api';
-import {
-  CollectionInitType,
-  CollectionType,
-  ItemInitType,
-  ItemType,
-} from '../../types';
+import { CollectionType, ItemInitType, ItemType } from '../../types';
 
 export enum CollectionActionTypes {
   SetTargetItem = 'SET-TARGET-ITEM',
@@ -16,6 +11,7 @@ export enum CollectionActionTypes {
   UpdateDeleteListItems = 'UPDATE-DELETE-LIST-ITEMS',
   SetDeleteListItems = 'SET-DELETE-LIST-ITEMS',
   PullOutItem = 'PULL-OUT-ITEM',
+  AddNewItem = 'ADD-NEW-ITEM',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -36,6 +32,11 @@ export const pullOutItemAction = (itemId: number) => ({
 export const setTargetCollectionAction = (collection: CollectionType) => ({
   type: CollectionActionTypes.SetTargetCollection,
   collection,
+});
+
+export const addNewItemAction = (item: ItemType) => ({
+  type: CollectionActionTypes.AddNewItem,
+  item,
 });
 
 export const setTargetCollectionItemsAction = (items: ItemType[]) => ({
@@ -81,18 +82,14 @@ export const getTargetItemThunk = (itemId: number, collectionId: number) => (dis
   });
 };
 
-export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => () => {
-  requestAPI
-    .createCollection(collectionInfo)
-    .then((response) => console.log(response));
-};
-
 export const delItemThunk = (itemId: number) => () => {
   requestAPI.deleteItem(itemId).then((response) => console.log(response));
 };
 
-export const createNewItemThunk = (itemInfo: ItemInitType) => () => {
-  requestAPI.createItem(itemInfo).then((response) => console.log(response));
+export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) => {
+  requestAPI.createItem(itemInfo).then((response) => {
+    dispatch(addNewItemAction(response));
+  });
 };
 
 export const deleteCollectionThunk = (collectionId: number) => () => {
@@ -132,13 +129,13 @@ export const getDeleteItemsThunk = (collectionId: number) => (dispatch: any) => 
 };
 
 export const pullOutItemThunk = (itemId: number) => (dispatch: any) => {
-  requestAPI
-    .pullOutItem(itemId)
-    .then((response) => dispatch(pullOutItemAction(response.id)));
+  requestAPI.pullOutItem(itemId).then((response) => {
+    if (response.code === 1) {
+      dispatch(pullOutItemAction(itemId));
+    }
+  });
 };
 
-export const updateItemThunk = (item: any) => (dispatch: any) => {
-  requestAPI
-    .updateItem(item)
-    .then((response) => dispatch(pullOutItemAction(response.id)));
+export const updateItemThunk = (item: any) => () => {
+  requestAPI.updateItem(item).then((response) => console.log(response));
 };

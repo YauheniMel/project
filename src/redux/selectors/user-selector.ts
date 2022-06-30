@@ -46,3 +46,9 @@ export function getDeleteCollections(
 ): Array<CollectionType | null> {
   return state.user.listDeleteCollections;
 }
+
+export function getLikesSelector(
+  state: AppStateType,
+): null | { itemId: number }[] {
+  return state.user.likes;
+}

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { CollectionType } from '../../types';
-import CardCollection from '../../shared/components/CardCollection';
+import CardCollection from '../../shared/components/CardCollection/CardCollection';
 
 interface ISlider {
   id: number;
