@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 
-import CardItem from '../../shared/components/CardItem';
+import CardItem from '../../shared/components/CardItem/CardItem';
 import { CollectionType, ItemType } from '../../types';
 import CarouselComponent from '../../components/Carousel/Carousel';
-import TagCloudComponent from '../../shared/TagsCloud/TagCloud';
+import TagCloudComponent from '../../shared/components/TagsCloud/TagCloud';
 
 const useStyles = makeStyles({
   list: {
@@ -24,9 +24,17 @@ interface IHomePage {
   collections: CollectionType[] | null;
   list: ItemType[] | null;
   setTargetItem: (item: ItemType) => void;
+  toogleLike: (userId: number, itemId: number) => void;
+  userId: number;
 }
 
-const HomePage: FC<IHomePage> = ({ list, collections, setTargetItem }) => {
+const HomePage: FC<IHomePage> = ({
+  list,
+  userId,
+  collections,
+  setTargetItem,
+  toogleLike,
+}) => {
   const classes = useStyles();
 
   return (
@@ -35,7 +43,13 @@ const HomePage: FC<IHomePage> = ({ list, collections, setTargetItem }) => {
       <TagCloudComponent />
       <Box className={classes.list}>
         {list?.map((item: ItemType) => (
-          <CardItem setTargetItem={setTargetItem} item={item} key={item.id} />
+          <CardItem
+            setTargetItem={setTargetItem}
+            item={item}
+            key={item.id}
+            toogleLike={toogleLike}
+            userId={userId}
+          />
         ))}
       </Box>
     </Box>

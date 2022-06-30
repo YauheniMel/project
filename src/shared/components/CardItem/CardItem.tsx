@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  CardMedia, Chip, Link, Typography,
+  CardMedia, Checkbox, Chip, Link, Typography,
 } from '@mui/material';
 import Card from '@mui/material/Card';
 import TagIcon from '@mui/icons-material/Tag';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
-import RoutesApp from '../../constants/routes';
-import { ItemType } from '../../types';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import RoutesApp from '../../../constants/routes';
+import { ItemType } from '../../../types';
 
 const useStyles = makeStyles({
   card: {
@@ -20,9 +21,16 @@ const useStyles = makeStyles({
 interface ICardItem {
   item: ItemType;
   setTargetItem: (item: ItemType) => void;
+  toogleLike: (userId: number, itemId: number) => void;
+  userId: number;
 }
 
-const CardItem: FC<ICardItem> = ({ item, setTargetItem }) => {
+const CardItem: FC<ICardItem> = ({
+  item,
+  setTargetItem,
+  toogleLike,
+  userId,
+}) => {
   function handleClick() {
     setTargetItem(item);
   }
@@ -43,7 +51,7 @@ const CardItem: FC<ICardItem> = ({ item, setTargetItem }) => {
         variant="body2"
         sx={{ fontWeight: 'md', color: 'text.secondary' }}
       >
-        {item.countLike ? item.countLike.length : 0}
+        {item.likes ? item.likes.length : 0}
         {' '}
         likes
       </Typography>
@@ -52,6 +60,17 @@ const CardItem: FC<ICardItem> = ({ item, setTargetItem }) => {
         height="194"
         image={`data:application/pdf;base64,${item.icon}`}
         alt="Paella dish"
+      />
+      <Checkbox
+        checked={
+          !!item.likes?.find(
+            (user: { userId: number }) => user.userId === userId,
+          )
+        }
+        color="error"
+        icon={<FavoriteBorder color="error" />}
+        checkedIcon={<Favorite color="error" />}
+        onChange={() => toogleLike(userId, item.id)}
       />
       <Typography
         variant="body2"

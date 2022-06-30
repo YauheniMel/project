@@ -30,11 +30,13 @@ import {
   getDeleteItemList,
   getEditItemList,
 } from '../../redux/selectors/collection-selector';
+import { getUserId } from '../../redux/selectors/user-selector';
 import { ItemInitType, ItemType } from '../../types';
 import ItemPage from '../ItemPage/ItemPage';
 import CollectionPage from './CollectionPage';
 
 interface IHomePageContainer {
+  userId: number;
   id: number;
   icon: any;
   description: string;
@@ -58,6 +60,7 @@ interface IHomePageContainer {
   getDeleteItems: (collectionId: number) => void;
   pullOutItem: (itemId: number) => void;
   updateItem: (item: any) => void;
+  toogleLike: (userId: number, itemId: number) => void;
 }
 
 const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
@@ -93,6 +96,8 @@ const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
             getTargetItem={props.getTargetItem}
             targetItem={props.targetItem as ItemType}
             deleteItem={props.deleteItem}
+            toogleLike={props.toogleLike}
+            userId={props.userId}
           />
         )}
       />
@@ -101,6 +106,7 @@ const CollectionPageContainer: FC<IHomePageContainer> = (props) => {
 };
 
 const mapStateToProps = (state: AppStateType) => ({
+  userId: getUserId(state),
   id: getCollectionIdSelector(state),
   icon: getCollectionIconSelector(state),
   description: getCollectionDescriptionSelector(state),

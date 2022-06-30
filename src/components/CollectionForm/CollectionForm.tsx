@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { CollectionInitType } from '../../types';
 import FormArray from '../FormArray/FormArray';
-import InputFile from '../../shared/InputFile/InputFile';
+import InputFile from '../../shared/components/InputFile/InputFile';
 
 const useStyles = makeStyles((theme) => ({
   back: {

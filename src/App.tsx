@@ -14,7 +14,10 @@ import UserPageContainer from './pages/UserPage/UserPageContainer';
 import CollectionPageContainer from './pages/CollectionPage/CollectionPageContainer';
 import AdminPageContainer from './pages/AdminPage/AdminPageContainer';
 import CollectionsPageContainer from './pages/CollectionsPage/CollectionsPageContainer';
-import { getUserPersonalInfoThunk } from './redux/actions/user-action';
+import {
+  getUserPersonalInfoThunk,
+  toogleLikeThunk,
+} from './redux/actions/user-action';
 import { CredentialsType, loginAction } from './redux/actions/auth-action';
 import SearchPageContainer from './pages/SearchPage/SearchPageContainer';
 import { AppStateType } from './redux';
@@ -24,11 +27,13 @@ interface IRootPage {
   setTargetItem: (item: ItemType) => void;
   loginUser: () => void;
   getUserPersonalInfo: (payload: CredentialsType) => void;
+  toogleLike: (userId: number, itemId: number) => void;
 }
 const App: FC<IRootPage> = ({
   setTargetItem,
   loginUser,
   getUserPersonalInfo,
+  toogleLike,
 }) => {
   useEffect(() => {
     const auth = getAuth();
@@ -58,18 +63,26 @@ const App: FC<IRootPage> = ({
         <Route path={RoutesApp.Root} element={<RootPage />}>
           <Route
             path={RoutesApp.Home}
-            element={<HomePageContainer setTargetItem={setTargetItem} />}
+            element={(
+              <HomePageContainer
+                setTargetItem={setTargetItem}
+                toogleLike={toogleLike}
+              />
+            )}
           />
           <Route path={RoutesApp.User} element={<UserPageContainer />} />
           <Route
             path={RoutesApp.Collection}
-            element={<CollectionPageContainer />}
+            element={<CollectionPageContainer toogleLike={toogleLike} />}
           />
           <Route
             path={RoutesApp.Collections}
             element={<CollectionsPageContainer />}
           />
-          <Route path={RoutesApp.Search} element={<SearchPageContainer />} />
+          <Route
+            path={RoutesApp.Search}
+            element={<SearchPageContainer toogleLike={toogleLike} />}
+          />
         </Route>
         <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
       </Routes>
@@ -84,6 +97,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   setTargetItem: (item: ItemType) => dispatch(setTargetItemAction(item)),
   getUserPersonalInfo: (payload: CredentialsType) => dispatch(getUserPersonalInfoThunk(payload)),
   loginUser: () => dispatch(loginAction()),
+  toogleLike: (userId: number, itemId: number) => dispatch(toogleLikeThunk(userId, itemId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

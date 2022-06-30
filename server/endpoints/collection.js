@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const sharp = require('sharp');
 const sqlz = require('../services/sequelize');
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 2; // suppose that need 'findAndCountAll'
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {

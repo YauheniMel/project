@@ -1,17 +1,28 @@
 import React, { FC, useEffect } from 'react';
 import { Box } from '@material-ui/core';
-import { Avatar, Grid, Typography } from '@mui/material';
+import {
+  Avatar, Checkbox, Grid, Typography,
+} from '@mui/material';
 import { useParams } from 'react-router';
 import moment from 'moment';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemType } from '../../types';
 
 interface IItemPage {
+  userId: number;
   targetItem: ItemType;
   getTargetItem: (itemId: number, collectionId: number) => void;
   deleteItem: (itemId: number) => void;
+  toogleLike: (userId: number, itemId: number) => void;
 }
 
-const ItemPage: FC<IItemPage> = ({ targetItem, getTargetItem, deleteItem }) => {
+const ItemPage: FC<IItemPage> = ({
+  targetItem,
+  getTargetItem,
+  deleteItem,
+  toogleLike,
+  userId,
+}) => {
   const { collectionId, itemId } = useParams();
   console.log(deleteItem);
   useEffect(() => {
@@ -28,9 +39,20 @@ const ItemPage: FC<IItemPage> = ({ targetItem, getTargetItem, deleteItem }) => {
     >
       {targetItem && (
         <Box>
+          <Checkbox
+            checked={
+              !!targetItem.likes?.find(
+                (user: { userId: number }) => user.userId === userId,
+              )
+            }
+            color="error"
+            icon={<FavoriteBorder color="error" />}
+            checkedIcon={<Favorite color="error" />}
+            onChange={() => toogleLike(userId, targetItem.id)}
+          />
           <Typography variant="h2">{targetItem.title}</Typography>
           <Typography variant="body1">
-            {targetItem.countLike ? targetItem.countLike.length : 0}
+            {targetItem.likes ? targetItem.likes.length : 0}
             {' '}
             likes
           </Typography>

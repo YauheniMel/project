@@ -155,10 +155,6 @@ const Item = sequelize.define('item', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  countLike: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
   isEdit: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -230,13 +226,24 @@ const Item = sequelize.define('item', {
     allowNull: true,
   },
 });
+const Like = sequelize.define('like', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+  },
+});
 User.hasMany(Collection, { onDelete: 'cascade' });
 Collection.hasMany(Item, { onDelete: 'cascade' });
+Item.hasMany(Like, { onDelete: 'cascade' });
+User.hasOne(Like, { onDelete: 'cascade' });
 
 const sqlz = {
   User,
   Collection,
   Item,
+  Like,
   sequelize,
 };
 

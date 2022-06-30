@@ -94,3 +94,9 @@ export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => 
     .pullOutCollection(collectionId)
     .then((response) => dispatch(pullOutCollectionAction(response.id)));
 };
+
+export const toogleLikeThunk = (userId: number, itemId: number) => () => {
+  requestAPI
+    .toogleLike(userId, itemId)
+    .then((response) => console.log(response));
+};

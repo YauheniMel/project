@@ -19,6 +19,12 @@ router.get('/api/getItem/', (req, res) => {
   const { itemId, collectionId } = req.query;
 
   sqlz.Item.findOne({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['userId'],
+      },
+    ],
     where: {
       id: itemId,
       collectionId,
@@ -43,6 +49,12 @@ router.get('/api/getItem/', (req, res) => {
 
 router.get('/api/getLastAddItems', (req, res) => {
   sqlz.Item.findAll({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['userId'],
+      },
+    ],
     limit: 5,
   })
     .then((response) => {
@@ -208,6 +220,12 @@ router.get('/api/getCollectionItems/', (req, res) => {
   const { collectionId } = req.query;
 
   sqlz.Item.findAll({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['userId'],
+      },
+    ],
     where: {
       collectionId,
     },
@@ -239,7 +257,6 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     title,
     tags,
     comments,
-    countLike,
     dateKey1: dateValue1 = null,
     dateKey2: dateValue2 = null,
     dateKey3: dateValue3 = null,
@@ -267,7 +284,6 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     title,
     tags,
     comments,
-    countLike,
     dateValue1,
     dateValue2,
     dateValue3,
@@ -390,6 +406,38 @@ router.get('/api/search/', (req, res) => {
       return res.status(200).send({
         type: 'items',
         result: resWithImg,
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/toogleLike/', (req, res) => {
+  const { userId, itemId } = req.body;
+  console.log(userId);
+  sqlz.Like.findOrCreate({
+    where: {
+      userId,
+      itemId,
+    },
+  })
+    .then(([, created]) => {
+      if (!created) {
+        return sqlz.Like.destroy({
+          where: {
+            userId,
+            itemId,
+          },
+        }).then(() => res.status(200).send({
+          code: 1,
+          message: 'Unlike success!',
+        }));
+      }
+      return res.status(200).send({
+        code: 1,
+        message: 'Like success!',
       });
     })
     .catch((err) => res.status(400).send({

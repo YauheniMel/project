@@ -35,6 +35,7 @@ export const API = {
   GetTargetUser: `${baseUrl}/api/getTargetUser`,
   GetTargetCollections: `${baseUrl}/api/getTargetCollections`,
   Search: `${baseUrl}/api/search`,
+  ToogleLike: `${baseUrl}/api/toogleLike`,
 };
 
 export const requestAPI = {
@@ -56,6 +57,15 @@ export const requestAPI = {
     return axios
       .post(API.LogOutUser, {
         id: userId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  toogleLike(userId: number, itemId: number) {
+    return axios
+      .post(API.ToogleLike, {
+        userId,
+        itemId,
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
