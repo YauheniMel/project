@@ -40,7 +40,7 @@ export interface ItemType {
   id: number;
   title: string;
   tags: string;
-  likes: { userId: number }[] | null;
+  likes: { itemId: number }[] | null;
   icon: any;
   isEdit: boolean;
   isDelete: boolean;
@@ -150,6 +150,7 @@ export interface UserPageType {
   myCollections: null | CollectionType[];
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
+  likes: { itemId: number }[] | null;
 }
 
 export interface SearchPageType {

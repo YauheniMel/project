@@ -26,6 +26,7 @@ interface IHomePage {
   setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
   userId: number;
+  likes: { itemId: number }[] | null;
 }
 
 const HomePage: FC<IHomePage> = ({
@@ -34,6 +35,7 @@ const HomePage: FC<IHomePage> = ({
   collections,
   setTargetItem,
   toogleLike,
+  likes,
 }) => {
   const classes = useStyles();
 
@@ -46,6 +48,7 @@ const HomePage: FC<IHomePage> = ({
           <CardItem
             setTargetItem={setTargetItem}
             item={item}
+            likes={likes}
             key={item.id}
             toogleLike={toogleLike}
             userId={userId}

@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { CollectionType } from '../../types';
 import { CollectionActionTypes } from '../actions/collection-action';
+import { UserActionTypes } from '../actions/user-action';
 
 const initState: CollectionType = {
   id: null,
@@ -160,6 +161,36 @@ function collectionReducer(state = initState, action: AnyAction) {
         listDeleteItems: state.listDeleteItems.filter(
           (collection) => collection?.id !== action.itemId,
         ),
+      };
+    }
+    case UserActionTypes.increaseLikes: {
+      const newList = state.list?.map((item) => {
+        if (item.id === action.itemId) {
+          if (!item.likes) item.likes = [];
+
+          item.likes.push({ itemId: action.itemId });
+        }
+
+        return item;
+      });
+      return {
+        ...state,
+        list: newList || null,
+      };
+    }
+    case UserActionTypes.decreaseLikes: {
+      const newList = state.list?.map((item) => {
+        if (item.id === action.itemId) {
+          if (!item.likes) item.likes = [];
+
+          item.likes.splice(0, 1);
+        }
+
+        return item;
+      });
+      return {
+        ...state,
+        list: newList || null,
       };
     }
     default:

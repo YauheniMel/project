@@ -10,11 +10,25 @@ export enum UserActionTypes {
   setDeleteCollections = 'SET-DELETE-COLLECTIONS',
   updateDeleteCollections = 'UPDATE-DELETE-COLLECTIONS',
   pullOutCollectionAction = 'PULL-OUT-COLLECTION',
+  setLike = 'SET-LIKE',
+  setDislike = 'SET-DISLIKE',
+  increaseLikes = 'INCREASE-LIKES',
+  decreaseLikes = 'DECREASE-LIKES',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
   type: UserActionTypes.setUserPersonalInfo,
   payload,
+});
+
+const decreaseLikesAction = (itemId: number) => ({
+  type: UserActionTypes.decreaseLikes,
+  itemId,
+});
+
+const increaseLikesAction = (itemId: number) => ({
+  type: UserActionTypes.increaseLikes,
+  itemId,
 });
 
 const setMyCollectionsAction = (collections: CollectionType[]) => ({
@@ -40,6 +54,16 @@ const updateEditCollectionsAction = (collectionId: CollectionType) => ({
 const pullOutCollectionAction = (collectionId: CollectionType) => ({
   type: UserActionTypes.pullOutCollectionAction,
   collectionId,
+});
+
+const setLikeAction = (itemId: number) => ({
+  type: UserActionTypes.setLike,
+  itemId,
+});
+
+const setDislikeAction = (itemId: number) => ({
+  type: UserActionTypes.setDislike,
+  itemId,
 });
 
 const updateDeleteCollections = (collectionId: CollectionType) => ({
@@ -95,8 +119,15 @@ export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => 
     .then((response) => dispatch(pullOutCollectionAction(response.id)));
 };
 
-export const toogleLikeThunk = (userId: number, itemId: number) => () => {
-  requestAPI
-    .toogleLike(userId, itemId)
-    .then((response) => console.log(response));
+export const toogleLikeThunk = (userId: number, itemId: number) => (dispatch: any) => {
+  requestAPI.toogleLike(userId, itemId).then((response) => {
+    if (response.code === 0) return;
+    if (response.message === 'like') {
+      dispatch(setLikeAction(itemId));
+      dispatch(increaseLikesAction(itemId));
+    } else if (response.message === 'dislike') {
+      dispatch(setDislikeAction(itemId));
+      dispatch(decreaseLikesAction(itemId));
+    }
+  });
 };

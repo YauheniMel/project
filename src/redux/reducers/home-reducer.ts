@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { HomePageType } from '../../types';
 import { HomeActionTypes } from '../actions/home-action';
+import { UserActionTypes } from '../actions/user-action';
 
 const initState: HomePageType = {
   collections: null,
@@ -19,6 +20,36 @@ function homeReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         list: [...action.items],
+      };
+    }
+    case UserActionTypes.increaseLikes: {
+      const newList = state.list?.map((item) => {
+        if (item.id === action.itemId) {
+          if (!item.likes) item.likes = [];
+
+          item.likes.push({ itemId: action.itemId });
+        }
+
+        return item;
+      });
+      return {
+        ...state,
+        list: newList || null,
+      };
+    }
+    case UserActionTypes.decreaseLikes: {
+      const newList = state.list?.map((item) => {
+        if (item.id === action.itemId) {
+          if (!item.likes) item.likes = [];
+
+          item.likes.splice(0, 1);
+        }
+
+        return item;
+      });
+      return {
+        ...state,
+        list: newList || null,
       };
     }
     default:

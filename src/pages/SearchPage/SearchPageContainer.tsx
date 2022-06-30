@@ -7,7 +7,10 @@ import {
   setTargetItemAction,
 } from '../../redux/actions/collection-action';
 import { getSearchListSelector } from '../../redux/selectors/search-selector';
-import { getUserId } from '../../redux/selectors/user-selector';
+import {
+  getLikesSelector,
+  getUserId,
+} from '../../redux/selectors/user-selector';
 import { CollectionType, ItemType } from '../../types';
 import SearchPage from './SearchPage';
 
@@ -25,6 +28,7 @@ interface ISearchPageContainer {
   getTargetUserCollections: (id: number, page?: number) => void;
   setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const SearchPageContainer: FC<ISearchPageContainer> = (props) => (
@@ -34,6 +38,7 @@ const SearchPageContainer: FC<ISearchPageContainer> = (props) => (
 const mapStateToProps = (state: AppStateType) => ({
   listSearch: getSearchListSelector(state),
   userId: getUserId(state),
+  likes: getLikesSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -22,7 +22,7 @@ router.get('/api/getItem/', (req, res) => {
     include: [
       {
         model: sqlz.Like,
-        attributes: ['userId'],
+        attributes: ['itemId'],
       },
     ],
     where: {
@@ -52,7 +52,7 @@ router.get('/api/getLastAddItems', (req, res) => {
     include: [
       {
         model: sqlz.Like,
-        attributes: ['userId'],
+        attributes: ['itemId'],
       },
     ],
     limit: 5,
@@ -223,7 +223,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
     include: [
       {
         model: sqlz.Like,
-        attributes: ['userId'],
+        attributes: ['itemId'],
       },
     ],
     where: {
@@ -416,7 +416,7 @@ router.get('/api/search/', (req, res) => {
 
 router.post('/api/toogleLike/', (req, res) => {
   const { userId, itemId } = req.body;
-  console.log(userId);
+
   sqlz.Like.findOrCreate({
     where: {
       userId,
@@ -432,12 +432,12 @@ router.post('/api/toogleLike/', (req, res) => {
           },
         }).then(() => res.status(200).send({
           code: 1,
-          message: 'Unlike success!',
+          message: 'dislike',
         }));
       }
       return res.status(200).send({
         code: 1,
-        message: 'Like success!',
+        message: 'like',
       });
     })
     .catch((err) => res.status(400).send({

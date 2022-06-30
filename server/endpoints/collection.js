@@ -46,6 +46,11 @@ router.get('/api/getCollection/', (req, res) => {
   const { collectionId } = req.query;
 
   sqlz.Collection.findOne({
+    include: [
+      {
+        model: sqlz.Item,
+      },
+    ],
     where: {
       id: collectionId,
     },

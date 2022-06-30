@@ -23,6 +23,7 @@ interface ICardItem {
   setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
   userId: number;
+  likes: { itemId: number }[] | null;
 }
 
 const CardItem: FC<ICardItem> = ({
@@ -30,6 +31,7 @@ const CardItem: FC<ICardItem> = ({
   setTargetItem,
   toogleLike,
   userId,
+  likes,
 }) => {
   function handleClick() {
     setTargetItem(item);
@@ -62,15 +64,15 @@ const CardItem: FC<ICardItem> = ({
         alt="Paella dish"
       />
       <Checkbox
-        checked={
-          !!item.likes?.find(
-            (user: { userId: number }) => user.userId === userId,
-          )
-        }
+        checked={!!likes?.find((like) => like.itemId === item.id)}
         color="error"
         icon={<FavoriteBorder color="error" />}
         checkedIcon={<Favorite color="error" />}
-        onChange={() => toogleLike(userId, item.id)}
+        onChange={() => {
+          if (userId && item.id) {
+            toogleLike(userId, item.id);
+          }
+        }}
       />
       <Typography
         variant="body2"

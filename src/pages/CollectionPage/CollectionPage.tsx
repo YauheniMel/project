@@ -41,6 +41,7 @@ interface ICollectionPage {
   deleteItem: (itemId: number) => void;
   updateItem: (item: any) => void;
   toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -63,6 +64,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   updateItem,
   toogleLike,
   userId,
+  likes,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
@@ -171,6 +173,7 @@ const CollectionPage: FC<ICollectionPage> = ({
               setDeleteItems={setDeleteItems}
               toogleLike={toogleLike}
               userId={userId}
+              likes={likes}
             />
           )}
         </Grid>

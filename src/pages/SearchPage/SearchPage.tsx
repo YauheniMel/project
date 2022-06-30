@@ -11,6 +11,7 @@ interface ISearchPage {
   getTargetUserCollections: (id: number, page?: number) => void;
   setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const SearchPage: FC<ISearchPage> = ({
@@ -20,6 +21,7 @@ const SearchPage: FC<ISearchPage> = ({
   setTargetItem,
   userId,
   toogleLike,
+  likes,
 }) => {
   if (!listSearch) return <Box>0 result</Box>;
 
@@ -46,6 +48,7 @@ const SearchPage: FC<ISearchPage> = ({
         </>
       ) : (
         <CardItem
+          likes={likes}
           item={data as ItemType}
           setTargetItem={setTargetItem}
           userId={userId}

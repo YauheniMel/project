@@ -237,7 +237,7 @@ const Like = sequelize.define('like', {
 User.hasMany(Collection, { onDelete: 'cascade' });
 Collection.hasMany(Item, { onDelete: 'cascade' });
 Item.hasMany(Like, { onDelete: 'cascade' });
-User.hasOne(Like, { onDelete: 'cascade' });
+User.hasMany(Like, { onDelete: 'cascade' });
 
 const sqlz = {
   User,

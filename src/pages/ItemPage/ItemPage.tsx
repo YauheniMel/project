@@ -14,6 +14,7 @@ interface IItemPage {
   getTargetItem: (itemId: number, collectionId: number) => void;
   deleteItem: (itemId: number) => void;
   toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const ItemPage: FC<IItemPage> = ({
@@ -22,6 +23,7 @@ const ItemPage: FC<IItemPage> = ({
   deleteItem,
   toogleLike,
   userId,
+  likes,
 }) => {
   const { collectionId, itemId } = useParams();
   console.log(deleteItem);
@@ -40,15 +42,15 @@ const ItemPage: FC<IItemPage> = ({
       {targetItem && (
         <Box>
           <Checkbox
-            checked={
-              !!targetItem.likes?.find(
-                (user: { userId: number }) => user.userId === userId,
-              )
-            }
+            checked={!!likes?.find((like) => like.itemId === targetItem.id)}
             color="error"
             icon={<FavoriteBorder color="error" />}
             checkedIcon={<Favorite color="error" />}
-            onChange={() => toogleLike(userId, targetItem.id)}
+            onChange={() => {
+              if (userId && targetItem.id) {
+                toogleLike(userId, targetItem.id);
+              }
+            }}
           />
           <Typography variant="h2">{targetItem.title}</Typography>
           <Typography variant="body1">

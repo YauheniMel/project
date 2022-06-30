@@ -25,6 +25,7 @@ interface ITable {
   setEditItems: (itemIds: number[]) => void;
   setDeleteItems: (itemIds: number[]) => void;
   toogleLike: (userId: number, itemId: number) => void;
+  likes: { itemId: number }[] | null;
 }
 
 const ODD_OPACITY = 0.2;
@@ -68,6 +69,7 @@ const Table: FC<ITable> = ({
   setDeleteItems,
   toogleLike,
   userId,
+  likes,
 }) => {
   const [selectRows, setSelectRows] = useState([]);
   const columns: GridColDef[] = [
@@ -125,13 +127,15 @@ const Table: FC<ITable> = ({
             <DeleteIcon />
           </IconButton>
           <Checkbox
-            checked={params.row.likes.find(
-              (user: { userId: number }) => user.userId === userId,
-            )}
+            checked={!!likes?.find((like) => like.itemId === params.row.id)}
             color="error"
             icon={<FavoriteBorder color="error" />}
             checkedIcon={<Favorite color="error" />}
-            onChange={() => toogleLike(userId, params.row.id)}
+            onChange={() => {
+              if (userId && params.row.id) {
+                toogleLike(userId, params.row.id);
+              }
+            }}
           />
         </>
       ),

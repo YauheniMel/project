@@ -16,6 +16,7 @@ const initState: UserPageType = {
   myCollections: null,
   listEditCollections: [],
   listDeleteCollections: [],
+  likes: null,
 };
 
 function userReducer(state = initState, action: AnyAction) {
@@ -42,6 +43,25 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         listDeleteCollections: [...action.collections],
+      };
+    }
+    case UserActionTypes.setLike: {
+      console.log(action);
+      return {
+        ...state,
+        likes: state.likes
+          ? [...state.likes, { itemId: action.itemId }]
+          : [{ itemId: action.itemId }],
+      };
+    }
+    case UserActionTypes.setDislike: {
+      console.log(action);
+
+      return {
+        ...state,
+        likes: state.likes
+          ? state.likes.filter((like) => like.itemId !== action.itemId)
+          : null,
       };
     }
     case UserActionTypes.updateEditCollections: {

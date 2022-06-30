@@ -26,6 +26,12 @@ router.get('/api/getUserInfo/', (req, res) => {
   const { id, name, surname } = req.query;
 
   sqlz.User.findOrCreate({
+    include: [
+      {
+        model: sqlz.Like,
+        attributes: ['itemId'],
+      },
+    ],
     where: {
       userId: id,
       name,
