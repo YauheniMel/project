@@ -84,9 +84,8 @@ router.put('/api/pullOutItem/', (req, res) => {
     { isEdit: false, isDelete: false },
     { where: { id: +itemId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -301,11 +300,14 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     checkboxValue3,
     collectionId,
   })
-    .then(() => {
-      res.status(200).send({
-        code: 1,
-        message: 'Create item success!',
-      });
+    .then((response) => {
+      const { icon } = response;
+
+      if (icon) {
+        response.icon = Buffer.from(icon).toString('base64');
+      }
+
+      return res.status(200).send(response);
     })
     .catch((err) => res.status(400).send({
       code: 0,

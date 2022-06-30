@@ -80,6 +80,12 @@ function collectionReducer(state = initState, action: AnyAction) {
         list: [...action.items],
       };
     }
+    case CollectionActionTypes.AddNewItem: {
+      return {
+        ...state,
+        list: state.list ? [...state.list, action.item] : [action.item],
+      };
+    }
     case CollectionActionTypes.DeleteItem: {
       return {
         ...state,

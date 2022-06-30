@@ -1,5 +1,9 @@
 import { requestAPI } from '../../api/api';
-import { CollectionType, UserPersonalInfoType } from '../../types';
+import {
+  CollectionInitType,
+  CollectionType,
+  UserPersonalInfoType,
+} from '../../types';
 import { CredentialsType } from './auth-action';
 
 export enum UserActionTypes {
@@ -14,11 +18,17 @@ export enum UserActionTypes {
   setDislike = 'SET-DISLIKE',
   increaseLikes = 'INCREASE-LIKES',
   decreaseLikes = 'DECREASE-LIKES',
+  addNewCollection = 'ADD-NEW-COLLECTION',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
   type: UserActionTypes.setUserPersonalInfo,
   payload,
+});
+
+const addNewCollectionAction = (collection: CollectionType) => ({
+  type: UserActionTypes.addNewCollection,
+  collection,
 });
 
 const decreaseLikesAction = (itemId: number) => ({
@@ -46,7 +56,7 @@ const setDeleteCollectionsAction = (collections: CollectionType[]) => ({
   collections,
 });
 
-const updateEditCollectionsAction = (collectionId: CollectionType) => ({
+const updateEditCollectionsAction = (collectionId: number) => ({
   type: UserActionTypes.updateEditCollections,
   collectionId,
 });
@@ -66,7 +76,7 @@ const setDislikeAction = (itemId: number) => ({
   itemId,
 });
 
-const updateDeleteCollections = (collectionId: CollectionType) => ({
+const updateDeleteCollections = (collectionId: number) => ({
   type: UserActionTypes.updateDeleteCollections,
   collectionId,
 });
@@ -85,7 +95,9 @@ export const getMyCollectionsThunk = (userId: number, page = 1) => (dispatch: an
 
 export const setEditCollectionThunk = (collectionId: number) => (dispatch: any) => {
   requestAPI.setEditCollection(collectionId).then((response) => {
-    dispatch(updateEditCollectionsAction(response.id));
+    if (response.code === 1) {
+      dispatch(updateEditCollectionsAction(collectionId));
+    }
   });
 };
 
@@ -96,9 +108,11 @@ export const getEditCollectionsThunk = (userId: string) => (dispatch: any) => {
 };
 
 export const setDeleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
-  requestAPI
-    .setDeleteCollection(collectionId)
-    .then((response) => dispatch(updateDeleteCollections(response.id)));
+  requestAPI.setDeleteCollection(collectionId).then((response) => {
+    if (response.code === 1) {
+      dispatch(updateDeleteCollections(collectionId));
+    }
+  });
 };
 
 export const getDeleteCollectionsThunk = (userId: string) => (dispatch: any) => {
@@ -114,9 +128,11 @@ export const updateCollectionThunk = (collection: any) => () => {
 };
 
 export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => {
-  requestAPI
-    .pullOutCollection(collectionId)
-    .then((response) => dispatch(pullOutCollectionAction(response.id)));
+  requestAPI.pullOutCollection(collectionId).then((response) => {
+    if (response.code === 1) {
+      dispatch(pullOutCollectionAction(collectionId));
+    }
+  });
 };
 
 export const toogleLikeThunk = (userId: number, itemId: number) => (dispatch: any) => {
@@ -130,4 +146,10 @@ export const toogleLikeThunk = (userId: number, itemId: number) => (dispatch: an
       dispatch(decreaseLikesAction(itemId));
     }
   });
+};
+
+export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => (dispatch: any) => {
+  requestAPI
+    .createCollection(collectionInfo)
+    .then((response) => dispatch(addNewCollectionAction(response)));
 };

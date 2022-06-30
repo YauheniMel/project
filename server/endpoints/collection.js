@@ -181,9 +181,8 @@ router.put('/api/setEditCollection/', (req, res) => {
     { isEdit: true, isDelete: false },
     { where: { id: +collectionId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -213,9 +212,8 @@ router.put('/api/pullOutCollection/', (req, res) => {
     { isEdit: false, isDelete: false },
     { where: { id: +collectionId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -230,9 +228,8 @@ router.put('/api/setDeleteCollection/', (req, res) => {
     { isDelete: true, isEdit: false },
     { where: { id: collectionId } },
   )
-    .then(([response]) => res.status(200).send({
+    .then(() => res.status(200).send({
       code: 1,
-      id: response,
     }))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -432,10 +429,15 @@ router.post(
       ...customFields,
       userId,
     })
-      .then(() => res.status(200).send({
-        code: 1,
-        message: 'Create collection success!',
-      }))
+      .then((response) => {
+        const { icon } = response;
+
+        if (icon) {
+          response.icon = Buffer.from(icon).toString('base64');
+        }
+
+        return res.status(200).send(response);
+      })
       .catch((err) => res.status(400).send({
         code: 0,
         message: err,

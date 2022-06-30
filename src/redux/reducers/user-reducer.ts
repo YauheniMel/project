@@ -46,7 +46,6 @@ function userReducer(state = initState, action: AnyAction) {
       };
     }
     case UserActionTypes.setLike: {
-      console.log(action);
       return {
         ...state,
         likes: state.likes
@@ -55,13 +54,19 @@ function userReducer(state = initState, action: AnyAction) {
       };
     }
     case UserActionTypes.setDislike: {
-      console.log(action);
-
       return {
         ...state,
         likes: state.likes
           ? state.likes.filter((like) => like.itemId !== action.itemId)
           : null,
+      };
+    }
+    case UserActionTypes.addNewCollection: {
+      return {
+        ...state,
+        myCollections: state.myCollections
+          ? [...state.myCollections, action.collection]
+          : [action.collection],
       };
     }
     case UserActionTypes.updateEditCollections: {

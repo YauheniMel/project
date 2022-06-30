@@ -2,11 +2,11 @@ import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import {
-  createNewCollectionThunk,
   deleteCollectionThunk,
   setTargetCollectionAction,
 } from '../../redux/actions/collection-action';
 import {
+  createNewCollectionThunk,
   getDeleteCollectionsThunk,
   getEditCollectionsThunk,
   getMyCollectionsThunk,
