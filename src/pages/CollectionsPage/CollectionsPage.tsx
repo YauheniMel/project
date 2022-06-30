@@ -26,39 +26,36 @@ const CollectionsPage: FC<ICollectionsPage> = ({
   setCollection,
   getUserCollections,
   getMyCollections,
-}) => {
-  console.log(myCollections);
-  return (
-    <>
-      {!!myCollections?.length && (
-        <Box>
-          <Typography variant="h3">My collections</Typography>
-          <Slider
-            id={id}
-            collections={myCollections}
-            setCollection={setCollection}
-            getUserCollections={getMyCollections}
-          />
-        </Box>
-      )}
-      {allCollections?.map(
-        (user) => !!user.collections?.length && (
-        <Box key={user.id}>
-          <Typography variant="h3">{user.name}</Typography>
-          <Typography variant="h3">{user.surname}</Typography>
-          {user.collections && (
-          <Slider
-            id={user.id}
-            collections={user.collections}
-            setCollection={setCollection}
-            getUserCollections={getUserCollections}
-          />
-          )}
-        </Box>
-        ),
-      )}
-    </>
-  );
-};
+}) => (
+  <>
+    {!!myCollections?.length && (
+      <Box>
+        <Typography variant="h3">My collections</Typography>
+        <Slider
+          id={id}
+          collections={myCollections}
+          setCollection={setCollection}
+          getUserCollections={getMyCollections}
+        />
+      </Box>
+    )}
+    {allCollections?.map(
+      (user) => !!user.collections?.length && (
+      <Box key={user.id}>
+        <Typography variant="h3">{user.name}</Typography>
+        <Typography variant="h3">{user.surname}</Typography>
+        {user.collections && (
+        <Slider
+          id={user.id}
+          collections={user.collections}
+          setCollection={setCollection}
+          getUserCollections={getUserCollections}
+        />
+        )}
+      </Box>
+      ),
+    )}
+  </>
+);
 
 export default CollectionsPage;

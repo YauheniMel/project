@@ -92,11 +92,11 @@ const UserPage: FC<IUserPage> = ({
     }),
   });
 
-  console.log(theme, status, isAdmin);
+  console.log(theme, status, isAdmin, userId);
   return (
     <>
       <CollectionForm
-        userId={userId}
+        userId={id}
         openForm={openForm}
         setOpenForm={setOpenForm}
         createNewCollection={createNewCollection}

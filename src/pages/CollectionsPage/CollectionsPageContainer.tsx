@@ -1,11 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Route, Routes } from 'react-router';
 import { AppStateType } from '../../redux';
 import CollectionsPage from './CollectionsPage';
 import { CollectionType } from '../../types';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
   getAllCollectionsThunk,
+  getTargetCollectionsThunk,
   getUserCollectionsThunk,
 } from '../../redux/actions/collections-action';
 import {
@@ -13,7 +15,12 @@ import {
   getUserId,
 } from '../../redux/selectors/user-selector';
 import { getMyCollectionsThunk } from '../../redux/actions/user-action';
-import getAllCollectionsSelector from '../../redux/selectors/collections-selector';
+import {
+  getAllCollectionsSelector,
+  getTargetCollectionsSelector,
+} from '../../redux/selectors/collections-selector';
+import TargetCollectionsPage from './TargetCollectionsPage';
+import RoutesApp from '../../constants/routes';
 
 interface ICollectionsPageContainer {
   id: number;
@@ -30,6 +37,8 @@ interface ICollectionsPageContainer {
   getAllCollections: (userId: number) => void;
   getMyCollections: (userId: number, page?: number) => void;
   getUserCollections: (userId: number, page?: number) => void;
+  getTargetCollections: (userId: number | string, page?: number) => void;
+  targetCollections: any;
 }
 
 const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => {
@@ -44,13 +53,28 @@ const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => {
     }
   }, [props.id]);
 
-  return <CollectionsPage {...props} />;
+  return (
+    <Routes>
+      <Route path="/" element={<CollectionsPage {...props} />} />
+      <Route
+        path={RoutesApp.TargetCollections}
+        element={(
+          <TargetCollectionsPage
+            getTargetCollections={props.getTargetCollections}
+            targetCollections={props.targetCollections}
+            setTargetCollection={props.setCollection}
+          />
+        )}
+      />
+    </Routes>
+  );
 };
 
 const mapStateToProps = (state: AppStateType) => ({
   id: getUserId(state),
   allCollections: getAllCollectionsSelector(state),
   myCollections: getMyCollectionsSelector(state),
+  targetCollections: getTargetCollectionsSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -65,6 +89,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   getUserCollections: (userId: number, page?: number) => {
     dispatch(getUserCollectionsThunk(userId, page));
+  },
+  getTargetCollections: (userId: number | string, page?: number) => {
+    dispatch(getTargetCollectionsThunk(userId, page));
   },
 });
 

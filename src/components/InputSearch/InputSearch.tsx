@@ -29,6 +29,8 @@ interface IInputSearch {
     icons: string[] | null;
   }[]
   | undefined;
+  clearSearchData: () => void;
+  setSearchList: () => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +61,8 @@ const InputSearch: FC<IInputSearch> = ({
   search,
   itemsSearch,
   usersSearch,
+  clearSearchData,
+  setSearchList,
 }) => {
   const [open, setOpen] = useState(false);
   const [substr, setSubstr] = useState<string>('');
@@ -75,13 +79,11 @@ const InputSearch: FC<IInputSearch> = ({
   ) {
     setTimeout(() => {
       setIsLoading(false);
-      search(substr);
+      callback(substr);
     }, delay);
   }
 
   useEffect(() => {
-    console.log(usersSearch);
-
     if (substr) {
       setIsLoading(true);
       searchWithDelay(search, substr);
@@ -107,7 +109,8 @@ const InputSearch: FC<IInputSearch> = ({
       open={open}
       onKeyDown={(e) => {
         if (e.key === 'Enter' && substr.trim()) {
-          alert('Show');
+          setSearchList();
+
           navigate(RoutesApp.Search);
         }
       }}
@@ -129,7 +132,7 @@ const InputSearch: FC<IInputSearch> = ({
               )}
               <Link
                 component={RouterLink}
-                to={`./collection/${option.routeId}/item/${option.id}`}
+                to={`${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
                 style={{
                   display: 'block',
                 }}
@@ -144,8 +147,9 @@ const InputSearch: FC<IInputSearch> = ({
             <Box className={classes.link}>
               {!!option.icons?.length && (
               <AvatarGroup max={4}>
-                {option.icons.map((icon) => (
+                {option.icons.map((icon, idx: any) => (
                   <Avatar
+                    id={idx}
                     alt="Remy Sharp"
                     src={`data:application/pdf;base64,${icon}`}
                   />
@@ -154,7 +158,7 @@ const InputSearch: FC<IInputSearch> = ({
               )}
               <Link
                 component={RouterLink}
-                to={`./collection/${option.routeId}/item/${option.id}`}
+                to={`${RoutesApp.CollectionsLink}user/${option.routeId}`}
                 style={{
                   display: 'block',
                 }}
@@ -165,7 +169,10 @@ const InputSearch: FC<IInputSearch> = ({
           ),
         ))}
       loading={loading}
-      onBlur={() => setOpen(false)}
+      onBlur={() => {
+        setOpen(false);
+        clearSearchData();
+      }}
       renderInput={(params) => (
         <TextField
           {...params}

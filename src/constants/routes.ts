@@ -5,10 +5,12 @@ enum RoutesApp {
   Root = '/',
   Home = '/home',
   User = '/profile',
-  Collections = '/collections',
+  Collections = '/collections/*',
+  CollectionsLink = '/collections/',
   Collection = '/collection/:collectionId/*',
   CollectionLink = '/collection/',
   Item = '/item/:itemId',
+  TargetCollections = '/user/:userId',
   ItemLink = '/item/',
   Search = '/search/',
 }

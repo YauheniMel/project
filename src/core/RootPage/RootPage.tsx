@@ -6,15 +6,21 @@ import Header from '../../components/Header/Header';
 import ToolBar from '../../components/ToolBar/ToolBar';
 import { AppStateType } from '../../redux';
 import {
-  getSearchItemsSelector,
-  getSearchUsersSelector,
   getUserIdFirebase,
   getUserName,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
 import { getIsAuth } from '../../redux/selectors/auth-selector';
 import { logOutThunk } from '../../redux/actions/auth-action';
-import { searchThunk } from '../../redux/actions/user-action';
+import {
+  getSearchItemsSelector,
+  getSearchUsersSelector,
+} from '../../redux/selectors/search-selector';
+import {
+  clearSearchDataAction,
+  searchThunk,
+  setSearchListAction,
+} from '../../redux/actions/search-action';
 
 interface IRootPage {
   id: string;
@@ -25,6 +31,8 @@ interface IRootPage {
   search: (substr: string) => void;
   itemsSearch: any;
   usersSearch: any;
+  clearSearchData: () => void;
+  setSearchList: () => void;
 }
 
 const RootPage: FC<IRootPage> = ({
@@ -36,23 +44,27 @@ const RootPage: FC<IRootPage> = ({
   logOutUser,
   itemsSearch,
   usersSearch,
+  clearSearchData,
+  setSearchList,
 }) => (
   <>
     <Header
       name={name}
+      clearSearchData={clearSearchData}
       surname={surname}
       isAuth={isAuth}
       search={search}
+      setSearchList={setSearchList}
       itemsSearch={itemsSearch?.map((item: any) => ({
         link: item.title,
-        routId: item.collectionId,
+        routeId: item.collectionId,
         id: item.id,
         icons: [item.icon],
       }))}
       usersSearch={usersSearch?.map((user: any) => ({
         link: `${user.name} ${user.surname}`,
         id: user.id,
-        routId: user.userId,
+        routeId: user.id,
         icons: user.collections.map((collection: any) => collection.icon),
       }))}
     />
@@ -75,6 +87,8 @@ const mapStateToProps = (state: AppStateType) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   logOutUser: (id: string) => dispatch(logOutThunk(id)),
   search: (substr: string) => dispatch(searchThunk(substr)),
+  clearSearchData: () => dispatch(clearSearchDataAction()),
+  setSearchList: () => dispatch(setSearchListAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootPage);

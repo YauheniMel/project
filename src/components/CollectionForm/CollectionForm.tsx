@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ICollectionForm {
-  userId: string;
+  userId: number;
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;

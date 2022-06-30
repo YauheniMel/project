@@ -1,9 +1,10 @@
 const express = require('express');
 const multer = require('multer');
-const fs = require('fs');
 const { Op } = require('sequelize');
 const sharp = require('sharp');
 const sqlz = require('../services/sequelize');
+
+const PAGE_SIZE = 2;
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -69,11 +70,13 @@ router.get('/api/getCollection/', (req, res) => {
 router.get('/api/getMyCollections/', (req, res) => {
   const { userId, page } = req.query;
 
+  const limit = PAGE_SIZE * page;
+
   sqlz.Collection.findAll({
     where: {
       userId,
     },
-    limit: 2 * page,
+    limit,
   })
     .then((response) => {
       let resWithImg;
@@ -117,6 +120,48 @@ router.get('/api/getUserCollections/', (req, res) => {
         });
       }
       return res.status(200).send(resWithImg);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getTargetCollections/', (req, res) => {
+  const { userId, page } = req.query;
+  const limit = PAGE_SIZE * page;
+  sqlz.User.findAll({
+    include: [
+      {
+        model: sqlz.Collection,
+        limit,
+      },
+    ],
+    where: {
+      id: userId,
+    },
+  })
+    .then((response) => {
+      const dataWithImg = response.map((data) => {
+        let resWithImg;
+
+        if (data.collections) {
+          resWithImg = data.collections.map((collection) => {
+            const { icon } = collection;
+            if (icon) {
+              collection.icon = Buffer.from(icon).toString('base64');
+            }
+
+            return collection;
+          });
+        }
+
+        data.collections = resWithImg;
+
+        return data;
+      });
+
+      return res.status(200).send(dataWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -190,45 +235,49 @@ router.put('/api/setDeleteCollection/', (req, res) => {
     }));
 });
 
-router.put('/api/updateCollection/', upload.single('icon'), (req, res) => {
-  const { collectionId } = req.body;
+router.put(
+  '/api/updateCollection/',
+  upload.single('icon'),
+  async (req, res) => {
+    const { collectionId } = req.body;
 
-  const allProperties = {
-    ...req.body,
-  };
+    const allProperties = {
+      ...req.body,
+    };
 
-  const newCollectionField = Object.keys(allProperties).filter(
-    (propertie) => allProperties[propertie],
-  );
+    const newCollectionField = Object.keys(allProperties).filter(
+      (propertie) => allProperties[propertie],
+    );
 
-  const dataForUpdate = {};
-  newCollectionField.forEach((field) => {
-    if (allProperties[field] && allProperties[field] !== 'null') {
-      // need to change 'null'
-      dataForUpdate[field] = allProperties[field];
+    const dataForUpdate = {};
+    newCollectionField.forEach((field) => {
+      if (allProperties[field] && allProperties[field] !== 'null') {
+        // need to change 'null'
+        dataForUpdate[field] = allProperties[field];
+      }
+    });
+
+    if (req.file) {
+      dataForUpdate.icon = await sharp(req.file.path).resize(300).toBuffer();
     }
-  });
 
-  if (req.file) {
-    dataForUpdate.icon = Buffer.from(fs.readFileSync(req.file.path));
-  }
-
-  sqlz.Collection.update(
-    {
-      id: collectionId,
-      ...dataForUpdate,
-    },
-    { where: { id: collectionId } },
-  )
-    .then(([response]) => res.status(200).send({
-      code: 1,
-      id: response,
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
+    sqlz.Collection.update(
+      {
+        id: collectionId,
+        ...dataForUpdate,
+      },
+      { where: { id: collectionId } },
+    )
+      .then(([response]) => res.status(200).send({
+        code: 1,
+        id: response,
+      }))
+      .catch((err) => res.status(400).send({
+        code: 0,
+        message: err,
+      }));
+  },
+);
 
 router.get('/api/getEditCollections/', (req, res) => {
   const { userId } = req.query;
@@ -322,68 +371,71 @@ router.get('/api/getDeleteCollections/', (req, res) => {
     }));
 });
 
-router.post('/api/createCollection', upload.single('icon'), (req, res) => {
-  const {
-    userId,
-    description,
-    theme,
-    dateKeys,
-    multiLineKeys,
-    numberKeys,
-    textKeys,
-    checkboxKeys,
-  } = JSON.parse(JSON.stringify(req.body));
+router.post(
+  '/api/createCollection',
+  upload.single('icon'),
+  async (req, res) => {
+    const {
+      userId,
+      description,
+      theme,
+      dateKeys,
+      multiLineKeys,
+      numberKeys,
+      textKeys,
+      checkboxKeys,
+    } = JSON.parse(JSON.stringify(req.body));
 
-  let profilePicture = null;
-  if (req.file) {
-    profilePicture = sharp(Buffer.from(fs.readFileSync(req.file.path))).resize(
-      220,
-    );
-  }
+    let profilePicture = null;
 
-  function prepareFields(data, type) {
-    const obj = {};
-
-    if (type === 'checkboxKey') {
-      const arr = JSON.parse(data);
-
-      for (let i = 0; i < 3; i++) {
-        obj[`${type}${i + 1}`] = arr[i] ? arr[i][`${type}${i + 1}`] : null;
-      }
-    } else if (data !== 'null') {
-      // bad condition
-      const arr = data.split(',');
-      for (let i = 0; i < 3; i++) {
-        obj[`${type}${i + 1}`] = arr[i] ? arr[i] : null;
-      }
+    if (req.file) {
+      profilePicture = await sharp(req.file.path).resize(300).toBuffer();
     }
 
-    return obj;
-  }
+    function prepareFields(data, type) {
+      const obj = {};
 
-  const customFields = {
-    ...prepareFields(dateKeys, 'dateKey'),
-    ...prepareFields(multiLineKeys, 'multiLineKey'),
-    ...prepareFields(numberKeys, 'numberKey'),
-    ...prepareFields(textKeys, 'textKey'),
-    ...prepareFields(checkboxKeys, 'checkboxKey'),
-  };
+      if (type === 'checkboxKey') {
+        const arr = JSON.parse(data);
 
-  sqlz.Collection.create({
-    icon: profilePicture,
-    description,
-    theme,
-    ...customFields,
-    userId,
-  })
-    .then(() => res.status(200).send({
-      code: 1,
-      message: 'Create collection success!',
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
+        for (let i = 0; i < 3; i++) {
+          obj[`${type}${i + 1}`] = arr[i] ? arr[i][`${type}${i + 1}`] : null;
+        }
+      } else if (data !== 'null') {
+        // bad condition
+        const arr = data.split(',');
+        for (let i = 0; i < 3; i++) {
+          obj[`${type}${i + 1}`] = arr[i] ? arr[i] : null;
+        }
+      }
+
+      return obj;
+    }
+
+    const customFields = {
+      ...prepareFields(dateKeys, 'dateKey'),
+      ...prepareFields(multiLineKeys, 'multiLineKey'),
+      ...prepareFields(numberKeys, 'numberKey'),
+      ...prepareFields(textKeys, 'textKey'),
+      ...prepareFields(checkboxKeys, 'checkboxKey'),
+    };
+
+    sqlz.Collection.create({
+      icon: profilePicture,
+      description,
+      theme,
+      ...customFields,
+      userId,
+    })
+      .then(() => res.status(200).send({
+        code: 1,
+        message: 'Create collection success!',
+      }))
+      .catch((err) => res.status(400).send({
+        code: 0,
+        message: err,
+      }));
+  },
+);
 
 module.exports = router;

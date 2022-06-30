@@ -1,9 +1,10 @@
 import { AnyAction } from 'redux';
-import { CollectionType } from '../../types';
+import { CollectionsPageType, CollectionType } from '../../types';
 import { CollectionsActionTypes } from '../actions/collections-action';
 
-const initState: any = {
+const initState: CollectionsPageType = {
   allCollections: null,
+  targetCollections: null,
 };
 
 function collectionsReducer(state = initState, action: AnyAction) {
@@ -15,9 +16,17 @@ function collectionsReducer(state = initState, action: AnyAction) {
         surname: user.surname,
         collections: user.collections,
       }));
+
       return {
         ...state,
         allCollections: allCollections ? [...allCollections] : null,
+      };
+    }
+    case CollectionsActionTypes.setTargetCollections: {
+      const data = action.user;
+      return {
+        ...state,
+        targetCollections: data ? { ...data } : null,
       };
     }
     case CollectionsActionTypes.setAllUserCollections: {

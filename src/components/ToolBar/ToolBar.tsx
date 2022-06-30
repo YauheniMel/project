@@ -75,7 +75,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
             <PersonIcon fontSize="large" />
           </IconButton>
         </Link>
-        <Link component={RouterLink} to={RoutesApp.Collections}>
+        <Link component={RouterLink} to={RoutesApp.CollectionsLink}>
           <IconButton>
             <CollectionsIcon fontSize="large" />
           </IconButton>

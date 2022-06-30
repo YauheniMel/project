@@ -5,6 +5,7 @@ import authReducer from './reducers/auth-reducer';
 import collectionReducer from './reducers/collection-reducer';
 import collectionsReducer from './reducers/collections-reducer';
 import homeReducer from './reducers/home-reducer';
+import searchReducer from './reducers/search-reducer';
 import userReducer from './reducers/user-reducer';
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
     collection: collectionReducer,
     collections: collectionsReducer,
     admin: adminReducer,
+    search: searchReducer,
   },
   middleware: [thunkMiddleware],
 });
