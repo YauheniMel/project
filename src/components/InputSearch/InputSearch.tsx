@@ -132,7 +132,7 @@ const InputSearch: FC<IInputSearch> = ({
               )}
               <Link
                 component={RouterLink}
-                to={`./collection/${option.routeId}/item/${option.id}`}
+                to={`${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
                 style={{
                   display: 'block',
                 }}
@@ -158,7 +158,7 @@ const InputSearch: FC<IInputSearch> = ({
               )}
               <Link
                 component={RouterLink}
-                to={`./collections/user/${option.routeId}`}
+                to={`${RoutesApp.CollectionsLink}user/${option.routeId}`}
                 style={{
                   display: 'block',
                 }}

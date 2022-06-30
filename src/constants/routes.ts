@@ -6,6 +6,7 @@ enum RoutesApp {
   Home = '/home',
   User = '/profile',
   Collections = '/collections/*',
+  CollectionsLink = '/collections/',
   Collection = '/collection/:collectionId/*',
   CollectionLink = '/collection/',
   Item = '/item/:itemId',

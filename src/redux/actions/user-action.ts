@@ -48,8 +48,8 @@ const updateDeleteCollections = (collectionId: CollectionType) => ({
 });
 
 export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
-  requestAPI.getUserInfo(payload).then(([response]) => {
-    dispatch(setUserPersonalInfoAction(response));
+  requestAPI.getUserInfo(payload).then((response) => {
+    dispatch(setUserPersonalInfoAction(response.user));
   });
 };
 

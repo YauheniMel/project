@@ -65,8 +65,7 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const res = await login(values.email, values.password);
-        console.log(res);
+        await login(values.email, values.password);
 
         loginUser(id);
 
@@ -81,8 +80,7 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
 
   async function handleLoginGoogle() {
     try {
-      const res = await signInWithGoogle();
-      console.log(res);
+      await signInWithGoogle();
     } catch (error) {
       alert(error);
     }
@@ -90,8 +88,7 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
 
   async function handleLoginFacebook() {
     try {
-      const res = await signInWithFacebook();
-      console.log(res);
+      await signInWithFacebook();
     } catch (error) {
       alert(error);
     }

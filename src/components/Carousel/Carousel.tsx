@@ -40,7 +40,7 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => {
       {collections?.map((collection: CollectionType) => (
         <Link
           component={RouterLink}
-          to={RoutesApp.Collections}
+          to={RoutesApp.CollectionsLink}
           key={collection.id}
         >
           <Paper className={classes.paper}>
@@ -63,9 +63,8 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => {
           </Paper>
           <CardMedia
             component="img"
-            height="194"
             image={`data:application/pdf;base64,${collection.icon}`}
-            alt="Paella dish"
+            alt={collection.theme?.toString()}
           />
         </Link>
       ))}
