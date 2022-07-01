@@ -10,3 +10,9 @@ export function getCollectionsSelector(
 export function getItemsSelector(state: AppStateType): ItemType[] | null {
   return state.home.list;
 }
+
+export function getTagsSelector(
+  state: AppStateType,
+): { content: string }[] | null {
+  return state.home.tags;
+}

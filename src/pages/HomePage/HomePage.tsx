@@ -23,30 +23,33 @@ const useStyles = makeStyles({
 interface IHomePage {
   collections: CollectionType[] | null;
   list: ItemType[] | null;
-  setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
   userId: number;
   likes: { itemId: number }[] | null;
+  tags: any[];
+  searchItemsByTag: (tag: string) => void;
 }
 
 const HomePage: FC<IHomePage> = ({
   list,
   userId,
   collections,
-  setTargetItem,
   toogleLike,
   likes,
+  tags,
+  searchItemsByTag,
 }) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.item}>
       <CarouselComponent collections={collections} />
-      <TagCloudComponent />
+      {tags && (
+        <TagCloudComponent tags={tags} searchItemsByTag={searchItemsByTag} />
+      )}
       <Box className={classes.list}>
         {list?.map((item: ItemType) => (
           <CardItem
-            setTargetItem={setTargetItem}
             item={item}
             likes={likes}
             key={item.id}

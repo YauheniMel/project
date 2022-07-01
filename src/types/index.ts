@@ -122,6 +122,7 @@ export interface CollectionsPageType {
 export interface HomePageType {
   collections: CollectionType[] | null;
   list: ItemType[] | null;
+  tags: { content: string }[] | null;
 }
 
 export interface UserType {

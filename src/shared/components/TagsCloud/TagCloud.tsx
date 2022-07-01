@@ -2,29 +2,14 @@ import React, { FC } from 'react';
 import { TagCloud } from 'react-tagcloud';
 import { keyframes } from '@emotion/react';
 import { Box } from '@mui/material';
+import { useNavigate } from 'react-router';
+import RoutesApp from '../../../constants/routes';
 
 const blinker = keyframes({ '50%': { opacity: 0 } });
 
-const data = [
-  { value: 'jQuery' },
-  { value: 'MongoDB' },
-  { value: 'JavaScript' },
-  { value: 'React' },
-  { value: 'Nodejs' },
-  { value: 'Express.js' },
-  { value: 'HTML5' },
-  { value: 'CSS3' },
-  { value: 'Webpack' },
-  { value: 'Babel.js' },
-  { value: 'ECMAScript' },
-  { value: 'Jest' },
-  { value: 'Mocha' },
-  { value: 'React Native' },
-];
-
 const customRenderer = (tag: any, size: any, color: any) => (
   <Box
-    key={tag.value}
+    key={tag.content}
     sx={{
       animation: `${blinker} 1s linear infinite`,
       display: 'inline-block',
@@ -36,22 +21,37 @@ const customRenderer = (tag: any, size: any, color: any) => (
       color,
     }}
   >
-    {tag.value}
+    {tag.content}
   </Box>
 );
 
 interface ITagCloudComponent {
-  props?: any;
+  tags: any[];
+  searchItemsByTag: (tag: string) => void;
 }
 
-const TagCloudComponent: FC<ITagCloudComponent> = () => (
-  <TagCloud
-    tags={data}
-    minSize={1}
-    maxSize={5}
-    renderer={customRenderer}
-    onClick={(tag: { value: string }) => alert(`'${tag.value}' was selected!`)}
-  />
-);
+const TagCloudComponent: FC<ITagCloudComponent> = ({
+  tags,
+  searchItemsByTag,
+}) => {
+  const navigate = useNavigate();
+
+  function handleSearchItemsByTag(tag: string) {
+    searchItemsByTag(tag);
+
+    navigate(RoutesApp.Search);
+  }
+  return (
+    <TagCloud
+      tags={tags}
+      minSize={1}
+      maxSize={5}
+      renderer={customRenderer}
+      onClick={(tag: { content: string }) => {
+        handleSearchItemsByTag(tag.content);
+      }}
+    />
+  );
+};
 
 export default TagCloudComponent;

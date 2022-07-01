@@ -20,27 +20,18 @@ const useStyles = makeStyles({
 
 interface ICardItem {
   item: ItemType;
-  setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
   userId: number;
   likes: { itemId: number }[] | null;
 }
 
 const CardItem: FC<ICardItem> = ({
-  item,
-  setTargetItem,
-  toogleLike,
-  userId,
-  likes,
+  item, toogleLike, userId, likes,
 }) => {
-  function handleClick() {
-    setTargetItem(item);
-  }
-
   const classes = useStyles();
 
   return (
-    <Card className={classes.card} onClick={handleClick}>
+    <Card className={classes.card}>
       <Link
         component={RouterLink}
         to={`${RoutesApp.CollectionLink}${item.collectionId}${RoutesApp.ItemLink}${item.id}`}
@@ -90,7 +81,6 @@ const CardItem: FC<ICardItem> = ({
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
           label={tag.content}
-          onClick={handleClick}
         />
       ))}
     </Card>

@@ -20,7 +20,7 @@ const setSearchUsersAction = (
   users,
 });
 
-const setSearchItemsAction = (items: ItemType[]) => ({
+export const setSearchItemsAction = (items: ItemType[]) => ({
   type: SearchActionTypes.setSearchItems,
   items,
 });
