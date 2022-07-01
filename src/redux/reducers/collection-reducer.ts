@@ -50,6 +50,7 @@ const initState: CollectionType = {
   listEditItems: [],
   listDeleteItems: [],
   userId: null,
+  matchTags: null,
 };
 
 function collectionReducer(state = initState, action: AnyAction) {
@@ -84,6 +85,12 @@ function collectionReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         list: state.list ? [...state.list, action.item] : [action.item],
+      };
+    }
+    case CollectionActionTypes.AddMatchTags: {
+      return {
+        ...state,
+        matchTags: action.tags.length !== 0 ? [...action.tags] : null,
       };
     }
     case CollectionActionTypes.DeleteItem: {

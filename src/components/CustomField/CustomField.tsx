@@ -5,10 +5,10 @@ import { Field } from 'formik';
 
 interface ICustomField {
   formik: any;
-  fields: any;
+  field: any;
 }
 
-const CustomField: FC<ICustomField> = ({ formik, fields }) => fields.map((field: any) => {
+const CustomField: FC<ICustomField> = ({ formik, field }) => {
   const [key] = Object.keys(field);
 
   if (field[key]) {
@@ -74,6 +74,6 @@ const CustomField: FC<ICustomField> = ({ formik, fields }) => fields.map((field:
   }
 
   return null;
-});
+};
 
 export default CustomField;

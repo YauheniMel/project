@@ -12,6 +12,7 @@ import {
   getTargetCollectionThunk,
   getTargetItemThunk,
   pullOutItemThunk,
+  searchMatchTagsThunk,
   setDeleteItemsThunk,
   setEditItemsThunk,
   setTargetItemAction,
@@ -29,6 +30,7 @@ import {
   getCollectionUpdatedAtSelector,
   getDeleteItemList,
   getEditItemList,
+  getMatchTagsSelector,
 } from '../../redux/selectors/collection-selector';
 import {
   getLikesSelector,
@@ -65,6 +67,8 @@ interface ICollectionPageContainer {
   updateItem: (item: any) => void;
   toogleLike: (userId: number, itemId: number) => void;
   likes: { itemId: number }[] | null;
+  searchMatchTags: (tag: string) => void;
+  matchTags: any;
 }
 
 const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
@@ -124,6 +128,7 @@ const mapStateToProps = (state: AppStateType) => ({
   listEditItems: getEditItemList(state),
   listDeleteItems: getDeleteItemList(state),
   likes: getLikesSelector(state),
+  matchTags: getMatchTagsSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -158,6 +163,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   updateItem: (item: any) => {
     dispatch(updateItemThunk(item));
+  },
+  searchMatchTags: (tag: string) => {
+    dispatch(searchMatchTagsThunk(tag));
   },
 });
 

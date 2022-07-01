@@ -26,26 +26,21 @@ router.get('/api/getUserInfo/', (req, res) => {
   const { id, name, surname } = req.query;
 
   sqlz.User.findOrCreate({
-    include: [
-      {
-        model: sqlz.Like,
-        attributes: ['itemId'],
-      },
-    ],
     where: {
       userId: id,
       name,
       surname,
+    },
+    include: {
+      model: sqlz.Like,
+      attributes: ['itemId'],
     },
     defaults: {
       isOnline: true,
     },
   })
     .then(([user, created]) => {
-      res.status(200).send({
-        isNewUser: created,
-        user,
-      });
+      res.status(200).send({ user, isNew: created });
     })
     .catch((err) => res.status(400).send({
       code: 0,

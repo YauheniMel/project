@@ -82,14 +82,14 @@ const CardItem: FC<ICardItem> = ({
         {' '}
         {moment(item.createdAt).format('DD MMMM YYYY')}
       </Typography>
-      {item.tags?.split(',').map((tag, idx: any) => (
+      {item.tags?.map((tag, idx: any) => (
         <Chip
           icon={<TagIcon />}
           variant="outlined"
           color="warning"
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          label={tag}
+          label={tag.content}
           onClick={handleClick}
         />
       ))}

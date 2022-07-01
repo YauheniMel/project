@@ -48,3 +48,7 @@ export function getEditItemList(state: AppStateType): Array<ItemType | null> {
 export function getDeleteItemList(state: AppStateType): Array<ItemType | null> {
   return state.collection.listDeleteItems;
 }
+
+export function getMatchTagsSelector(state: AppStateType) {
+  return state.collection.matchTags;
+}

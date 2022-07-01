@@ -36,6 +36,7 @@ export const API = {
   GetTargetCollections: `${baseUrl}/api/getTargetCollections`,
   Search: `${baseUrl}/api/search`,
   ToogleLike: `${baseUrl}/api/toogleLike`,
+  SearchMatchTag: `${baseUrl}/api/searchMatchTag`,
 };
 
 export const requestAPI = {
@@ -66,6 +67,14 @@ export const requestAPI = {
       .post(API.ToogleLike, {
         userId,
         itemId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  searchMatchTag(tag: string) {
+    return axios
+      .get(API.SearchMatchTag, {
+        params: { tag },
       })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));

@@ -151,10 +151,6 @@ const Item = sequelize.define('item', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  tags: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
   isEdit: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -234,16 +230,32 @@ const Like = sequelize.define('like', {
     allowNull: false,
   },
 });
+const Tag = sequelize.define('tag', {
+  content: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    primaryKey: true,
+  },
+});
 User.hasMany(Collection, { onDelete: 'cascade' });
 Collection.hasMany(Item, { onDelete: 'cascade' });
 Item.hasMany(Like, { onDelete: 'cascade' });
 User.hasMany(Like, { onDelete: 'cascade' });
+Item.belongsToMany(Tag, {
+  through: 'item_tag',
+  as: 'tags',
+});
+Tag.belongsToMany(Item, {
+  through: 'item_tag',
+  as: 'items',
+});
 
 const sqlz = {
   User,
   Collection,
   Item,
   Like,
+  Tag,
   sequelize,
 };
 

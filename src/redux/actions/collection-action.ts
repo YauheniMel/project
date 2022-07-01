@@ -12,6 +12,7 @@ export enum CollectionActionTypes {
   SetDeleteListItems = 'SET-DELETE-LIST-ITEMS',
   PullOutItem = 'PULL-OUT-ITEM',
   AddNewItem = 'ADD-NEW-ITEM',
+  AddMatchTags = 'ADD-MATCH-TAGS',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -37,6 +38,11 @@ export const setTargetCollectionAction = (collection: CollectionType) => ({
 export const addNewItemAction = (item: ItemType) => ({
   type: CollectionActionTypes.AddNewItem,
   item,
+});
+
+export const addMatchTagsAction = (tags: any) => ({
+  type: CollectionActionTypes.AddMatchTags,
+  tags,
 });
 
 export const setTargetCollectionItemsAction = (items: ItemType[]) => ({
@@ -138,4 +144,10 @@ export const pullOutItemThunk = (itemId: number) => (dispatch: any) => {
 
 export const updateItemThunk = (item: any) => () => {
   requestAPI.updateItem(item).then((response) => console.log(response));
+};
+
+export const searchMatchTagsThunk = (tag: string) => (dispatch: any) => {
+  requestAPI
+    .searchMatchTag(tag)
+    .then((response) => dispatch(addMatchTagsAction(response)));
 };

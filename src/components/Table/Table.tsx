@@ -103,7 +103,7 @@ const Table: FC<ITable> = ({
       editable: true,
       minWidth: 150,
       flex: 1,
-      renderCell: (params) => params.row.tags.split(',').map((tag: string) => <Chip label={tag} />),
+      renderCell: (params) => params.row.tags.map((tag: any) => <Chip label={tag.content} />),
     },
     {
       field: 'likes',
