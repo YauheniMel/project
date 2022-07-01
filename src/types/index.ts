@@ -39,7 +39,7 @@ export interface ItemInitType {
 export interface ItemType {
   id: number;
   title: string;
-  tags: string;
+  tags: { content: string }[] | null;
   likes: { itemId: number }[] | null;
   icon: any;
   isEdit: boolean;
@@ -107,6 +107,7 @@ export interface CollectionType {
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
   userId: number | null;
+  matchTags: any;
 }
 
 export interface CollectionsPageType {
@@ -121,6 +122,7 @@ export interface CollectionsPageType {
 export interface HomePageType {
   collections: CollectionType[] | null;
   list: ItemType[] | null;
+  tags: { content: string }[] | null;
 }
 
 export interface UserType {

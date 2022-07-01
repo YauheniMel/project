@@ -2,10 +2,7 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import { getTargetUserCollectionsThunk } from '../../redux/actions/admin-action';
-import {
-  setTargetCollectionAction,
-  setTargetItemAction,
-} from '../../redux/actions/collection-action';
+import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import { getSearchListSelector } from '../../redux/selectors/search-selector';
 import {
   getLikesSelector,
@@ -26,7 +23,6 @@ interface ISearchPageContainer {
   | null;
   setTargetCollection: (collection: CollectionType) => void;
   getTargetUserCollections: (id: number, page?: number) => void;
-  setTargetItem: (item: ItemType) => void;
   toogleLike: (userId: number, itemId: number) => void;
   likes: { itemId: number }[] | null;
 }
@@ -47,9 +43,6 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   getTargetUserCollections: (userId: number, page?: number) => {
     dispatch(getTargetUserCollectionsThunk(userId, page));
-  },
-  setTargetItem: (item: ItemType) => {
-    dispatch(setTargetItemAction(item));
   },
 });
 

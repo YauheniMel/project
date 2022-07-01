@@ -6,6 +6,7 @@ import { UserActionTypes } from '../actions/user-action';
 const initState: HomePageType = {
   collections: null,
   list: null,
+  tags: null,
 };
 
 function homeReducer(state = initState, action: AnyAction) {
@@ -20,6 +21,12 @@ function homeReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         list: [...action.items],
+      };
+    }
+    case HomeActionTypes.setAllTags: {
+      return {
+        ...state,
+        tags: [...action.tags],
       };
     }
     case UserActionTypes.increaseLikes: {

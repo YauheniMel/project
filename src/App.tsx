@@ -9,7 +9,6 @@ import RoutesApp from './constants/routes';
 import SignUpPageContainer from './auth/SignUpPage/SignUpPageContainer';
 import HomePageContainer from './pages/HomePage/HomePageContainer';
 import { getIsAuth } from './redux/selectors/auth-selector';
-import { setTargetItemAction } from './redux/actions/collection-action';
 import UserPageContainer from './pages/UserPage/UserPageContainer';
 import CollectionPageContainer from './pages/CollectionPage/CollectionPageContainer';
 import AdminPageContainer from './pages/AdminPage/AdminPageContainer';
@@ -21,20 +20,13 @@ import {
 import { CredentialsType, loginAction } from './redux/actions/auth-action';
 import SearchPageContainer from './pages/SearchPage/SearchPageContainer';
 import { AppStateType } from './redux';
-import { ItemType } from './types';
 
 interface IRootPage {
-  setTargetItem: (item: ItemType) => void;
   loginUser: () => void;
   getUserPersonalInfo: (payload: CredentialsType) => void;
   toogleLike: (userId: number, itemId: number) => void;
 }
-const App: FC<IRootPage> = ({
-  setTargetItem,
-  loginUser,
-  getUserPersonalInfo,
-  toogleLike,
-}) => {
+const App: FC<IRootPage> = ({ loginUser, getUserPersonalInfo, toogleLike }) => {
   useEffect(() => {
     const auth = getAuth();
 
@@ -63,12 +55,7 @@ const App: FC<IRootPage> = ({
         <Route path={RoutesApp.Root} element={<RootPage />}>
           <Route
             path={RoutesApp.Home}
-            element={(
-              <HomePageContainer
-                setTargetItem={setTargetItem}
-                toogleLike={toogleLike}
-              />
-            )}
+            element={<HomePageContainer toogleLike={toogleLike} />}
           />
           <Route path={RoutesApp.User} element={<UserPageContainer />} />
           <Route
@@ -94,7 +81,6 @@ const mapStateToProps = (state: AppStateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  setTargetItem: (item: ItemType) => dispatch(setTargetItemAction(item)),
   getUserPersonalInfo: (payload: CredentialsType) => dispatch(getUserPersonalInfoThunk(payload)),
   loginUser: () => dispatch(loginAction()),
   toogleLike: (userId: number, itemId: number) => dispatch(toogleLikeThunk(userId, itemId)),

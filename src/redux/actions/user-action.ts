@@ -83,6 +83,7 @@ const updateDeleteCollections = (collectionId: number) => ({
 
 export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
   requestAPI.getUserInfo(payload).then((response) => {
+    if (response.isNew) alert('Hello new User');
     dispatch(setUserPersonalInfoAction(response.user));
   });
 };

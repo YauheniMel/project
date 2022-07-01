@@ -36,6 +36,9 @@ export const API = {
   GetTargetCollections: `${baseUrl}/api/getTargetCollections`,
   Search: `${baseUrl}/api/search`,
   ToogleLike: `${baseUrl}/api/toogleLike`,
+  SearchMatchTag: `${baseUrl}/api/searchMatchTag`,
+  GetAllTags: `${baseUrl}/api/getAllTags`,
+  SearchItemsByTag: `${baseUrl}/api/searchItemsByTag`,
 };
 
 export const requestAPI = {
@@ -67,6 +70,20 @@ export const requestAPI = {
         userId,
         itemId,
       })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  searchMatchTag(tag: string) {
+    return axios
+      .get(API.SearchMatchTag, {
+        params: { tag },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getAllTags() {
+    return axios
+      .get(API.GetAllTags)
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },
@@ -113,6 +130,14 @@ export const requestAPI = {
   getBigCollections() {
     return axios
       .get(API.GetBigCollections)
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  searchItemsByTag(tag: string) {
+    return axios
+      .get(API.SearchItemsByTag, {
+        params: { tag },
+      })
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },

@@ -42,6 +42,8 @@ interface ICollectionPage {
   updateItem: (item: any) => void;
   toogleLike: (userId: number, itemId: number) => void;
   likes: { itemId: number }[] | null;
+  searchMatchTags: (tag: string) => void;
+  matchTags: any;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -65,6 +67,8 @@ const CollectionPage: FC<ICollectionPage> = ({
   toogleLike,
   userId,
   likes,
+  searchMatchTags,
+  matchTags,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
@@ -95,6 +99,8 @@ const CollectionPage: FC<ICollectionPage> = ({
         openForm={openForm}
         setOpenForm={setOpenForm}
         createNewItem={createNewItem}
+        searchMatchTags={searchMatchTags}
+        matchTags={matchTags}
       />
       <Grid
         sx={{ height: '100%' }}

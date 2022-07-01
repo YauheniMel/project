@@ -24,6 +24,11 @@ router.get('/api/getItem/', (req, res) => {
         model: sqlz.Like,
         attributes: ['itemId'],
       },
+      {
+        model: sqlz.Tag,
+        as: 'tags',
+        attributes: ['content'],
+      },
     ],
     where: {
       id: itemId,
@@ -54,8 +59,12 @@ router.get('/api/getLastAddItems', (req, res) => {
         model: sqlz.Like,
         attributes: ['itemId'],
       },
+      {
+        model: sqlz.Tag,
+        as: 'tags',
+        attributes: ['content'],
+      },
     ],
-    limit: 5,
   })
     .then((response) => {
       let resWithImg;
@@ -224,11 +233,15 @@ router.get('/api/getCollectionItems/', (req, res) => {
         model: sqlz.Like,
         attributes: ['itemId'],
       },
+      {
+        model: sqlz.Tag,
+        as: 'tags',
+        attributes: ['content'],
+      },
     ],
     where: {
       collectionId,
     },
-    limit: 5,
   })
     .then((response) => {
       let resWithImg;
@@ -273,6 +286,8 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     checkboxKey3: checkboxValue3 = null,
   } = JSON.parse(JSON.stringify(req.body));
 
+  const arrTags = tags.split(',').map((tag) => ({ content: tag }));
+
   let profilePicture = null;
   if (req.file) {
     profilePicture = await sharp(req.file.path).resize(300).toBuffer();
@@ -281,7 +296,6 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
   sqlz.Item.create({
     icon: profilePicture || null,
     title,
-    tags,
     comments,
     dateValue1,
     dateValue2,
@@ -300,14 +314,35 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     checkboxValue3,
     collectionId,
   })
-    .then((response) => {
-      const { icon } = response;
+    .then((item) => {
+      sqlz.Tag.bulkCreate(arrTags, {
+        ignoreDuplicates: true,
+      }).then((tag) => {
+        item.addTag(tag).then(() => {
+          sqlz.Item.findOne({
+            where: { id: item.id },
+            include: [
+              {
+                model: sqlz.Like,
+                attributes: ['itemId'],
+              },
+              {
+                model: sqlz.Tag,
+                as: 'tags',
+                attributes: ['content'],
+              },
+            ],
+          }).then((response) => {
+            const { icon } = response;
 
-      if (icon) {
-        response.icon = Buffer.from(icon).toString('base64');
-      }
+            if (icon) {
+              response.icon = Buffer.from(icon).toString('base64');
+            }
 
-      return res.status(200).send(response);
+            res.status(200).send(response);
+          });
+        });
+      });
     })
     .catch((err) => res.status(400).send({
       code: 0,
