@@ -1,25 +1,38 @@
 import React, { FC, useState } from 'react';
-import { Box, Drawer, IconButton } from '@material-ui/core';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box, Drawer } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '@mui/material';
+import { Button, Link } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import { styled } from '@mui/material/styles';
+import { IoMdClose } from 'react-icons/io';
 import RoutesApp from '../../constants/routes';
 import logout from '../../auth/services/logout';
+
+const ToogleButton = styled(Button)(({ theme }) => ({
+  position: 'fixed',
+  zIndex: theme.zIndex.drawer + 1,
+  top: 0,
+  right: 0,
+  fontSize: '30px',
+  backgroundColor: theme.palette.primary.dark,
+  height: '65px',
+  width: '65px',
+  borderRadius: '0px',
+}));
+
+const LinkButton = styled(Button)({
+  height: '60px',
+  width: '60px',
+  borderRadius: '0px',
+});
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
     zIndex: theme.zIndex.appBar - 1,
-  },
-  toogle: {
-    position: 'absolute',
-    zIndex: theme.zIndex.drawer + 1,
-    top: 0,
-    right: 0,
   },
   active: {
     color: theme.palette.secondary.main,
@@ -53,9 +66,9 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
 
   return (
     <Box>
-      <IconButton className={classes.toogle} onClick={toggleDrawer}>
-        <CloseIcon fontSize="large" />
-      </IconButton>
+      <ToogleButton onClick={toggleDrawer} variant="contained">
+        <IoMdClose size={60} />
+      </ToogleButton>
       <Drawer
         className={classes.drawer}
         BackdropProps={{ invisible: true }}
@@ -66,24 +79,24 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
       >
         <div className={classes.toolbar} />
         <Link component={RouterLink} to={RoutesApp.Home}>
-          <IconButton>
+          <LinkButton>
             <HomeIcon fontSize="large" />
-          </IconButton>
+          </LinkButton>
         </Link>
         <Link component={RouterLink} to={RoutesApp.User}>
-          <IconButton>
+          <LinkButton>
             <PersonIcon fontSize="large" />
-          </IconButton>
+          </LinkButton>
         </Link>
         <Link component={RouterLink} to={RoutesApp.CollectionsLink}>
-          <IconButton>
+          <LinkButton>
             <CollectionsIcon fontSize="large" />
-          </IconButton>
+          </LinkButton>
         </Link>
         <Link component={RouterLink} to={RoutesApp.Login}>
-          <IconButton onClick={handleLogout}>
+          <LinkButton onClick={handleLogout}>
             <LogoutIcon fontSize="large" />
-          </IconButton>
+          </LinkButton>
         </Link>
       </Drawer>
     </Box>
