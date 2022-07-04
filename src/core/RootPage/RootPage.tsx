@@ -39,26 +39,14 @@ interface IRootPage {
 
 const RootPage: FC<IRootPage> = ({
   id,
-  name,
-  surname,
-  search,
-  isAuth,
   logOutUser,
   itemsSearch,
   usersSearch,
-  clearSearchData,
-  setSearchList,
-  isAdmin,
+  ...rest
 }) => (
   <>
     <Header
-      name={name}
-      clearSearchData={clearSearchData}
-      surname={surname}
-      isAdmin={isAdmin}
-      isAuth={isAuth}
-      search={search}
-      setSearchList={setSearchList}
+      {...rest}
       itemsSearch={itemsSearch?.map((item: any) => ({
         link: item.title,
         routeId: item.collectionId,

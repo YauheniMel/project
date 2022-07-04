@@ -29,7 +29,6 @@ interface ICollectionPage {
   theme: string;
   customFields: any;
   createdAt: string;
-  updatedAt: string;
   list: ItemType[] | null;
   createNewItem: (itemInfo: ItemInitType) => void;
   setTargetItem: (item: ItemType) => void;
@@ -41,6 +40,7 @@ interface ICollectionPage {
   deleteItem: (itemId: number) => void;
   updateItem: (item: any) => void;
   toogleLike: (userId: number, itemId: number) => void;
+  authorId: number;
   likes: { itemId: number }[] | null;
   searchMatchTags: (tag: string) => void;
   matchTags: any;
@@ -54,7 +54,6 @@ const CollectionPage: FC<ICollectionPage> = ({
   theme,
   customFields,
   createdAt,
-  updatedAt,
   setTargetItem,
   createNewItem,
   list,
@@ -66,6 +65,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   deleteItem,
   updateItem,
   toogleLike,
+  authorId,
   userId,
   likes,
   searchMatchTags,
@@ -75,8 +75,6 @@ const CollectionPage: FC<ICollectionPage> = ({
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
-
-  console.log(updatedAt);
 
   return (
     <>
@@ -88,7 +86,6 @@ const CollectionPage: FC<ICollectionPage> = ({
         updateItem={updateItem}
       />
       <ModalDelete
-        type="items"
         openModal={openModalDelete}
         setOpen={setOpenModalDelete}
         deleteItems={listDeleteItems}
@@ -110,43 +107,43 @@ const CollectionPage: FC<ICollectionPage> = ({
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
-          <Sidebar>
-            <ListItemButton
-              onClick={() => setOpenForm(true)}
-              sx={{ width: '100%' }}
-            >
-              <ListItemIcon>
-                <AddCircleOutlineIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create item" />
-            </ListItemButton>
-            <ListItemButton
-              // disabled={listEditItems.length === 0}
-              sx={{ width: '100%' }}
-              onClick={() => setOpenModalEdit(true)}
-            >
-              <ListItemIcon>
-                <Badge badgeContent={listEditItems.length} color="warning">
-                  <UpgradeIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="Update" />
-            </ListItemButton>
-            <ListItemButton
-              // disabled={listDeleteItems.length === 0}
-              sx={{ width: '100%' }}
-              onClick={() => setOpenModalDelete(true)}
-            >
-              <ListItemIcon>
-                <Badge badgeContent={listDeleteItems.length} color="error">
-                  <DeleteIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="Delete" />
-            </ListItemButton>
-          </Sidebar>
+          {authorId === userId && (
+            <Sidebar>
+              <ListItemButton
+                onClick={() => setOpenForm(true)}
+                sx={{ width: '100%' }}
+              >
+                <ListItemIcon>
+                  <AddCircleOutlineIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create item" />
+              </ListItemButton>
+              <ListItemButton
+                sx={{ width: '100%' }}
+                onClick={() => setOpenModalEdit(true)}
+              >
+                <ListItemIcon>
+                  <Badge badgeContent={listEditItems.length} color="warning">
+                    <UpgradeIcon />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary="Update" />
+              </ListItemButton>
+              <ListItemButton
+                sx={{ width: '100%' }}
+                onClick={() => setOpenModalDelete(true)}
+              >
+                <ListItemIcon>
+                  <Badge badgeContent={listDeleteItems.length} color="error">
+                    <DeleteIcon />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary="Delete" />
+              </ListItemButton>
+            </Sidebar>
+          )}
         </Grid>
-        <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
+        <Grid item={false} lg={9.5} md={9.3} xs={12} sm={8}>
           <Box
             sx={{
               display: 'flex',
@@ -173,7 +170,7 @@ const CollectionPage: FC<ICollectionPage> = ({
           {description && (
             <MDEditor.Markdown source={description.replace(/&&#&&/gim, '\n')} />
           )}
-          {list && customFields && (
+          {!!list?.length && customFields && (
             <Table
               collectionId={id}
               list={list}
@@ -182,6 +179,7 @@ const CollectionPage: FC<ICollectionPage> = ({
               setDeleteItems={setDeleteItems}
               toogleLike={toogleLike}
               userId={userId}
+              authorId={authorId}
               likes={likes}
               getCollectionItems={getCollectionItems}
               customFields={customFields}

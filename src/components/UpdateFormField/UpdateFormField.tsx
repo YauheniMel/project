@@ -6,13 +6,24 @@ import {
   Box,
   CardMedia,
   IconButton,
-  Input,
   TextField,
   Typography,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import { makeStyles } from '@material-ui/core';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { FieldArray } from 'formik';
+import InputFile from '../../shared/components/InputFile/InputFile';
+
+const useStyles = makeStyles({
+  wrap: {
+    border: '1px solid black',
+  },
+  head: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+});
 
 const UpdateFormField: FC<any> = ({
   formik,
@@ -25,52 +36,50 @@ const UpdateFormField: FC<any> = ({
 }) => {
   const [showFormEl, setShowFormEl] = useState<boolean>(false);
 
-  const imgUrl = image
-    ? URL.createObjectURL(image)
-    : `data:application/pdf;base64,${value}`;
+  const classes = useStyles();
+
   return (
-    <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        {field === 'icon' ? (
-          <CardMedia
-            component="img"
-            height="194"
-            image={imgUrl}
-            alt="Paella dish"
-          />
-        ) : field === 'description' ? (
-          <MDEditor.Markdown
-            source={
-              description
-                ? description.replace(/&&#&&/gim, '\n')
-                : value.replace(/&&#&&/gim, '\n')
-            }
-          />
-        ) : (
-          <Typography variant="body2">
-            {(typeof formik.values[field] === 'object'
-              ? formik.values[field].field
-              : formik.values[field]) || value}
-          </Typography>
-        )}
-        <IconButton onClick={() => setShowFormEl(true)}>
-          {value ? <EditIcon /> : <AddCircleOutlineRoundedIcon />}
-        </IconButton>
-        <IconButton onClick={() => setShowFormEl(false)}>
-          <CheckIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            formik.resetForm({ values: { ...formik.values, [field]: '' } });
-          }}
-        >
-          <CleaningServicesIcon />
-        </IconButton>
+    <Box className={classes.wrap}>
+      <Box className={classes.head}>
+        <Box>
+          {field === 'icon' && value ? (
+            <CardMedia
+              component="img"
+              height="194"
+              image={`data:application/pdf;base64,${value}`}
+              alt="Paella dish"
+            />
+          ) : field === 'description' ? (
+            <MDEditor.Markdown
+              source={
+                description
+                  ? description.replace(/&&#&&/gim, '\n')
+                  : value.replace(/&&#&&/gim, '\n')
+              }
+            />
+          ) : (
+            <Typography variant="body2">
+              {(typeof formik.values[field] === 'object'
+                ? formik.values[field].field
+                : formik.values[field]) || value}
+            </Typography>
+          )}
+        </Box>
+        <Box>
+          <IconButton onClick={() => setShowFormEl(true)}>
+            {value ? <EditIcon /> : <AddCircleOutlineRoundedIcon />}
+          </IconButton>
+          <IconButton onClick={() => setShowFormEl(false)}>
+            <CheckIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              formik.resetForm({ values: { ...formik.values, [field]: '' } });
+            }}
+          >
+            <CleaningServicesIcon />
+          </IconButton>
+        </Box>
       </Box>
       {[
         'textKey1',
@@ -103,6 +112,7 @@ const UpdateFormField: FC<any> = ({
         <TextField
           style={{ display: showFormEl ? 'block' : 'none' }}
           name={field}
+          fullWidth
           label={field}
           value={formik.values[field]}
           onChange={formik.handleChange}
@@ -117,18 +127,7 @@ const UpdateFormField: FC<any> = ({
           onChange={setDescription}
         />
       )}
-      {field === 'icon' && (
-        <Input
-          style={{ display: showFormEl ? 'block' : 'none' }}
-          id="icon"
-          name="icon"
-          inputProps={{ accept: 'image/*' }}
-          type="file"
-          onChange={(e: any) => {
-            setImage(e.target.files[0]);
-          }}
-        />
-      )}
+      {field === 'icon' && <InputFile setImage={setImage} image={image} />}
       {['checkboxKey1', 'checkboxKey2', 'checkboxKey3'].includes(field) && (
         <Box style={{ display: showFormEl ? 'block' : 'none' }}>
           <TextField

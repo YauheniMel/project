@@ -67,6 +67,7 @@ function collectionReducer(state = initState, action: AnyAction) {
           [field]: action.collection[field],
         })),
         updatedAt: action.collection.updatedAt,
+        userId: action.collection.userId,
       };
     }
     case CollectionActionTypes.SetTargetItem: {

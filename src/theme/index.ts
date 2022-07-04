@@ -1,7 +1,8 @@
 import { createTheme } from '@mui/material';
 
 const Colors = {
-  primary_main: '#455A64',
+  primary_dark: '#1f2a2f',
+  primary_main: '#1f2a2f',
   primary_light: '#607D8B',
   secondary_main: '#00BCD4',
   error: '#E53935',
@@ -16,6 +17,7 @@ const theme = createTheme({
     primary: {
       main: Colors.primary_main,
       light: Colors.primary_light,
+      dark: Colors.primary_dark,
     },
     common: {
       white: Colors.white,
@@ -45,11 +47,6 @@ const theme = createTheme({
         '::-webkit-scrollbar-thumb': {
           backgroundColor: Colors.black,
         },
-      },
-    },
-    MuiLink: {
-      defaultProps: {
-        // color: 'red',
       },
     },
   },

@@ -63,6 +63,7 @@ export interface ItemType {
   checkboxValues3?: string;
   createdAt: string;
   updatedAt: string;
+  collection?: { user: { name: string; surname: string }; theme: string };
 }
 export interface CollectionInitType {
   userId: number;

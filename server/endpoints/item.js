@@ -60,11 +60,23 @@ router.get('/api/getLastAddItems', (req, res) => {
         attributes: ['itemId'],
       },
       {
+        model: sqlz.Collection,
+        attributes: ['theme'],
+        include: [
+          {
+            model: sqlz.User,
+            attributes: ['name', 'surname'],
+          },
+        ],
+      },
+      {
         model: sqlz.Tag,
         as: 'tags',
         attributes: ['content'],
       },
     ],
+    order: [['createdAt', 'DESC']],
+    limit: 5,
   })
     .then((response) => {
       let resWithImg;

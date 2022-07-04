@@ -1,22 +1,35 @@
 import React, { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  CardMedia, Checkbox, Chip, Link, Typography,
+  Box,
+  CardContent,
+  CardMedia,
+  Checkbox,
+  Chip,
+  Link,
+  Typography,
+  alpha,
 } from '@mui/material';
 import Card from '@mui/material/Card';
 import TagIcon from '@mui/icons-material/Tag';
-import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 import RoutesApp from '../../../constants/routes';
 import { ItemType } from '../../../types';
 
-const useStyles = makeStyles({
-  card: {
-    padding: '5px',
-    minWidth: '240px',
+const StyledCard = styled(Card)(({ theme }) => ({
+  padding: '5px',
+  minWidth: '240px',
+  width: '240px',
+  height: '300px',
+  overflow: 'auto',
+
+  '&:hover': {
+    transform: 'scale(1.01)',
+    backgroundColor: alpha(theme.palette.common.white, 0.65),
   },
-});
+}));
 
 interface ICardItem {
   item: ItemType;
@@ -27,33 +40,35 @@ interface ICardItem {
 
 const CardItem: FC<ICardItem> = ({
   item, toogleLike, userId, likes,
-}) => {
-  const classes = useStyles();
-
-  return (
-    <Card className={classes.card}>
-      <Link
-        component={RouterLink}
-        to={`${RoutesApp.CollectionLink}${item.collectionId}${RoutesApp.ItemLink}${item.id}`}
-      >
-        <Typography variant="h4" sx={{ fontSize: 'md', mt: 2 }}>
-          {item.title}
-        </Typography>
-      </Link>
-      <Typography
-        variant="body2"
-        sx={{ fontWeight: 'md', color: 'text.secondary' }}
-      >
-        {item.likes ? item.likes.length : 0}
-        {' '}
-        likes
-      </Typography>
+}) => (
+  <StyledCard>
+    <Link
+      component={RouterLink}
+      to={`${RoutesApp.CollectionLink}${item.collectionId}${RoutesApp.ItemLink}${item.id}`}
+    >
+      Open
+    </Link>
+    {item.icon && (
       <CardMedia
         component="img"
         height="194"
         image={`data:application/pdf;base64,${item.icon}`}
         alt="Paella dish"
       />
+    )}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant="body2">
+        <strong style={{ margin: '0 0.3rem' }}>
+          {item.likes ? item.likes.length : 0}
+        </strong>
+        likes
+      </Typography>
       <Checkbox
         checked={!!likes?.find((like) => like.itemId === item.id)}
         color="error"
@@ -65,26 +80,49 @@ const CardItem: FC<ICardItem> = ({
           }
         }}
       />
-      <Typography
-        variant="body2"
-        sx={{ fontWeight: 'md', color: 'text.secondary' }}
+    </Box>
+    {item.collection && (
+      <CardContent
+        sx={{
+          padding: '0.3rem',
+          overflowY: 'auto',
+        }}
       >
-        Created:
-        {' '}
-        {moment(item.createdAt).format('DD MMMM YYYY')}
-      </Typography>
-      {item.tags?.map((tag, idx: any) => (
-        <Chip
-          icon={<TagIcon />}
-          variant="outlined"
-          color="warning"
-          // eslint-disable-next-line react/no-array-index-key
-          key={idx}
-          label={tag.content}
-        />
-      ))}
-    </Card>
-  );
-};
+        <Typography variant="body1">
+          Title:
+          {item.title}
+        </Typography>
+        <Typography variant="body1">
+          Theme:
+          {item.collection.theme}
+        </Typography>
+        <Typography variant="body2">Author:</Typography>
+        <Typography variant="body2">
+          {item.collection.user.name}
+          {' '}
+          {item.collection.user.surname}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 'md', color: 'text.secondary' }}
+        >
+          Created:
+          {' '}
+          {moment(item.createdAt).format('DD MMMM YYYY')}
+        </Typography>
+      </CardContent>
+    )}
+    {item.tags?.map((tag, idx: any) => (
+      <Chip
+        icon={<TagIcon />}
+        variant="outlined"
+        color="warning"
+        // eslint-disable-next-line react/no-array-index-key
+        key={idx}
+        label={tag.content}
+      />
+    ))}
+  </StyledCard>
+);
 
 export default CardItem;

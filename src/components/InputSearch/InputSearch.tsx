@@ -3,13 +3,19 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { makeStyles } from '@material-ui/core';
-import {
-  alpha, Avatar, Box, Link,
-} from '@mui/material';
+import { Avatar, Box, Link } from '@mui/material';
 import { BsSearch } from 'react-icons/bs';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import RoutesApp from '../../constants/routes';
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  borderRadius: 0,
+  height: '100%',
+  paddingLeft: '10px',
+  borderBottom: `1px solid ${theme.palette.primary.dark}`,
+}));
 
 interface IInputSearch {
   search: (substr: string) => void;
@@ -33,17 +39,15 @@ interface IInputSearch {
   setSearchList: () => void;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   wrap: {
-    display: 'flex',
+    alignSelf: 'stretch',
     position: 'relative',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.35),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.65),
+    '& .MuiFormControl-root': {
+      justifyContent: 'center !important',
     },
+    maxWidth: '600px',
   },
   icon: {
     position: 'absolute',
@@ -55,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px',
     columnGap: '20px',
   },
-}));
+});
 
 const InputSearch: FC<IInputSearch> = ({
   search,
@@ -78,8 +82,8 @@ const InputSearch: FC<IInputSearch> = ({
     delay = 300,
   ) {
     setTimeout(() => {
-      setIsLoading(false);
       callback(substr);
+      setIsLoading(false);
     }, delay);
   }
 
@@ -174,17 +178,19 @@ const InputSearch: FC<IInputSearch> = ({
         clearSearchData();
       }}
       renderInput={(params) => (
-        <TextField
+        <StyledTextField
           {...params}
           placeholder="Search"
           onChange={(e: any) => {
             setOpen(true);
             setSubstr(e.target.value);
           }}
-          variant="outlined"
+          variant="standard"
           fullWidth
           InputProps={{
             ...params.InputProps,
+            disableUnderline: true,
+            style: { fontSize: '1.5rem' },
             endAdornment: (
               <Box className={classes.icon}>
                 {loading ? (

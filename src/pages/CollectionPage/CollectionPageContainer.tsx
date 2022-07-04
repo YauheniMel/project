@@ -19,6 +19,7 @@ import {
   updateItemThunk,
 } from '../../redux/actions/collection-action';
 import {
+  getAuthorIdSelector,
   getCollectionCreatedAtSelector,
   getCollectionCustomFieldsSelector,
   getCollectionDescriptionSelector,
@@ -27,7 +28,6 @@ import {
   getCollectionListSelector,
   getCollectionTargetItemSelector,
   getCollectionThemeSelector,
-  getCollectionUpdatedAtSelector,
   getDeleteItemList,
   getEditItemList,
   getMatchTagsSelector,
@@ -42,13 +42,13 @@ import CollectionPage from './CollectionPage';
 
 interface ICollectionPageContainer {
   userId: number;
+  authorId: number;
   id: number;
   icon: any;
   description: string;
   theme: string;
   customFields: any;
   createdAt: string;
-  updatedAt: string;
   targetItem: ItemType | null;
   list: ItemType[] | null;
   createNewItem: (itemInfo: ItemInitType) => void;
@@ -122,13 +122,13 @@ const mapStateToProps = (state: AppStateType) => ({
   theme: getCollectionThemeSelector(state),
   customFields: getCollectionCustomFieldsSelector(state),
   createdAt: getCollectionCreatedAtSelector(state),
-  updatedAt: getCollectionUpdatedAtSelector(state),
   list: getCollectionListSelector(state),
   targetItem: getCollectionTargetItemSelector(state),
   listEditItems: getEditItemList(state),
   listDeleteItems: getDeleteItemList(state),
   likes: getLikesSelector(state),
   matchTags: getMatchTagsSelector(state),
+  authorId: getAuthorIdSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
