@@ -3,25 +3,47 @@ import {
   Box,
   ListItem,
   List,
-  Modal,
   ListSubheader,
   Button,
   Typography,
   TextField,
   Chip,
 } from '@mui/material';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Backdrop } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
 import { ItemType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
-// import UpdateFormField from '../UpdateFormField/UpdateFormField';
 
-const useStyles = makeStyles({
+const StuledButton = styled(Button)(({ theme }) => ({
+  position: 'absolute',
+  zIndex: theme.zIndex.drawer + 1,
+  top: 0,
+  right: 0,
+  height: '55px',
+  width: '55px',
+  backgroundColor: theme.palette.primary.dark,
+  borderRadius: '0px',
+  color: theme.palette.common.white,
+}));
+
+const useStyles = makeStyles((theme) => ({
+  back: {
+    zIndex: theme.zIndex.drawer + 2,
+  },
+  paper: {
+    position: 'relative',
+    width: '60vw',
+    minWidth: '300px',
+    height: '300px',
+  },
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '50px',
+    rowGap: '20px',
+    padding: '0 20px',
     width: '100%',
 
     '& > *': {
@@ -29,7 +51,14 @@ const useStyles = makeStyles({
       flexDirection: 'column',
     },
   },
-});
+  action: {
+    display: 'flex',
+    width: '100%',
+    position: 'sticky',
+    bottom: 0,
+    backgroundColor: theme.palette.common.white,
+  },
+}));
 
 interface IModalEditItem {
   openModal: boolean;
@@ -38,18 +67,6 @@ interface IModalEditItem {
   pullOutItem: (itemId: number) => void;
   updateItem: (item: any) => void;
 }
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  maxHeight: 400,
-  overflow: 'scroll',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-};
 
 const ModalEditItem: FC<IModalEditItem> = ({
   openModal,
@@ -130,213 +147,60 @@ const ModalEditItem: FC<IModalEditItem> = ({
     // },
   });
 
-  // if (type === 'collections') {
-  //   return (
-  //     <Modal
-  //       open={openModal}
-  //       onClose={() => setOpen(false)}
-  //       aria-labelledby="modal-modal-title"
-  //       aria-describedby="modal-modal-description"
-  //     >
-  //       <FormikProvider value={formik}>
-  //         <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-  //           <Box sx={style}>
-  //             <List
-  //               sx={{
-  //                 bgcolor: 'background.paper',
-  //                 position: 'relative',
-  //                 overflow: 'auto',
-  //                 minHeight: 200,
-  //                 maxHeight: '80vh',
-  //                 m: 1,
-  //                 '& ul': { padding: 0 },
-  //               }}
-  //               subheader={<li />}
-  //             >
-  //               {editCollections?.map((collection) => (collection ? (
-  //                 <ListItem
-  //                   sx={{ display: 'flex', flexDirection: 'column' }}
-  //                   key={collection.id}
-  //                 >
-  //                   <ListSubheader sx={{ backgroundColor: 'red' }}>
-  //                     {collection.theme}
-  //                   </ListSubheader>
-  //                   <Box className={classes.listItem}>
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.theme}
-  //                       field="theme"
-  //                     />
-  //                     <Typography variant="body2">
-  //                       {collection.createdAt}
-  //                     </Typography>
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.icon}
-  //                       field="icon"
-  //                       image={image}
-  //                       setImage={setImage}
-  //                     />
-  //                     <Typography variant="body2">
-  //                       {collection.updatedAt}
-  //                     </Typography>
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.checkboxKey1}
-  //                       field="checkboxKey1"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.checkboxKey2}
-  //                       field="checkboxKey2"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.checkboxKey3}
-  //                       field="checkboxKey3"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.dateKey1}
-  //                       field="dateKey1"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.dateKey2}
-  //                       field="dateKey2"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.dateKey3}
-  //                       field="dateKey3"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.multiLineKey1}
-  //                       field="multiLineKey1"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.multiLineKey2}
-  //                       field="multiLineKey2"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.multiLineKey3}
-  //                       field="multiLineKey3"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.textKey1}
-  //                       field="textKey1"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.textKey2}
-  //                       field="textKey2"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.textKey3}
-  //                       field="textKey3"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.numberKey1}
-  //                       field="numberKey1"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.numberKey2}
-  //                       field="numberKey2"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.numberKey3}
-  //                       field="numberKey3"
-  //                     />
-  //                     <UpdateFormField
-  //                       formik={formik}
-  //                       value={collection.description}
-  //                       field="description"
-  //                       setDescription={setDescription}
-  //                       description={description}
-  //                     />
-  //                   </Box>
-  //                   <Button
-  //                     onClick={() => {
-  //                       setCollectionId(collection.id);
-  //                       formik.handleSubmit();
-  //                     }}
-  //                     color="warning"
-  //                   >
-  //                     Update
-  //                   </Button>
-  //                   <Button
-  //                     onClick={() => {
-  //                       if (collection.id) pullOutCollection!(collection.id);
-  //                     }}
-  //                   >
-  //                     Pull out
-  //                   </Button>
-  //                 </ListItem>
-  //               ) : (
-  //                 <Box>Empty</Box>
-  //               )))}
-  //             </List>
-  //           </Box>
-  //         </form>
-  //       </FormikProvider>
-  //     </Modal>
-  //   );
-  // }
-
   return (
-    <Modal
-      open={openModal}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Backdrop className={classes.back} open={openModal}>
+      <StuledButton onClick={() => setOpen(false)} variant="contained">
+        <CloseIcon fontSize="large" />
+      </StuledButton>
       <FormikProvider value={formik}>
         <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-          <Box sx={style}>
-            <List
-              sx={{
-                bgcolor: 'background.paper',
-                position: 'relative',
-                overflow: 'auto',
-                maxHeight: 200,
-                maxWidth: 410,
-                m: 1,
-                '& ul': { padding: 0 },
-              }}
-              subheader={<li />}
-            >
-              {editItems?.map((item) => (item ? (
-                <ListItem
-                  key={item.id}
-                  sx={{ display: 'flex', flexDirection: 'column' }}
+          <List
+            sx={{
+              bgcolor: 'background.paper',
+              overflow: 'auto',
+              paddingBottom: 0,
+            }}
+            className={classes.paper}
+            subheader={<li />}
+          >
+            {editItems?.map((item) => (item ? (
+              <ListItem
+                key={item.id}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  p: 0,
+                }}
+              >
+                <ListSubheader
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    zIndex: '1000',
+                    width: '100%',
+                    bgcolor: 'background.paper',
+                  }}
                 >
-                  <ListSubheader sx={{ backgroundColor: 'red' }}>
-                    {item.title}
-                  </ListSubheader>
-                  <Box className={classes.listItem}>
-                    <Typography>
-                      Created:
-                      {' '}
-                      {moment(item.createdAt).format('DD MMMM YYYY')}
-                    </Typography>
-                    <Typography>
-                      Updated:
-                      {' '}
-                      {moment(item.updatedAt).format('DD MMMM YYYY')}
-                    </Typography>
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.title}
-                      field="title"
-                    />
+                  <Typography variant="h4">{item.title}</Typography>
+                  <Typography variant="subtitle1">
+                    Created:
+                    {' '}
+                    {moment(item.createdAt).format('DD MMMM YYYY')}
+                  </Typography>
+                </ListSubheader>
+                <Box className={classes.listItem}>
+                  <Typography>
+                    Created:
+                    {' '}
+                    {moment(item.createdAt).format('DD MMMM YYYY')}
+                  </Typography>
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.title}
+                    field="title"
+                  />
+                  <Box>
                     <TextField
                       fullWidth
                       name="tags"
@@ -366,75 +230,82 @@ const ModalEditItem: FC<IModalEditItem> = ({
                         )),
                       }}
                     />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.textValue1}
-                      field="textValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.textValue2}
-                      field="textValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.textValue3}
-                      field="textValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.numberValue1}
-                      field="numberValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.numberValue2}
-                      field="numberValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.numberValue3}
-                      field="numberValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.dateValue1}
-                      field="dateValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.dateValue2}
-                      field="dateValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.dateValue3}
-                      field="dateValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.multiLineValue1}
-                      field="multiLineValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.multiLineValue2}
-                      field="multiLineValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.multiLineValue3}
-                      field="multiLineValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.icon}
-                      field="icon"
-                      image={image}
-                      setImage={setImage}
-                    />
                   </Box>
+
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.textValue1}
+                    field="textValue1"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.textValue2}
+                    field="textValue2"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.textValue3}
+                    field="textValue3"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.numberValue1}
+                    field="numberValue1"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.numberValue2}
+                    field="numberValue2"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.numberValue3}
+                    field="numberValue3"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.dateValue1}
+                    field="dateValue1"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.dateValue2}
+                    field="dateValue2"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.dateValue3}
+                    field="dateValue3"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.multiLineValue1}
+                    field="multiLineValue1"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.multiLineValue2}
+                    field="multiLineValue2"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.multiLineValue3}
+                    field="multiLineValue3"
+                  />
+                  <UpdateFormField
+                    formik={formik}
+                    value={item.icon}
+                    field="icon"
+                    image={image}
+                    setImage={setImage}
+                  />
+                </Box>
+                <Box className={classes.action}>
                   <Button
+                    sx={{
+                      flex: 1,
+                      borderRadius: 0,
+                    }}
                     onClick={() => {
                       setItemId(item.id);
                       formik.handleSubmit();
@@ -444,21 +315,25 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     Update
                   </Button>
                   <Button
+                    sx={{
+                      flex: 1,
+                      borderRadius: 0,
+                    }}
                     onClick={() => {
                       if (item.id) pullOutItem(item.id);
                     }}
                   >
                     Pull out
                   </Button>
-                </ListItem>
-              ) : (
-                <Box>Empty</Box>
-              )))}
-            </List>
-          </Box>
+                </Box>
+              </ListItem>
+            ) : (
+              <Box>Empty</Box>
+            )))}
+          </List>
         </form>
       </FormikProvider>
-    </Modal>
+    </Backdrop>
   );
 };
 

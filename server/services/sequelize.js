@@ -238,9 +238,15 @@ const Tag = sequelize.define('tag', {
   },
 });
 User.hasMany(Collection, { onDelete: 'cascade', hooks: true });
+Collection.belongsTo(User, { onDelete: 'cascade', hooks: true });
+
 Collection.hasMany(Item, { onDelete: 'cascade', hooks: true });
+Item.belongsTo(Collection, { onDelete: 'cascade', hooks: true });
+
 Item.hasMany(Like, { onDelete: 'cascade', hooks: true });
+
 User.hasMany(Like, { onDelete: 'cascade', hooks: true });
+
 Item.belongsToMany(Tag, {
   through: 'item_tag',
   as: 'tags',

@@ -82,8 +82,8 @@ const InputSearch: FC<IInputSearch> = ({
     delay = 300,
   ) {
     setTimeout(() => {
-      setIsLoading(false);
       callback(substr);
+      setIsLoading(false);
     }, delay);
   }
 

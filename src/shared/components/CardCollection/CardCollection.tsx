@@ -1,35 +1,42 @@
 import React, { FC, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  CardMedia, Link, Typography, Avatar, Box,
+  CardMedia, Link, Typography, Avatar, Box, alpha,
 } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import { makeStyles } from '@material-ui/core';
 import { VscMove } from 'react-icons/vsc';
 import MDEditor from '@uiw/react-md-editor';
+import { styled } from '@mui/material/styles';
 import { useDrag } from 'react-dnd';
 import RoutesApp from '../../../constants/routes';
 import { CollectionType } from '../../../types';
 
-const useStyles = makeStyles((theme) => ({
+const StyledCard = styled(Card)(({ theme }) => ({
+  padding: '5px',
+  minWidth: '240px',
+  width: '240px',
+  height: '300px',
+  overflow: 'auto',
+
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.65),
+  },
+}));
+
+const useStyles = makeStyles({
   card: {
     margin: '5px',
     position: 'relative',
     maxWidth: '250px',
     minWidth: '250px',
     overflow: 'hidden',
-
-    '&:hover': {
-      outlineWidth: '2px',
-      outlineStyle: 'solid',
-      outlineColor: theme.palette.primary.light,
-    },
   },
   body: {
     height: '300px',
   },
-}));
+});
 
 interface ICardCollection {
   collection: CollectionType;
@@ -89,7 +96,7 @@ const CardCollection: FC<ICardCollection> = ({
             )}
           </Avatar>
         )}
-        <Card variant="outlined" sx={{ opacity }} className={classes.body}>
+        <StyledCard variant="outlined" sx={{ opacity }}>
           {collection.icon ? (
             <CardMedia
               component="img"
@@ -105,10 +112,13 @@ const CardCollection: FC<ICardCollection> = ({
               {collection.theme}
             </Typography>
             <MDEditor.Markdown
+              style={{
+                backgroundColor: 'transparent',
+              }}
               source={collection.description?.replace(/&&#&&/gim, '\n')}
             />
           </CardContent>
-        </Card>
+        </StyledCard>
       </Link>
     </Box>
   );

@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Button, Link } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { styled } from '@mui/material/styles';
-import { IoMdClose } from 'react-icons/io';
+import CloseIcon from '@mui/icons-material/Close';
 import RoutesApp from '../../constants/routes';
 import logout from '../../auth/services/logout';
 
@@ -67,7 +67,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
   return (
     <Box>
       <ToogleButton onClick={toggleDrawer} variant="contained">
-        <IoMdClose size={60} />
+        <CloseIcon fontSize="large" />
       </ToogleButton>
       <Drawer
         className={classes.drawer}

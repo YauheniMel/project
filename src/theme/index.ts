@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material';
 
 const Colors = {
   primary_dark: '#1f2a2f',
-  primary_main: '#455A64',
+  primary_main: '#1f2a2f',
   primary_light: '#607D8B',
   secondary_main: '#00BCD4',
   error: '#E53935',

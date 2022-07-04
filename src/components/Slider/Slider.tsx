@@ -50,7 +50,6 @@ const Slider: FC<ISlider> = ({
             top: 0,
             right: 0,
           }}
-          variant="contained"
           onClick={() => {
             setShowAllCollections(true);
 

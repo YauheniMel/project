@@ -109,7 +109,6 @@ const UserPage: FC<IUserPage> = ({
         pullOutCollection={pullOutCollection}
       />
       <ModalDelete
-        type="collections"
         openModal={openModalDelete}
         setOpen={setOpenModalDelete}
         deleteCollections={deleteCollections}

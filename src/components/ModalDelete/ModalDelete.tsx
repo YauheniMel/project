@@ -1,19 +1,41 @@
 import React, { FC } from 'react';
 import {
-  Box,
-  ListItem,
-  List,
-  Modal,
-  ListSubheader,
-  Button,
+  ListItem, List, ListSubheader, Button,
 } from '@mui/material';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import { CollectionType, ItemType } from '../../types';
+
+const StuledButton = styled(Button)(({ theme }) => ({
+  position: 'absolute',
+  zIndex: theme.zIndex.drawer + 1,
+  top: 0,
+  right: 0,
+  height: '55px',
+  width: '55px',
+  backgroundColor: theme.palette.primary.dark,
+  borderRadius: '0px',
+  color: theme.palette.common.white,
+}));
+
+const useStyles = makeStyles((theme) => ({
+  back: {
+    zIndex: theme.zIndex.drawer + 2,
+  },
+  paper: {
+    position: 'relative',
+    width: '60%',
+    minWidth: '300px',
+    padding: '20px 0',
+    height: '300px',
+  },
+}));
 
 interface IModalDelete {
   openModal: boolean;
-  type: 'items' | 'collections';
   setOpen: (state: boolean) => void;
   deleteCollections?: Array<CollectionType | null>;
   deleteItems?: Array<ItemType | null>;
@@ -23,38 +45,24 @@ interface IModalDelete {
   deleteItem?: (itemId: number) => void;
 }
 
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  maxHeight: 400,
-  overflow: 'scroll',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-};
-
 const ModalDelete: FC<IModalDelete> = ({
   openModal,
   setOpen,
   deleteCollections,
   deleteItems,
-  type,
   pullOutCollection,
   deleteCollection,
   pullOutItem,
   deleteItem,
 }) => {
-  console.log(type);
+  const classes = useStyles();
+
   return (
-    <Modal
-      open={openModal}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
+    <Backdrop className={classes.back} open={openModal}>
+      <Paper className={classes.paper}>
+        <StuledButton onClick={() => setOpen(false)} variant="contained">
+          <CloseIcon fontSize="large" />
+        </StuledButton>
         <List
           sx={{
             bgcolor: 'background.paper',
@@ -67,7 +75,8 @@ const ModalDelete: FC<IModalDelete> = ({
           }}
           subheader={<li />}
         >
-          {deleteCollections?.map((collection) => (collection ? (
+          {deleteCollections?.map(
+            (collection) => collection && (
             <ListItem
               sx={{ display: 'flex', flexDirection: 'column' }}
               key={collection.id}
@@ -96,10 +105,10 @@ const ModalDelete: FC<IModalDelete> = ({
                 Pull out
               </Button>
             </ListItem>
-          ) : (
-            <Box>Empty</Box> // it doesn't work
-          )))}
-          {deleteItems?.map((item) => (item ? (
+            ),
+          )}
+          {deleteItems?.map(
+            (item) => item && (
             <ListItem
               sx={{ display: 'flex', flexDirection: 'column' }}
               key={item.id}
@@ -128,12 +137,11 @@ const ModalDelete: FC<IModalDelete> = ({
                 Pull out
               </Button>
             </ListItem>
-          ) : (
-            <Box>Empty</Box> // it doesn't work
-          )))}
+            ),
+          )}
         </List>
-      </Box>
-    </Modal>
+      </Paper>
+    </Backdrop>
   );
 };
 

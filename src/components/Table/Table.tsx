@@ -42,6 +42,7 @@ interface ITable {
   collectionId: number;
   userId: number;
   list: ItemType[];
+  authorId: number;
   setTargetItem: (item: ItemType) => void;
   setEditItems: (itemIds: number[]) => void;
   setDeleteItems: (itemIds: number[]) => void;
@@ -96,6 +97,7 @@ const Table: FC<ITable> = ({
   likes,
   getCollectionItems,
   customFields,
+  authorId,
 }) => {
   const [selectRows, setSelectRows] = useState([]);
 
@@ -407,12 +409,17 @@ const Table: FC<ITable> = ({
       filterable: false,
       renderCell: (params) => (
         <>
-          <IconButton onClick={() => setEditItems([params.row.id])}>
-            <MdOutlineChangeCircle />
-          </IconButton>
-          <IconButton onClick={() => setDeleteItems([params.row.id])}>
-            <DeleteIcon />
-          </IconButton>
+          {authorId === userId && (
+            <>
+              <IconButton onClick={() => setEditItems([params.row.id])}>
+                <MdOutlineChangeCircle />
+              </IconButton>
+              <IconButton onClick={() => setDeleteItems([params.row.id])}>
+                <DeleteIcon />
+              </IconButton>
+            </>
+          )}
+
           <Checkbox
             checked={!!likes?.find((like) => like.itemId === params.row.id)}
             color="error"
@@ -445,20 +452,24 @@ const Table: FC<ITable> = ({
         <Button onClick={() => getCollectionItems(collectionId)} color="error">
           Filter cleaning
         </Button>
-        <Button
-          onClick={() => setDeleteItems(selectRows)}
-          color="error"
-          disabled={selectRows.length === 0}
-        >
-          Put Delete
-        </Button>
-        <Button
-          onClick={() => setEditItems(selectRows)}
-          disabled={selectRows.length === 0}
-          color="warning"
-        >
-          Put Update
-        </Button>
+        {authorId === userId && (
+          <>
+            <Button
+              onClick={() => setDeleteItems(selectRows)}
+              color="error"
+              disabled={selectRows.length === 0}
+            >
+              Put Delete
+            </Button>
+            <Button
+              onClick={() => setEditItems(selectRows)}
+              disabled={selectRows.length === 0}
+              color="warning"
+            >
+              Put Update
+            </Button>
+          </>
+        )}
       </Box>
       {customFields && (
         <StyledDataGrid

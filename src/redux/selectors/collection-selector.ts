@@ -52,3 +52,7 @@ export function getDeleteItemList(state: AppStateType): Array<ItemType | null> {
 export function getMatchTagsSelector(state: AppStateType) {
   return state.collection.matchTags;
 }
+
+export function getAuthorIdSelector(state: AppStateType) {
+  return state.collection.userId;
+}
