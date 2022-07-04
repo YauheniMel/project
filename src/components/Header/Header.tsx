@@ -20,6 +20,7 @@ interface IHeader {
   name: string;
   surname: string;
   isAuth: boolean;
+  isAdmin: boolean;
   search: (substr: string) => void;
   itemsSearch:
   | {
@@ -50,6 +51,7 @@ const Header: FC<IHeader> = ({
   usersSearch,
   clearSearchData,
   setSearchList,
+  isAdmin,
 }) => {
   const classes = useStyles();
 
@@ -57,7 +59,7 @@ const Header: FC<IHeader> = ({
     <AppBar className={classes.appBar} position="relative">
       <Toolbar sx={{ justifyContent: 'space-around' }}>
         {isAuth && name ? (
-          <Logo name={name} surname={surname} />
+          <Logo name={name} isAdmin={isAdmin} surname={surname} />
         ) : (
           <Link to={RoutesApp.Login}>Login</Link>
         )}

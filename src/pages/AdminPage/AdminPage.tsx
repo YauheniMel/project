@@ -1,17 +1,19 @@
 import React, { FC } from 'react';
 import {
   Box,
+  Chip,
   Grid,
-  InputBase,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
   Typography,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import BlockIcon from '@mui/icons-material/Block';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { CollectionType, TargetUserType } from '../../types';
 import Slider from '../../components/Slider/Slider';
 
@@ -22,6 +24,11 @@ interface IAdminPage {
   getTargetUserCollections: (id: number, page?: number) => void;
   users: TargetUserType[] | null;
   setCollection: (collectionId: CollectionType) => void;
+  blockUser: (userId: number) => void;
+  unblockUser: (userId: number) => void;
+  deleteUser: (userId: number) => void;
+  setIsAdmin: (userId: number) => void;
+  setIsNotAdmin: (userId: number) => void;
 }
 
 const AdminPage: FC<IAdminPage> = ({
@@ -31,48 +38,64 @@ const AdminPage: FC<IAdminPage> = ({
   getTargetUser,
   setCollection,
   getTargetUserCollections,
+  blockUser,
+  unblockUser,
+  deleteUser,
+  setIsAdmin,
+  setIsNotAdmin,
 }) => (
-  <Grid
-    container
-    direction="row"
-    sx={{
-      height: '100%',
-      gridTemplateRows: 'auto',
-      gridTemplateColumns: 'auto',
-    }}
-  >
-    <Grid item xs={12} sx={{ height: '15%' }}>
-      <Box>Header</Box>
-      <InputBase
-        placeholder="Search…"
-        inputProps={{ 'aria-label': 'search' }}
-      />
-      <SearchIcon />
+  <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
+      {targetUser && (
+        <>
+          <ListItemButton onClick={() => blockUser(targetUser.id)}>
+            <ListItemIcon>
+              <BlockIcon />
+            </ListItemIcon>
+            <ListItemText primary="Block the user" />
+          </ListItemButton>
+          <ListItemButton onClick={() => unblockUser(targetUser.id)}>
+            <ListItemIcon>
+              <LockOpenIcon />
+            </ListItemIcon>
+            <ListItemText primary="Unlock the user" />
+          </ListItemButton>
+          <ListItemButton onClick={() => setIsAdmin(targetUser.id)}>
+            <ListItemIcon>
+              <EmojiEventsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Make an admin" />
+          </ListItemButton>
+          <ListItemButton onClick={() => setIsNotAdmin(targetUser.id)}>
+            <ListItemIcon>
+              <SentimentVeryDissatisfiedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove from admins" />
+          </ListItemButton>
+          <ListItemButton onClick={() => deleteUser(targetUser.id)}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Delete the user" />
+          </ListItemButton>
+        </>
+      )}
     </Grid>
-    <Grid item xs={2} sx={{ height: '70%' }}>
-      <ListItemButton sx={{ width: '100%' }}>
-        <ListItemIcon>
-          <BlockIcon />
-        </ListItemIcon>
-        <ListItemText primary="Block the user" />
-      </ListItemButton>
-      <ListItemButton sx={{ width: '100%' }}>
-        <ListItemIcon>
-          <LockOpenIcon />
-        </ListItemIcon>
-        <ListItemText primary="Unlock the user" />
-      </ListItemButton>
-      <ListItemButton sx={{ width: '100%' }}>
-        <ListItemIcon>
-          <DeleteIcon />
-        </ListItemIcon>
-        <ListItemText primary="Delete the user" />
-      </ListItemButton>
-    </Grid>
-    <Grid item xs={8} sx={{ backgroundColor: 'white', height: '70%' }}>
+    <Grid item lg={6.5} md={7.3} xs={10} sm={6}>
+      {targetUser && (
+        <Typography
+          variant="h4"
+          sx={{
+            paddingBottom: '20px',
+          }}
+        >
+          {targetUser.name}
+          {' '}
+          {targetUser.surname}
+        </Typography>
+      )}
       {targetCollections && (
         <Box>
-          <Typography variant="h3">My collections</Typography>
           <Slider
             id={1}
             getUserCollections={getTargetUserCollections}
@@ -82,35 +105,39 @@ const AdminPage: FC<IAdminPage> = ({
         </Box>
       )}
     </Grid>
-    <Grid item xs={2} sx={{ backgroundColor: 'green', height: '70%' }}>
-      {targetUser && (
-        <ListItemButton
-          onClick={() => getTargetUser(targetUser.id)}
-          sx={{ backgroundColor: 'white' }}
-        >
-          {targetUser.name}
-          {' '}
-          {targetUser.surname}
-        </ListItemButton>
-      )}
-      <Box sx={{ width: '100%', backgroundColor: 'gray' }}>
+    <Grid item xs={3}>
+      <Box>
         {users
           && users.map((user) => (
-            <div>
-              <ListItemButton
-                onClick={() => getTargetUser(user.id)}
-                key={user.id}
-              >
-                {user.name}
-                {' '}
-                {user.surname}
-              </ListItemButton>
-            </div>
+            <ListItemButton
+              onClick={() => getTargetUser(user.id)}
+              key={user.id}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              {user.name}
+              {' '}
+              {user.surname}
+              <Stack direction="row" spacing={1}>
+                <Chip
+                  label={user.status}
+                  color={user.status === 'active' ? 'primary' : 'error'}
+                  size="small"
+                />
+                {user.isAdmin && (
+                  <Chip
+                    label="Admin"
+                    color="primary"
+                    variant="outlined"
+                    size="small"
+                  />
+                )}
+              </Stack>
+            </ListItemButton>
           ))}
       </Box>
-    </Grid>
-    <Grid item xs sx={{ backgroundColor: 'teal', height: '15%' }}>
-      <Box>Footer</Box>
     </Grid>
   </Grid>
 );

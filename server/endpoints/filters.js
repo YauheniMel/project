@@ -295,69 +295,6 @@ router.get('/api/filterIsEmpty/', (req, res) => {
 router.get('/api/filterEqualsThunk/', (req, res) => {
   const { column, str, collectionId } = req.query;
 
-  if (column === 'likes') {
-    console.log('column-----------');
-    console.log(str);
-
-    sqlz.Item.findAll({
-      attributes: {
-        include: [
-          [
-            sqlz.sequelize.fn('COUNT', sqlz.sequelize.col('likes.itemId')),
-            'likesCount',
-          ],
-        ],
-      },
-      include: [
-        {
-          model: sqlz.Like,
-          attributes: [],
-        },
-      ],
-      where: {
-        [Op.and]: [{ collectionId }],
-      },
-      group: ['Item.id'],
-    })
-      .then((result) => res.status(200).send(result))
-      .catch((err) => res.status(400).send({
-        code: 0,
-        message: err,
-      }));
-
-    return;
-  }
-
-  if (column === 'likes') {
-    sqlz.Item.findAll({
-      attributes: {
-        include: [
-          [
-            sqlz.sequelize.fn('COUNT', sqlz.sequelize.col('likes.itemId')),
-            'likesCount',
-          ],
-        ],
-      },
-      include: [
-        {
-          model: sqlz.Like,
-          attributes: [],
-        },
-      ],
-      where: {
-        collectionId,
-      },
-      group: ['Item.id'],
-    })
-      .then((result) => res.status(200).send(result))
-      .catch((err) => res.status(400).send({
-        code: 0,
-        message: err,
-      }));
-
-    return;
-  }
-
   sqlz.Item.findAll({
     where: {
       [Op.and]: [{ [column]: { [Op.eq]: `${str}` } }, { collectionId }],

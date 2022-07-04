@@ -47,6 +47,12 @@ export const API = {
   FilterIsNotEmpty: `${baseUrl}/api/filterIsNotEmpty`,
   FilterMoreThan: `${baseUrl}/api/filterMoreThan`,
   FilterLessThan: `${baseUrl}/api/filterLessThan`,
+  GetAllUsers: `${baseUrl}/api/getAllUsers`,
+  BlockUser: `${baseUrl}/api/blockUser`,
+  UnblockUser: `${baseUrl}/api/unblockUser`,
+  DeleteUser: `${baseUrl}/api/deleteUser`,
+  SetIsAdmin: `${baseUrl}/api/setIsAdmin`,
+  SetIsNotAdmin: `${baseUrl}/api/setIsNotAdmin`,
 };
 
 export const requestAPI = {
@@ -157,6 +163,46 @@ export const requestAPI = {
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },
+  deleteUser(userId: number) {
+    return axios
+      .post(API.DeleteUser, {
+        id: userId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  blockUser(userId: number) {
+    return axios
+      .post(API.BlockUser, {
+        id: userId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setIsAdmin(userId: number) {
+    return axios
+      .post(API.SetIsAdmin, {
+        id: userId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setIsNotAdmin(userId: number) {
+    return axios
+      .post(API.SetIsNotAdmin, {
+        id: userId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  unblockUser(userId: number) {
+    return axios
+      .post(API.UnblockUser, {
+        id: userId,
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
   logOutUser(userId: string) {
     return axios
       .post(API.LogOutUser, {
@@ -185,6 +231,12 @@ export const requestAPI = {
   getAllTags() {
     return axios
       .get(API.GetAllTags)
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getAllUsers() {
+    return axios
+      .get(API.GetAllUsers)
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },

@@ -33,6 +33,7 @@
     "react/destructuring-assignment": "off",
     "@typescript-eslint/no-var-requires": "off",
     "react/jsx-props-no-spreading": "off",
+    "no-debugger": "off",
     "no-plusplus": "off",
     "import/extensions": [
       "error",

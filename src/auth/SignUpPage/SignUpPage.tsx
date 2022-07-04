@@ -89,7 +89,6 @@ const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
         if (user) {
           await updateProfile(auth.currentUser, {
             displayName: `${values.name} ${values.surname}`,
-            photoURL: 'https://example.com/jane-q-user/profile.jpg',
           });
 
           signUpUser({

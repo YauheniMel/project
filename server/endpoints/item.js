@@ -358,8 +358,11 @@ router.delete('/api/deleteItem/', (req, res) => {
       id: itemId,
     },
   })
-    .then((response) => {
-      res.status(200).send(response);
+    .then(() => {
+      res.status(200).send({
+        code: 1,
+        message: 'Deleted success!',
+      });
     })
     .catch((err) => res.status(400).send({
       code: 0,

@@ -53,6 +53,7 @@ const App: FC<IRootPage> = ({ loginUser, getUserPersonalInfo, toogleLike }) => {
         <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
         <Route path={RoutesApp.SignUp} element={<SignUpPageContainer />} />
         <Route path={RoutesApp.Root} element={<RootPage />}>
+          <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
           <Route
             path={RoutesApp.Home}
             element={<HomePageContainer toogleLike={toogleLike} />}
@@ -71,7 +72,6 @@ const App: FC<IRootPage> = ({ loginUser, getUserPersonalInfo, toogleLike }) => {
             element={<SearchPageContainer toogleLike={toogleLike} />}
           />
         </Route>
-        <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
       </Routes>
     </div>
   );

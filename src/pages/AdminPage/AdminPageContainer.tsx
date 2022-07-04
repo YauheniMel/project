@@ -1,9 +1,15 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import {
+  blockUserThunk,
+  deleteUserThunk,
+  getAllUsersThunk,
   getTargetUserCollectionsThunk,
   getTargetUserThunk,
+  removeFromAdminsThunk,
+  setIsAdminThunk,
+  unblockUserThunk,
 } from '../../redux/actions/admin-action';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
@@ -21,11 +27,23 @@ interface IAdminPageContainer {
   getTargetUser: (id: number) => void;
   getTargetUserCollections: (id: number) => void;
   setCollection: (collectionId: CollectionType) => void;
+  getAllUsersThunk: () => void;
+  blockUser: (userId: number) => void;
+  unblockUser: (userId: number) => void;
+  deleteUser: (userId: number) => void;
+  setIsAdmin: (userId: number) => void;
+  setIsNotAdmin: (userId: number) => void;
 }
 
-const AdminPageContainer: FC<IAdminPageContainer> = (props) => (
-  <AdminPage {...props} />
-);
+const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
+  useEffect(() => {
+    const { getAllUsersThunk } = props;
+
+    getAllUsersThunk();
+  }, []);
+
+  return <AdminPage {...props} />;
+};
 
 const mapStateToProps = (state: AppStateType) => ({
   targetCollections: getAdminTargetCollections(state),
@@ -41,5 +59,24 @@ const mapDispatchToProps = (dispatch: any) => ({
   setCollection: (collection: CollectionType) => {
     dispatch(setTargetCollectionAction(collection));
   },
+  getAllUsersThunk: () => {
+    dispatch(getAllUsersThunk());
+  },
+  blockUser: (userId: number) => {
+    dispatch(blockUserThunk(userId));
+  },
+  unblockUser: (userId: number) => {
+    dispatch(unblockUserThunk(userId));
+  },
+  deleteUser: (userId: number) => {
+    dispatch(deleteUserThunk(userId));
+  },
+  setIsAdmin: (userId: number) => {
+    dispatch(setIsAdminThunk(userId));
+  },
+  setIsNotAdmin: (userId: number) => {
+    dispatch(removeFromAdminsThunk(userId));
+  },
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPageContainer);
