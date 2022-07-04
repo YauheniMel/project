@@ -106,11 +106,10 @@ router.post('/api/loginUser', (req, res) => {
 
 router.post('/api/deleteUser', (req, res) => {
   const { id } = req.body;
-  console.log(id);
   sqlz.User.destroy({
     where: { id },
   })
-    .then(() => res.status(200).send({
+    .then((res) => res.status(200).send({
       code: 1,
       message: 'Login success!',
     }))
@@ -138,6 +137,34 @@ router.post('/api/unblockUser', (req, res) => {
   const { id } = req.body;
 
   sqlz.User.update({ status: 'active' }, { where: { id } })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Unblocked success!',
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/setIsAdmin', (req, res) => {
+  const { id } = req.body;
+
+  sqlz.User.update({ isAdmin: true }, { where: { id } })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Unblocked success!',
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/setIsNotAdmin', (req, res) => {
+  const { id } = req.body;
+
+  sqlz.User.update({ isAdmin: false }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Unblocked success!',

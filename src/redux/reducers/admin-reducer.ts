@@ -55,6 +55,34 @@ function adminReducer(state = initState, action: AnyAction) {
         ],
       };
     }
+    case AdminActionTypes.setUserIsAdmin: {
+      return {
+        ...state,
+        users: state.users && [
+          ...state.users.map((user) => {
+            if (user.id === action.userId) {
+              user.isAdmin = true;
+            }
+
+            return user;
+          }),
+        ],
+      };
+    }
+    case AdminActionTypes.setUserIsNotAdmin: {
+      return {
+        ...state,
+        users: state.users && [
+          ...state.users.map((user) => {
+            if (user.id === action.userId) {
+              user.isAdmin = false;
+            }
+
+            return user;
+          }),
+        ],
+      };
+    }
     case AdminActionTypes.setAllUsers: {
       return {
         ...state,

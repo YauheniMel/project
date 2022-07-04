@@ -7,6 +7,8 @@ import {
   getAllUsersThunk,
   getTargetUserCollectionsThunk,
   getTargetUserThunk,
+  removeFromAdminsThunk,
+  setIsAdminThunk,
   unblockUserThunk,
 } from '../../redux/actions/admin-action';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
@@ -29,6 +31,8 @@ interface IAdminPageContainer {
   blockUser: (userId: number) => void;
   unblockUser: (userId: number) => void;
   deleteUser: (userId: number) => void;
+  setIsAdmin: (userId: number) => void;
+  setIsNotAdmin: (userId: number) => void;
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
@@ -66,6 +70,12 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   deleteUser: (userId: number) => {
     dispatch(deleteUserThunk(userId));
+  },
+  setIsAdmin: (userId: number) => {
+    dispatch(setIsAdminThunk(userId));
+  },
+  setIsNotAdmin: (userId: number) => {
+    dispatch(removeFromAdminsThunk(userId));
   },
 });
 

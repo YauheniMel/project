@@ -7,6 +7,7 @@ import ToolBar from '../../components/ToolBar/ToolBar';
 import { AppStateType } from '../../redux';
 import {
   getUserIdFirebase,
+  getUserIsAdmin,
   getUserName,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
@@ -27,6 +28,7 @@ interface IRootPage {
   name: string;
   surname: string;
   isAuth: boolean;
+  isAdmin: boolean;
   logOutUser: (id: string) => void;
   search: (substr: string) => void;
   itemsSearch: any;
@@ -46,12 +48,14 @@ const RootPage: FC<IRootPage> = ({
   usersSearch,
   clearSearchData,
   setSearchList,
+  isAdmin,
 }) => (
   <>
     <Header
       name={name}
       clearSearchData={clearSearchData}
       surname={surname}
+      isAdmin={isAdmin}
       isAuth={isAuth}
       search={search}
       setSearchList={setSearchList}
@@ -80,6 +84,7 @@ const mapStateToProps = (state: AppStateType) => ({
   name: getUserName(state),
   surname: getUserSurname(state),
   isAuth: getIsAuth(state),
+  isAdmin: getUserIsAdmin(state),
   itemsSearch: getSearchItemsSelector(state),
   usersSearch: getSearchUsersSelector(state),
 });

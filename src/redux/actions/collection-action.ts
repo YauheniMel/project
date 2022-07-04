@@ -106,9 +106,12 @@ export const deleteCollectionThunk = (collectionId: number) => () => {
 };
 
 export const deleteItemThunk = (itemId: number) => (dispatch: any) => {
-  requestAPI
-    .deleteItem(itemId)
-    .then((response) => dispatch(deleteItemAction(response)));
+  requestAPI.deleteItem(itemId).then((response) => {
+    if (response.code === 1) {
+      dispatch(deleteItemAction(itemId));
+      dispatch(pullOutItemAction(itemId));
+    }
+  });
 };
 
 export const setEditItemsThunk = (itemIds: number[]) => (dispatch: any) => {

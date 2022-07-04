@@ -8,6 +8,8 @@ export enum AdminActionTypes {
   setUserBlock = 'SET-USER-BLOCK',
   setUserUnblock = 'SET-USER-UNBLOCK',
   deleteUser = 'DELETE-USER',
+  setUserIsAdmin = 'SET-USER-IS-ADMIN',
+  setUserIsNotAdmin = 'SET-USER-IS-NOT-ADMIN',
 }
 
 export const setTargetUser = (user: any) => ({
@@ -22,6 +24,16 @@ export const setAllUsers = (users: UserType[]) => ({
 
 export const setUserBlock = (userId: number) => ({
   type: AdminActionTypes.setUserBlock,
+  userId,
+});
+
+export const setUserIsAdmin = (userId: number) => ({
+  type: AdminActionTypes.setUserIsAdmin,
+  userId,
+});
+
+export const setUserIsNotAdmin = (userId: number) => ({
+  type: AdminActionTypes.setUserIsNotAdmin,
   userId,
 });
 
@@ -61,7 +73,17 @@ export const blockUserThunk = (userId: number) => (dispatch: any) => {
 };
 
 export const unblockUserThunk = (userId: number) => (dispatch: any) => {
-  requestAPI.blockUser(userId).then(() => dispatch(setUserUnblock(userId)));
+  requestAPI.unblockUser(userId).then(() => dispatch(setUserUnblock(userId)));
+};
+
+export const setIsAdminThunk = (userId: number) => (dispatch: any) => {
+  requestAPI.setIsAdmin(userId).then(() => dispatch(setUserIsAdmin(userId)));
+};
+
+export const removeFromAdminsThunk = (userId: number) => (dispatch: any) => {
+  requestAPI
+    .setIsNotAdmin(userId)
+    .then(() => dispatch(setUserIsNotAdmin(userId)));
 };
 
 export const deleteUserThunk = (userId: number) => (dispatch: any) => {

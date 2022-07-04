@@ -12,6 +12,8 @@ import {
 import BlockIcon from '@mui/icons-material/Block';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { CollectionType, TargetUserType } from '../../types';
 import Slider from '../../components/Slider/Slider';
 
@@ -25,6 +27,8 @@ interface IAdminPage {
   blockUser: (userId: number) => void;
   unblockUser: (userId: number) => void;
   deleteUser: (userId: number) => void;
+  setIsAdmin: (userId: number) => void;
+  setIsNotAdmin: (userId: number) => void;
 }
 
 const AdminPage: FC<IAdminPage> = ({
@@ -37,6 +41,8 @@ const AdminPage: FC<IAdminPage> = ({
   blockUser,
   unblockUser,
   deleteUser,
+  setIsAdmin,
+  setIsNotAdmin,
 }) => (
   <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
     <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
@@ -53,6 +59,18 @@ const AdminPage: FC<IAdminPage> = ({
               <LockOpenIcon />
             </ListItemIcon>
             <ListItemText primary="Unlock the user" />
+          </ListItemButton>
+          <ListItemButton onClick={() => setIsAdmin(targetUser.id)}>
+            <ListItemIcon>
+              <EmojiEventsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Make an admin" />
+          </ListItemButton>
+          <ListItemButton onClick={() => setIsNotAdmin(targetUser.id)}>
+            <ListItemIcon>
+              <SentimentVeryDissatisfiedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove from admins" />
           </ListItemButton>
           <ListItemButton onClick={() => deleteUser(targetUser.id)}>
             <ListItemIcon>
@@ -108,7 +126,7 @@ const AdminPage: FC<IAdminPage> = ({
                   color={user.status === 'active' ? 'primary' : 'error'}
                   size="small"
                 />
-                {!user.isAdmin && (
+                {user.isAdmin && (
                   <Chip
                     label="Admin"
                     color="primary"
