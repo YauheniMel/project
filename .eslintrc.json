@@ -17,7 +17,7 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
-    "no-debugger": "off",
+    "no-": "off",
     "react/require-default-props": "off",
     "default-param-last": "off",
     "react/jsx-no-bind": "off",
@@ -25,6 +25,7 @@
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "warn",
+    "max-len": ["error", { "code": 100 }],
     "no-shadow": "off",
     "no-nested-ternary": "off",
     "no-param-reassign": "off",

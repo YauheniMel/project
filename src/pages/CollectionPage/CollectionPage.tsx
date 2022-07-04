@@ -44,6 +44,7 @@ interface ICollectionPage {
   likes: { itemId: number }[] | null;
   searchMatchTags: (tag: string) => void;
   matchTags: any;
+  getCollectionItems: (collectionId: number) => void;
 }
 
 const CollectionPage: FC<ICollectionPage> = ({
@@ -69,6 +70,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   likes,
   searchMatchTags,
   matchTags,
+  getCollectionItems,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
@@ -171,8 +173,9 @@ const CollectionPage: FC<ICollectionPage> = ({
           {description && (
             <MDEditor.Markdown source={description.replace(/&&#&&/gim, '\n')} />
           )}
-          {list && (
+          {list && customFields && (
             <Table
+              collectionId={id}
               list={list}
               setTargetItem={setTargetItem}
               setEditItems={setEditItems}
@@ -180,6 +183,8 @@ const CollectionPage: FC<ICollectionPage> = ({
               toogleLike={toogleLike}
               userId={userId}
               likes={likes}
+              getCollectionItems={getCollectionItems}
+              customFields={customFields}
             />
           )}
         </Grid>
