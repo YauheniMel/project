@@ -176,8 +176,6 @@ export const filterStartsWithThunk = (id: number, col: string, str: string) => (
 
 export const filterEqualsThunk = (id: number, column: string, str: string) => (dispatch: any) => {
   requestAPI.filterEqualsThunk(id, column, str).then((response) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     dispatch(updateListItemsAction(response));
   });
 };

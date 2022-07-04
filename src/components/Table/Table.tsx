@@ -4,12 +4,8 @@ import {
   DataGrid,
   GridColDef,
   gridClasses,
-  getGridNumericOperators,
   getGridDateOperators,
   getGridStringOperators,
-  GridFilterOperator,
-  GridCellParams,
-  GridFilterItem,
 } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -31,7 +27,6 @@ import RoutesApp from '../../constants/routes';
 import {
   compareCountLikesComparator,
   compareCountTagsComparator,
-  inputNumberValue,
   operatorContains,
   operatorIs,
   operatorBefore,
@@ -42,24 +37,6 @@ import {
   operatorIsNotEmpty,
   operatorStartsWith,
 } from '../../filters/filters';
-
-const operatorEqualsNumber: GridFilterOperator = {
-  label: '=',
-  value: '=',
-  getApplyFilterFn: (filterItem: GridFilterItem) => {
-    if (
-      !filterItem.columnField
-      || !filterItem.value
-      || !filterItem.operatorValue
-    ) {
-      return null;
-    }
-
-    return (params: GridCellParams): boolean => Number(params.value) >= Number(filterItem.value);
-  },
-  InputComponent: inputNumberValue,
-  InputComponentProps: { type: 'number' },
-};
 
 interface ITable {
   collectionId: number;
@@ -188,13 +165,7 @@ const Table: FC<ITable> = ({
       width: 100,
       sortComparator: compareCountLikesComparator,
       renderCell: (params) => params.row.likes && params.row.likes.length,
-      filterOperators: getGridNumericOperators()
-        .filter(
-          (operator) => operator.value === '>'
-            || operator.value === '<'
-            || operator.value === '=',
-        )
-        .map(() => operatorEqualsNumber),
+      filterable: false,
     },
     {
       field: 'textValue1',
@@ -433,6 +404,7 @@ const Table: FC<ITable> = ({
       headerName: 'Actions',
       sortable: false,
       width: 150,
+      filterable: false,
       renderCell: (params) => (
         <>
           <IconButton onClick={() => setEditItems([params.row.id])}>
