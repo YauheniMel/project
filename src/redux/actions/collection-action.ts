@@ -13,6 +13,7 @@ export enum CollectionActionTypes {
   PullOutItem = 'PULL-OUT-ITEM',
   AddNewItem = 'ADD-NEW-ITEM',
   AddMatchTags = 'ADD-MATCH-TAGS',
+  UpdateListItems = 'UPDATE-LIST-ITEMS',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -150,4 +151,59 @@ export const searchMatchTagsThunk = (tag: string) => (dispatch: any) => {
   requestAPI
     .searchMatchTag(tag)
     .then((response) => dispatch(addMatchTagsAction(response)));
+};
+
+// table filters
+const updateListItemsAction = (items: ItemType[]) => ({
+  type: CollectionActionTypes.UpdateListItems,
+  items,
+});
+
+export const filterContainsThunk = (id: number, column: string, str: string) => (dispatch: any) => {
+  requestAPI.filterContains(id, column, str).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
+};
+
+export const filterStartsWithThunk = (id: number, col: string, str: string) => (dispatch: any) => {
+  requestAPI.filterStartsWithThunk(id, col, str).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
+};
+
+export const filterEqualsThunk = (id: number, column: string, str: string) => (dispatch: any) => {
+  requestAPI.filterEqualsThunk(id, column, str).then((response) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    dispatch(updateListItemsAction(response));
+  });
+};
+
+export const filterIsEmptyThunk = (collectionId: number, column: string) => (dispatch: any) => {
+  requestAPI.filterIsEmpty(collectionId, column).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
+};
+
+export const filterIsNotEmptyThunk = (collectionId: number, column: string) => (dispatch: any) => {
+  requestAPI.filterIsNotEmpty(collectionId, column).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
+};
+
+export const filterExistTagThunk = (collectionId: number, str: string) => (dispatch: any) => {
+  requestAPI.filterExistTag(collectionId, str).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
+};
+
+export const filterMoreThanThunk = (id: number, column: string, str: string) => (dispatch: any) => {
+  requestAPI.filterMoreThan(id, column, str).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
+};
+export const filterLessThanThunk = (id: number, column: string, str: string) => (dispatch: any) => {
+  requestAPI.filterLessThan(id, column, str).then((response) => {
+    dispatch(updateListItemsAction(response));
+  });
 };

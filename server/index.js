@@ -6,6 +6,7 @@ const routerCollection = require('./endpoints/collection');
 const routerItem = require('./endpoints/item');
 const routerUser = require('./endpoints/user');
 const routerTag = require('./endpoints/tag');
+const routerFilters = require('./endpoints/filters');
 const connection = require('./services/mySQL');
 const sqlz = require('./services/sequelize');
 
@@ -30,6 +31,7 @@ app.use(routerUser);
 app.use(routerCollection);
 app.use(routerItem);
 app.use(routerTag);
+app.use(routerFilters);
 
 app.use(express.static(`${__dirname}./../build`));
 app.use(express.static(`${__dirname}./../build/static/js`));

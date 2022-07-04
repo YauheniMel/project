@@ -40,7 +40,7 @@ const HomePage: FC<IHomePage> = ({
   searchItemsByTag,
 }) => {
   const classes = useStyles();
-
+  console.log(likes);
   return (
     <Box className={classes.item}>
       <CarouselComponent collections={collections} />

@@ -39,9 +39,110 @@ export const API = {
   SearchMatchTag: `${baseUrl}/api/searchMatchTag`,
   GetAllTags: `${baseUrl}/api/getAllTags`,
   SearchItemsByTag: `${baseUrl}/api/searchItemsByTag`,
+  FilterContains: `${baseUrl}/api/filterContains`,
+  FilterStartsWithThunk: `${baseUrl}/api/filterStartsWith`,
+  FilterEqualsThunk: `${baseUrl}/api/filterEqualsThunk`,
+  FilterExistTag: `${baseUrl}/api/filterExistTag`,
+  FilterIsEmpty: `${baseUrl}/api/filterIsEmpty`,
+  FilterIsNotEmpty: `${baseUrl}/api/filterIsNotEmpty`,
+  FilterMoreThan: `${baseUrl}/api/filterMoreThan`,
+  FilterLessThan: `${baseUrl}/api/filterLessThan`,
 };
 
 export const requestAPI = {
+  filterContains(collectionId: number, column: string, str: string) {
+    return axios
+      .get(API.FilterContains, {
+        params: {
+          column,
+          str,
+          collectionId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterMoreThan(collectionId: number, column: string, num: string) {
+    return axios
+      .get(API.FilterMoreThan, {
+        params: {
+          column,
+          num,
+          collectionId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterLessThan(collectionId: number, column: string, num: string) {
+    return axios
+      .get(API.FilterLessThan, {
+        params: {
+          column,
+          num,
+          collectionId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterExistTag(collectionId: number, str: string) {
+    return axios
+      .get(API.FilterExistTag, {
+        params: {
+          str,
+          collectionId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterIsEmpty(collectionId: number, column: string) {
+    return axios
+      .get(API.FilterIsEmpty, {
+        params: {
+          collectionId,
+          column,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterIsNotEmpty(collectionId: number, column: string) {
+    return axios
+      .get(API.FilterIsNotEmpty, {
+        params: {
+          collectionId,
+          column,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterStartsWithThunk(collectionId: number, column: string, str: string) {
+    return axios
+      .get(API.FilterStartsWithThunk, {
+        params: {
+          column,
+          str,
+          collectionId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  filterEqualsThunk(collectionId: number, column: string, str: string) {
+    return axios
+      .get(API.FilterEqualsThunk, {
+        params: {
+          column,
+          str,
+          collectionId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
   signUpUser(credentials: CredentialsType) {
     return axios
       .post(API.SignUpUser, credentials)

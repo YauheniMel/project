@@ -98,8 +98,6 @@ const ItemForm: FC<IItemForm> = ({
     onSubmit: (values, { resetForm }) => {
       if (!tags.length) return;
 
-      // addTags(tags);
-
       createNewItem({
         collectionId,
         icon: image,

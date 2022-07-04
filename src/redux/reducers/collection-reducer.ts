@@ -99,6 +99,12 @@ function collectionReducer(state = initState, action: AnyAction) {
         list: [...state.list!.filter((item) => item.id !== action.itemId)],
       };
     }
+    case CollectionActionTypes.UpdateListItems: {
+      return {
+        ...state,
+        list: [...action.items],
+      };
+    }
     case CollectionActionTypes.UpdateEditListItems: {
       const listEditItems = state.list?.filter((item) => {
         let isItemExist = false;
