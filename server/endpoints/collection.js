@@ -108,7 +108,7 @@ router.get('/api/getUserCollections/', (req, res) => {
 
   sqlz.Collection.findAll({
     where: {
-      userId,
+      id: userId,
     },
     limit: 2 * page,
   })

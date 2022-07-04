@@ -237,17 +237,21 @@ const Tag = sequelize.define('tag', {
     primaryKey: true,
   },
 });
-User.hasMany(Collection, { onDelete: 'cascade' });
-Collection.hasMany(Item, { onDelete: 'cascade' });
-Item.hasMany(Like, { onDelete: 'cascade' });
-User.hasMany(Like, { onDelete: 'cascade' });
+User.hasMany(Collection, { onDelete: 'cascade', hooks: true });
+Collection.hasMany(Item, { onDelete: 'cascade', hooks: true });
+Item.hasMany(Like, { onDelete: 'cascade', hooks: true });
+User.hasMany(Like, { onDelete: 'cascade', hooks: true });
 Item.belongsToMany(Tag, {
   through: 'item_tag',
   as: 'tags',
+  onDelete: 'cascade',
+  hooks: true,
 });
 Tag.belongsToMany(Item, {
   through: 'item_tag',
   as: 'items',
+  onDelete: 'cascade',
+  hooks: true,
 });
 
 const sqlz = {

@@ -1,13 +1,38 @@
 import { requestAPI } from '../../api/api';
+import { UserType } from '../../types';
 
 export enum AdminActionTypes {
   setTargetUser = 'SET-TARGET-USER',
   setTargetCollections = 'SET-TARGET-COLLECTIONS',
+  setAllUsers = 'SET-ALL-USERS',
+  setUserBlock = 'SET-USER-BLOCK',
+  setUserUnblock = 'SET-USER-UNBLOCK',
+  deleteUser = 'DELETE-USER',
 }
 
 export const setTargetUser = (user: any) => ({
   type: AdminActionTypes.setTargetUser,
   user,
+});
+
+export const setAllUsers = (users: UserType[]) => ({
+  type: AdminActionTypes.setAllUsers,
+  users,
+});
+
+export const setUserBlock = (userId: number) => ({
+  type: AdminActionTypes.setUserBlock,
+  userId,
+});
+
+export const setUserUnblock = (userId: number) => ({
+  type: AdminActionTypes.setUserUnblock,
+  userId,
+});
+
+export const deleteUser = (userId: number) => ({
+  type: AdminActionTypes.deleteUser,
+  userId,
 });
 
 export const setTargetUserCollectons = (collections: any) => ({
@@ -16,13 +41,29 @@ export const setTargetUserCollectons = (collections: any) => ({
 });
 
 export const getTargetUserCollectionsThunk = (userId: number, page = 1) => (dispatch: any) => {
-  requestAPI
-    .getUserCollections(userId, page)
-    .then((response) => dispatch(setTargetUserCollectons(response)));
+  requestAPI.getUserCollections(userId, page).then((response) => {
+    dispatch(setTargetUserCollectons(response));
+  });
 };
 
 export const getTargetUserThunk = (userId: number) => (dispatch: any) => {
-  requestAPI
-    .getTargetUser(userId)
-    .then((response) => dispatch(setTargetUser(response)));
+  requestAPI.getTargetUser(userId).then((response) => {
+    dispatch(setTargetUser(response));
+  });
+};
+
+export const getAllUsersThunk = () => (dispatch: any) => {
+  requestAPI.getAllUsers().then((response) => dispatch(setAllUsers(response)));
+};
+
+export const blockUserThunk = (userId: number) => (dispatch: any) => {
+  requestAPI.blockUser(userId).then(() => dispatch(setUserBlock(userId)));
+};
+
+export const unblockUserThunk = (userId: number) => (dispatch: any) => {
+  requestAPI.blockUser(userId).then(() => dispatch(setUserUnblock(userId)));
+};
+
+export const deleteUserThunk = (userId: number) => (dispatch: any) => {
+  requestAPI.deleteUser(userId).then(() => dispatch(setUserUnblock(userId)));
 };
