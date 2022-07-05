@@ -72,7 +72,7 @@ router.get('/api/getLastAddItems', (req, res) => {
       {
         model: sqlz.Tag,
         as: 'tags',
-        attributes: ['content'],
+        attributes: ['content', 'createdAt'],
       },
     ],
     order: [['createdAt', 'DESC']],
