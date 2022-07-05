@@ -53,9 +53,27 @@ export const API = {
   DeleteUser: `${baseUrl}/api/deleteUser`,
   SetIsAdmin: `${baseUrl}/api/setIsAdmin`,
   SetIsNotAdmin: `${baseUrl}/api/setIsNotAdmin`,
+  GetAllComments: `${baseUrl}/api/getAllComments`,
+  LeaveComment: `${baseUrl}/api/leaveComment`,
 };
 
 export const requestAPI = {
+  leaveComment(content: string, userId: number, itemId: number) {
+    return axios
+      .post(API.LeaveComment, { content, userId, itemId })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  getAllComments(itemId: number) {
+    return axios
+      .get(API.GetAllComments, {
+        params: {
+          itemId,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
   filterContains(collectionId: number, column: string, str: string) {
     return axios
       .get(API.FilterContains, {

@@ -237,15 +237,34 @@ const Tag = sequelize.define('tag', {
     primaryKey: true,
   },
 });
+const Comment = sequelize.define('comment', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+  },
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  theme: {
+    type: DataTypes.ENUM('touched', 'untouched'),
+    defaultValue: 'untouched',
+  },
+});
 User.hasMany(Collection, { onDelete: 'cascade', hooks: true });
 Collection.belongsTo(User, { onDelete: 'cascade', hooks: true });
 
 Collection.hasMany(Item, { onDelete: 'cascade', hooks: true });
 Item.belongsTo(Collection, { onDelete: 'cascade', hooks: true });
 
-Item.hasMany(Like, { onDelete: 'cascade', hooks: true });
-
 User.hasMany(Like, { onDelete: 'cascade', hooks: true });
+Item.hasMany(Like, { onDelete: 'cascade', hooks: true });
+Like.belongsTo(User, { onDelete: 'cascade', hooks: true });
+
+Item.hasMany(Comment, { onDelete: 'cascade', hooks: true });
+Comment.belongsTo(User, { onDelete: 'cascade', hooks: true });
 
 Item.belongsToMany(Tag, {
   through: 'item_tag',
@@ -266,6 +285,7 @@ const sqlz = {
   Item,
   Like,
   Tag,
+  Comment,
   sequelize,
 };
 

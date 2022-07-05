@@ -6,11 +6,13 @@ import { AppStateType } from '../../redux';
 import {
   createNewItemThunk,
   deleteItemThunk,
+  getAllCommentsThunk,
   getCollectionItemsThunk,
   getDeleteItemsThunk,
   getEditItemsThunk,
   getTargetCollectionThunk,
   getTargetItemThunk,
+  leaveCommentThunk,
   pullOutItemThunk,
   searchMatchTagsThunk,
   setDeleteItemsThunk,
@@ -18,6 +20,7 @@ import {
   setTargetItemAction,
   updateItemThunk,
 } from '../../redux/actions/collection-action';
+import { getIsAuth } from '../../redux/selectors/auth-selector';
 import {
   getAuthorIdSelector,
   getCollectionCreatedAtSelector,
@@ -45,6 +48,7 @@ interface ICollectionPageContainer {
   authorId: number;
   id: number;
   icon: any;
+  isAuth: boolean;
   description: string;
   theme: string;
   customFields: any;
@@ -69,6 +73,8 @@ interface ICollectionPageContainer {
   likes: { itemId: number }[] | null;
   searchMatchTags: (tag: string) => void;
   matchTags: any;
+  getAllComments: (itemId: number) => void;
+  leaveComment: (content: string, userId: number, itemId: number) => void;
 }
 
 const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
@@ -103,10 +109,12 @@ const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
           <ItemPage
             getTargetItem={props.getTargetItem}
             targetItem={props.targetItem as ItemType}
-            deleteItem={props.deleteItem}
             toogleLike={props.toogleLike}
             userId={props.userId}
             likes={props.likes}
+            getAllComments={props.getAllComments}
+            leaveComment={props.leaveComment}
+            isAuth={props.isAuth}
           />
         )}
       />
@@ -129,6 +137,7 @@ const mapStateToProps = (state: AppStateType) => ({
   likes: getLikesSelector(state),
   matchTags: getMatchTagsSelector(state),
   authorId: getAuthorIdSelector(state),
+  isAuth: getIsAuth(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -166,6 +175,12 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   searchMatchTags: (tag: string) => {
     dispatch(searchMatchTagsThunk(tag));
+  },
+  getAllComments: (itemId: number) => {
+    dispatch(getAllCommentsThunk(itemId));
+  },
+  leaveComment: (content: string, userId: number, itemId: number) => {
+    dispatch(leaveCommentThunk(content, userId, itemId));
   },
 });
 

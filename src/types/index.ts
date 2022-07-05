@@ -4,16 +4,15 @@ export interface AuthType {
 }
 
 export interface CommentType {
+  content: string;
   user: {
-    id: number;
     name: string;
     surname: string;
+    id: number;
   };
-  createAt: string;
-  content: string;
-  state: 'touched' | 'untouched';
-  comments: null | CommentType[];
+  createdAt: string;
 }
+
 export interface ItemInitType {
   collectionId: number;
   title: string;

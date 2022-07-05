@@ -140,6 +140,15 @@ function collectionReducer(state = initState, action: AnyAction) {
         listEditItems: [...action.items],
       };
     }
+    case CollectionActionTypes.SetAllComments: {
+      return {
+        ...state,
+        targetItem: state.targetItem && {
+          ...state.targetItem,
+          comments: [...action.comments],
+        },
+      };
+    }
     case CollectionActionTypes.UpdateDeleteListItems: {
       const listDeleteItems = state.list?.filter((item) => {
         let isItemExist = false;

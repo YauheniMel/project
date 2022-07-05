@@ -1,5 +1,10 @@
 import { requestAPI } from '../../api/api';
-import { CollectionType, ItemInitType, ItemType } from '../../types';
+import {
+  CollectionType,
+  CommentType,
+  ItemInitType,
+  ItemType,
+} from '../../types';
 
 export enum CollectionActionTypes {
   SetTargetItem = 'SET-TARGET-ITEM',
@@ -14,6 +19,7 @@ export enum CollectionActionTypes {
   AddNewItem = 'ADD-NEW-ITEM',
   AddMatchTags = 'ADD-MATCH-TAGS',
   UpdateListItems = 'UPDATE-LIST-ITEMS',
+  SetAllComments = 'SET-ALL-COMMENTS',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -69,6 +75,11 @@ export const updateDeleteListItemsAction = (itemIds: number[]) => ({
 export const setDeleteListItemsAction = (items: ItemType[]) => ({
   type: CollectionActionTypes.SetDeleteListItems,
   items,
+});
+
+export const setAllCommentsAction = (comments: CommentType[]) => ({
+  type: CollectionActionTypes.SetAllComments,
+  comments,
 });
 
 export const getCollectionItemsThunk = (collectionId: number) => (dispatch: any) => {
@@ -156,6 +167,18 @@ export const searchMatchTagsThunk = (tag: string) => (dispatch: any) => {
     .then((response) => dispatch(addMatchTagsAction(response)));
 };
 
+export const getAllCommentsThunk = (itemId: number) => (dispatch: any) => {
+  requestAPI.getAllComments(itemId).then((response) => {
+    dispatch(setAllCommentsAction(response));
+  });
+};
+
+export const leaveCommentThunk = (str: string, id: number, itemId: number) => (dispatch: any) => {
+  requestAPI.leaveComment(str, id, itemId).then(() => {
+    dispatch(getAllCommentsThunk(itemId));
+  });
+};
+
 // table filters
 const updateListItemsAction = (items: ItemType[]) => ({
   type: CollectionActionTypes.UpdateListItems,
@@ -203,6 +226,7 @@ export const filterMoreThanThunk = (id: number, column: string, str: string) => 
     dispatch(updateListItemsAction(response));
   });
 };
+
 export const filterLessThanThunk = (id: number, column: string, str: string) => (dispatch: any) => {
   requestAPI.filterLessThan(id, column, str).then((response) => {
     dispatch(updateListItemsAction(response));
