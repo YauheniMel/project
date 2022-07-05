@@ -55,9 +55,23 @@ export const API = {
   SetIsNotAdmin: `${baseUrl}/api/setIsNotAdmin`,
   GetAllComments: `${baseUrl}/api/getAllComments`,
   LeaveComment: `${baseUrl}/api/leaveComment`,
+  SetCommentsTouched: `${baseUrl}/api/setCommentsTouched`,
+  GetAllUntouchedComments: `${baseUrl}/api/getAllUntouchedComments`,
 };
 
 export const requestAPI = {
+  getAllUntouchedComments(userId: number) {
+    return axios
+      .get(API.GetAllUntouchedComments, { params: { userId } })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
+  setCommentsTouched(itemId: number) {
+    return axios
+      .put(API.SetCommentsTouched, { itemId })
+      .then((response) => response.data)
+      .catch((error) => console.log(error.message));
+  },
   leaveComment(content: string, userId: number, itemId: number) {
     return axios
       .post(API.LeaveComment, { content, userId, itemId })

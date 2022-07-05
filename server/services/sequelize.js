@@ -248,7 +248,7 @@ const Comment = sequelize.define('comment', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  theme: {
+  status: {
     type: DataTypes.ENUM('touched', 'untouched'),
     defaultValue: 'untouched',
   },

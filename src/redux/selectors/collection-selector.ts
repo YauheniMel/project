@@ -56,3 +56,7 @@ export function getMatchTagsSelector(state: AppStateType) {
 export function getAuthorIdSelector(state: AppStateType) {
   return state.collection.userId;
 }
+
+export function getUntouchedComments(state: AppStateType) {
+  return state.collection.untouchedComments;
+}

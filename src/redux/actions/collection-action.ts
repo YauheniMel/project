@@ -20,6 +20,8 @@ export enum CollectionActionTypes {
   AddMatchTags = 'ADD-MATCH-TAGS',
   UpdateListItems = 'UPDATE-LIST-ITEMS',
   SetAllComments = 'SET-ALL-COMMENTS',
+  SetUntouchedComments = 'SET-UNTOUCHED-COMMENTS',
+  SetCommentsTouched = 'SET-COMMENTS-TOUCHED',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -80,6 +82,16 @@ export const setDeleteListItemsAction = (items: ItemType[]) => ({
 export const setAllCommentsAction = (comments: CommentType[]) => ({
   type: CollectionActionTypes.SetAllComments,
   comments,
+});
+
+export const setUntouchedCommentsAction = (comments: CommentType[]) => ({
+  type: CollectionActionTypes.SetUntouchedComments,
+  comments,
+});
+
+export const setCommentsTouchedAction = (itemId: number) => ({
+  type: CollectionActionTypes.SetCommentsTouched,
+  itemId,
 });
 
 export const getCollectionItemsThunk = (collectionId: number) => (dispatch: any) => {
@@ -176,6 +188,18 @@ export const getAllCommentsThunk = (itemId: number) => (dispatch: any) => {
 export const leaveCommentThunk = (str: string, id: number, itemId: number) => (dispatch: any) => {
   requestAPI.leaveComment(str, id, itemId).then(() => {
     dispatch(getAllCommentsThunk(itemId));
+  });
+};
+
+export const getUntouchedCommentsThunk = (userId: number) => (dispatch: any) => {
+  requestAPI.getAllUntouchedComments(userId).then((response) => {
+    dispatch(setUntouchedCommentsAction(response));
+  });
+};
+
+export const setCommentsTouchedThunk = (itemId: number) => (dispatch: any) => {
+  requestAPI.setCommentsTouched(itemId).then((response) => {
+    dispatch(setCommentsTouchedAction(response));
   });
 };
 

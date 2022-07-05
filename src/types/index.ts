@@ -10,7 +10,16 @@ export interface CommentType {
     surname: string;
     id: number;
   };
+  status: 'touched' | 'untouched';
   createdAt: string;
+}
+
+export interface UntouchedCommentType {
+  comments: CommentType[];
+  icon: null | string;
+  title: string;
+  collectionId: string;
+  itemId: string;
 }
 
 export interface ItemInitType {
@@ -108,6 +117,7 @@ export interface CollectionType {
   listDeleteItems: Array<ItemType | null>;
   userId: number | null;
   matchTags: any;
+  untouchedComments: null | UntouchedCommentType[];
 }
 
 export interface CollectionsPageType {

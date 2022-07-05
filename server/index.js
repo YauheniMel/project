@@ -57,7 +57,7 @@ router.get('/api/getAllComments/', (req, res) => {
   const { itemId } = req.query;
 
   sqlz.Comment.findAll({
-    attributes: ['content', 'createdAt'],
+    attributes: ['content', 'createdAt', 'status'],
     where: {
       itemId,
     },
@@ -68,6 +68,71 @@ router.get('/api/getAllComments/', (req, res) => {
       },
     ],
   })
+    .then((result) => res.status(200).send(result))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.get('/api/getAllUntouchedComments/', (req, res) => {
+  const { userId } = req.query;
+
+  sqlz.Collection.findAll({
+    where: {
+      userId,
+    },
+    include: [
+      {
+        model: sqlz.Item,
+        include: [
+          {
+            model: sqlz.Comment,
+            attributes: ['content', 'createdAt'],
+            where: {
+              status: 'untouched',
+            },
+            include: [
+              {
+                model: sqlz.User,
+                attributes: ['name', 'surname'],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  })
+    .then((result) => {
+      const untoucnhedComments = [];
+      result.forEach((collection) => {
+        let icon = '';
+        collection.items.forEach((item) => {
+          if (item.icon) {
+            icon = Buffer.from(item.icon).toString('base64');
+          }
+
+          untoucnhedComments.push({
+            icon,
+            title: item.title,
+            collectionId: item.collectionId,
+            comments: item.comments,
+            itemId: item.id,
+          });
+        });
+      });
+      res.status(200).send(untoucnhedComments);
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.put('/api/setCommentsTouched/', (req, res) => {
+  const { itemId } = req.body;
+
+  sqlz.Comment.update({ status: 'touched' }, { where: { itemId } })
     .then((result) => res.status(200).send(result))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -94,8 +159,6 @@ router.post('/api/leaveComment/', (req, res) => {
           .then((collection) => {
             io.to('update').emit('comment', {
               userId: collection.userId,
-              collectionId: collection.collectionId,
-              itemId,
             });
             return res.status(200).send('The message was sent!');
           });

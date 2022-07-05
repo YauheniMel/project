@@ -51,6 +51,7 @@ const initState: CollectionType = {
   listDeleteItems: [],
   userId: null,
   matchTags: null,
+  untouchedComments: null,
 };
 
 function collectionReducer(state = initState, action: AnyAction) {
@@ -138,6 +139,12 @@ function collectionReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         listEditItems: [...action.items],
+      };
+    }
+    case CollectionActionTypes.SetUntouchedComments: {
+      return {
+        ...state,
+        untouchedComments: [...action.comments],
       };
     }
     case CollectionActionTypes.SetAllComments: {
