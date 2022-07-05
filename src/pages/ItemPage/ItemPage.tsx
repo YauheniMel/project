@@ -22,6 +22,7 @@ interface IItemPage {
   likes: { itemId: number }[] | null;
   getAllComments: (itemId: number) => void;
   leaveComment: (content: string, userId: number, itemId: number) => void;
+  setCommentsTouched: (itemId: number) => void;
 }
 
 const ItemPage: FC<IItemPage> = ({
@@ -33,6 +34,7 @@ const ItemPage: FC<IItemPage> = ({
   isAuth,
   getAllComments,
   leaveComment,
+  setCommentsTouched,
 }) => {
   const [value, setValue] = useState<string>('');
 
@@ -92,7 +94,10 @@ const ItemPage: FC<IItemPage> = ({
           <Typography variant="h2">Comments</Typography>
           <Button
             onClick={() => {
-              if (itemId) getAllComments(+itemId);
+              if (itemId) {
+                getAllComments(+itemId);
+                setCommentsTouched(+itemId);
+              }
             }}
           >
             Show comments
@@ -120,7 +125,14 @@ const ItemPage: FC<IItemPage> = ({
           <hr />
           {targetItem.comments
             && targetItem.comments.map((comment) => (
-              <Box sx={{ position: 'relative' }} key={comment.createdAt}>
+              <Box
+                sx={{
+                  position: 'relative',
+                  backgroundColor:
+                    comment.status === 'untouched' ? 'gray' : 'none',
+                }}
+                key={comment.createdAt}
+              >
                 <Typography
                   sx={{
                     position: 'absolute',

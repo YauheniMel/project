@@ -15,6 +15,7 @@ import {
   leaveCommentThunk,
   pullOutItemThunk,
   searchMatchTagsThunk,
+  setCommentsTouchedThunk,
   setDeleteItemsThunk,
   setEditItemsThunk,
   setTargetItemAction,
@@ -75,6 +76,7 @@ interface ICollectionPageContainer {
   matchTags: any;
   getAllComments: (itemId: number) => void;
   leaveComment: (content: string, userId: number, itemId: number) => void;
+  setCommentsTouched: (itemId: number) => void;
 }
 
 const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
@@ -115,6 +117,7 @@ const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
             getAllComments={props.getAllComments}
             leaveComment={props.leaveComment}
             isAuth={props.isAuth}
+            setCommentsTouched={props.setCommentsTouched}
           />
         )}
       />
@@ -181,6 +184,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   leaveComment: (content: string, userId: number, itemId: number) => {
     dispatch(leaveCommentThunk(content, userId, itemId));
+  },
+  setCommentsTouched: (itemId: number) => {
+    dispatch(setCommentsTouchedThunk(itemId));
   },
 });
 

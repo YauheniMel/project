@@ -1,10 +1,27 @@
-import React, { FC } from 'react';
-import { AppBar, Box, Toolbar } from '@mui/material';
+import React, { FC, useState } from 'react';
+import {
+  AppBar,
+  Avatar,
+  Badge,
+  Box,
+  ClickAwayListener,
+  Grow,
+  IconButton,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+  Toolbar,
+  Typography,
+  Link,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import InsertCommentSharpIcon from '@mui/icons-material/InsertCommentSharp';
 import Logo from '../Logo/Logo';
 import RoutesApp from '../../constants/routes';
 import InputSearch from '../InputSearch/InputSearch';
+import { UntouchedCommentType } from '../../types';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: 'sticky',
@@ -14,6 +31,10 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   paddingRight: '60px',
 }));
+
+const StyledPaper = styled(Paper)({
+  borderRadius: 0,
+});
 
 interface IHeader {
   name: string;
@@ -39,47 +60,127 @@ interface IHeader {
   | undefined;
   clearSearchData: () => void;
   setSearchList: () => void;
+  untouchedComments: UntouchedCommentType[] | null;
 }
 
 const Header: FC<IHeader> = ({
-  name, surname, isAuth, isAdmin, ...rest
-}) => (
-  <StyledAppBar>
-    <Toolbar
-      sx={{
-        justifyContent: 'space-around',
-        columnGap: '15px',
-      }}
-    >
-      {isAuth && name ? (
-        <Logo name={name} isAdmin={isAdmin} surname={surname} />
-      ) : (
-        <Link to={RoutesApp.Login}>Login</Link>
-      )}
-      <InputSearch {...rest} />
-      {/* <Box>
-        <IconButton
-          size="large"
-          aria-label="show 4 new mails"
-          color="inherit"
-        >
-          <Badge badgeContent={4} color="error">
-            <CommentIcon />
-          </Badge>
-        </IconButton>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-      </Box> */}
-      <Box sx={{ flexGrow: '40px' }} />
-    </Toolbar>
-  </StyledAppBar>
-);
+  name,
+  surname,
+  isAuth,
+  isAdmin,
+  untouchedComments,
+  ...rest
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
+
+  const { CollectionLink, ItemLink } = RoutesApp;
+
+  function getCountUntouchedComments(data: UntouchedCommentType[]) {
+    let count = 0;
+
+    data.forEach((info) => {
+      count += info.comments.length;
+    });
+
+    return count;
+  }
+
+  return (
+    <StyledAppBar>
+      <Toolbar
+        sx={{
+          justifyContent: 'space-around',
+          columnGap: '15px',
+        }}
+      >
+        {isAuth && name ? (
+          <Logo name={name} isAdmin={isAdmin} surname={surname} />
+        ) : (
+          <Link component={RouterLink} to={RoutesApp.Login}>
+            Login
+          </Link>
+        )}
+        <InputSearch {...rest} />
+        {!!untouchedComments?.length && (
+          <>
+            <IconButton
+              size="large"
+              onClick={() => setOpen(true)}
+              ref={anchorRef}
+            >
+              <Badge
+                badgeContent={getCountUntouchedComments(untouchedComments)}
+                color="error"
+              >
+                <InsertCommentSharpIcon />
+              </Badge>
+            </IconButton>
+            <Popper
+              open={open}
+              placement="bottom-start"
+              transition
+              disablePortal
+              anchorEl={anchorRef.current}
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom-start' ? 'left top' : 'left bottom',
+                  }}
+                >
+                  <StyledPaper>
+                    <ClickAwayListener onClickAway={() => setOpen(false)}>
+                      <MenuList
+                        sx={{ p: 0 }}
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
+                      >
+                        {untouchedComments.map((info) => (
+                          <MenuItem
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              columnGap: '10px',
+                              height: '50px',
+                            }}
+                          >
+                            <Link
+                              component={RouterLink}
+                              to={`${CollectionLink}${info.collectionId}${ItemLink}${info.itemId}`}
+                            >
+                              <Typography variant="body2">
+                                {info.icon && (
+                                  <Avatar
+                                    alt={info.title}
+                                    src={`data:application/pdf;base64,${info.icon}`}
+                                  />
+                                )}
+                                {info.title}
+                                {' '}
+                              </Typography>
+                              <Typography variant="subtitle2">
+                                comments...
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </StyledPaper>
+                </Grow>
+              )}
+            </Popper>
+          </>
+        )}
+        <Box sx={{ flexGrow: '40px' }} />
+      </Toolbar>
+    </StyledAppBar>
+  );
+};
 
 export default Header;

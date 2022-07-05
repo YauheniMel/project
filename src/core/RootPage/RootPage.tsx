@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
@@ -24,6 +24,9 @@ import {
   searchThunk,
   setSearchListAction,
 } from '../../redux/actions/search-action';
+import { getUntouchedCommentsThunk } from '../../redux/actions/collection-action';
+import { UntouchedCommentType } from '../../types';
+import { getUntouchedComments } from '../../redux/selectors/collection-selector';
 
 interface IRootPage {
   id: string;
@@ -38,6 +41,8 @@ interface IRootPage {
   usersSearch: any;
   clearSearchData: () => void;
   setSearchList: () => void;
+  untouchedComments: UntouchedCommentType[] | null;
+  getUntouchedComments: (userId: number) => void;
 }
 
 const RootPage: FC<IRootPage> = ({
@@ -46,30 +51,24 @@ const RootPage: FC<IRootPage> = ({
   itemsSearch,
   usersSearch,
   userId,
+  getUntouchedComments,
   ...rest
 }) => {
-  const [comment, setComment] = useState<
-  Array<{ collectionId: number; itemId: string }>
-  >([]);
   const socket = io('http://localhost:5000');
 
   useEffect(() => {
+    if (userId) {
+      getUntouchedComments(userId);
+    }
     socket.on('comment', (res: any) => {
       if (userId === res.userId) {
-        setComment((prev) => [
-          ...prev.filter((commentInfo) => commentInfo.itemId !== res.itemId),
-          {
-            collectionId: res.collectionId,
-            itemId: res.itemId,
-          },
-        ]);
+        getUntouchedComments(userId);
       }
     });
   }, [userId]);
 
   return (
     <>
-      <pre>{!!comment.length && JSON.stringify(comment, null, 2)}</pre>
       <Header
         {...rest}
         itemsSearch={itemsSearch?.map((item: any) => ({
@@ -97,6 +96,7 @@ const mapStateToProps = (state: AppStateType) => ({
   id: getUserIdFirebase(state),
   userId: getUserId(state),
   name: getUserName(state),
+  untouchedComments: getUntouchedComments(state),
   surname: getUserSurname(state),
   isAuth: getIsAuth(state),
   isAdmin: getUserIsAdmin(state),
@@ -109,6 +109,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   search: (substr: string) => dispatch(searchThunk(substr)),
   clearSearchData: () => dispatch(clearSearchDataAction()),
   setSearchList: () => dispatch(setSearchListAction()),
+  getUntouchedComments: (userId: number) => {
+    dispatch(getUntouchedCommentsThunk(userId));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootPage);
