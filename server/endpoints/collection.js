@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const { Op } = require('sequelize');
 const sharp = require('sharp');
-const sqlz = require('../services/sequelize');
+const models = require('../services/sequelize');
 
 const PAGE_SIZE = 2; // suppose that need 'findAndCountAll'
 
@@ -19,7 +19,7 @@ const upload = multer({
 const router = express.Router();
 
 router.get('/api/getBigCollections', (req, res) => {
-  sqlz.Collection.findAll({
+  models.Collection.findAll({
     limit: 5,
   })
     .then((response) => {
@@ -45,10 +45,10 @@ router.get('/api/getBigCollections', (req, res) => {
 router.get('/api/getCollection/', (req, res) => {
   const { collectionId } = req.query;
 
-  sqlz.Collection.findOne({
+  models.Collection.findOne({
     include: [
       {
-        model: sqlz.Item,
+        model: models.Item,
       },
     ],
     where: {
@@ -77,7 +77,7 @@ router.get('/api/getMyCollections/', (req, res) => {
 
   const limit = PAGE_SIZE * page;
 
-  sqlz.Collection.findAll({
+  models.Collection.findAll({
     where: {
       userId,
     },
@@ -109,7 +109,7 @@ router.get('/api/getUserCollections/', (req, res) => {
 
   const limit = PAGE_SIZE * page;
 
-  sqlz.Collection.findAll({
+  models.Collection.findAll({
     where: {
       id: userId,
     },
@@ -139,10 +139,10 @@ router.get('/api/getUserCollections/', (req, res) => {
 router.get('/api/getTargetCollections/', (req, res) => {
   const { userId, page } = req.query;
   const limit = PAGE_SIZE * page;
-  sqlz.User.findAll({
+  models.User.findAll({
     include: [
       {
-        model: sqlz.Collection,
+        model: models.Collection,
         limit,
       },
     ],
@@ -181,7 +181,7 @@ router.get('/api/getTargetCollections/', (req, res) => {
 router.put('/api/setEditCollection/', (req, res) => {
   const { collectionId } = req.body;
 
-  sqlz.Collection.update(
+  models.Collection.update(
     { isEdit: true, isDelete: false },
     { where: { id: +collectionId } },
   )
@@ -197,7 +197,7 @@ router.put('/api/setEditCollection/', (req, res) => {
 router.delete('/api/deleteCollection/', (req, res) => {
   const { id } = req.query;
 
-  sqlz.Collection.destroy({
+  models.Collection.destroy({
     where: {
       id,
     },
@@ -212,7 +212,7 @@ router.delete('/api/deleteCollection/', (req, res) => {
 router.put('/api/pullOutCollection/', (req, res) => {
   const { collectionId } = req.body;
 
-  sqlz.Collection.update(
+  models.Collection.update(
     { isEdit: false, isDelete: false },
     { where: { id: +collectionId } },
   )
@@ -228,7 +228,7 @@ router.put('/api/pullOutCollection/', (req, res) => {
 router.put('/api/setDeleteCollection/', (req, res) => {
   const { collectionId } = req.body;
 
-  sqlz.Collection.update(
+  models.Collection.update(
     { isDelete: true, isEdit: false },
     { where: { id: collectionId } },
   )
@@ -267,7 +267,7 @@ router.put(
       dataForUpdate.icon = await sharp(req.file.path).resize(300).toBuffer();
     }
 
-    sqlz.Collection.update(
+    models.Collection.update(
       {
         id: collectionId,
         ...dataForUpdate,
@@ -288,7 +288,7 @@ router.put(
 router.get('/api/getEditCollections/', (req, res) => {
   const { userId } = req.query;
 
-  sqlz.Collection.findAll({ where: { isEdit: true, userId } })
+  models.Collection.findAll({ where: { isEdit: true, userId } })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -312,10 +312,10 @@ router.get('/api/getEditCollections/', (req, res) => {
 router.get('/api/getAllCollections/', (req, res) => {
   const { userId } = req.query;
 
-  sqlz.User.findAll({
+  models.User.findAll({
     include: [
       {
-        model: sqlz.Collection,
+        model: models.Collection,
         limit: 2,
       },
     ],
@@ -356,7 +356,7 @@ router.get('/api/getAllCollections/', (req, res) => {
 router.get('/api/getDeleteCollections/', (req, res) => {
   const { userId } = req.query;
 
-  sqlz.Collection.findAll({ where: { isDelete: true, userId } })
+  models.Collection.findAll({ where: { isDelete: true, userId } })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -429,7 +429,7 @@ router.post(
       ...prepareFields(checkboxKeys, 'checkboxKey'),
     };
 
-    sqlz.Collection.create({
+    models.Collection.create({
       icon: profilePicture,
       description,
       title,

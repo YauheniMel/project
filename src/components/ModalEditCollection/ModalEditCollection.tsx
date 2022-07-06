@@ -36,12 +36,19 @@ const useStyles = makeStyles((theme) => ({
     width: '60%',
     minWidth: '300px',
     height: '300px',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '50px',
-    padding: 0,
+    rowGap: '20px',
+    padding: '0 20px',
+    width: '100%',
+    flex: 1,
 
     '& > *': {
       display: 'flex',
@@ -63,17 +70,8 @@ interface IModalEditCollection {
   collectionsEdit: Array<CollectionType | null>;
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
+  collectionThemes: { id: number; value: string }[] | null;
 }
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  width: '100%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-};
 
 const ModalEditCollection: FC<IModalEditCollection> = ({
   openModal,
@@ -81,10 +79,13 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
   collectionsEdit,
   updateCollection,
   pullOutCollection,
+  collectionThemes,
 }) => {
   const [image, setImage] = useState<any>();
   const [description, setDescription] = useState<any>('');
   const [collectionId, setCollectionId] = useState<any>('');
+
+  console.log(collectionThemes);
 
   useEffect(() => {
     if (!collectionsEdit.length) setOpen(false);
@@ -165,191 +166,188 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
         <StuledButton onClick={() => setOpen(false)} variant="contained">
           <CloseIcon fontSize="large" />
         </StuledButton>
-        <FormikProvider value={formik}>
-          <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-            <Box sx={style}>
-              <List
-                sx={{
-                  bgcolor: 'background.paper',
-                  overflow: 'auto',
-                  paddingBottom: 0,
-                  width: '100%',
-                  height: '300px',
-                }}
-                subheader={<li />}
-              >
-                {collectionsEdit?.map(
-                  (collection) => collection && (
-                  <ListItem
-                    sx={{ display: 'flex', flexDirection: 'column', p: 0 }}
-                    key={collection.id}
+        <List
+          sx={{
+            bgcolor: 'background.paper',
+            overflow: 'auto',
+            paddingBottom: 0,
+            width: '100%',
+            height: {
+              sm: '100%',
+              '*': '300px',
+            },
+          }}
+          subheader={<li />}
+        >
+          <FormikProvider value={formik}>
+            <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
+              {collectionsEdit?.map(
+                (collection) => collection && (
+                <ListItem
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 0,
+                  }}
+                  key={collection.id}
+                >
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
+                    }}
                   >
-                    <ListSubheader
+                    <Typography variant="h4">{collection.title}</Typography>
+                    <Typography variant="subtitle1">
+                      Created:
+                      {' '}
+                      {moment(collection.createdAt).format('DD MMMM YYYY')}
+                    </Typography>
+                  </ListSubheader>
+                  <Box className={classes.listItem}>
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.theme}
+                      field="theme"
+                    />
+                    <Typography variant="body2">
+                      Created:
+                      {' '}
+                      {moment(collection.createdAt).format('DD MMMM YYYY')}
+                    </Typography>
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.icon}
+                      field="icon"
+                      image={image}
+                      setImage={setImage}
+                    />
+                    <Typography variant="body2">
+                      Updated:
+                      {' '}
+                      {moment(collection.updatedAt).format('DD MMMM YYYY')}
+                    </Typography>
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.checkboxKey1}
+                      field="checkboxKey1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.checkboxKey2}
+                      field="checkboxKey2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.checkboxKey3}
+                      field="checkboxKey3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.dateKey1}
+                      field="dateKey1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.dateKey2}
+                      field="dateKey2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.dateKey3}
+                      field="dateKey3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.multiLineKey1}
+                      field="multiLineKey1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.multiLineKey2}
+                      field="multiLineKey2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.multiLineKey3}
+                      field="multiLineKey3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.textKey1}
+                      field="textKey1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.textKey2}
+                      field="textKey2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.textKey3}
+                      field="textKey3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.numberKey1}
+                      field="numberKey1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.numberKey2}
+                      field="numberKey2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.numberKey3}
+                      field="numberKey3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={collection.description}
+                      field="description"
+                      setDescription={setDescription}
+                      description={description}
+                    />
+                  </Box>
+                  <Box className={classes.action}>
+                    <Button
                       sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        zIndex: '1000',
-                        width: '100%',
-                        bgcolor: 'background.paper',
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      onClick={() => {
+                        setCollectionId(collection.id);
+                        formik.handleSubmit();
+                      }}
+                      color="warning"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      onClick={() => {
+                        if (collection.id) {
+                          pullOutCollection(collection.id);
+                        }
                       }}
                     >
-                      <Typography variant="h4">
-                        {collection.title}
-                      </Typography>
-                      <Typography variant="subtitle1">
-                        Created:
-                        {' '}
-                        {moment(collection.createdAt).format(
-                          'DD MMMM YYYY',
-                        )}
-                      </Typography>
-                    </ListSubheader>
-                    <Box className={classes.listItem}>
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.theme}
-                        field="theme"
-                      />
-                      <Typography variant="body2">
-                        Created:
-                        {' '}
-                        {moment(collection.createdAt).format(
-                          'DD MMMM YYYY',
-                        )}
-                      </Typography>
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.icon}
-                        field="icon"
-                        image={image}
-                        setImage={setImage}
-                      />
-                      <Typography variant="body2">
-                        Updated:
-                        {' '}
-                        {moment(collection.updatedAt).format(
-                          'DD MMMM YYYY',
-                        )}
-                      </Typography>
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.checkboxKey1}
-                        field="checkboxKey1"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.checkboxKey2}
-                        field="checkboxKey2"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.checkboxKey3}
-                        field="checkboxKey3"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.dateKey1}
-                        field="dateKey1"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.dateKey2}
-                        field="dateKey2"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.dateKey3}
-                        field="dateKey3"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.multiLineKey1}
-                        field="multiLineKey1"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.multiLineKey2}
-                        field="multiLineKey2"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.multiLineKey3}
-                        field="multiLineKey3"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.textKey1}
-                        field="textKey1"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.textKey2}
-                        field="textKey2"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.textKey3}
-                        field="textKey3"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.numberKey1}
-                        field="numberKey1"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.numberKey2}
-                        field="numberKey2"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.numberKey3}
-                        field="numberKey3"
-                      />
-                      <UpdateFormField
-                        formik={formik}
-                        value={collection.description}
-                        field="description"
-                        setDescription={setDescription}
-                        description={description}
-                      />
-                    </Box>
-                    <Box className={classes.action}>
-                      <Button
-                        sx={{
-                          flex: 1,
-                          borderRadius: 0,
-                        }}
-                        onClick={() => {
-                          setCollectionId(collection.id);
-                          formik.handleSubmit();
-                        }}
-                        color="warning"
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        sx={{
-                          flex: 1,
-                          borderRadius: 0,
-                        }}
-                        onClick={() => {
-                          if (collection.id) {
-                            pullOutCollection(collection.id);
-                          }
-                        }}
-                      >
-                        Pull out
-                      </Button>
-                    </Box>
-                  </ListItem>
-                  ),
-                )}
-              </List>
-            </Box>
-          </form>
-        </FormikProvider>
+                      Pull out
+                    </Button>
+                  </Box>
+                </ListItem>
+                ),
+              )}
+            </form>
+          </FormikProvider>
+        </List>
       </Paper>
     </Backdrop>
   );

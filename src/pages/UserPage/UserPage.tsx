@@ -60,6 +60,8 @@ interface IUserPage {
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
   getMyCollections: (userId: number, page?: number) => void;
+  getCollectionThemes: () => void;
+  collectionThemes: { id: number; value: string }[] | null;
 }
 
 const UserPage: FC<IUserPage> = ({
@@ -77,6 +79,8 @@ const UserPage: FC<IUserPage> = ({
   updateCollection,
   pullOutCollection,
   getMyCollections,
+  getCollectionThemes,
+  collectionThemes,
   id,
 }) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
@@ -107,7 +111,7 @@ const UserPage: FC<IUserPage> = ({
   });
 
   console.log(theme, status, isAdmin);
-  console.log(canDrop);
+
   return (
     <>
       <CollectionForm
@@ -115,6 +119,7 @@ const UserPage: FC<IUserPage> = ({
         openForm={openForm}
         setOpenForm={setOpenForm}
         createNewCollection={createNewCollection}
+        collectionThemes={collectionThemes}
       />
       <ModalEditCollection
         openModal={openModalEdit}
@@ -122,6 +127,7 @@ const UserPage: FC<IUserPage> = ({
         collectionsEdit={collectionsEdit}
         updateCollection={updateCollection}
         pullOutCollection={pullOutCollection}
+        collectionThemes={collectionThemes}
       />
       <ModalDelete
         openModal={openModalDelete}
@@ -138,7 +144,11 @@ const UserPage: FC<IUserPage> = ({
         <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
           <Sidebar>
             <ListItemButton
-              onClick={() => setOpenForm(true)}
+              onClick={() => {
+                if (!collectionThemes) getCollectionThemes();
+
+                setOpenForm(true);
+              }}
               sx={{ width: '100%' }}
             >
               <ListItemIcon>
@@ -154,6 +164,8 @@ const UserPage: FC<IUserPage> = ({
               className={canDrop ? classes.activeEdit : ''}
               onClick={() => {
                 if (collectionsEdit.length === 0) return;
+                if (!collectionThemes) getCollectionThemes();
+
                 setOpenModalEdit(true);
               }}
               ref={dropEdit}

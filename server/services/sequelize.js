@@ -66,7 +66,7 @@ const Collection = sequelize.define('collection', {
     allowNull: false,
   },
   theme: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('books', 'movies', 'bands', 'memories', 'artworks'),
     allowNull: false,
   },
   isEdit: {
@@ -250,6 +250,26 @@ const Item = sequelize.define('item', {
     allowNull: true,
   },
 });
+
+const Theme = sequelize.define(
+  'theme',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
+    value: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+  },
+);
+
 const Like = sequelize.define('like', {
   id: {
     type: DataTypes.INTEGER,
@@ -307,7 +327,7 @@ Tag.belongsToMany(Item, {
   hooks: true,
 });
 
-const sqlz = {
+const models = {
   User,
   Collection,
   Item,
@@ -315,6 +335,7 @@ const sqlz = {
   Tag,
   Comment,
   sequelize,
+  Theme,
 };
 
-module.exports = sqlz;
+module.exports = models;

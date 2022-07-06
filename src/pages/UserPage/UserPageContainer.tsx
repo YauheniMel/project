@@ -7,6 +7,7 @@ import {
 } from '../../redux/actions/collection-action';
 import {
   createNewCollectionThunk,
+  getCollectionThemesThunk,
   getDeleteCollectionsThunk,
   getEditCollectionsThunk,
   getMyCollectionsThunk,
@@ -19,6 +20,7 @@ import {
   getDeleteCollections,
   getEditCollections,
   getMyCollectionsSelector,
+  getUserCollectionThemes,
   getUserId,
   getUserIsAdmin,
   getUserName,
@@ -49,6 +51,8 @@ interface IUserPageContainer {
   collectionsDel: Array<CollectionType | null>;
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
+  getCollectionThemes: () => void;
+  collectionThemes: { id: number; value: string }[] | null;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => {
@@ -79,6 +83,7 @@ const mapStateToProps = (state: AppStateType) => ({
   collections: getMyCollectionsSelector(state),
   collectionsEdit: getEditCollections(state),
   collectionsDel: getDeleteCollections(state),
+  collectionThemes: getUserCollectionThemes(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -111,6 +116,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   pullOutCollection: (collectionId: number) => {
     dispatch(pullOutCollectionThunk(collectionId));
+  },
+  getCollectionThemes: () => {
+    dispatch(getCollectionThemesThunk());
   },
 });
 

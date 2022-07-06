@@ -36,12 +36,21 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     height: '300px',
     overflowY: 'scroll',
+
+    [theme.breakpoints.down('sm')]: {
+      height: '100%',
+    },
   },
   paper: {
     position: 'relative',
     width: '60%',
     minWidth: '300px',
     borderRadius: 0,
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
 }));
 

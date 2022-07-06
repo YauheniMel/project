@@ -1,10 +1,10 @@
 const express = require('express');
-const sqlz = require('../services/sequelize');
+const models = require('../services/sequelize');
 
 const router = express.Router();
 
 router.get('/api/getAllTags', (req, res) => {
-  sqlz.Tag.findAll({
+  models.Tag.findAll({
     attributes: ['content'],
   })
     .then((result) => res.status(200).send(result))
@@ -17,17 +17,17 @@ router.get('/api/getAllTags', (req, res) => {
 router.get('/api/searchItemsByTag/', (req, res) => {
   const { tag } = req.query;
 
-  sqlz.Tag.findOne({
+  models.Tag.findOne({
     where: {
       content: tag,
     },
     include: [
       {
-        model: sqlz.Item,
+        model: models.Item,
         as: 'items',
         include: [
           {
-            model: sqlz.Like,
+            model: models.Like,
             attributes: ['itemId'],
           },
         ],
@@ -44,8 +44,8 @@ router.get('/api/searchItemsByTag/', (req, res) => {
 router.get('/api/searchMatchTag/', (req, res) => {
   const { tag } = req.query;
 
-  sqlz.Tag.findAll({
-    where: sqlz.sequelize.literal(`
+  models.Tag.findAll({
+    where: models.sequelize.literal(`
     MATCH(
       content
       ) AGAINST('${tag}*' IN BOOLEAN MODE)`),

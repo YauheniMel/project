@@ -1,12 +1,12 @@
 const express = require('express');
-const sqlz = require('../services/sequelize');
+const models = require('../services/sequelize');
 
 const router = express.Router();
 
 router.post('/api/signUpUser', (req, res) => {
   const { name, surname, id } = req.body;
 
-  sqlz.User.create({
+  models.User.create({
     userId: id,
     name,
     surname,
@@ -25,14 +25,14 @@ router.post('/api/signUpUser', (req, res) => {
 router.get('/api/getUserInfo/', (req, res) => {
   const { id, name, surname } = req.query;
 
-  sqlz.User.findOrCreate({
+  models.User.findOrCreate({
     where: {
       userId: id,
       name,
       surname,
     },
     include: {
-      model: sqlz.Like,
+      model: models.Like,
       attributes: ['itemId'],
     },
     defaults: {
@@ -51,11 +51,11 @@ router.get('/api/getUserInfo/', (req, res) => {
 router.get('/api/getTargetUser/', (req, res) => {
   const { userId } = req.query;
 
-  sqlz.User.findOne({
+  models.User.findOne({
     where: { id: userId },
     include: [
       {
-        model: sqlz.Collection,
+        model: models.Collection,
       },
     ],
   })
@@ -82,7 +82,7 @@ router.get('/api/getTargetUser/', (req, res) => {
 });
 
 router.get('/api/getAllUsers/', (req, res) => {
-  sqlz.User.findAll()
+  models.User.findAll()
     .then((response) => res.status(200).send(response))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -93,7 +93,10 @@ router.get('/api/getAllUsers/', (req, res) => {
 router.post('/api/loginUser', (req, res) => {
   const { id } = req.body;
 
-  sqlz.User.update({ isOnline: true, loginDate: new Date() }, { where: { id } })
+  models.User.update(
+    { isOnline: true, loginDate: new Date() },
+    { where: { id } },
+  )
     .then(() => res.status(200).send({
       code: 1,
       message: 'Login success!',
@@ -106,7 +109,7 @@ router.post('/api/loginUser', (req, res) => {
 
 router.post('/api/deleteUser', (req, res) => {
   const { id } = req.body;
-  sqlz.User.destroy({
+  models.User.destroy({
     where: { id },
   })
     .then((res) => res.status(200).send({
@@ -122,7 +125,7 @@ router.post('/api/deleteUser', (req, res) => {
 router.post('/api/blockUser', (req, res) => {
   const { id } = req.body;
 
-  sqlz.User.update({ status: 'blocked' }, { where: { id } })
+  models.User.update({ status: 'blocked' }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Blocked success!',
@@ -136,7 +139,7 @@ router.post('/api/blockUser', (req, res) => {
 router.post('/api/unblockUser', (req, res) => {
   const { id } = req.body;
 
-  sqlz.User.update({ status: 'active' }, { where: { id } })
+  models.User.update({ status: 'active' }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Unblocked success!',
@@ -150,7 +153,7 @@ router.post('/api/unblockUser', (req, res) => {
 router.post('/api/setIsAdmin', (req, res) => {
   const { id } = req.body;
 
-  sqlz.User.update({ isAdmin: true }, { where: { id } })
+  models.User.update({ isAdmin: true }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Unblocked success!',
@@ -164,7 +167,7 @@ router.post('/api/setIsAdmin', (req, res) => {
 router.post('/api/setIsNotAdmin', (req, res) => {
   const { id } = req.body;
 
-  sqlz.User.update({ isAdmin: false }, { where: { id } })
+  models.User.update({ isAdmin: false }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Unblocked success!',
@@ -178,7 +181,7 @@ router.post('/api/setIsNotAdmin', (req, res) => {
 router.post('/api/logOutUser', (req, res) => {
   const { id } = req.body;
 
-  sqlz.User.update({ isOnline: false }, { where: { id } })
+  models.User.update({ isOnline: false }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Logout success!',

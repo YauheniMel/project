@@ -7,9 +7,19 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import {
-  Alert, Button, TextField, Typography,
+  Alert,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { CollectionInitType } from '../../types';
 import FormArray from '../FormArray/FormArray';
 import InputFile from '../../shared/components/InputFile/InputFile';
@@ -37,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     height: '300px',
     overflowY: 'scroll',
+
+    [theme.breakpoints.down('sm')]: {
+      height: '100%',
+    },
   },
   paper: {
     position: 'relative',
@@ -44,12 +58,11 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '300px',
     padding: '20px 0',
     borderRadius: 0,
-  },
-  tabs: {
-    position: 'sticky',
-    width: '100%',
-    zIndex: 2,
-    top: 0,
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   label: {
     display: 'flex',
@@ -75,6 +88,7 @@ interface ICollectionForm {
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
+  collectionThemes: { id: number; value: string }[] | null;
 }
 
 const validationSchema = yup.object({
@@ -97,6 +111,7 @@ const CollectionForm: FC<ICollectionForm> = ({
   openForm,
   setOpenForm,
   createNewCollection,
+  collectionThemes,
 }) => {
   const [description, setDescription] = useState<any>('');
   const [image, setImage] = useState<any>();
@@ -197,17 +212,42 @@ const CollectionForm: FC<ICollectionForm> = ({
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
             />
-            <TextField
-              id="theme"
-              name="theme"
-              label="Theme"
-              value={formik.values.theme}
-              onChange={formik.handleChange}
-              error={formik.touched.theme && Boolean(formik.errors.theme)}
-              helperText={formik.touched.theme && formik.errors.theme}
-            />
+            <FormControl
+              error={!!formik.touched.theme && !!formik.errors.theme}
+            >
+              <InputLabel>theme</InputLabel>
+              <Select
+                name="theme"
+                label="theme"
+                value={formik.values.theme}
+                onChange={formik.handleChange}
+                IconComponent={
+                  collectionThemes
+                    ? KeyboardDoubleArrowDownIcon
+                    : HourglassTopIcon
+                }
+                error={formik.touched.theme && Boolean(formik.errors.theme)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {collectionThemes
+                  && collectionThemes.map((theme) => (
+                    <MenuItem value={theme.value}>{theme.value}</MenuItem>
+                  ))}
+              </Select>
+              <FormHelperText>
+                {formik.touched.theme && formik.errors.theme}
+              </FormHelperText>
+            </FormControl>
             <Box sx={{ p: 0 }}>
-              <MDEditor value={description} onChange={setDescription} />
+              <MDEditor
+                value={description}
+                onChange={(e: any) => {
+                  setIsSubmited(false);
+                  setDescription(e);
+                }}
+              />
               {isSubmited && (
                 <Alert sx={{ borderRadius: 0 }} severity="error">
                   Description is required

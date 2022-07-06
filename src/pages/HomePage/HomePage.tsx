@@ -40,11 +40,12 @@ const HomePage: FC<IHomePage> = ({
   searchItemsByTag,
 }) => {
   const classes = useStyles();
-  console.log(likes);
+
   return (
     <Box className={classes.item}>
-      <CarouselComponent collections={collections} />
-      {tags && (
+      {!!collections?.length && <CarouselComponent collections={collections} />}
+
+      {!!tags.length && (
         <TagCloudComponent tags={tags} searchItemsByTag={searchItemsByTag} />
       )}
       <Box className={classes.list}>

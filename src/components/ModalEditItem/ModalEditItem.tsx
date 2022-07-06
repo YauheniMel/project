@@ -25,7 +25,7 @@ const StuledButton = styled(Button)(({ theme }) => ({
   height: '55px',
   width: '55px',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
     width: '60%',
     minWidth: '300px',
     height: '300px',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   listItem: {
     display: 'flex',
@@ -157,18 +162,21 @@ const ModalEditItem: FC<IModalEditItem> = ({
         <StuledButton onClick={() => setOpen(false)} variant="contained">
           <CloseIcon fontSize="large" />
         </StuledButton>
-        <FormikProvider value={formik}>
-          <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-            <List
-              sx={{
-                bgcolor: 'background.paper',
-                overflow: 'auto',
-                paddingBottom: 0,
-                width: '100%',
-                height: '300px',
-              }}
-              subheader={<li />}
-            >
+        <List
+          sx={{
+            bgcolor: 'background.paper',
+            overflow: 'auto',
+            paddingBottom: 0,
+            width: '100%',
+            height: {
+              sm: '100%',
+              '*': '300px',
+            },
+          }}
+          subheader={<li />}
+        >
+          <FormikProvider value={formik}>
+            <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
               {itemsEdit?.map(
                 (item) => item && (
                 <ListItem
@@ -341,9 +349,9 @@ const ModalEditItem: FC<IModalEditItem> = ({
                 </ListItem>
                 ),
               )}
-            </List>
-          </form>
-        </FormikProvider>
+            </form>
+          </FormikProvider>
+        </List>
       </Paper>
     </Backdrop>
   );

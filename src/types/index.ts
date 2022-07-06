@@ -172,6 +172,7 @@ export interface UserPageType {
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
   likes: { itemId: number }[] | null;
+  themes: null | { id: number; value: string };
 }
 
 export interface SearchPageType {

@@ -36,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     width: '60%',
     minWidth: '300px',
     height: '150px',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   listItem: {
     display: 'flex',
@@ -94,7 +99,10 @@ const ModalDelete: FC<IModalDelete> = ({
             overflow: 'auto',
             paddingBottom: 0,
             width: '100%',
-            height: '150px',
+            height: {
+              sm: '100%',
+              '*': '150px',
+            },
           }}
           subheader={<li />}
         >
@@ -105,7 +113,10 @@ const ModalDelete: FC<IModalDelete> = ({
                 display: 'flex',
                 flexDirection: 'column',
                 padding: '0',
-                height: '150px',
+                height: {
+                  sm: '100%',
+                  '*': '150px',
+                },
               }}
               key={collection.id}
             >
@@ -166,7 +177,10 @@ const ModalDelete: FC<IModalDelete> = ({
                 display: 'flex',
                 flexDirection: 'column',
                 padding: '0',
-                height: '150px',
+                height: {
+                  sm: '100%',
+                  '*': '150px',
+                },
               }}
               key={item.id}
             >
