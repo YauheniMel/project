@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, Link, Paper } from '@mui/material';
+import {
+  Box, Button, Link, Paper,
+} from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { getAuth, updateProfile } from 'firebase/auth';
 
@@ -16,25 +17,40 @@ interface ISignUpPage {
   signUpUser: (credentials: CredentialsType) => void;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'fixed',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: '20px',
     top: '50%',
     left: '50%',
     minWidth: '280px',
     transform: 'translate(-50%, -50%)',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   form: {
+    maxWidth: '300px',
+
     '& > *': {
       margin: '10px 0',
     },
   },
+  link: {
+    position: 'relative',
+    zIndex: 2,
+  },
   action: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
-});
+}));
 
 const validationSchema = yup.object({
   name: yup
@@ -116,74 +132,76 @@ const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
   });
 
   return (
-    <Paper className={classes.paper}>
-      <Link component={RouterLink} to={RoutesApp.Root}>
+    <>
+      <Link className={classes.link} component={RouterLink} to={RoutesApp.Root}>
         App
       </Link>
-      <form className={classes.form} onSubmit={formik.handleSubmit}>
-        <TextField
-          fullWidth
-          id="name"
-          name="name"
-          label="Name"
-          autoFocus
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-        <TextField
-          fullWidth
-          id="surname"
-          name="surname"
-          label="Surname"
-          value={formik.values.surname}
-          onChange={formik.handleChange}
-          error={formik.touched.surname && Boolean(formik.errors.surname)}
-          helperText={formik.touched.surname && formik.errors.surname}
-        />
-        <TextField
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-        <TextField
-          fullWidth
-          id="confirm"
-          name="confirm"
-          label="Confirm password"
-          type="confirm"
-          value={formik.values.confirm}
-          onChange={formik.handleChange}
-          error={formik.touched.confirm && Boolean(formik.errors.confirm)}
-          helperText={formik.touched.confirm && formik.errors.confirm}
-        />
-        <Box className={classes.action}>
-          <Button variant="contained" type="submit">
-            Sign Up
-          </Button>
-          <Link component={RouterLink} to={RoutesApp.Login}>
-            Login
-          </Link>
-        </Box>
-      </form>
-    </Paper>
+      <Paper sx={{ borderRadius: 0 }} className={classes.paper}>
+        <form className={classes.form} onSubmit={formik.handleSubmit}>
+          <TextField
+            fullWidth
+            id="name"
+            name="name"
+            label="Name"
+            autoFocus
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
+          />
+          <TextField
+            fullWidth
+            id="surname"
+            name="surname"
+            label="Surname"
+            value={formik.values.surname}
+            onChange={formik.handleChange}
+            error={formik.touched.surname && Boolean(formik.errors.surname)}
+            helperText={formik.touched.surname && formik.errors.surname}
+          />
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextField
+            fullWidth
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+          />
+          <TextField
+            fullWidth
+            id="confirm"
+            name="confirm"
+            label="Confirm password"
+            type="password"
+            value={formik.values.confirm}
+            onChange={formik.handleChange}
+            error={formik.touched.confirm && Boolean(formik.errors.confirm)}
+            helperText={formik.touched.confirm && formik.errors.confirm}
+          />
+          <Box className={classes.action}>
+            <Button variant="contained" type="submit">
+              Sign Up
+            </Button>
+            <Link component={RouterLink} to={RoutesApp.Login}>
+              Login
+            </Link>
+          </Box>
+        </form>
+      </Paper>
+    </>
   );
 };
 
