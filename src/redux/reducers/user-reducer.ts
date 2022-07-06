@@ -65,7 +65,7 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         myCollections: state.myCollections
-          ? [...state.myCollections, action.collection]
+          ? [action.collection, ...state.myCollections]
           : [action.collection],
       };
     }

@@ -20,7 +20,6 @@ import {
   getEditCollections,
   getMyCollectionsSelector,
   getUserId,
-  getUserIdFirebase,
   getUserIsAdmin,
   getUserName,
   getUserStatus,
@@ -32,7 +31,6 @@ import UserPage from './UserPage';
 
 interface IUserPageContainer {
   id: number;
-  userId: string;
   name: string;
   surname: string;
   isAdmin: boolean;
@@ -47,8 +45,8 @@ interface IUserPageContainer {
   setDeleteCollection: (collectionId: number) => void;
   getEditCollections: (userId: string) => void;
   getDeleteCollections: (userId: string) => void;
-  editCollections: Array<CollectionType | null>;
-  deleteCollections: Array<CollectionType | null>;
+  collectionsEdit: Array<CollectionType | null>;
+  collectionsDel: Array<CollectionType | null>;
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
 }
@@ -73,15 +71,14 @@ const UserPageContainer: FC<IUserPageContainer> = (props) => {
 
 const mapStateToProps = (state: AppStateType) => ({
   id: getUserId(state),
-  userId: getUserIdFirebase(state),
   name: getUserName(state),
   surname: getUserSurname(state),
   status: getUserStatus(state),
   theme: getUserTheme(state),
   isAdmin: getUserIsAdmin(state),
   collections: getMyCollectionsSelector(state),
-  editCollections: getEditCollections(state),
-  deleteCollections: getDeleteCollections(state),
+  collectionsEdit: getEditCollections(state),
+  collectionsDel: getDeleteCollections(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -254,6 +254,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
     where: {
       collectionId,
     },
+    order: [['createdAt', 'DESC']],
   })
     .then((response) => {
       let resWithImg;
@@ -281,6 +282,9 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     title,
     tags,
     comments,
+    radioKey1: radioValue1 = null,
+    radioKey2: radioValue2 = null,
+    radioKey3: radioValue3 = null,
     dateKey1: dateValue1 = null,
     dateKey2: dateValue2 = null,
     dateKey3: dateValue3 = null,
@@ -312,6 +316,9 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     dateValue1,
     dateValue2,
     dateValue3,
+    radioValue1: radioValue1 ? Boolean(+radioValue1) : null,
+    radioValue2: radioValue2 ? Boolean(+radioValue2) : null,
+    radioValue3: radioValue3 ? Boolean(+radioValue3) : null,
     multiLineValue1,
     multiLineValue2,
     multiLineValue3,

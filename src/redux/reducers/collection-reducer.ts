@@ -6,6 +6,7 @@ import { UserActionTypes } from '../actions/user-action';
 const initState: CollectionType = {
   id: null,
   icon: null,
+  title: null,
   description: null,
   theme: null,
   createdAt: null,
@@ -13,6 +14,9 @@ const initState: CollectionType = {
   isEdit: false,
   isDelete: false,
   allFields: [
+    'radioKey1',
+    'radioKey2',
+    'radioKey3',
     'dateKey1',
     'dateKey2',
     'dateKey3',
@@ -29,6 +33,9 @@ const initState: CollectionType = {
     'checkboxKey2',
     'checkboxKey3',
   ],
+  radioKey1: null,
+  radioKey2: null,
+  radioKey3: null,
   dateKey1: null,
   dateKey2: null,
   dateKey3: null,
@@ -86,7 +93,7 @@ function collectionReducer(state = initState, action: AnyAction) {
     case CollectionActionTypes.AddNewItem: {
       return {
         ...state,
-        list: state.list ? [...state.list, action.item] : [action.item],
+        list: state.list ? [action.item, ...state.list] : [action.item],
       };
     }
     case CollectionActionTypes.AddMatchTags: {

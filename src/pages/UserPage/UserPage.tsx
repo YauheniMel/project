@@ -27,13 +27,27 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     width: '100%',
   },
+  activeEdit: {
+    transform: 'scale(1.1)',
+    color: theme.palette.warning.main,
+
+    '& .MuiTouchRipple-root': {
+      color: theme.palette.warning.main,
+    },
+  },
+  activeDelete: {
+    transform: 'scale(1.1)',
+
+    '& .MuiTouchRipple-root': {
+      color: theme.palette.warning.main,
+    },
+  },
 }));
 
 interface IUserPage {
   id: number;
   isAdmin: boolean;
   theme: 'light' | 'dark';
-  userId: string;
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
@@ -41,8 +55,8 @@ interface IUserPage {
   setTargetCollection: (collection: CollectionType) => void;
   setEditCollection: (collectionId: number) => void;
   setDeleteCollection: (collectionId: number) => void;
-  editCollections: Array<CollectionType | null>;
-  deleteCollections: Array<CollectionType | null>;
+  collectionsEdit: Array<CollectionType | null>;
+  collectionsDel: Array<CollectionType | null>;
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
   getMyCollections: (userId: number, page?: number) => void;
@@ -50,7 +64,6 @@ interface IUserPage {
 
 const UserPage: FC<IUserPage> = ({
   isAdmin,
-  userId,
   theme,
   status,
   collections,
@@ -58,9 +71,9 @@ const UserPage: FC<IUserPage> = ({
   setTargetCollection,
   setEditCollection,
   setDeleteCollection,
-  editCollections,
+  collectionsEdit,
   deleteCollection,
-  deleteCollections,
+  collectionsDel,
   updateCollection,
   pullOutCollection,
   getMyCollections,
@@ -72,13 +85,14 @@ const UserPage: FC<IUserPage> = ({
 
   const classes = useStyles();
 
-  const [{ isOver: overEdit }, dropEdit] = useDrop({
+  const [{ isOver: overEdit, canDrop }, dropEdit] = useDrop({
     accept: 'avatar',
     drop: (item: { id: number }) => {
       setEditCollection(item.id);
     },
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
     }),
   });
 
@@ -92,7 +106,8 @@ const UserPage: FC<IUserPage> = ({
     }),
   });
 
-  console.log(theme, status, isAdmin, userId);
+  console.log(theme, status, isAdmin);
+  console.log(canDrop);
   return (
     <>
       <CollectionForm
@@ -104,14 +119,14 @@ const UserPage: FC<IUserPage> = ({
       <ModalEditCollection
         openModal={openModalEdit}
         setOpen={setOpenModalEdit}
-        editCollections={editCollections}
+        collectionsEdit={collectionsEdit}
         updateCollection={updateCollection}
         pullOutCollection={pullOutCollection}
       />
       <ModalDelete
         openModal={openModalDelete}
         setOpen={setOpenModalDelete}
-        deleteCollections={deleteCollections}
+        collectionsDel={collectionsDel}
         pullOutCollection={pullOutCollection}
         deleteCollection={deleteCollection}
       />
@@ -132,26 +147,39 @@ const UserPage: FC<IUserPage> = ({
               <ListItemText primary="Create collection" />
             </ListItemButton>
             <ListItemButton
-              sx={{ width: '100%' }}
-              onClick={() => setOpenModalEdit(true)}
+              sx={{
+                width: '100%',
+                color: (theme) => (canDrop ? theme.palette.warning.main : ''),
+              }}
+              className={canDrop ? classes.activeEdit : ''}
+              onClick={() => {
+                if (collectionsEdit.length === 0) return;
+                setOpenModalEdit(true);
+              }}
               ref={dropEdit}
-              // disabled={editCollections.length === 0}
             >
               <ListItemIcon>
-                <Badge badgeContent={editCollections.length} color="warning">
+                <Badge badgeContent={collectionsEdit.length} color="warning">
                   <EditIcon className={overEdit ? classes.edit : ''} />
                 </Badge>
               </ListItemIcon>
               <ListItemText primary="Edit" />
             </ListItemButton>
             <ListItemButton
-              sx={{ width: '100%' }}
-              onClick={() => setOpenModalDelete(true)}
+              sx={{
+                width: '100%',
+                color: (theme) => (canDrop ? theme.palette.error.main : ''),
+              }}
+              className={canDrop ? classes.activeDelete : ''}
+              onClick={() => {
+                if (collectionsDel.length === 0) return;
+
+                setOpenModalDelete(true);
+              }}
               ref={dropDelete}
-              // disabled={editCollections.length === 0}
             >
               <ListItemIcon>
-                <Badge badgeContent={deleteCollections.length} color="error">
+                <Badge badgeContent={collectionsDel.length} color="error">
                   <DeleteIcon className={overDelete ? classes.delete : ''} />
                 </Badge>
               </ListItemIcon>

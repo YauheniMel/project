@@ -61,6 +61,10 @@ const Collection = sequelize.define('collection', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   theme: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -74,6 +78,18 @@ const Collection = sequelize.define('collection', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+  },
+  radioKey1: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  radioKey2: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  radioKey3: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   dateKey1: {
     type: DataTypes.STRING,
@@ -160,6 +176,18 @@ const Item = sequelize.define('item', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+  },
+  radioValue1: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
+  radioValue2: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
+  radioValue3: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
   },
   dateValue1: {
     type: DataTypes.TEXT,

@@ -81,6 +81,7 @@ router.get('/api/getMyCollections/', (req, res) => {
     where: {
       userId,
     },
+    order: [['createdAt', 'DESC']],
     limit,
   })
     .then((response) => {
@@ -106,11 +107,14 @@ router.get('/api/getMyCollections/', (req, res) => {
 router.get('/api/getUserCollections/', (req, res) => {
   const { userId, page } = req.query;
 
+  const limit = PAGE_SIZE * page;
+
   sqlz.Collection.findAll({
     where: {
       id: userId,
     },
-    limit: 2 * page,
+    order: [['createdAt', 'DESC']],
+    limit,
   })
     .then((response) => {
       let resWithImg;
@@ -378,10 +382,12 @@ router.post(
   upload.single('icon'),
   async (req, res) => {
     const {
+      title,
       userId,
       description,
       theme,
       dateKeys,
+      radioKeys,
       multiLineKeys,
       numberKeys,
       textKeys,
@@ -397,7 +403,7 @@ router.post(
     function prepareFields(data, type) {
       const obj = {};
 
-      if (type === 'checkboxKey') {
+      if (type === 'checkboxKey' && data !== 'null') {
         const arr = JSON.parse(data);
 
         for (let i = 0; i < 3; i++) {
@@ -415,6 +421,7 @@ router.post(
     }
 
     const customFields = {
+      ...prepareFields(radioKeys, 'radioKey'),
       ...prepareFields(dateKeys, 'dateKey'),
       ...prepareFields(multiLineKeys, 'multiLineKey'),
       ...prepareFields(numberKeys, 'numberKey'),
@@ -425,6 +432,7 @@ router.post(
     sqlz.Collection.create({
       icon: profilePicture,
       description,
+      title,
       theme,
       ...customFields,
       userId,

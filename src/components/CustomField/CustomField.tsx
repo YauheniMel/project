@@ -1,6 +1,15 @@
 /* eslint-disable react/no-array-index-key */
 import React, { FC, useState } from 'react';
-import { Checkbox, TextareaAutosize, TextField } from '@mui/material';
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextareaAutosize,
+  TextField,
+} from '@mui/material';
 import { Field } from 'formik';
 
 interface ICustomField {
@@ -55,6 +64,32 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
             </label>
           ))}
         </>
+      );
+    }
+
+    if (type === 'radio') {
+      return (
+        <FormControl>
+          <FormLabel>{field[key]}</FormLabel>
+          <RadioGroup
+            name={key}
+            value={formik.values.field}
+            onChange={formik.handleChange}
+          >
+            <FormControlLabel
+              sx={{ paddingLeft: '10px' }}
+              value={1}
+              control={<Radio />}
+              label="Yes"
+            />
+            <FormControlLabel
+              sx={{ paddingLeft: '10px' }}
+              value={0}
+              control={<Radio />}
+              label="No"
+            />
+          </RadioGroup>
+        </FormControl>
       );
     }
 

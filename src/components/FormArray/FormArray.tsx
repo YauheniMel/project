@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 interface IFormArray {
   formik: any;
-  type: 'numbers' | 'texts' | 'multiLines' | 'dates';
+  type: 'numbers' | 'texts' | 'multiLines' | 'dates' | 'radioFields';
 }
 
 const FormArray: FC<IFormArray> = ({ formik, type }) => {
@@ -68,6 +68,7 @@ const FormArray: FC<IFormArray> = ({ formik, type }) => {
                 <TextField
                   name={`${type}[${idx}]`}
                   fullWidth
+                  required
                   label="Name field"
                   value={formik.values[`${type}`][idx]}
                   onChange={formik.handleChange}
