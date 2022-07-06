@@ -1,60 +1,95 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Box,
   ListItem,
   List,
-  Modal,
   ListSubheader,
   Button,
   Typography,
 } from '@mui/material';
-import { makeStyles } from '@material-ui/core';
+import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
 import { CollectionType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
 
-const useStyles = makeStyles({
+const StuledButton = styled(Button)(({ theme }) => ({
+  position: 'absolute',
+  zIndex: theme.zIndex.drawer + 1,
+  top: 0,
+  right: 0,
+  height: '55px',
+  width: '55px',
+  backgroundColor: theme.palette.primary.dark,
+  borderRadius: '0px',
+  color: theme.palette.common.white,
+}));
+
+const useStyles = makeStyles((theme) => ({
+  back: {
+    zIndex: theme.zIndex.drawer + 2,
+  },
+  paper: {
+    position: 'relative',
+    width: '60%',
+    minWidth: '300px',
+    height: '300px',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
+  },
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '50px',
-    padding: 0,
+    rowGap: '20px',
+    padding: '0 20px',
+    width: '100%',
+    flex: 1,
 
     '& > *': {
       display: 'flex',
       flexDirection: 'column',
     },
   },
-});
+  action: {
+    display: 'flex',
+    width: '100%',
+    position: 'sticky',
+    bottom: 0,
+    backgroundColor: theme.palette.common.white,
+  },
+}));
 
 interface IModalEditCollection {
   openModal: boolean;
   setOpen: (state: boolean) => void;
-  editCollections: Array<CollectionType | null>;
+  collectionsEdit: Array<CollectionType | null>;
   updateCollection: (collection: any) => void;
   pullOutCollection: (collectionId: number) => void;
+  collectionThemes: { id: number; value: string }[] | null;
 }
-
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-};
 
 const ModalEditCollection: FC<IModalEditCollection> = ({
   openModal,
   setOpen,
-  editCollections,
+  collectionsEdit,
   updateCollection,
   pullOutCollection,
+  collectionThemes,
 }) => {
   const [image, setImage] = useState<any>();
   const [description, setDescription] = useState<any>('');
   const [collectionId, setCollectionId] = useState<any>('');
+
+  console.log(collectionThemes);
+
+  useEffect(() => {
+    if (!collectionsEdit.length) setOpen(false);
+  }, [collectionsEdit]);
 
   const classes = useStyles();
 
@@ -126,33 +161,52 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
   });
 
   return (
-    <Modal
-      open={openModal}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <FormikProvider value={formik}>
-        <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-          <Box sx={style}>
-            <List
-              sx={{
-                bgcolor: 'background.paper',
-
-                overflow: 'auto',
-                minHeight: 200,
-                maxHeight: '80vh',
-                '& ul': { padding: 0 },
-              }}
-              subheader={<li />}
-            >
-              {editCollections?.map((collection) => (collection ? (
+    <Backdrop className={classes.back} open={openModal}>
+      <Paper className={classes.paper}>
+        <StuledButton onClick={() => setOpen(false)} variant="contained">
+          <CloseIcon fontSize="large" />
+        </StuledButton>
+        <List
+          sx={{
+            bgcolor: 'background.paper',
+            overflow: 'auto',
+            paddingBottom: 0,
+            width: '100%',
+            height: {
+              sm: '100%',
+              '*': '300px',
+            },
+          }}
+          subheader={<li />}
+        >
+          <FormikProvider value={formik}>
+            <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
+              {collectionsEdit?.map(
+                (collection) => collection && (
                 <ListItem
-                  sx={{ display: 'flex', flexDirection: 'column' }}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 0,
+                  }}
                   key={collection.id}
                 >
-                  <ListSubheader sx={{ backgroundColor: 'red' }}>
-                    {collection.theme}
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
+                    }}
+                  >
+                    <Typography variant="h4">{collection.title}</Typography>
+                    <Typography variant="subtitle1">
+                      Created:
+                      {' '}
+                      {moment(collection.createdAt).format('DD MMMM YYYY')}
+                    </Typography>
                   </ListSubheader>
                   <Box className={classes.listItem}>
                     <UpdateFormField
@@ -260,31 +314,42 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                       description={description}
                     />
                   </Box>
-                  <Button
-                    onClick={() => {
-                      setCollectionId(collection.id);
-                      formik.handleSubmit();
-                    }}
-                    color="warning"
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (collection.id) pullOutCollection(collection.id);
-                    }}
-                  >
-                    Pull out
-                  </Button>
+                  <Box className={classes.action}>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      onClick={() => {
+                        setCollectionId(collection.id);
+                        formik.handleSubmit();
+                      }}
+                      color="warning"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      onClick={() => {
+                        if (collection.id) {
+                          pullOutCollection(collection.id);
+                        }
+                      }}
+                    >
+                      Pull out
+                    </Button>
+                  </Box>
                 </ListItem>
-              ) : (
-                <Box>Empty</Box>
-              )))}
-            </List>
-          </Box>
-        </form>
-      </FormikProvider>
-    </Modal>
+                ),
+              )}
+            </form>
+          </FormikProvider>
+        </List>
+      </Paper>
+    </Backdrop>
   );
 };
 

@@ -19,11 +19,19 @@ export enum UserActionTypes {
   increaseLikes = 'INCREASE-LIKES',
   decreaseLikes = 'DECREASE-LIKES',
   addNewCollection = 'ADD-NEW-COLLECTION',
+  getThemes = 'GET-THEMES',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
   type: UserActionTypes.setUserPersonalInfo,
   payload,
+});
+
+const setCollectionThemesAction = (
+  themes: { id: number; value: string }[],
+) => ({
+  type: UserActionTypes.getThemes,
+  themes,
 });
 
 const addNewCollectionAction = (collection: CollectionType) => ({
@@ -85,6 +93,12 @@ export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch:
   requestAPI.getUserInfo(payload).then((response) => {
     if (response.isNew) alert('Hello new User');
     dispatch(setUserPersonalInfoAction(response.user));
+  });
+};
+
+export const getCollectionThemesThunk = () => (dispatch: any) => {
+  requestAPI.getThemes().then((response) => {
+    dispatch(setCollectionThemesAction(response));
   });
 };
 

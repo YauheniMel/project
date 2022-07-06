@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Box,
   ListItem,
@@ -9,7 +9,7 @@ import {
   TextField,
   Chip,
 } from '@mui/material';
-import { makeStyles, Backdrop } from '@material-ui/core';
+import { makeStyles, Backdrop, Paper } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { styled } from '@mui/material/styles';
@@ -25,7 +25,7 @@ const StuledButton = styled(Button)(({ theme }) => ({
   height: '55px',
   width: '55px',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -35,9 +35,14 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     position: 'relative',
-    width: '60vw',
+    width: '60%',
     minWidth: '300px',
     height: '300px',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   listItem: {
     display: 'flex',
@@ -63,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 interface IModalEditItem {
   openModal: boolean;
   setOpen: (state: boolean) => void;
-  editItems: Array<ItemType | null>;
+  itemsEdit: Array<ItemType | null>;
   pullOutItem: (itemId: number) => void;
   updateItem: (item: any) => void;
 }
@@ -71,7 +76,7 @@ interface IModalEditItem {
 const ModalEditItem: FC<IModalEditItem> = ({
   openModal,
   setOpen,
-  editItems,
+  itemsEdit,
   pullOutItem,
   updateItem,
 }) => {
@@ -84,6 +89,10 @@ const ModalEditItem: FC<IModalEditItem> = ({
   const handleDelete = (str: string) => {
     setTags(tags.filter((tag) => tag !== str));
   };
+
+  useEffect(() => {
+    if (!itemsEdit.length) setOpen(false);
+  }, [itemsEdit]);
 
   const formik = useFormik({
     initialValues: {
@@ -149,190 +158,201 @@ const ModalEditItem: FC<IModalEditItem> = ({
 
   return (
     <Backdrop className={classes.back} open={openModal}>
-      <StuledButton onClick={() => setOpen(false)} variant="contained">
-        <CloseIcon fontSize="large" />
-      </StuledButton>
-      <FormikProvider value={formik}>
-        <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-          <List
-            sx={{
-              bgcolor: 'background.paper',
-              overflow: 'auto',
-              paddingBottom: 0,
-            }}
-            className={classes.paper}
-            subheader={<li />}
-          >
-            {editItems?.map((item) => (item ? (
-              <ListItem
-                key={item.id}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  p: 0,
-                }}
-              >
-                <ListSubheader
+      <Paper className={classes.paper}>
+        <StuledButton onClick={() => setOpen(false)} variant="contained">
+          <CloseIcon fontSize="large" />
+        </StuledButton>
+        <List
+          sx={{
+            bgcolor: 'background.paper',
+            overflow: 'auto',
+            paddingBottom: 0,
+            width: '100%',
+            height: {
+              sm: '100%',
+              '*': '300px',
+            },
+          }}
+          subheader={<li />}
+        >
+          <FormikProvider value={formik}>
+            <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
+              {itemsEdit?.map(
+                (item) => item && (
+                <ListItem
+                  key={item.id}
                   sx={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    zIndex: '1000',
-                    width: '100%',
-                    bgcolor: 'background.paper',
+                    flexDirection: 'column',
+                    p: 0,
                   }}
                 >
-                  <Typography variant="h4">{item.title}</Typography>
-                  <Typography variant="subtitle1">
-                    Created:
-                    {' '}
-                    {moment(item.createdAt).format('DD MMMM YYYY')}
-                  </Typography>
-                </ListSubheader>
-                <Box className={classes.listItem}>
-                  <Typography>
-                    Created:
-                    {' '}
-                    {moment(item.createdAt).format('DD MMMM YYYY')}
-                  </Typography>
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.title}
-                    field="title"
-                  />
-                  <Box>
-                    <TextField
-                      fullWidth
-                      name="tags"
-                      label="Enter tags"
-                      value={formik.values.tags}
-                      onChange={formik.handleChange}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && formik.values.tags.trim()) {
-                          e.preventDefault();
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
+                    }}
+                  >
+                    <Typography variant="h4">{item.title}</Typography>
+                    <Typography variant="subtitle1">
+                      Created:
+                      {' '}
+                      {moment(item.createdAt).format('DD MMMM YYYY')}
+                    </Typography>
+                  </ListSubheader>
+                  <Box className={classes.listItem}>
+                    <Typography>
+                      Created:
+                      {' '}
+                      {moment(item.createdAt).format('DD MMMM YYYY')}
+                    </Typography>
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.title}
+                      field="title"
+                    />
+                    <Box>
+                      <TextField
+                        fullWidth
+                        name="tags"
+                        label="Enter tags"
+                        value={formik.values.tags}
+                        onChange={formik.handleChange}
+                        onKeyDown={(e) => {
+                          if (
+                            e.key === 'Enter'
+                                && formik.values.tags.trim()
+                          ) {
+                            e.preventDefault();
 
-                          setTags([...tags, formik.values.tags]);
-                          formik.values.tags = '';
-                        }
-                      }}
-                      error={
-                          formik.touched.tags && Boolean(formik.errors.tags)
-                        }
-                      helperText={formik.touched.tags && formik.errors.tags}
-                      InputProps={{
-                        startAdornment: tags.map((tag, idx) => (
-                          <Chip
-                              // eslint-disable-next-line react/no-array-index-key
-                            key={idx}
-                            label={tag}
-                            onDelete={() => handleDelete(tag)}
-                          />
-                        )),
-                      }}
+                            setTags([...tags, formik.values.tags]);
+                            formik.values.tags = '';
+                          }
+                        }}
+                        error={
+                              formik.touched.tags && Boolean(formik.errors.tags)
+                            }
+                        helperText={
+                              formik.touched.tags && formik.errors.tags
+                            }
+                        InputProps={{
+                          startAdornment: tags.map((tag, idx) => (
+                            <Chip
+                                  // eslint-disable-next-line react/no-array-index-key
+                              key={idx}
+                              label={tag}
+                              onDelete={() => handleDelete(tag)}
+                            />
+                          )),
+                        }}
+                      />
+                    </Box>
+
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.textValue1}
+                      field="textValue1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.textValue2}
+                      field="textValue2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.textValue3}
+                      field="textValue3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.numberValue1}
+                      field="numberValue1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.numberValue2}
+                      field="numberValue2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.numberValue3}
+                      field="numberValue3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.dateValue1}
+                      field="dateValue1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.dateValue2}
+                      field="dateValue2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.dateValue3}
+                      field="dateValue3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.multiLineValue1}
+                      field="multiLineValue1"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.multiLineValue2}
+                      field="multiLineValue2"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.multiLineValue3}
+                      field="multiLineValue3"
+                    />
+                    <UpdateFormField
+                      formik={formik}
+                      value={item.icon}
+                      field="icon"
+                      image={image}
+                      setImage={setImage}
                     />
                   </Box>
-
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.textValue1}
-                    field="textValue1"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.textValue2}
-                    field="textValue2"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.textValue3}
-                    field="textValue3"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.numberValue1}
-                    field="numberValue1"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.numberValue2}
-                    field="numberValue2"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.numberValue3}
-                    field="numberValue3"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.dateValue1}
-                    field="dateValue1"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.dateValue2}
-                    field="dateValue2"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.dateValue3}
-                    field="dateValue3"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.multiLineValue1}
-                    field="multiLineValue1"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.multiLineValue2}
-                    field="multiLineValue2"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.multiLineValue3}
-                    field="multiLineValue3"
-                  />
-                  <UpdateFormField
-                    formik={formik}
-                    value={item.icon}
-                    field="icon"
-                    image={image}
-                    setImage={setImage}
-                  />
-                </Box>
-                <Box className={classes.action}>
-                  <Button
-                    sx={{
-                      flex: 1,
-                      borderRadius: 0,
-                    }}
-                    onClick={() => {
-                      setItemId(item.id);
-                      formik.handleSubmit();
-                    }}
-                    color="warning"
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    sx={{
-                      flex: 1,
-                      borderRadius: 0,
-                    }}
-                    onClick={() => {
-                      if (item.id) pullOutItem(item.id);
-                    }}
-                  >
-                    Pull out
-                  </Button>
-                </Box>
-              </ListItem>
-            ) : (
-              <Box>Empty</Box>
-            )))}
-          </List>
-        </form>
-      </FormikProvider>
+                  <Box className={classes.action}>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      onClick={() => {
+                        setItemId(item.id);
+                        formik.handleSubmit();
+                      }}
+                      color="warning"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      onClick={() => {
+                        if (item.id) pullOutItem(item.id);
+                      }}
+                    >
+                      Pull out
+                    </Button>
+                  </Box>
+                </ListItem>
+                ),
+              )}
+            </form>
+          </FormikProvider>
+        </List>
+      </Paper>
     </Backdrop>
   );
 };

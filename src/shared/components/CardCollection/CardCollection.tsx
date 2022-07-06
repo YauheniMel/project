@@ -87,6 +87,9 @@ const CardCollection: FC<ICardCollection> = ({
             onMouseDown={() => {
               if (collection.id) setShowImage(+collection.id);
             }}
+            onMouseUp={() => {
+              if (collection.id) setShowImage(0);
+            }}
             ref={drag}
           >
             {collection.id && +showImage === +collection.id ? (

@@ -6,8 +6,20 @@ import {
   Backdrop, Box, makeStyles, Paper,
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { CollectionInitType } from '../../types';
 import FormArray from '../FormArray/FormArray';
 import InputFile from '../../shared/components/InputFile/InputFile';
@@ -35,18 +47,22 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     height: '300px',
     overflowY: 'scroll',
+
+    [theme.breakpoints.down('sm')]: {
+      height: '100%',
+    },
   },
   paper: {
     position: 'relative',
     width: '60%',
     minWidth: '300px',
     padding: '20px 0',
-  },
-  tabs: {
-    position: 'sticky',
-    width: '100%',
-    zIndex: 2,
-    top: 0,
+    borderRadius: 0,
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   label: {
     display: 'flex',
@@ -72,9 +88,16 @@ interface ICollectionForm {
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
+  collectionThemes: { id: number; value: string }[] | null;
 }
 
 const validationSchema = yup.object({
+  title: yup
+    .string()
+    .trim()
+    .min(2, 'Title must have more than 2 letters')
+    .max(150, 'Title must have less than 30 letters')
+    .required('Title is required'),
   theme: yup
     .string()
     .trim()
@@ -88,9 +111,11 @@ const CollectionForm: FC<ICollectionForm> = ({
   openForm,
   setOpenForm,
   createNewCollection,
+  collectionThemes,
 }) => {
   const [description, setDescription] = useState<any>('');
   const [image, setImage] = useState<any>();
+  const [isSubmited, setIsSubmited] = useState(false);
 
   const classes = useStyles();
 
@@ -100,24 +125,30 @@ const CollectionForm: FC<ICollectionForm> = ({
 
   const formik = useFormik({
     initialValues: {
+      title: '',
       theme: '',
       numbers: [],
       dates: [],
       multiLines: [],
+      radioFields: [],
       texts: [],
       checkboxes: [{ field: '', count: 1, values: [''] }],
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
+      if (!description.trim()) return;
+
       createNewCollection({
         userId,
         icon: image,
+        title: values.title,
         description: description.replace(/\n/gim, '&&#&&'),
         theme: values.theme,
         dateKeys: values.dates[0] ? values.dates : null,
         multiLineKeys: values.multiLines[0] ? values.multiLines : null,
         numberKeys: values.numbers[0] ? values.numbers : null,
         textKeys: values.texts[0] ? values.texts : null,
+        radioKeys: values.radioFields[0] ? values.radioFields : null,
         checkboxKeys: values.checkboxes[0].field
           ? values.checkboxes.map((checkbox, idx) => ({
             [`checkboxKey${idx + 1}`]: `${checkbox.field}:${checkbox.values}`,
@@ -129,10 +160,12 @@ const CollectionForm: FC<ICollectionForm> = ({
 
       resetForm({
         values: {
+          title: '',
           theme: '',
           numbers: [],
           dates: [],
           texts: [],
+          radioFields: [],
           multiLines: [],
           checkboxes: [{ field: '', count: 1, values: [''] }],
         },
@@ -141,35 +174,90 @@ const CollectionForm: FC<ICollectionForm> = ({
       handleClose();
     },
     onReset: () => {
+      setIsSubmited(false);
       setDescription('');
+      setImage('');
     },
   });
 
   return (
     <Backdrop className={classes.back} open={openForm}>
       <Paper className={classes.paper}>
-        <StuledButton onClick={handleClose} variant="contained">
+        <StuledButton
+          onClick={() => {
+            formik.resetForm();
+            setIsSubmited(false);
+            handleClose();
+          }}
+          variant="contained"
+        >
           <CloseIcon fontSize="large" />
         </StuledButton>
         <FormikProvider value={formik}>
           <form
             className={classes.form}
             encType="multipart/form-data"
-            onSubmit={formik.handleSubmit}
+            onSubmit={(e: any) => {
+              setIsSubmited(true);
+
+              return formik.handleSubmit(e);
+            }}
           >
             <TextField
-              id="theme"
-              name="theme"
-              label="Theme"
-              value={formik.values.theme}
+              id="title"
+              name="title"
+              label="Title"
+              value={formik.values.title}
               onChange={formik.handleChange}
-              error={formik.touched.theme && Boolean(formik.errors.theme)}
-              helperText={formik.touched.theme && formik.errors.theme}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={formik.touched.title && formik.errors.title}
             />
-            <MDEditor value={description} onChange={setDescription} />
+            <FormControl
+              error={!!formik.touched.theme && !!formik.errors.theme}
+            >
+              <InputLabel>theme</InputLabel>
+              <Select
+                name="theme"
+                label="theme"
+                value={formik.values.theme}
+                onChange={formik.handleChange}
+                IconComponent={
+                  collectionThemes
+                    ? KeyboardDoubleArrowDownIcon
+                    : HourglassTopIcon
+                }
+                error={formik.touched.theme && Boolean(formik.errors.theme)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {collectionThemes
+                  && collectionThemes.map((theme) => (
+                    <MenuItem value={theme.value}>{theme.value}</MenuItem>
+                  ))}
+              </Select>
+              <FormHelperText>
+                {formik.touched.theme && formik.errors.theme}
+              </FormHelperText>
+            </FormControl>
+            <Box sx={{ p: 0 }}>
+              <MDEditor
+                value={description}
+                onChange={(e: any) => {
+                  setIsSubmited(false);
+                  setDescription(e);
+                }}
+              />
+              {isSubmited && (
+                <Alert sx={{ borderRadius: 0 }} severity="error">
+                  Description is required
+                </Alert>
+              )}
+            </Box>
             <InputFile image={image} setImage={setImage} />
             <FormArray formik={formik} type="numbers" />
             <FormArray formik={formik} type="texts" />
+            <FormArray formik={formik} type="radioFields" />
             <FormArray formik={formik} type="dates" />
             <FormArray formik={formik} type="multiLines" />
             <FieldArray
@@ -184,14 +272,18 @@ const CollectionForm: FC<ICollectionForm> = ({
                       <Typography>Form fields: checkboxes</Typography>
                       <Button
                         onClick={() => {
-                          push({ field: '', count: 1, values: [''] });
+                          push({
+                            field: '',
+                            count: 1,
+                            values: [''],
+                          });
                         }}
-                        disabled={formik.values.checkboxes.length === 3}
+                        disabled={formik.values.checkboxes.length === 4}
                       >
                         Add field
                       </Button>
                     </Box>
-                    {checkboxes.map((date: string, idx: any) => (
+                    {checkboxes.slice(1).map((date: string, idx: any) => (
                       // eslint-disable-next-line react/no-array-index-key
                       <Box key={idx}>
                         <Box className={classes.input}>
@@ -205,6 +297,7 @@ const CollectionForm: FC<ICollectionForm> = ({
                           </Button>
                           <TextField
                             fullWidth
+                            required
                             name={`checkboxes[${idx}].field`}
                             label="Name field"
                             value={formik.values.checkboxes[idx].field}
@@ -213,13 +306,12 @@ const CollectionForm: FC<ICollectionForm> = ({
                         </Box>
                         <Box className={classes.checkbox}>
                           <TextField
+                            sx={{ minWidth: '70px', flex: 1 }}
                             type="number"
                             InputProps={{ inputProps: { min: 1, max: 7 } }}
                             name={`checkboxes[${idx}].count`}
-                            label="How many?"
                             value={formik.values.checkboxes[idx].count}
                             onChange={formik.handleChange}
-                            sx={{ flex: 1 }}
                           />
                           <Box>
                             <FieldArray

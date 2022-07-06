@@ -17,6 +17,7 @@ const initState: UserPageType = {
   listEditCollections: [],
   listDeleteCollections: [],
   likes: null,
+  themes: null,
 };
 
 function userReducer(state = initState, action: AnyAction) {
@@ -25,6 +26,12 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         ...action.payload,
+      };
+    }
+    case UserActionTypes.getThemes: {
+      return {
+        ...state,
+        themes: [...action.themes],
       };
     }
     case UserActionTypes.setMyCollections: {
@@ -65,7 +72,7 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         myCollections: state.myCollections
-          ? [...state.myCollections, action.collection]
+          ? [action.collection, ...state.myCollections]
           : [action.collection],
       };
     }

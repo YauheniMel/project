@@ -61,8 +61,12 @@ const Collection = sequelize.define('collection', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  theme: {
+  title: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  theme: {
+    type: DataTypes.ENUM('books', 'movies', 'bands', 'memories', 'artworks'),
     allowNull: false,
   },
   isEdit: {
@@ -74,6 +78,18 @@ const Collection = sequelize.define('collection', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+  },
+  radioKey1: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  radioKey2: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  radioKey3: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   dateKey1: {
     type: DataTypes.STRING,
@@ -161,6 +177,18 @@ const Item = sequelize.define('item', {
     allowNull: false,
     defaultValue: false,
   },
+  radioValue1: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
+  radioValue2: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
+  radioValue3: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
   dateValue1: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -222,6 +250,26 @@ const Item = sequelize.define('item', {
     allowNull: true,
   },
 });
+
+const Theme = sequelize.define(
+  'theme',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
+    },
+    value: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+  },
+);
+
 const Like = sequelize.define('like', {
   id: {
     type: DataTypes.INTEGER,
@@ -279,7 +327,7 @@ Tag.belongsToMany(Item, {
   hooks: true,
 });
 
-const sqlz = {
+const models = {
   User,
   Collection,
   Item,
@@ -287,6 +335,7 @@ const sqlz = {
   Tag,
   Comment,
   sequelize,
+  Theme,
 };
 
-module.exports = sqlz;
+module.exports = models;

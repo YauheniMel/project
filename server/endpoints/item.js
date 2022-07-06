@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const sharp = require('sharp');
-const sqlz = require('../services/sequelize');
+const models = require('../services/sequelize');
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -18,14 +18,14 @@ const router = express.Router();
 router.get('/api/getItem/', (req, res) => {
   const { itemId, collectionId } = req.query;
 
-  sqlz.Item.findOne({
+  models.Item.findOne({
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -53,24 +53,24 @@ router.get('/api/getItem/', (req, res) => {
 });
 
 router.get('/api/getLastAddItems', (req, res) => {
-  sqlz.Item.findAll({
+  models.Item.findAll({
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Collection,
+        model: models.Collection,
         attributes: ['theme'],
         include: [
           {
-            model: sqlz.User,
+            model: models.User,
             attributes: ['name', 'surname'],
           },
         ],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content', 'createdAt'],
       },
@@ -101,7 +101,7 @@ router.get('/api/getLastAddItems', (req, res) => {
 router.put('/api/pullOutItem/', (req, res) => {
   const { itemId } = req.body;
 
-  sqlz.Item.update(
+  models.Item.update(
     { isEdit: false, isDelete: false },
     { where: { id: +itemId } },
   )
@@ -117,7 +117,7 @@ router.put('/api/pullOutItem/', (req, res) => {
 router.get('/api/getDeleteItems/', (req, res) => {
   const { collectionId } = req.query;
 
-  sqlz.Item.findAll({ where: { isDelete: true, collectionId } })
+  models.Item.findAll({ where: { isDelete: true, collectionId } })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -141,7 +141,7 @@ router.get('/api/getDeleteItems/', (req, res) => {
 router.get('/api/getEditItems/', (req, res) => {
   const { collectionId } = req.query;
 
-  sqlz.Item.findAll({ where: { isEdit: true, collectionId } })
+  models.Item.findAll({ where: { isEdit: true, collectionId } })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -165,7 +165,7 @@ router.get('/api/getEditItems/', (req, res) => {
 router.put('/api/setEditItems/', (req, res) => {
   const itemIds = req.body;
 
-  sqlz.Item.update(
+  models.Item.update(
     { isEdit: true, isDelete: false },
     { where: { id: itemIds } },
   )
@@ -202,7 +202,7 @@ router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
     dataForUpdate.icon = await sharp(req.file.path).resize(300).toBuffer();
   }
 
-  sqlz.Item.update(
+  models.Item.update(
     {
       id: itemId,
       ...dataForUpdate,
@@ -222,7 +222,7 @@ router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
 router.put('/api/setDeleteItems/', (req, res) => {
   const itemIds = req.body;
 
-  sqlz.Item.update(
+  models.Item.update(
     { isEdit: false, isDelete: true },
     { where: { id: itemIds } },
   )
@@ -239,14 +239,14 @@ router.put('/api/setDeleteItems/', (req, res) => {
 router.get('/api/getCollectionItems/', (req, res) => {
   const { collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -254,6 +254,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
     where: {
       collectionId,
     },
+    order: [['createdAt', 'DESC']],
   })
     .then((response) => {
       let resWithImg;
@@ -281,6 +282,9 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     title,
     tags,
     comments,
+    radioKey1: radioValue1 = null,
+    radioKey2: radioValue2 = null,
+    radioKey3: radioValue3 = null,
     dateKey1: dateValue1 = null,
     dateKey2: dateValue2 = null,
     dateKey3: dateValue3 = null,
@@ -305,13 +309,16 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     profilePicture = await sharp(req.file.path).resize(300).toBuffer();
   }
 
-  sqlz.Item.create({
+  models.Item.create({
     icon: profilePicture || null,
     title,
     comments,
     dateValue1,
     dateValue2,
     dateValue3,
+    radioValue1: radioValue1 ? Boolean(+radioValue1) : null,
+    radioValue2: radioValue2 ? Boolean(+radioValue2) : null,
+    radioValue3: radioValue3 ? Boolean(+radioValue3) : null,
     multiLineValue1,
     multiLineValue2,
     multiLineValue3,
@@ -327,19 +334,19 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
     collectionId,
   })
     .then((item) => {
-      sqlz.Tag.bulkCreate(arrTags, {
+      models.Tag.bulkCreate(arrTags, {
         ignoreDuplicates: true,
       }).then((tag) => {
         item.addTag(tag).then(() => {
-          sqlz.Item.findOne({
+          models.Item.findOne({
             where: { id: item.id },
             include: [
               {
-                model: sqlz.Like,
+                model: models.Like,
                 attributes: ['itemId'],
               },
               {
-                model: sqlz.Tag,
+                model: models.Tag,
                 as: 'tags',
                 attributes: ['content'],
               },
@@ -365,7 +372,7 @@ router.post('/api/createItem', upload.single('icon'), async (req, res) => {
 router.delete('/api/deleteItem/', (req, res) => {
   const { itemId } = req.query;
 
-  sqlz.Item.destroy({
+  models.Item.destroy({
     where: {
       id: itemId,
     },
@@ -385,8 +392,8 @@ router.delete('/api/deleteItem/', (req, res) => {
 router.get('/api/search/', (req, res) => {
   const { substr } = req.query;
 
-  sqlz.Item.findAll({
-    where: sqlz.sequelize.literal(`
+  models.Item.findAll({
+    where: models.sequelize.literal(`
     MATCH(
       title,
       dateValue1,
@@ -411,15 +418,15 @@ router.get('/api/search/', (req, res) => {
       let resWithImg = '';
 
       if (!result.length) {
-        return sqlz.User.findAll({
-          where: sqlz.sequelize.literal(
+        return models.User.findAll({
+          where: models.sequelize.literal(
             `MATCH(name, surname) AGAINST('${substr
               .split(' ')
               .map((reg) => `${reg}*`)}' IN BOOLEAN MODE)`,
           ),
           include: [
             {
-              model: sqlz.Collection,
+              model: models.Collection,
               limit: 5,
             },
           ],
@@ -469,7 +476,7 @@ router.get('/api/search/', (req, res) => {
 router.post('/api/toogleLike/', (req, res) => {
   const { userId, itemId } = req.body;
 
-  sqlz.Like.findOrCreate({
+  models.Like.findOrCreate({
     where: {
       userId,
       itemId,
@@ -477,7 +484,7 @@ router.post('/api/toogleLike/', (req, res) => {
   })
     .then(([, created]) => {
       if (!created) {
-        return sqlz.Like.destroy({
+        return models.Like.destroy({
           where: {
             userId,
             itemId,

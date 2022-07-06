@@ -81,14 +81,14 @@ const CollectionPage: FC<ICollectionPage> = ({
       <ModalEditItem
         openModal={openModalEdit}
         setOpen={setOpenModalEdit}
-        editItems={listEditItems}
+        itemsEdit={listEditItems}
         pullOutItem={pullOutItem}
         updateItem={updateItem}
       />
       <ModalDelete
         openModal={openModalDelete}
         setOpen={setOpenModalDelete}
-        deleteItems={listDeleteItems}
+        itemsDel={listDeleteItems}
         pullOutItem={pullOutItem}
         deleteItem={deleteItem}
       />
@@ -120,7 +120,11 @@ const CollectionPage: FC<ICollectionPage> = ({
               </ListItemButton>
               <ListItemButton
                 sx={{ width: '100%' }}
-                onClick={() => setOpenModalEdit(true)}
+                onClick={() => {
+                  if (listEditItems?.length === 0) return;
+
+                  setOpenModalEdit(true);
+                }}
               >
                 <ListItemIcon>
                   <Badge badgeContent={listEditItems.length} color="warning">
@@ -131,7 +135,11 @@ const CollectionPage: FC<ICollectionPage> = ({
               </ListItemButton>
               <ListItemButton
                 sx={{ width: '100%' }}
-                onClick={() => setOpenModalDelete(true)}
+                onClick={() => {
+                  if (listDeleteItems?.length === 0) return;
+
+                  setOpenModalDelete(true);
+                }}
               >
                 <ListItemIcon>
                   <Badge badgeContent={listDeleteItems.length} color="error">

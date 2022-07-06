@@ -54,6 +54,9 @@ export interface ItemType {
   isDelete: boolean;
   collectionId?: string;
   comments: CommentType[] | null;
+  radioValue1?: string;
+  radioValue2?: string;
+  radioValue3?: string;
   dateValue1?: string;
   dateValue2?: string;
   dateValue3?: string;
@@ -74,12 +77,14 @@ export interface ItemType {
   collection?: { user: { name: string; surname: string }; theme: string };
 }
 export interface CollectionInitType {
+  title: string;
   userId: number;
   theme: string;
   icon: any;
   description: string;
   dateKeys: null | string[];
   multiLineKeys: null | string[];
+  radioKeys: null | string[];
   numberKeys: null | string[];
   textKeys: null | string[];
   checkboxKeys: null | { [keys: string]: string }[];
@@ -88,6 +93,7 @@ export interface CollectionInitType {
 export interface CollectionType {
   id: number | null;
   icon: any;
+  title: string | null;
   description: string | null;
   theme: string | null;
   allFields: string[];
@@ -106,6 +112,9 @@ export interface CollectionType {
   numberKey1: string | null;
   numberKey2: string | null;
   numberKey3: string | null;
+  radioKey1: string | null;
+  radioKey2: string | null;
+  radioKey3: string | null;
   textKey1: string | null;
   textKey2: string | null;
   textKey3: string | null;
@@ -163,6 +172,7 @@ export interface UserPageType {
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
   likes: { itemId: number }[] | null;
+  themes: null | { id: number; value: string };
 }
 
 export interface SearchPageType {

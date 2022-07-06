@@ -25,6 +25,10 @@ export function getUserTheme(state: AppStateType): 'light' | 'dark' {
   return state.user.theme;
 }
 
+export function getUserCollectionThemes(state: AppStateType) {
+  return state.user.themes;
+}
+
 export function getUserIsAdmin(state: AppStateType): boolean {
   return state.user.isAdmin;
 }

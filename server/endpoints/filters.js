@@ -1,23 +1,23 @@
 const { Op } = require('sequelize');
 const express = require('express');
-const sqlz = require('../services/sequelize');
+const models = require('../services/sequelize');
 
 const router = express.Router();
 
 router.get('/api/filterContains/', (req, res) => {
   const { column, str, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [{ [column]: { [Op.like]: `%${str}%` } }, { collectionId }],
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -45,11 +45,11 @@ router.get('/api/filterContains/', (req, res) => {
 router.get('/api/filterExistTag/', (req, res) => {
   const { str, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: { collectionId },
     include: [
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
         where: {
@@ -57,15 +57,15 @@ router.get('/api/filterExistTag/', (req, res) => {
         },
         include: [
           {
-            model: sqlz.Item,
+            model: models.Item,
             as: 'items',
             include: [
               {
-                model: sqlz.Like,
+                model: models.Like,
                 attributes: ['itemId'],
               },
               {
-                model: sqlz.Tag,
+                model: models.Tag,
                 as: 'tags',
                 attributes: ['content'],
               },
@@ -97,17 +97,17 @@ router.get('/api/filterExistTag/', (req, res) => {
 router.get('/api/filterStartsWith/', (req, res) => {
   const { column, str, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [{ [column]: { [Op.startsWith]: `${str}` } }, { collectionId }],
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -135,17 +135,17 @@ router.get('/api/filterStartsWith/', (req, res) => {
 router.get('/api/filterMoreThan/', (req, res) => {
   const { column, num, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [{ [column]: { [Op.gt]: `${num}` } }, { collectionId }],
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -173,7 +173,7 @@ router.get('/api/filterMoreThan/', (req, res) => {
 router.get('/api/filterLessThan/', (req, res) => {
   const { column, num, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [
         { [column]: { [Op.lt]: `${num}` } },
@@ -183,11 +183,11 @@ router.get('/api/filterLessThan/', (req, res) => {
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -215,17 +215,17 @@ router.get('/api/filterLessThan/', (req, res) => {
 router.get('/api/filterIsNotEmpty/', (req, res) => {
   const { column, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [{ [column]: { [Op.ne]: '' } }, { collectionId }],
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -253,7 +253,7 @@ router.get('/api/filterIsNotEmpty/', (req, res) => {
 router.get('/api/filterIsEmpty/', (req, res) => {
   const { column, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [
         // eslint-disable-next-line prefer-regex-literals
@@ -263,11 +263,11 @@ router.get('/api/filterIsEmpty/', (req, res) => {
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },
@@ -295,17 +295,17 @@ router.get('/api/filterIsEmpty/', (req, res) => {
 router.get('/api/filterEqualsThunk/', (req, res) => {
   const { column, str, collectionId } = req.query;
 
-  sqlz.Item.findAll({
+  models.Item.findAll({
     where: {
       [Op.and]: [{ [column]: { [Op.eq]: `${str}` } }, { collectionId }],
     },
     include: [
       {
-        model: sqlz.Like,
+        model: models.Like,
         attributes: ['itemId'],
       },
       {
-        model: sqlz.Tag,
+        model: models.Tag,
         as: 'tags',
         attributes: ['content'],
       },

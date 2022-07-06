@@ -7,10 +7,11 @@ const http = require('http');
 const routerCollection = require('./endpoints/collection');
 const routerItem = require('./endpoints/item');
 const routerUser = require('./endpoints/user');
+const routerTheme = require('./endpoints/themes');
 const routerTag = require('./endpoints/tag');
 const routerFilters = require('./endpoints/filters');
 const connection = require('./services/mySQL');
-const sqlz = require('./services/sequelize');
+const models = require('./services/sequelize');
 
 const port = process.env.PORT || 5000;
 
@@ -41,13 +42,14 @@ connection.connect((err) => {
   }
 });
 
-sqlz.sequelize.sync().catch((err) => console.log(err));
+models.sequelize.sync().catch((err) => console.log(err));
 
 app.use(routerUser);
 app.use(routerCollection);
 app.use(routerItem);
 app.use(routerTag);
 app.use(routerFilters);
+app.use(routerTheme);
 
 // comments with socket
 
@@ -56,14 +58,14 @@ const router = express.Router();
 router.get('/api/getAllComments/', (req, res) => {
   const { itemId } = req.query;
 
-  sqlz.Comment.findAll({
+  models.Comment.findAll({
     attributes: ['content', 'createdAt', 'status'],
     where: {
       itemId,
     },
     include: [
       {
-        model: sqlz.User,
+        model: models.User,
         attributes: ['name', 'surname', 'id'],
       },
     ],
@@ -78,23 +80,23 @@ router.get('/api/getAllComments/', (req, res) => {
 router.get('/api/getAllUntouchedComments/', (req, res) => {
   const { userId } = req.query;
 
-  sqlz.Collection.findAll({
+  models.Collection.findAll({
     where: {
       userId,
     },
     include: [
       {
-        model: sqlz.Item,
+        model: models.Item,
         include: [
           {
-            model: sqlz.Comment,
+            model: models.Comment,
             attributes: ['content', 'createdAt'],
             where: {
               status: 'untouched',
             },
             include: [
               {
-                model: sqlz.User,
+                model: models.User,
                 attributes: ['name', 'surname'],
               },
             ],
@@ -132,7 +134,7 @@ router.get('/api/getAllUntouchedComments/', (req, res) => {
 router.put('/api/setCommentsTouched/', (req, res) => {
   const { itemId } = req.body;
 
-  sqlz.Comment.update({ status: 'touched' }, { where: { itemId } })
+  models.Comment.update({ status: 'touched' }, { where: { itemId } })
     .then((result) => res.status(200).send(result))
     .catch((err) => res.status(400).send({
       code: 0,
@@ -143,14 +145,14 @@ router.put('/api/setCommentsTouched/', (req, res) => {
 router.post('/api/leaveComment/', (req, res) => {
   const { content, userId, itemId } = req.body;
 
-  sqlz.Comment.create({
+  models.Comment.create({
     content,
     userId,
     itemId,
   })
     .then((result) => {
       if (result) {
-        sqlz.Item.findOne({
+        models.Item.findOne({
           where: {
             id: result.itemId,
           },
