@@ -45,7 +45,7 @@ const HomePage: FC<IHomePage> = ({
     <Box className={classes.item}>
       {!!collections?.length && <CarouselComponent collections={collections} />}
 
-      {!!tags.length && (
+      {!!tags?.length && (
         <TagCloudComponent tags={tags} searchItemsByTag={searchItemsByTag} />
       )}
       <Box className={classes.list}>

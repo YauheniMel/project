@@ -54,7 +54,7 @@ const RootPage: FC<IRootPage> = ({
   getUntouchedComments,
   ...rest
 }) => {
-  const socket = io('http://localhost:5000');
+  const socket = io('https://course-project-melnik.herokuapp.com/');
 
   useEffect(() => {
     if (userId) {

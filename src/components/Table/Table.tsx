@@ -6,6 +6,8 @@ import {
   gridClasses,
   getGridDateOperators,
   getGridStringOperators,
+  GridToolbarContainer,
+  GridToolbarExport,
 } from '@mui/x-data-grid';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -85,6 +87,12 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     },
   },
 }));
+
+const CustomToolbar = () => (
+  <GridToolbarContainer>
+    <GridToolbarExport />
+  </GridToolbarContainer>
+);
 
 const Table: FC<ITable> = ({
   collectionId,
@@ -479,6 +487,9 @@ const Table: FC<ITable> = ({
             const { indexRelativeToCurrentPage } = params;
 
             return indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
+          }}
+          components={{
+            Toolbar: CustomToolbar,
           }}
           columns={columns}
           initialState={{
