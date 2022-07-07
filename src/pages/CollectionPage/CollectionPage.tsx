@@ -155,8 +155,8 @@ const CollectionPage: FC<ICollectionPage> = ({
           <Box
             sx={{
               display: 'flex',
-              columnGap: '30px',
-              padding: '20px',
+              columnGap: '2rem',
+              padding: '1.4rem',
             }}
           >
             <Avatar

@@ -24,15 +24,17 @@ import { CollectionInitType } from '../../types';
 import FormArray from '../FormArray/FormArray';
 import InputFile from '../../shared/components/InputFile/InputFile';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -43,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '20px',
-    height: '300px',
+    rowGap: '1.4rem',
+    padding: '1.4rem',
+    height: '15rem',
     overflowY: 'scroll',
 
     [theme.breakpoints.down('sm')]: {
@@ -55,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'relative',
     width: '60%',
-    minWidth: '300px',
-    padding: '20px 0',
+    minWidth: '15rem',
+    padding: '1.4rem 0',
     borderRadius: 0,
 
     [theme.breakpoints.down('sm')]: {
@@ -66,20 +68,20 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     display: 'flex',
-    columnGap: '10px',
-    paddingBottom: '5px',
+    columnGap: '0.7rem',
+    paddingBottom: '0.7rem',
     alignItems: 'center',
     '& > *': { flex: 1 },
   },
   input: {
     display: 'flex',
-    columnGap: '10px',
-    marginTop: '10px',
+    columnGap: '0.7rem',
+    marginTop: '0.7rem',
   },
   checkbox: {
     display: 'flex',
-    marginTop: '10px',
-    columnGap: '10px',
+    marginTop: '0.7rem',
+    columnGap: '0.7rem',
   },
 }));
 
@@ -183,7 +185,7 @@ const CollectionForm: FC<ICollectionForm> = ({
   return (
     <Backdrop className={classes.back} open={openForm}>
       <Paper className={classes.paper}>
-        <StuledButton
+        <StyledButton
           onClick={() => {
             formik.resetForm();
             setIsSubmited(false);
@@ -192,7 +194,7 @@ const CollectionForm: FC<ICollectionForm> = ({
           variant="contained"
         >
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <FormikProvider value={formik}>
           <form
             className={classes.form}
@@ -306,7 +308,7 @@ const CollectionForm: FC<ICollectionForm> = ({
                         </Box>
                         <Box className={classes.checkbox}>
                           <TextField
-                            sx={{ minWidth: '70px', flex: 1 }}
+                            sx={{ minWidth: '4rem', flex: 1 }}
                             type="number"
                             InputProps={{ inputProps: { min: 1, max: 7 } }}
                             name={`checkboxes[${idx}].count`}
@@ -331,7 +333,7 @@ const CollectionForm: FC<ICollectionForm> = ({
                                             required
                                             sx={{
                                               flex: 1,
-                                              marginBottom: '10px',
+                                              marginBottom: '0.7rem',
                                             }}
                                             name={`checkboxes[${idx}].values[${index}]`}
                                             label="Name field"

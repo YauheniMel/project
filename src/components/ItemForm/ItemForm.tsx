@@ -13,15 +13,17 @@ import {
 import CustomField from '../CustomField/CustomField';
 import InputFile from '../../shared/components/InputFile/InputFile';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: '0',
   color: theme.palette.common.white,
 }));
 
@@ -32,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '20px',
+    rowGap: '1.4rem',
+    padding: '1.4rem',
     height: '300px',
     overflowY: 'scroll',
 
@@ -159,7 +161,7 @@ const ItemForm: FC<IItemForm> = ({
   return (
     <Backdrop className={classes.back} open={openForm} invisible>
       <Paper className={classes.paper}>
-        <StuledButton
+        <StyledButton
           onClick={() => {
             formik.resetForm();
             setIsSubmited(false);
@@ -168,7 +170,7 @@ const ItemForm: FC<IItemForm> = ({
           variant="contained"
         >
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <FormikProvider value={formik}>
           <form
             className={classes.form}
@@ -234,7 +236,7 @@ const ItemForm: FC<IItemForm> = ({
                     <Chip
                       key={idx}
                       style={{
-                        marginRight: '5px',
+                        marginRight: '0.3rem',
                       }}
                       label={tag}
                       onDelete={() => handleDelete(tag)}

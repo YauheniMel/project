@@ -124,7 +124,7 @@ const Table: FC<ITable> = ({
           to={`${CollectionLink}${params.row.collectionId}${ItemLink}${params.row.id}`}
           sx={{
             display: 'flex',
-            columnGap: '15px',
+            columnGap: '1.4rem',
             alignItems: 'center',
           }}
         >
@@ -449,12 +449,12 @@ const Table: FC<ITable> = ({
   }
 
   return (
-    <Box sx={{ position: 'relative', paddingTop: '20px' }}>
+    <Box sx={{ position: 'relative', paddingTop: '1.4rem' }}>
       <Box
         sx={{
           position: 'absolute',
           right: 0,
-          top: '-20px',
+          top: '-1.4rem',
         }}
       >
         <Button onClick={() => getCollectionItems(collectionId)} color="error">

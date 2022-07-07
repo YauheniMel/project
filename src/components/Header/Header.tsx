@@ -29,7 +29,14 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   top: 0,
   left: 0,
   backgroundColor: theme.palette.common.white,
-  paddingRight: '60px',
+  paddingRight: '1.4rem',
+  height: '3.2rem',
+
+  '& .MuiToolbar-root': {
+    minHeight: '3.2rem',
+    maxHeight: '3.2rem',
+    height: '3.2rem',
+  },
 }));
 
 const StyledPaper = styled(Paper)({
@@ -92,7 +99,7 @@ const Header: FC<IHeader> = ({
       <Toolbar
         sx={{
           justifyContent: 'space-around',
-          columnGap: '15px',
+          columnGap: '2rem',
         }}
       >
         {isAuth && name ? (
@@ -145,8 +152,8 @@ const Header: FC<IHeader> = ({
                             sx={{
                               display: 'flex',
                               justifyContent: 'space-between',
-                              columnGap: '10px',
-                              height: '50px',
+                              columnGap: '0.7rem',
+                              height: '4.5rem',
                             }}
                           >
                             <Link
@@ -177,7 +184,7 @@ const Header: FC<IHeader> = ({
             </Popper>
           </>
         )}
-        <Box sx={{ flexGrow: '40px' }} />
+        <Box sx={{ flexGrow: '2rem' }} />
       </Toolbar>
     </StyledAppBar>
   );

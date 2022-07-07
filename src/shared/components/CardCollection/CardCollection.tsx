@@ -14,11 +14,11 @@ import RoutesApp from '../../../constants/routes';
 import { CollectionType } from '../../../types';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  padding: '5px',
-  minWidth: '240px',
-  width: '240px',
-  height: '300px',
+  minWidth: '12rem',
+  width: '12rem',
+  height: '15rem',
   overflow: 'auto',
+  borderRadius: 0,
 
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.65),
@@ -27,14 +27,15 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 const useStyles = makeStyles({
   card: {
-    margin: '5px',
+    margin: '0.3rem',
     position: 'relative',
-    maxWidth: '250px',
-    minWidth: '250px',
+    maxWidth: '12rem',
+    minWidth: '12rem',
     overflow: 'hidden',
+    borderRadius: 0,
   },
   body: {
-    height: '300px',
+    height: '20rem',
   },
 });
 

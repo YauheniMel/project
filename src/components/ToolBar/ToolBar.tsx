@@ -17,17 +17,21 @@ const ToogleButton = styled(Button)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  fontSize: '30px',
+  fontSize: '2rem',
   backgroundColor: theme.palette.primary.dark,
-  height: '65px',
-  width: '65px',
-  borderRadius: '0px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
+  borderRadius: 0,
 }));
 
 const LinkButton = styled(Button)({
-  height: '60px',
-  width: '60px',
-  borderRadius: '0px',
+  maxWidth: '3.2rem',
+  maxHeight: '4.4rem',
+  minWidth: '3.2rem',
+  minHeight: '4.4rem',
+  borderRadius: 0,
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +41,9 @@ const useStyles = makeStyles((theme) => ({
   active: {
     color: theme.palette.secondary.main,
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    minHeight: '3.2rem',
+  },
 }));
 
 interface IToolBar {

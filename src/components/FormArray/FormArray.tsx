@@ -11,15 +11,15 @@ const useStyles = makeStyles({
   },
   label: {
     display: 'flex',
-    columnGap: '10px',
-    paddingBottom: '5px',
+    columnGap: '0.7rem',
+    paddingBottom: '0.3rem',
     alignItems: 'center',
     '& > *': { flex: 1 },
   },
   input: {
     display: 'flex',
-    columnGap: '10px',
-    marginTop: '10px',
+    columnGap: '0.7rem',
+    marginTop: '0.7rem',
   },
 });
 

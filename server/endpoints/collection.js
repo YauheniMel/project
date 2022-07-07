@@ -20,7 +20,7 @@ const router = express.Router();
 
 router.get('/api/getBigCollections', (req, res) => {
   models.Collection.findAll({
-    order: [[models.Item.associations, 'id', 'DESC']],
+    order: [[models.Item.associations, 'id', 'ASC']],
     limit: 5,
   })
     .then((response) => {

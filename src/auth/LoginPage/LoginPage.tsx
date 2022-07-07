@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '20px',
+    padding: '1.4rem',
     top: '50%',
     left: '50%',
-    minWidth: '280px',
+    minWidth: '14rem',
     transform: 'translate(-50%, -50%)',
 
     [theme.breakpoints.down('sm')]: {
@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   form: {
-    maxWidth: '300px',
+    maxWidth: '15rem',
 
     '& > *': {
-      margin: '10px 0',
+      margin: '0.7rem 0',
     },
   },
   link: {
@@ -151,12 +151,12 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
               <FacebookIcon
                 sx={{
                   color: '#4267B2',
-                  fontSize: '30px',
+                  fontSize: '2rem',
                 }}
               />
             </IconButton>
             <IconButton onClick={handleLoginGoogle}>
-              <img width="30px" alt="google" src="/assets/icon-google.svg" />
+              <img width="2rem" alt="google" src="/assets/icon-google.svg" />
             </IconButton>
             <Link to={RoutesApp.SignUp} component={RouterLink}>
               Sign Up

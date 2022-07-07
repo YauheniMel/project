@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '20px',
+    padding: '1.4rem',
     top: '50%',
     left: '50%',
-    minWidth: '280px',
+    minWidth: '14rem',
     transform: 'translate(-50%, -50%)',
 
     [theme.breakpoints.down('sm')]: {
@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   form: {
-    maxWidth: '300px',
+    maxWidth: '15rem',
 
     '& > *': {
-      margin: '10px 0',
+      margin: '0.7rem 0',
     },
   },
   link: {

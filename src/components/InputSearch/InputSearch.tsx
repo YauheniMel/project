@@ -13,7 +13,7 @@ import RoutesApp from '../../constants/routes';
 const StyledTextField = styled(TextField)(({ theme }) => ({
   borderRadius: 0,
   height: '100%',
-  paddingLeft: '10px',
+  paddingLeft: '0.7rem',
   borderBottom: `1px solid ${theme.palette.primary.dark}`,
 }));
 
@@ -51,13 +51,13 @@ const useStyles = makeStyles({
   },
   icon: {
     position: 'absolute',
-    right: '15px',
+    right: '0.5rem',
   },
   link: {
     display: 'flex',
     alignItems: 'center',
-    padding: '10px',
-    columnGap: '20px',
+    padding: '0.7rem',
+    columnGap: '1.4rem',
   },
 });
 
@@ -194,9 +194,9 @@ const InputSearch: FC<IInputSearch> = ({
             endAdornment: (
               <Box className={classes.icon}>
                 {loading ? (
-                  <CircularProgress color="inherit" size={25} />
+                  <CircularProgress color="inherit" size="1.4rem" />
                 ) : (
-                  <BsSearch size={25} />
+                  <BsSearch size="1.4rem" />
                 )}
               </Box>
             ),

@@ -15,15 +15,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import { CollectionType, ItemType } from '../../types';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -45,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '0 20px',
+    rowGap: '1.4rem',
+    padding: '0 1.4rem',
     width: '100%',
     flex: 1,
   },
@@ -90,9 +92,9 @@ const ModalDelete: FC<IModalDelete> = ({
   return (
     <Backdrop className={classes.back} open={openModal}>
       <Paper className={classes.paper}>
-        <StuledButton onClick={() => setOpen(false)} variant="contained">
+        <StyledButton onClick={() => setOpen(false)} variant="contained">
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <List
           sx={{
             bgcolor: 'background.paper',

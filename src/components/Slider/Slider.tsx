@@ -15,6 +15,7 @@ interface ISlider {
 const useStyles = makeStyles({
   wrap: {
     position: 'relative',
+    width: '90%',
   },
   sliderX: {
     display: 'flex',
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
   sliderY: {
     display: 'flex',
     flexWrap: 'wrap',
-    maxHeight: '400px',
+    maxHeight: '20rem',
     alignItems: 'center',
     overflowY: 'auto',
   },

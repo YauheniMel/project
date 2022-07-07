@@ -108,7 +108,7 @@ const ItemPage: FC<IItemPage> = ({
                 sx={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  columnGap: '10px',
+                  columnGap: '0.7rem',
                 }}
               >
                 <TextareaAutosize
