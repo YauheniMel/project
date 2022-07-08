@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
-import { Box, Drawer } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Link } from '@mui/material';
+import { Button, Drawer, Link } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';

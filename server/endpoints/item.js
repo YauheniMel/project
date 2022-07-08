@@ -117,7 +117,10 @@ router.put('/api/pullOutItem/', (req, res) => {
 router.get('/api/getDeleteItems/', (req, res) => {
   const { collectionId } = req.query;
 
-  models.Item.findAll({ where: { isDelete: true, collectionId } })
+  models.Item.findAll({
+    where: { isDelete: true, collectionId },
+    order: [['updatedAt', 'DESC']],
+  })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -141,7 +144,10 @@ router.get('/api/getDeleteItems/', (req, res) => {
 router.get('/api/getEditItems/', (req, res) => {
   const { collectionId } = req.query;
 
-  models.Item.findAll({ where: { isEdit: true, collectionId } })
+  models.Item.findAll({
+    where: { isEdit: true, collectionId },
+    order: [['updatedAt', 'DESC']],
+  })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -180,39 +186,86 @@ router.put('/api/setEditItems/', (req, res) => {
 });
 
 router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
-  const { itemId } = req.body;
+  const {
+    itemId,
+    title,
+    tags,
+    comments,
+    radioKey1: radioValue1 = null,
+    radioKey2: radioValue2 = null,
+    radioKey3: radioValue3 = null,
+    dateKey1: dateValue1 = null,
+    dateKey2: dateValue2 = null,
+    dateKey3: dateValue3 = null,
+    multiLineKey1: multiLineValue1 = null,
+    multiLineKey2: multiLineValue2 = null,
+    multiLineKey3: multiLineValue3 = null,
+    numberKey1: numberValue1 = null,
+    numberKey2: numberValue2 = null,
+    numberKey3: numberValue3 = null,
+    textKey1: textValue1 = null,
+    textKey2: textValue2 = null,
+    textKey3: textValue3 = null,
+    checkboxKey1: checkboxValue1 = null,
+    checkboxKey2: checkboxValue2 = null,
+    checkboxKey3: checkboxValue3 = null,
+  } = JSON.parse(JSON.stringify(req.body));
 
-  const allProperties = {
-    ...req.body,
-  };
+  const arrTags = tags.split(',').map((tag) => ({ content: tag }));
 
-  const newCollectionField = Object.keys(allProperties).filter(
-    (propertie) => allProperties[propertie],
-  );
-
-  const dataForUpdate = {};
-  newCollectionField.forEach((field) => {
-    if (allProperties[field] && allProperties[field] !== 'null') {
-      // need to change 'null'
-      dataForUpdate[field] = allProperties[field];
-    }
-  });
-
+  let profilePicture = null;
   if (req.file) {
-    dataForUpdate.icon = await sharp(req.file.path).resize(300).toBuffer();
+    profilePicture = await sharp(req.file.path).resize(300).toBuffer();
   }
 
   models.Item.update(
     {
-      id: itemId,
-      ...dataForUpdate,
+      icon: profilePicture || null,
+      title: title || null,
+      comments,
+      dateValue1,
+      dateValue2,
+      dateValue3,
+      radioValue1: radioValue1 ? Boolean(+radioValue1) : null,
+      radioValue2: radioValue2 ? Boolean(+radioValue2) : null,
+      radioValue3: radioValue3 ? Boolean(+radioValue3) : null,
+      multiLineValue1,
+      multiLineValue2,
+      multiLineValue3,
+      numberValue1,
+      numberValue2,
+      numberValue3,
+      textValue1,
+      textValue2,
+      textValue3,
+      checkboxValue1,
+      checkboxValue2,
+      checkboxValue3,
+      arrTags,
     },
     { where: { id: itemId } },
   )
-    .then(([response]) => res.status(200).send({
-      code: 1,
-      id: response,
+    .then(() => models.Item.findByPk(itemId, {
+      include: [
+        {
+          model: models.Like,
+          attributes: ['itemId'],
+        },
+        {
+          model: models.Tag,
+          as: 'tags',
+          attributes: ['content'],
+        },
+      ],
     }))
+    .then((response) => {
+      const { icon } = response;
+      if (icon) {
+        response.icon = Buffer.from(icon).toString('base64');
+      }
+
+      return res.status(200).send(response);
+    })
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -254,7 +307,7 @@ router.get('/api/getCollectionItems/', (req, res) => {
     where: {
       collectionId,
     },
-    order: [['createdAt', 'DESC']],
+    order: [['updatedAt', 'DESC']],
   })
     .then((response) => {
       let resWithImg;

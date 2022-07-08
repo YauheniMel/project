@@ -117,6 +117,7 @@ const Table: FC<ITable> = ({
       headerName: 'Title',
       flex: 1,
       minWidth: 150,
+      valueGetter: (params) => params.row.title,
       renderCell: (params) => (
         <Link
           component={RouterLink}
@@ -160,6 +161,9 @@ const Table: FC<ITable> = ({
       field: 'tags',
       headerName: 'Tags',
       type: 'string',
+      valueGetter: (params) => params.row.tags
+        .map((tag: { content: string }) => tag.content)
+        .join(' '),
       sortComparator: compareCountTagsComparator,
       minWidth: 150,
       flex: 1,
@@ -172,6 +176,7 @@ const Table: FC<ITable> = ({
       field: 'likes',
       headerName: 'Likes',
       type: 'number',
+      valueGetter: (params) => params.row.likes.length,
       width: 100,
       sortComparator: compareCountLikesComparator,
       renderCell: (params) => params.row.likes && params.row.likes.length,
@@ -179,7 +184,9 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'textValue1',
-      headerName: customFields[9].textKey1 ? customFields[9].textKey1 : 'none',
+      headerName: customFields[12].textKey1
+        ? customFields[12].textKey1
+        : 'none',
       type: 'string',
       width: 100,
       renderCell: (params) => params.row.textValue1,
@@ -217,8 +224,8 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'textValue2',
-      headerName: customFields[10].textKey2
-        ? customFields[10].textKey2
+      headerName: customFields[13].textKey2
+        ? customFields[13].textKey2
         : 'none',
       type: 'string',
       width: 100,
@@ -257,8 +264,8 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'textValue3',
-      headerName: customFields[11].textKey3
-        ? customFields[11].textKey3
+      headerName: customFields[14].textKey3
+        ? customFields[14].textKey3
         : 'none',
       type: 'string',
       width: 100,
@@ -297,7 +304,7 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'dateValue1',
-      headerName: customFields[0].dateKey1 ? customFields[0].dateKey1 : 'none',
+      headerName: customFields[3].dateKey1 ? customFields[3].dateKey1 : 'none',
       type: 'date',
       width: 100,
       renderCell: (params) => params.row.dateValue1,
@@ -335,7 +342,7 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'dateValue2',
-      headerName: customFields[1].dateKey2 ? customFields[1].dateKey2 : 'none',
+      headerName: customFields[4].dateKey2 ? customFields[4].dateKey2 : 'none',
       type: 'date',
       width: 100,
       renderCell: (params) => params.row.dateValue2,
@@ -373,7 +380,7 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'dateValue3',
-      headerName: customFields[2].dateKey3 ? customFields[2].dateKey3 : 'none',
+      headerName: customFields[5].dateKey3 ? customFields[5].dateKey3 : 'none',
       type: 'date',
       width: 100,
       renderCell: (params) => params.row.dateValue3,
@@ -492,15 +499,16 @@ const Table: FC<ITable> = ({
             Toolbar: CustomToolbar,
           }}
           columns={columns}
+          disableColumnSelector
           initialState={{
             columns: {
               columnVisibilityModel: {
-                dateValue1: !!customFields[0].dateKey1,
-                dateValue2: !!customFields[1].dateKey2,
-                dateValue3: !!customFields[2].dateKey3,
-                textValue1: !!customFields[9].textKey1,
-                textValue2: !!customFields[10].textKey2,
-                textValue3: !!customFields[11].textKey3,
+                dateValue1: !!customFields[3].dateKey1,
+                dateValue2: !!customFields[4].dateKey2,
+                dateValue3: !!customFields[5].dateKey3,
+                textValue1: !!customFields[12].textKey1,
+                textValue2: !!customFields[13].textKey2,
+                textValue3: !!customFields[14].textKey3,
               },
             },
           }}

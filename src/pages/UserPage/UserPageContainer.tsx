@@ -1,12 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
-import {
-  deleteCollectionThunk,
-  setTargetCollectionAction,
-} from '../../redux/actions/collection-action';
+import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
   createNewCollectionThunk,
+  deleteCollectionThunk,
   getCollectionThemesThunk,
   getDeleteCollectionsThunk,
   getEditCollectionsThunk,

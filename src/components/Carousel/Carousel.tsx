@@ -66,7 +66,7 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => (
             }}
             component="img"
             image={`data:application/pdf;base64,${collection.icon}`}
-            alt={collection.theme?.toString()}
+            alt={collection.title?.toString()}
           />
         )}
       </Link>

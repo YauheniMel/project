@@ -8,7 +8,8 @@ const Colors = {
   secondary_main: '#00BCD4',
   error: '#E53935',
   warning: '#FFA000',
-  white: '#f1f1f1',
+  gray: '#f1f1f1',
+  white: '#ffffff',
   black: '#1f2a2f',
 };
 
@@ -23,11 +24,14 @@ const theme = createTheme({
       dark: Colors.primary_dark,
     },
     common: {
-      white: Colors.white,
+      white: Colors.gray,
       black: Colors.black,
     },
     secondary: {
       main: Colors.secondary_main,
+    },
+    background: {
+      default: Colors.white,
     },
     error: {
       main: Colors.error,
@@ -45,13 +49,12 @@ const theme = createTheme({
         '::-webkit-scrollbar': {
           width: '0.3rem',
           height: '0.3rem',
-          backgroundColor: Colors.white,
         },
         '::-webkit-scrollbar-thumb': {
           backgroundColor: Colors.black,
         },
         ':root': {
-          [breakpoints.down('md')]: {
+          [breakpoints.up('md')]: {
             fontSize: '18px',
           },
           [breakpoints.down('md')]: {

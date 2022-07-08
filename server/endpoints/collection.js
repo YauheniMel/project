@@ -82,7 +82,7 @@ router.get('/api/getMyCollections/', (req, res) => {
     where: {
       userId,
     },
-    order: [['createdAt', 'DESC']],
+    order: [['updatedAt', 'DESC']],
     limit,
   })
     .then((response) => {
@@ -114,7 +114,7 @@ router.get('/api/getUserCollections/', (req, res) => {
     where: {
       id: userId,
     },
-    order: [['createdAt', 'DESC']],
+    order: [['updatedAt', 'DESC']],
     limit,
   })
     .then((response) => {
@@ -150,6 +150,7 @@ router.get('/api/getTargetCollections/', (req, res) => {
     where: {
       id: userId,
     },
+    order: [['updatedAt', 'DESC']],
   })
     .then((response) => {
       const dataWithImg = response.map((data) => {
@@ -203,7 +204,10 @@ router.delete('/api/deleteCollection/', (req, res) => {
       id,
     },
   })
-    .then((response) => res.status(200).send(response))
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Delete success',
+    }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -273,12 +277,20 @@ router.put(
         id: collectionId,
         ...dataForUpdate,
       },
-      { where: { id: collectionId } },
+      {
+        returning: true,
+        where: { id: collectionId },
+      },
     )
-      .then(([response]) => res.status(200).send({
-        code: 1,
-        id: response,
-      }))
+      .then(() => models.Collection.findByPk(collectionId))
+      .then((response) => {
+        const { icon } = response;
+        if (icon) {
+          response.icon = Buffer.from(icon).toString('base64');
+        }
+
+        return res.status(200).send(response);
+      })
       .catch((err) => res.status(400).send({
         code: 0,
         message: err,
@@ -289,7 +301,10 @@ router.put(
 router.get('/api/getEditCollections/', (req, res) => {
   const { userId } = req.query;
 
-  models.Collection.findAll({ where: { isEdit: true, userId } })
+  models.Collection.findAll({
+    where: { isEdit: true, userId },
+    order: [['updatedAt', 'DESC']],
+  })
     .then((response) => {
       let resWithImg;
       if (response) {
@@ -325,6 +340,7 @@ router.get('/api/getAllCollections/', (req, res) => {
         [Op.ne]: userId,
       },
     },
+    order: [['updatedAt', 'DESC']],
   })
     .then((response) => {
       const dataWithImg = response.map((data) => {
@@ -357,7 +373,10 @@ router.get('/api/getAllCollections/', (req, res) => {
 router.get('/api/getDeleteCollections/', (req, res) => {
   const { userId } = req.query;
 
-  models.Collection.findAll({ where: { isDelete: true, userId } })
+  models.Collection.findAll({
+    where: { isDelete: true, userId },
+    order: [['updatedAt', 'DESC']],
+  })
     .then((response) => {
       let resWithImg;
       if (response) {

@@ -22,6 +22,7 @@ export enum CollectionActionTypes {
   SetAllComments = 'SET-ALL-COMMENTS',
   SetUntouchedComments = 'SET-UNTOUCHED-COMMENTS',
   SetCommentsTouched = 'SET-COMMENTS-TOUCHED',
+  UpdateNewItem = 'UPDATE-NEW-ITEM',
 }
 
 export const setTargetItemAction = (item: ItemType) => ({
@@ -46,6 +47,11 @@ export const setTargetCollectionAction = (collection: CollectionType) => ({
 
 export const addNewItemAction = (item: ItemType) => ({
   type: CollectionActionTypes.AddNewItem,
+  item,
+});
+
+export const updateNewItemAction = (item: ItemType) => ({
+  type: CollectionActionTypes.UpdateNewItem,
   item,
 });
 
@@ -122,12 +128,6 @@ export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) =>
   });
 };
 
-export const deleteCollectionThunk = (collectionId: number) => () => {
-  requestAPI
-    .deleteCollection(collectionId)
-    .then((response) => console.log(response));
-};
-
 export const deleteItemThunk = (itemId: number) => (dispatch: any) => {
   requestAPI.deleteItem(itemId).then((response) => {
     if (response.code === 1) {
@@ -169,8 +169,11 @@ export const pullOutItemThunk = (itemId: number) => (dispatch: any) => {
   });
 };
 
-export const updateItemThunk = (item: any) => () => {
-  requestAPI.updateItem(item).then((response) => console.log(response));
+export const updateItemThunk = (item: any) => (dispatch: any) => {
+  requestAPI.updateItem(item).then((response) => {
+    debugger;
+    dispatch(updateNewItemAction(response));
+  });
 };
 
 export const searchMatchTagsThunk = (tag: string) => (dispatch: any) => {

@@ -79,6 +79,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   return (
     <>
       <ModalEditItem
+        customFields={customFields}
         openModal={openModalEdit}
         setOpen={setOpenModalEdit}
         itemsEdit={listEditItems}

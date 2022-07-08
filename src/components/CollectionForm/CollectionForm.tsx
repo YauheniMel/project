@@ -2,12 +2,11 @@ import React, { FC, useState } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import MDEditor from '@uiw/react-md-editor';
-import {
-  Backdrop, Box, makeStyles, Paper,
-} from '@material-ui/core';
+import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Alert,
+  Box,
   Button,
   FormControl,
   FormHelperText,
@@ -60,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '15rem',
     padding: '1.4rem 0',
     borderRadius: 0,
+    backgroundColor: theme.palette.common.white,
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -244,6 +244,9 @@ const CollectionForm: FC<ICollectionForm> = ({
             </FormControl>
             <Box sx={{ p: 0 }}>
               <MDEditor
+                textareaProps={{
+                  placeholder: 'description',
+                }}
                 value={description}
                 onChange={(e: any) => {
                   setIsSubmited(false);
@@ -308,14 +311,14 @@ const CollectionForm: FC<ICollectionForm> = ({
                         </Box>
                         <Box className={classes.checkbox}>
                           <TextField
-                            sx={{ minWidth: '4rem', flex: 1 }}
+                            sx={{ minWidth: '4rem' }}
                             type="number"
                             InputProps={{ inputProps: { min: 1, max: 7 } }}
                             name={`checkboxes[${idx}].count`}
                             value={formik.values.checkboxes[idx].count}
                             onChange={formik.handleChange}
                           />
-                          <Box>
+                          <Box sx={{ flex: 1 }}>
                             <FieldArray
                               name="values"
                               render={() => {
@@ -331,8 +334,8 @@ const CollectionForm: FC<ICollectionForm> = ({
                                         <Box key={index}>
                                           <TextField
                                             required
+                                            fullWidth
                                             sx={{
-                                              flex: 1,
                                               marginBottom: '0.7rem',
                                             }}
                                             name={`checkboxes[${idx}].values[${index}]`}

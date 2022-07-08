@@ -33,6 +33,7 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
           style={{
             minHeight: '5rem',
             padding: '.7rem',
+            backgroundColor: 'transparent',
           }}
         />
       );
@@ -96,7 +97,6 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
     return (
       <TextField
         type={type}
-        required
         name={key}
         InputLabelProps={{ shrink: true }}
         label={field[key]}

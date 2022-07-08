@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'relative',
     width: '60%',
-    minWidth: '300px',
     height: '150px',
 
     [theme.breakpoints.down('sm')]: {
@@ -49,8 +48,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     rowGap: '1.4rem',
     padding: '0 1.4rem',
-    width: '100%',
-    flex: 1,
+    width: '100% !important',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   action: {
     display: 'flex',
@@ -85,9 +88,12 @@ const ModalDelete: FC<IModalDelete> = ({
   const classes = useStyles();
 
   useEffect(() => {
-    if (!collectionsDel?.length) setOpen(false);
     if (!itemsDel?.length) setOpen(false);
-  }, [collectionsDel, itemsDel]);
+  }, [itemsDel]);
+
+  useEffect(() => {
+    if (!collectionsDel?.length) setOpen(false);
+  }, [collectionsDel]);
 
   return (
     <Backdrop className={classes.back} open={openModal}>
@@ -101,10 +107,7 @@ const ModalDelete: FC<IModalDelete> = ({
             overflow: 'auto',
             paddingBottom: 0,
             width: '100%',
-            height: {
-              sm: '100%',
-              '*': '150px',
-            },
+            height: '100%',
           }}
           subheader={<li />}
         >
@@ -114,11 +117,8 @@ const ModalDelete: FC<IModalDelete> = ({
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '0',
-                height: {
-                  sm: '100%',
-                  '*': '150px',
-                },
+                padding: 0,
+                height: '100%',
               }}
               key={collection.id}
             >
@@ -135,7 +135,10 @@ const ModalDelete: FC<IModalDelete> = ({
                 {collection.theme}
               </ListSubheader>
               <Box className={classes.listItem}>
-                <ListItem key={`Collection-${collection.createdAt}`}>
+                <ListItem
+                  sx={{ flex: 1 }}
+                  key={`Collection-${collection.createdAt}`}
+                >
                   <MDEditor.Markdown
                     source={collection.description!.replace(
                       /&&#&&/gim,
@@ -178,11 +181,8 @@ const ModalDelete: FC<IModalDelete> = ({
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '0',
-                height: {
-                  sm: '100%',
-                  '*': '150px',
-                },
+                padding: 0,
+                height: '100%',
               }}
               key={item.id}
             >

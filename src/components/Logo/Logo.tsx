@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Avatar, Chip, Stack, useTheme,
-} from '@mui/material';
+import { Avatar, Chip, Stack } from '@mui/material';
 import { useNavigate } from 'react-router';
 import RoutesApp from '../../constants/routes';
 
@@ -14,8 +12,6 @@ interface ILogo {
 const Logo: FC<ILogo> = ({ name, surname, isAdmin }) => {
   const navigate = useNavigate();
 
-  const theme = useTheme();
-  console.log(theme.breakpoints.only('sm'));
   function handleClick() {
     navigate(RoutesApp.Admin);
   }

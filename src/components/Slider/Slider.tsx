@@ -47,7 +47,7 @@ const Slider: FC<ISlider> = ({
         <Button
           sx={{
             position: 'absolute',
-            zIndex: 9999,
+            zIndex: 2,
             top: 0,
             right: 0,
           }}
@@ -63,7 +63,7 @@ const Slider: FC<ISlider> = ({
         <Button
           sx={{
             position: 'absolute',
-            zIndex: 9999,
+            zIndex: 2,
             top: 0,
             right: 0,
           }}

@@ -96,6 +96,15 @@ function collectionReducer(state = initState, action: AnyAction) {
         list: state.list ? [action.item, ...state.list] : [action.item],
       };
     }
+    case CollectionActionTypes.UpdateNewItem: {
+      return {
+        ...state,
+        list: [
+          action.item,
+          ...state.list!.filter((item) => item.id !== action.item.id),
+        ],
+      };
+    }
     case CollectionActionTypes.AddMatchTags: {
       return {
         ...state,

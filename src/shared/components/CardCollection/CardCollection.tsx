@@ -19,6 +19,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: '15rem',
   overflow: 'auto',
   borderRadius: 0,
+  backgroundColor: theme.palette.common.white,
 
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.65),
@@ -106,7 +107,7 @@ const CardCollection: FC<ICardCollection> = ({
               component="img"
               height="194"
               image={`data:application/pdf;base64,${collection.icon}`}
-              alt="Paella dish"
+              alt={collection.title?.toString()}
             />
           ) : (
             <Typography variant="body2">Without photo</Typography>

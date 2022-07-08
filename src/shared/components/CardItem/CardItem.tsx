@@ -24,6 +24,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: '15rem',
   overflow: 'auto',
   borderRadius: 0,
+  backgroundColor: theme.palette.common.white,
 
   '&:hover': {
     transform: 'scale(1.01)',
@@ -53,7 +54,7 @@ const CardItem: FC<ICardItem> = ({
         component="img"
         height="194"
         image={`data:application/pdf;base64,${item.icon}`}
-        alt="Paella dish"
+        alt={item.title}
       />
     )}
     <Box

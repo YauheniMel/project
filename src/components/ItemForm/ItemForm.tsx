@@ -103,12 +103,6 @@ const ItemForm: FC<IItemForm> = ({
       .min(2, 'Title must have more than 2 letters')
       .max(150, 'Title must have less than 30 letters')
       .required('Title is required'),
-    description: yup
-      .string()
-      .trim()
-      .min(2, 'Description must have more than 2 letters')
-      .max(150, 'Description must have less than 30 letters')
-      .required('Description is required'),
   });
 
   const handleClose = () => {
@@ -122,7 +116,6 @@ const ItemForm: FC<IItemForm> = ({
   const formik = useFormik({
     initialValues: {
       title: '',
-      description: '',
       tags: '',
       ...getInitFields(customFields),
     },
@@ -143,7 +136,6 @@ const ItemForm: FC<IItemForm> = ({
         values: {
           title: '',
           tags: '',
-          description: '',
           ...getInitFields(customFields),
         },
       });
@@ -190,20 +182,6 @@ const ItemForm: FC<IItemForm> = ({
               onChange={formik.handleChange}
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
-            />
-            <TextField
-              fullWidth
-              id="description"
-              name="description"
-              label="Description"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-              helperText={
-                formik.touched.description && formik.errors.description
-              }
             />
             <InputFile setImage={setImage} image={image} />
             <Box>
