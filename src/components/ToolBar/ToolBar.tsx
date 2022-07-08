@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
-import { Box, Drawer } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Link } from '@mui/material';
+import { Button, Drawer, Link } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -17,17 +17,21 @@ const ToogleButton = styled(Button)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  fontSize: '30px',
+  fontSize: '2rem',
   backgroundColor: theme.palette.primary.dark,
-  height: '65px',
-  width: '65px',
-  borderRadius: '0px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
+  borderRadius: 0,
 }));
 
 const LinkButton = styled(Button)({
-  height: '60px',
-  width: '60px',
-  borderRadius: '0px',
+  maxWidth: '3.2rem',
+  maxHeight: '4.4rem',
+  minWidth: '3.2rem',
+  minHeight: '4.4rem',
+  borderRadius: 0,
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +41,9 @@ const useStyles = makeStyles((theme) => ({
   active: {
     color: theme.palette.secondary.main,
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    minHeight: '3.2rem',
+  },
 }));
 
 interface IToolBar {

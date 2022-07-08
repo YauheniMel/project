@@ -5,25 +5,44 @@ import {
   List,
   ListSubheader,
   Button,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormHelperText,
+  Select,
   Typography,
+  CardMedia,
+  TextField,
+  IconButton,
+  alpha,
+  Paper,
 } from '@mui/material';
-import { Backdrop, makeStyles, Paper } from '@material-ui/core';
+import { Backdrop, makeStyles } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import MDEditor from '@uiw/react-md-editor';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import EditIcon from '@mui/icons-material/Edit';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import CheckIcon from '@mui/icons-material/Check';
+import InputFile from '../../shared/components/InputFile/InputFile';
 import { CollectionType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -45,14 +64,36 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '0 20px',
+    rowGap: '1.4rem',
+    padding: '0 1.4rem',
     width: '100%',
     flex: 1,
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
 
     '& > *': {
       display: 'flex',
       flexDirection: 'column',
+      padding: '.7rem',
+      backgroundColor: alpha(theme.palette.common.black, 0.05),
+
+      '& .w-md-editor-toolbar': {
+        [theme.breakpoints.down('sm')]: {
+          '&  > *': {
+            flex: 1,
+          },
+
+          '&  > *:last-child': {
+            textAlign: 'end',
+          },
+        },
+      },
+      '& .wmde-markdown': {
+        backgroundColor: 'transparent',
+      },
     },
   },
   action: {
@@ -85,18 +126,25 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
   const [description, setDescription] = useState<any>('');
   const [collectionId, setCollectionId] = useState<any>('');
 
-  console.log(collectionThemes);
-
   useEffect(() => {
     if (!collectionsEdit.length) setOpen(false);
   }, [collectionsEdit]);
+
+  function handleResetForm(formik: any, fieldName: string) {
+    formik.resetForm({
+      values: { ...formik.values, [fieldName]: '' },
+    });
+  }
 
   const classes = useStyles();
 
   const formik = useFormik({
     initialValues: {
+      title: '',
       theme: '',
-      collectionId: '',
+      radioKey1: '',
+      radioKey2: '',
+      radioKey3: '',
       numberKey1: '',
       numberKey2: '',
       numberKey3: '',
@@ -113,12 +161,16 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
       textKey2: '',
       textKey3: '',
     },
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
+      debugger;
       updateCollection({
         collectionId,
-        icon: image,
+        icon: image || null,
         description: description.replace(/\n/gim, '&&#&&'),
         theme: values.theme,
+        radioKey1: values.radioKey1 ? values.radioKey1 : null,
+        radioKey2: values.radioKey2 ? values.radioKey2 : null,
+        radioKey3: values.radioKey3 ? values.radioKey3 : null,
         numberKey1: values.numberKey1 ? values.numberKey1 : null,
         numberKey2: values.numberKey2 ? values.numberKey2 : null,
         numberKey3: values.numberKey3 ? values.numberKey3 : null,
@@ -131,65 +183,94 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
         textKey1: values.textKey1 ? values.textKey1 : null,
         textKey2: values.textKey2 ? values.textKey2 : null,
         textKey3: values.textKey3 ? values.textKey3 : null,
-        checkboxKey1: values.checkboxKey1.field
-          ? `${values.checkboxKey1.field}:${values.checkboxKey1.values}`
-          : null,
-        checkboxKey2: values.checkboxKey2.field
-          ? `${values.checkboxKey2.field}:${values.checkboxKey2.values}`
-          : null,
-        checkboxKey3: values.checkboxKey3.field
-          ? `${values.checkboxKey3.field}:${values.checkboxKey3.values}`
-          : null,
+        checkboxKey1:
+          values.checkboxKey1.field && !!values.checkboxKey1.values[0]
+            ? `${values.checkboxKey1.field}:${values.checkboxKey1.values.slice(
+              0,
+              values.checkboxKey1.count,
+            )}`
+            : null,
+        checkboxKey2:
+          values.checkboxKey2.field && !!values.checkboxKey2.values[0]
+            ? `${values.checkboxKey2.field}:${values.checkboxKey2.values.slice(
+              0,
+              values.checkboxKey2.count,
+            )}`
+            : null,
+        checkboxKey3:
+          values.checkboxKey3.field && !!values.checkboxKey3.values[0]
+            ? `${values.checkboxKey3.field}:${values.checkboxKey3.values.slice(
+              0,
+              values.checkboxKey3.count,
+            )}`
+            : null,
       });
 
-      // resetForm({
-      //   values: {
-      //     theme: '',
-      //     numbers: [''],
-      //     dates: [''],
-      //     texts: [''],
-      //     multiLines: [''],
-      //     checkboxes: [{ field: '', count: 1, values: [''] }],
-      //   },
-      // });
+      setDescription('');
+      setImage('');
 
-      // setOpen(false);
+      resetForm({
+        values: {
+          title: '',
+          theme: '',
+          radioKey1: '',
+          radioKey2: '',
+          radioKey3: '',
+          numberKey1: '',
+          numberKey2: '',
+          numberKey3: '',
+          checkboxKey1: { field: '', count: 1, values: [''] },
+          checkboxKey2: { field: '', count: 1, values: [''] },
+          checkboxKey3: { field: '', count: 1, values: [''] },
+          dateKey1: '',
+          dateKey2: '',
+          dateKey3: '',
+          multiLineKey1: '',
+          multiLineKey2: '',
+          multiLineKey3: '',
+          textKey1: '',
+          textKey2: '',
+          textKey3: '',
+        },
+      });
+
+      pullOutCollection(collectionId);
     },
-    // onReset: () => {
-    //   setDescription('');
-    // },
+    onReset: () => {
+      setImage('');
+      setDescription('');
+    },
   });
 
   return (
     <Backdrop className={classes.back} open={openModal}>
       <Paper className={classes.paper}>
-        <StuledButton onClick={() => setOpen(false)} variant="contained">
+        <StyledButton onClick={() => setOpen(false)} variant="contained">
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <List
           sx={{
             bgcolor: 'background.paper',
             overflow: 'auto',
             paddingBottom: 0,
             width: '100%',
-            height: {
-              sm: '100%',
-              '*': '300px',
-            },
+            height: '100%',
           }}
           subheader={<li />}
         >
-          <FormikProvider value={formik}>
-            <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
-              {collectionsEdit?.map(
-                (collection) => collection && (
+          {collectionsEdit?.map(
+            (collection: any) => collection && (
+            <FormikProvider key={collection.id} value={formik}>
+              <form
+                encType="multipart/form-data"
+                onSubmit={formik.handleSubmit}
+              >
                 <ListItem
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     p: 0,
                   }}
-                  key={collection.id}
                 >
                   <ListSubheader
                     sx={{
@@ -202,117 +283,215 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                     }}
                   >
                     <Typography variant="h4">{collection.title}</Typography>
-                    <Typography variant="subtitle1">
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ marginRight: '3.4rem' }}
+                    >
                       Created:
                       {' '}
                       {moment(collection.createdAt).format('DD MMMM YYYY')}
                     </Typography>
                   </ListSubheader>
                   <Box className={classes.listItem}>
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.theme}
-                      field="theme"
-                    />
-                    <Typography variant="body2">
-                      Created:
-                      {' '}
-                      {moment(collection.createdAt).format('DD MMMM YYYY')}
-                    </Typography>
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.icon}
-                      field="icon"
-                      image={image}
-                      setImage={setImage}
-                    />
-                    <Typography variant="body2">
-                      Updated:
-                      {' '}
-                      {moment(collection.updatedAt).format('DD MMMM YYYY')}
-                    </Typography>
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.checkboxKey1}
-                      field="checkboxKey1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.checkboxKey2}
-                      field="checkboxKey2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.checkboxKey3}
-                      field="checkboxKey3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.dateKey1}
-                      field="dateKey1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.dateKey2}
-                      field="dateKey2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.dateKey3}
-                      field="dateKey3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.multiLineKey1}
-                      field="multiLineKey1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.multiLineKey2}
-                      field="multiLineKey2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.multiLineKey3}
-                      field="multiLineKey3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.textKey1}
-                      field="textKey1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.textKey2}
-                      field="textKey2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.textKey3}
-                      field="textKey3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.numberKey1}
-                      field="numberKey1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.numberKey2}
-                      field="numberKey2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.numberKey3}
-                      field="numberKey3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={collection.description}
-                      field="description"
-                      setDescription={setDescription}
-                      description={description}
-                    />
+                    <Box>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {formik.values.title || collection.title}
+                        </Typography>
+                        <Box>
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton>
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleResetForm(formik, 'title')}
+                          >
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <TextField
+                        name="title"
+                        fullWidth
+                        label="title"
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        error={
+                              formik.touched.title
+                              && Boolean(formik.errors.title)
+                            }
+                        helperText={
+                              formik.touched.title && formik.errors.title
+                            }
+                      />
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {formik.values.theme || collection.theme}
+                        </Typography>
+                        <Box>
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton>
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleResetForm(formik, 'theme')}
+                          >
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <FormControl
+                        error={
+                              !!formik.touched.theme && !!formik.errors.theme
+                            }
+                      >
+                        <InputLabel>theme</InputLabel>
+                        <Select
+                          name="theme"
+                          label="theme"
+                          value={formik.values.theme}
+                          onChange={formik.handleChange}
+                          fullWidth
+                          IconComponent={
+                                collectionThemes
+                                  ? KeyboardDoubleArrowDownIcon
+                                  : HourglassTopIcon
+                              }
+                          error={
+                                formik.touched.theme
+                                && Boolean(formik.errors.theme)
+                              }
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          {collectionThemes
+                                && collectionThemes.map(
+                                  (theme: { value: string }) => (
+                                    <MenuItem value={theme.value}>
+                                      {theme.value}
+                                    </MenuItem>
+                                  ),
+                                )}
+                        </Select>
+                        <FormHelperText>
+                          {formik.touched.theme && formik.errors.theme}
+                        </FormHelperText>
+                      </FormControl>
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <MDEditor.Markdown
+                          style={{
+                            backgroundColor: 'transparent',
+                          }}
+                          source={
+                                description
+                                  ? description.replace(/&&#&&/gim, '\n')
+                                  : collection.description.replace(
+                                    /&&#&&/gim,
+                                    '\n',
+                                  )
+                              }
+                        />
+                        <Box>
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton>
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton onClick={() => setDescription('')}>
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <MDEditor
+                        style={{
+                          backgroundColor: 'transparent',
+                        }}
+                        height={300}
+                        textareaProps={{
+                          placeholder: 'description',
+                        }}
+                        value={description}
+                        onChange={setDescription}
+                      />
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Box>
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton>
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton onClick={() => setImage(null)}>
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <InputFile setImage={setImage} image={image} />
+                      {collection.icon && !image && (
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={`data:application/pdf;base64,${collection.icon}`}
+                        alt={collection.title}
+                      />
+                      )}
+                    </Box>
+                    {Object.keys(collection).map(
+                      (key, idx: any) => collection[key]
+                            && ![
+                              'isEdit',
+                              'id',
+                              'isDelete',
+                              'createdAt',
+                              'title',
+                              'theme',
+                              'icon',
+                              'description',
+                              'updatedAt',
+                              'userId',
+                            ].includes(key) && (
+                              <UpdateFormField
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={`${key}-${idx}`}
+                                formik={formik}
+                                value={collection[key]}
+                                field={key}
+                              />
+                      ),
+                    )}
                   </Box>
                   <Box className={classes.action}>
                     <Button
@@ -333,6 +512,17 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                         flex: 1,
                         borderRadius: 0,
                       }}
+                      type="reset"
+                      color="warning"
+                      onClick={formik.handleReset}
+                    >
+                      Reset
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
                       onClick={() => {
                         if (collection.id) {
                           pullOutCollection(collection.id);
@@ -343,10 +533,10 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                     </Button>
                   </Box>
                 </ListItem>
-                ),
-              )}
-            </form>
-          </FormikProvider>
+              </form>
+            </FormikProvider>
+            ),
+          )}
         </List>
       </Paper>
     </Backdrop>

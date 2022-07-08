@@ -8,22 +8,32 @@ import {
   Typography,
   TextField,
   Chip,
+  alpha,
+  IconButton,
+  CardMedia,
 } from '@mui/material';
 import { makeStyles, Backdrop, Paper } from '@material-ui/core';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import CheckIcon from '@mui/icons-material/Check';
+import InputFile from '../../shared/components/InputFile/InputFile';
 import { ItemType } from '../../types';
-import UpdateFormField from '../UpdateFormField/UpdateFormField';
+import UpdateItemFormField from '../UpdateItemFormField/UpdateItemFormField';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
   borderRadius: 0,
   color: theme.palette.common.white,
@@ -47,13 +57,21 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '0 20px',
+    rowGap: '1.4rem',
+    padding: '0 1.4rem',
     width: '100%',
+    flex: 1,
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
 
     '& > *': {
       display: 'flex',
       flexDirection: 'column',
+      padding: '.7rem',
+      backgroundColor: alpha(theme.palette.common.black, 0.05),
     },
   },
   action: {
@@ -71,6 +89,7 @@ interface IModalEditItem {
   itemsEdit: Array<ItemType | null>;
   pullOutItem: (itemId: number) => void;
   updateItem: (item: any) => void;
+  customFields: any;
 }
 
 const ModalEditItem: FC<IModalEditItem> = ({
@@ -79,6 +98,7 @@ const ModalEditItem: FC<IModalEditItem> = ({
   itemsEdit,
   pullOutItem,
   updateItem,
+  customFields,
 }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [image, setImage] = useState<any>();
@@ -90,6 +110,20 @@ const ModalEditItem: FC<IModalEditItem> = ({
     setTags(tags.filter((tag) => tag !== str));
   };
 
+  function getInitFields(customFields: any) {
+    let obj = {};
+
+    customFields?.forEach((customField: any) => {
+      const [key] = Object.keys(customField);
+      obj = {
+        ...obj,
+        [key]: '',
+      };
+    });
+
+    return obj;
+  }
+
   useEffect(() => {
     if (!itemsEdit.length) setOpen(false);
   }, [itemsEdit]);
@@ -97,71 +131,46 @@ const ModalEditItem: FC<IModalEditItem> = ({
   const formik = useFormik({
     initialValues: {
       title: '',
-      collectionId: '',
       tags: '',
-      numberValue1: '',
-      numberValue2: '',
-      numberValue3: '',
-      checkboxValue1: { field: '', count: 1, values: [''] },
-      checkboxValue2: { field: '', count: 1, values: [''] },
-      checkboxValue3: { field: '', count: 1, values: [''] },
-      dateValue1: '',
-      dateValue2: '',
-      dateValue3: '',
-      multiLineValue1: '',
-      multiLineValue2: '',
-      multiLineValue3: '',
-      textValue1: '',
-      textValue2: '',
-      textValue3: '',
+      ...getInitFields(customFields),
     },
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
+      if (!tags.length) return;
+
       updateItem({
         itemId,
-        icon: image,
-        title: values.title ? values.title : null,
-        numberValue1: values.numberValue1 ? values.numberValue1 : null,
-        numberValue2: values.numberValue2 ? values.numberValue2 : null,
-        numberValue3: values.numberValue3 ? values.numberValue3 : null,
-        dateValue1: values.dateValue1 ? values.dateValue1 : null,
-        dateValue2: values.dateValue2 ? values.dateValue2 : null,
-        dateValue3: values.dateValue3 ? values.dateValue3 : null,
-        multiLineValue1: values.multiLineValue1 ? values.multiLineValue1 : null,
-        multiLineValue2: values.multiLineValue2 ? values.multiLineValue2 : null,
-        multiLineValue3: values.multiLineValue3 ? values.multiLineValue3 : null,
-        textValue1: values.textValue1 ? values.textValue1 : null,
-        textValue2: values.textValue2 ? values.textValue2 : null,
-        textValue3: values.textValue3 ? values.textValue3 : null,
-        checkboxValue1: values.checkboxValue1 ? values.checkboxValue1 : null,
-        checkboxValue2: values.checkboxValue2 ? values.checkboxValue2 : null,
-        checkboxValue3: values.checkboxValue3 ? values.checkboxValue3 : null,
+        icon: image || null,
+        ...values,
         tags,
       });
 
-      // resetForm({
-      //   values: {
-      //     theme: '',
-      //     numbers: [''],
-      //     dates: [''],
-      //     texts: [''],
-      //     multiLines: [''],
-      //     checkboxes: [{ field: '', count: 1, values: [''] }],
-      //   },
-      // });
+      setTags([]);
 
-      // setOpen(false);
+      resetForm({
+        values: {
+          title: '',
+          tags: '',
+          ...getInitFields(customFields),
+        },
+      });
+
+      pullOutItem(itemId);
+
+      setOpen(false);
     },
     // onReset: () => {
-    //   setDescription('');
+    //   setIsSubmited(false);
+    //   setTags([]);
+    //   setImage('');
     // },
   });
 
   return (
     <Backdrop className={classes.back} open={openModal}>
       <Paper className={classes.paper}>
-        <StuledButton onClick={() => setOpen(false)} variant="contained">
+        <StyledButton onClick={() => setOpen(false)} variant="contained">
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <List
           sx={{
             bgcolor: 'background.paper',
@@ -178,7 +187,7 @@ const ModalEditItem: FC<IModalEditItem> = ({
           <FormikProvider value={formik}>
             <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
               {itemsEdit?.map(
-                (item) => item && (
+                (item: any) => item && (
                 <ListItem
                   key={item.id}
                   sx={{
@@ -198,23 +207,97 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     }}
                   >
                     <Typography variant="h4">{item.title}</Typography>
-                    <Typography variant="subtitle1">
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ marginRight: '3.4rem' }}
+                    >
                       Created:
                       {' '}
                       {moment(item.createdAt).format('DD MMMM YYYY')}
                     </Typography>
                   </ListSubheader>
                   <Box className={classes.listItem}>
-                    <Typography>
-                      Created:
-                      {' '}
-                      {moment(item.createdAt).format('DD MMMM YYYY')}
-                    </Typography>
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.title}
-                      field="title"
-                    />
+                    <Box>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {formik.values.title || item.title}
+                        </Typography>
+                        <Box>
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton>
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => {
+                              formik.resetForm({
+                                values: { ...formik.values, title: '' },
+                              });
+                            }}
+                          >
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <TextField
+                        name="title"
+                        fullWidth
+                        label="title"
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        error={
+                              formik.touched.title
+                              && Boolean(formik.errors.title)
+                            }
+                        helperText={
+                              formik.touched.title && formik.errors.title
+                            }
+                      />
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Box>
+                          <IconButton>
+                            {image ? (
+                              <EditIcon />
+                            ) : (
+                              <AddCircleOutlineRoundedIcon />
+                            )}
+                          </IconButton>
+                          <IconButton>
+                            <CheckIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => {
+                              setImage(null);
+                            }}
+                          >
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <InputFile setImage={setImage} image={image} />
+                      {item.icon && !image && (
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={`data:application/pdf;base64,${item.icon}`}
+                        alt={item.title}
+                      />
+                      )}
+                    </Box>
                     <Box>
                       <TextField
                         fullWidth
@@ -251,74 +334,17 @@ const ModalEditItem: FC<IModalEditItem> = ({
                         }}
                       />
                     </Box>
-
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.textValue1}
-                      field="textValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.textValue2}
-                      field="textValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.textValue3}
-                      field="textValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.numberValue1}
-                      field="numberValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.numberValue2}
-                      field="numberValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.numberValue3}
-                      field="numberValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.dateValue1}
-                      field="dateValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.dateValue2}
-                      field="dateValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.dateValue3}
-                      field="dateValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.multiLineValue1}
-                      field="multiLineValue1"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.multiLineValue2}
-                      field="multiLineValue2"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.multiLineValue3}
-                      field="multiLineValue3"
-                    />
-                    <UpdateFormField
-                      formik={formik}
-                      value={item.icon}
-                      field="icon"
-                      image={image}
-                      setImage={setImage}
-                    />
+                    <Box>
+                      {customFields
+                            && customFields.map((field: any, idx: any) => (
+                              <UpdateItemFormField
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={idx}
+                                formik={formik}
+                                field={field}
+                              />
+                            ))}
+                    </Box>
                   </Box>
                   <Box className={classes.action}>
                     <Button
@@ -333,6 +359,17 @@ const ModalEditItem: FC<IModalEditItem> = ({
                       color="warning"
                     >
                       Update
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                        borderRadius: 0,
+                      }}
+                      type="reset"
+                      color="warning"
+                      onClick={formik.handleReset}
+                    >
+                      Reset
                     </Button>
                     <Button
                       sx={{

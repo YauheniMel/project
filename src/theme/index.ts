@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 
 const Colors = {
   primary_dark: '#1f2a2f',
@@ -7,9 +8,12 @@ const Colors = {
   secondary_main: '#00BCD4',
   error: '#E53935',
   warning: '#FFA000',
-  white: '#f1f1f1',
+  gray: '#f1f1f1',
+  white: '#ffffff',
   black: '#1f2a2f',
 };
+
+const breakpoints = createBreakpoints({});
 
 const theme = createTheme({
   palette: {
@@ -20,11 +24,14 @@ const theme = createTheme({
       dark: Colors.primary_dark,
     },
     common: {
-      white: Colors.white,
+      white: Colors.gray,
       black: Colors.black,
     },
     secondary: {
       main: Colors.secondary_main,
+    },
+    background: {
+      default: Colors.white,
     },
     error: {
       main: Colors.error,
@@ -40,12 +47,22 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         '::-webkit-scrollbar': {
-          width: '4px',
-          height: '4px',
-          backgroundColor: Colors.white,
+          width: '0.3rem',
+          height: '0.3rem',
         },
         '::-webkit-scrollbar-thumb': {
           backgroundColor: Colors.black,
+        },
+        ':root': {
+          [breakpoints.up('md')]: {
+            fontSize: '18px',
+          },
+          [breakpoints.down('md')]: {
+            fontSize: '16px',
+          },
+          [breakpoints.down('xs')]: {
+            fontSize: '12px',
+          },
         },
       },
     },

@@ -13,15 +13,17 @@ import {
 import CustomField from '../CustomField/CustomField';
 import InputFile from '../../shared/components/InputFile/InputFile';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: '0',
   color: theme.palette.common.white,
 }));
 
@@ -32,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '20px',
+    rowGap: '1.4rem',
+    padding: '1.4rem',
     height: '300px',
     overflowY: 'scroll',
 
@@ -101,12 +103,6 @@ const ItemForm: FC<IItemForm> = ({
       .min(2, 'Title must have more than 2 letters')
       .max(150, 'Title must have less than 30 letters')
       .required('Title is required'),
-    description: yup
-      .string()
-      .trim()
-      .min(2, 'Description must have more than 2 letters')
-      .max(150, 'Description must have less than 30 letters')
-      .required('Description is required'),
   });
 
   const handleClose = () => {
@@ -120,7 +116,6 @@ const ItemForm: FC<IItemForm> = ({
   const formik = useFormik({
     initialValues: {
       title: '',
-      description: '',
       tags: '',
       ...getInitFields(customFields),
     },
@@ -141,7 +136,6 @@ const ItemForm: FC<IItemForm> = ({
         values: {
           title: '',
           tags: '',
-          description: '',
           ...getInitFields(customFields),
         },
       });
@@ -159,7 +153,7 @@ const ItemForm: FC<IItemForm> = ({
   return (
     <Backdrop className={classes.back} open={openForm} invisible>
       <Paper className={classes.paper}>
-        <StuledButton
+        <StyledButton
           onClick={() => {
             formik.resetForm();
             setIsSubmited(false);
@@ -168,7 +162,7 @@ const ItemForm: FC<IItemForm> = ({
           variant="contained"
         >
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <FormikProvider value={formik}>
           <form
             className={classes.form}
@@ -188,20 +182,6 @@ const ItemForm: FC<IItemForm> = ({
               onChange={formik.handleChange}
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
-            />
-            <TextField
-              fullWidth
-              id="description"
-              name="description"
-              label="Description"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-              helperText={
-                formik.touched.description && formik.errors.description
-              }
             />
             <InputFile setImage={setImage} image={image} />
             <Box>
@@ -234,7 +214,7 @@ const ItemForm: FC<IItemForm> = ({
                     <Chip
                       key={idx}
                       style={{
-                        marginRight: '5px',
+                        marginRight: '0.3rem',
                       }}
                       label={tag}
                       onDelete={() => handleDelete(tag)}

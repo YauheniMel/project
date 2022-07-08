@@ -46,6 +46,32 @@ function userReducer(state = initState, action: AnyAction) {
         listEditCollections: [...action.collections],
       };
     }
+    case UserActionTypes.deleteCollection: {
+      return {
+        ...state,
+        myCollections: [
+          ...state.myCollections!.filter(
+            (collection) => collection.id !== action.collectionId,
+          ),
+        ],
+        listDeleteCollections: [
+          ...state.listDeleteCollections.filter(
+            (collection) => collection!.id !== action.collectionId,
+          ),
+        ],
+      };
+    }
+    case UserActionTypes.updateCollection: {
+      return {
+        ...state,
+        myCollections: [
+          action.collection,
+          ...state.myCollections!.filter(
+            (collection) => collection.id !== action.collection.id,
+          ),
+        ],
+      };
+    }
     case UserActionTypes.setDeleteCollections: {
       return {
         ...state,

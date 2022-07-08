@@ -80,7 +80,7 @@ export const inputTextValue = (props: GridFilterInputValueProps) => {
         flexDirection: 'row',
         alignItems: 'center',
         height: 48,
-        paddingLeft: '20px',
+        paddingLeft: '1.4rem',
       }}
       onSubmit={handleSubmit}
     >
@@ -158,7 +158,7 @@ export const inputDateValue = (props: GridFilterInputValueProps) => {
         flexDirection: 'row',
         alignItems: 'center',
         height: 48,
-        paddingLeft: '20px',
+        paddingLeft: '1.4rem',
       }}
       onSubmit={handleSubmit}
     >
@@ -260,7 +260,7 @@ export const selectTagValue = (props: GridFilterInputValueProps) => {
         flexDirection: 'row',
         alignItems: 'center',
         height: 48,
-        paddingLeft: '20px',
+        paddingLeft: '1.4rem',
       }}
       onSubmit={handleSubmit}
     >

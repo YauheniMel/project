@@ -86,7 +86,7 @@ const AdminPage: FC<IAdminPage> = ({
         <Typography
           variant="h4"
           sx={{
-            paddingBottom: '20px',
+            paddingBottom: '1.4rem',
           }}
         >
           {targetUser.name}

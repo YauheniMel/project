@@ -20,6 +20,8 @@ export enum UserActionTypes {
   decreaseLikes = 'DECREASE-LIKES',
   addNewCollection = 'ADD-NEW-COLLECTION',
   getThemes = 'GET-THEMES',
+  deleteCollection = 'DELETE-COLLECTION',
+  updateCollection = 'UPDATE-COLLECTION',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
@@ -36,6 +38,11 @@ const setCollectionThemesAction = (
 
 const addNewCollectionAction = (collection: CollectionType) => ({
   type: UserActionTypes.addNewCollection,
+  collection,
+});
+
+const updateCollectionAction = (collection: CollectionType) => ({
+  type: UserActionTypes.updateCollection,
   collection,
 });
 
@@ -89,6 +96,11 @@ const updateDeleteCollections = (collectionId: number) => ({
   collectionId,
 });
 
+const deleteCollectionAction = (collectionId: number) => ({
+  type: UserActionTypes.deleteCollection,
+  collectionId,
+});
+
 export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
   requestAPI.getUserInfo(payload).then((response) => {
     if (response.isNew) alert('Hello new User');
@@ -136,10 +148,10 @@ export const getDeleteCollectionsThunk = (userId: string) => (dispatch: any) => 
     .then((response) => dispatch(setDeleteCollectionsAction(response as CollectionType[])));
 };
 
-export const updateCollectionThunk = (collection: any) => () => {
+export const updateCollectionThunk = (collection: any) => (dispatch: any) => {
   requestAPI
     .updateCollection(collection)
-    .then((response) => console.log(response));
+    .then((response) => dispatch(updateCollectionAction(response)));
 };
 
 export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => {
@@ -167,4 +179,12 @@ export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => 
   requestAPI
     .createCollection(collectionInfo)
     .then((response) => dispatch(addNewCollectionAction(response)));
+};
+
+export const deleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
+  requestAPI.deleteCollection(collectionId).then((response) => {
+    if (response.code === 1) {
+      dispatch(deleteCollectionAction(collectionId));
+    }
+  });
 };

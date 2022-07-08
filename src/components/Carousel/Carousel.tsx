@@ -11,23 +11,23 @@ import { CollectionType } from '../../types';
 
 const StyledCarousel = styled(Carousel)(({ theme }) => ({
   position: 'relative',
-  padding: '20px',
-  margin: '40px 20px',
+  padding: '1.3rem',
+  margin: '2.5rem 1.3rem',
   backgroundColor: theme.palette.common.black,
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   position: 'absolute',
   top: 0,
-  padding: '10px',
+  padding: '0.7rem',
   right: 0,
   maxHeight: '100%',
-  overflowY: 'auto',
+  overflow: 'hidden',
   width: '30%',
   backgroundColor: alpha(theme.palette.common.white, 0.3),
 
   '& > *': {
-    margin: '10px 0',
+    margin: '0.7rem 0',
   },
 }));
 
@@ -66,7 +66,7 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => (
             }}
             component="img"
             image={`data:application/pdf;base64,${collection.icon}`}
-            alt={collection.theme?.toString()}
+            alt={collection.title?.toString()}
           />
         )}
       </Link>

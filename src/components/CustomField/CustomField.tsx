@@ -31,8 +31,9 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
           value={formik.values.field}
           onChange={formik.handleChange}
           style={{
-            minHeight: '100px',
+            minHeight: '5rem',
             padding: '.7rem',
+            backgroundColor: 'transparent',
           }}
         />
       );
@@ -49,7 +50,7 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
           <span>{fieldValue}</span>
           {checkboxes.map((value: string, index: any) => (
             // eslint-disable-next-line jsx-a11y/label-has-associated-control
-            <label style={{ marginLeft: '20px' }} key={index}>
+            <label style={{ marginLeft: '1.4rem' }} key={index}>
               <Field
                 component={Checkbox}
                 name={key}
@@ -77,13 +78,13 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
             onChange={formik.handleChange}
           >
             <FormControlLabel
-              sx={{ paddingLeft: '10px' }}
+              sx={{ paddingLeft: '0.7rem' }}
               value={1}
               control={<Radio />}
               label="Yes"
             />
             <FormControlLabel
-              sx={{ paddingLeft: '10px' }}
+              sx={{ paddingLeft: '0.7rem' }}
               value={0}
               control={<Radio />}
               label="No"
@@ -96,7 +97,6 @@ const CustomField: FC<ICustomField> = ({ formik, field }) => {
     return (
       <TextField
         type={type}
-        required
         name={key}
         InputLabelProps={{ shrink: true }}
         label={field[key]}

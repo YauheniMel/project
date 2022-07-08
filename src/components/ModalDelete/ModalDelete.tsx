@@ -15,15 +15,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import { CollectionType, ItemType } from '../../types';
 
-const StuledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   right: 0,
-  height: '55px',
-  width: '55px',
+  maxWidth: '3.2rem',
+  maxHeight: '3.2rem',
+  minWidth: '3.2rem',
+  minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0px',
+  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -34,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'relative',
     width: '60%',
-    minWidth: '300px',
     height: '150px',
 
     [theme.breakpoints.down('sm')]: {
@@ -45,10 +46,14 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     display: 'flex',
     flexDirection: 'column',
-    rowGap: '20px',
-    padding: '0 20px',
-    width: '100%',
-    flex: 1,
+    rowGap: '1.4rem',
+    padding: '0 1.4rem',
+    width: '100% !important',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   action: {
     display: 'flex',
@@ -83,26 +88,26 @@ const ModalDelete: FC<IModalDelete> = ({
   const classes = useStyles();
 
   useEffect(() => {
-    if (!collectionsDel?.length) setOpen(false);
     if (!itemsDel?.length) setOpen(false);
-  }, [collectionsDel, itemsDel]);
+  }, [itemsDel]);
+
+  useEffect(() => {
+    if (!collectionsDel?.length) setOpen(false);
+  }, [collectionsDel]);
 
   return (
     <Backdrop className={classes.back} open={openModal}>
       <Paper className={classes.paper}>
-        <StuledButton onClick={() => setOpen(false)} variant="contained">
+        <StyledButton onClick={() => setOpen(false)} variant="contained">
           <CloseIcon fontSize="large" />
-        </StuledButton>
+        </StyledButton>
         <List
           sx={{
             bgcolor: 'background.paper',
             overflow: 'auto',
             paddingBottom: 0,
             width: '100%',
-            height: {
-              sm: '100%',
-              '*': '150px',
-            },
+            height: '100%',
           }}
           subheader={<li />}
         >
@@ -112,11 +117,8 @@ const ModalDelete: FC<IModalDelete> = ({
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '0',
-                height: {
-                  sm: '100%',
-                  '*': '150px',
-                },
+                padding: 0,
+                height: '100%',
               }}
               key={collection.id}
             >
@@ -133,7 +135,10 @@ const ModalDelete: FC<IModalDelete> = ({
                 {collection.theme}
               </ListSubheader>
               <Box className={classes.listItem}>
-                <ListItem key={`Collection-${collection.createdAt}`}>
+                <ListItem
+                  sx={{ flex: 1 }}
+                  key={`Collection-${collection.createdAt}`}
+                >
                   <MDEditor.Markdown
                     source={collection.description!.replace(
                       /&&#&&/gim,
@@ -176,11 +181,8 @@ const ModalDelete: FC<IModalDelete> = ({
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '0',
-                height: {
-                  sm: '100%',
-                  '*': '150px',
-                },
+                padding: 0,
+                height: '100%',
               }}
               key={item.id}
             >

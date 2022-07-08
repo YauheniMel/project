@@ -9,9 +9,9 @@ import TagCloudComponent from '../../shared/components/TagsCloud/TagCloud';
 const useStyles = makeStyles({
   list: {
     display: 'flex',
-    columnGap: '10px',
+    columnGap: '0.7rem',
     overflowX: 'auto',
-    padding: '15px 0',
+    padding: '1rem 0',
   },
   item: {
     display: 'flex',

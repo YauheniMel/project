@@ -79,6 +79,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   return (
     <>
       <ModalEditItem
+        customFields={customFields}
         openModal={openModalEdit}
         setOpen={setOpenModalEdit}
         itemsEdit={listEditItems}
@@ -155,8 +156,8 @@ const CollectionPage: FC<ICollectionPage> = ({
           <Box
             sx={{
               display: 'flex',
-              columnGap: '30px',
-              padding: '20px',
+              columnGap: '2rem',
+              padding: '1.4rem',
             }}
           >
             <Avatar

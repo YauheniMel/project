@@ -16,8 +16,8 @@ const customRenderer = (tag: any, size: any, color: any) => (
       animationDelay: `${Math.random() * 2}s`,
       fontSize: `${size / 2}em`,
       border: `2px solid ${color}`,
-      margin: '3px',
-      padding: '3px',
+      margin: '0.3rem',
+      padding: '0.3rem',
       color,
     }}
   >

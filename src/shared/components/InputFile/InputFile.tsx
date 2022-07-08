@@ -10,19 +10,19 @@ const useStyles = makeStyles({
   file: {
     width: '100%',
     opacity: 0,
-    height: '30px',
+    height: '2rem',
     zIndex: 2,
     display: 'block',
   },
   ready: {
     position: 'relative',
     transform: 'translateY(-100%)',
-    height: '30px',
+    height: '2rem',
   },
   title: {
     position: 'relative',
     transform: 'translateY(-100%)',
-    height: '30px',
+    height: '2rem',
   },
 });
 

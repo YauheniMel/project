@@ -19,11 +19,12 @@ import RoutesApp from '../../../constants/routes';
 import { ItemType } from '../../../types';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  padding: '5px',
-  minWidth: '240px',
-  width: '240px',
-  height: '300px',
+  minWidth: '12rem',
+  width: '12rem',
+  height: '15rem',
   overflow: 'auto',
+  borderRadius: 0,
+  backgroundColor: theme.palette.common.white,
 
   '&:hover': {
     transform: 'scale(1.01)',
@@ -53,7 +54,7 @@ const CardItem: FC<ICardItem> = ({
         component="img"
         height="194"
         image={`data:application/pdf;base64,${item.icon}`}
-        alt="Paella dish"
+        alt={item.title}
       />
     )}
     <Box
