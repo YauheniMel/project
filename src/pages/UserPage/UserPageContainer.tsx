@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
+// import { useNavigate } from 'react-router';
 import { AppStateType } from '../../redux';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
@@ -17,15 +18,17 @@ import {
 import {
   getDeleteCollections,
   getEditCollections,
+  getIsLoading,
   getMyCollectionsSelector,
   getUserCollectionThemes,
   getUserId,
-  getUserIsAdmin,
   getUserName,
+  getUserRole,
   getUserStatus,
   getUserSurname,
   getUserTheme,
 } from '../../redux/selectors/user-selector';
+import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionInitType, CollectionType } from '../../types';
 import UserPage from './UserPage';
 
@@ -33,7 +36,7 @@ interface IUserPageContainer {
   id: number;
   name: string;
   surname: string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   theme: 'light' | 'dark';
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
@@ -51,6 +54,7 @@ interface IUserPageContainer {
   pullOutCollection: (collectionId: number) => void;
   getCollectionThemes: () => void;
   collectionThemes: { id: number; value: string }[] | null;
+  isLoading: boolean;
 }
 
 const UserPageContainer: FC<IUserPageContainer> = (props) => {
@@ -68,7 +72,20 @@ const UserPageContainer: FC<IUserPageContainer> = (props) => {
     }
   }, [props.id]);
 
-  return <UserPage {...props} />;
+  // const navigate = useNavigate();
+
+  // if (props.role && props.role === 'Reader') {
+  //   navigate(-1);
+
+  //   return null;
+  // }
+
+  return (
+    <>
+      <Preloader isLoading={props.isLoading} />
+      <UserPage {...props} />
+    </>
+  );
 };
 
 const mapStateToProps = (state: AppStateType) => ({
@@ -77,11 +94,12 @@ const mapStateToProps = (state: AppStateType) => ({
   surname: getUserSurname(state),
   status: getUserStatus(state),
   theme: getUserTheme(state),
-  isAdmin: getUserIsAdmin(state),
+  role: getUserRole(state),
   collections: getMyCollectionsSelector(state),
   collectionsEdit: getEditCollections(state),
   collectionsDel: getDeleteCollections(state),
   collectionThemes: getUserCollectionThemes(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

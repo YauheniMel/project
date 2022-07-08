@@ -9,12 +9,10 @@ import { AppStateType } from '../../redux';
 import {
   getUserId,
   getUserIdFirebase,
-  getUserIsAdmin,
   getUserName,
+  getUserRole,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
-import { getIsAuth } from '../../redux/selectors/auth-selector';
-import { logOutThunk } from '../../redux/actions/auth-action';
 import {
   getSearchItemsSelector,
   getSearchUsersSelector,
@@ -27,14 +25,14 @@ import {
 import { getUntouchedCommentsThunk } from '../../redux/actions/collection-action';
 import { UntouchedCommentType } from '../../types';
 import { getUntouchedComments } from '../../redux/selectors/collection-selector';
+import { logOutThunk } from '../../redux/actions/user-action';
 
 interface IRootPage {
   id: string;
   userId: number;
   name: string;
   surname: string;
-  isAuth: boolean;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   logOutUser: (id: string) => void;
   search: (substr: string) => void;
   itemsSearch: any;
@@ -51,6 +49,7 @@ const RootPage: FC<IRootPage> = ({
   itemsSearch,
   usersSearch,
   userId,
+  role,
   getUntouchedComments,
   ...rest
 }) => {
@@ -71,6 +70,7 @@ const RootPage: FC<IRootPage> = ({
     <>
       <Header
         {...rest}
+        role={role}
         itemsSearch={itemsSearch?.map((item: any) => ({
           link: item.title,
           routeId: item.collectionId,
@@ -87,7 +87,7 @@ const RootPage: FC<IRootPage> = ({
       <Container>
         <Outlet />
       </Container>
-      <ToolBar logOutUser={logOutUser} id={id} />
+      <ToolBar logOutUser={logOutUser} id={id} role={role} />
     </>
   );
 };
@@ -98,8 +98,7 @@ const mapStateToProps = (state: AppStateType) => ({
   name: getUserName(state),
   untouchedComments: getUntouchedComments(state),
   surname: getUserSurname(state),
-  isAuth: getIsAuth(state),
-  isAdmin: getUserIsAdmin(state),
+  role: getUserRole(state),
   itemsSearch: getSearchItemsSelector(state),
   usersSearch: getSearchUsersSelector(state),
 });

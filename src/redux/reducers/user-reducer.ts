@@ -5,11 +5,10 @@ import { UserActionTypes } from '../actions/user-action';
 const initState: UserPageType = {
   id: null,
   userId: null,
-  isAdmin: false,
+  role: 'Reader',
   name: null,
   surname: null,
   status: 'active',
-  isOnline: false,
   theme: 'light',
   createdAt: null,
   updatedAt: null,
@@ -18,14 +17,39 @@ const initState: UserPageType = {
   listDeleteCollections: [],
   likes: null,
   themes: null,
+  isLoading: false,
 };
 
 function userReducer(state = initState, action: AnyAction) {
   switch (action.type) {
+    case UserActionTypes.setIsLoading: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
+      };
+    }
     case UserActionTypes.setUserPersonalInfo: {
       return {
         ...state,
         ...action.payload,
+      };
+    }
+    case UserActionTypes.logoutUser: {
+      return {
+        id: null,
+        userId: null,
+        role: 'Reader',
+        name: null,
+        surname: null,
+        status: 'active',
+        theme: 'light',
+        createdAt: null,
+        updatedAt: null,
+        myCollections: null,
+        listEditCollections: [],
+        listDeleteCollections: [],
+        likes: null,
+        themes: null,
       };
     }
     case UserActionTypes.getThemes: {
@@ -38,6 +62,12 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         myCollections: [...action.collections],
+      };
+    }
+    case UserActionTypes.setMeIsNotAdmin: {
+      return {
+        ...state,
+        role: state.id === action.userId ? 'User' : 'Admin',
       };
     }
     case UserActionTypes.setEditCollections: {

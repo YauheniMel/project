@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
+const Roles = require('../../seeders/utils/Roles');
 
 const sequelize = new Sequelize(
   'heroku_a2bd434709364ef',
@@ -21,9 +22,9 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  isAdmin: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
+  role: {
+    type: DataTypes.ENUM(Roles.Admin, Roles.User),
+    defaultValue: Roles.User,
   },
   name: {
     type: DataTypes.STRING,
@@ -33,17 +34,13 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  theme: {
-    type: DataTypes.ENUM('light', 'dark'),
-    defaultValue: 'light',
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   status: {
     type: DataTypes.ENUM('active', 'blocked'),
     defaultValue: 'active',
-  },
-  isOnline: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
   },
 });
 const Collection = sequelize.define('collection', {

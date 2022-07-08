@@ -21,7 +21,6 @@ import {
   setTargetItemAction,
   updateItemThunk,
 } from '../../redux/actions/collection-action';
-import { getIsAuth } from '../../redux/selectors/auth-selector';
 import {
   getAuthorIdSelector,
   getCollectionCreatedAtSelector,
@@ -34,12 +33,15 @@ import {
   getCollectionThemeSelector,
   getDeleteItemList,
   getEditItemList,
+  getIsLoading,
   getMatchTagsSelector,
 } from '../../redux/selectors/collection-selector';
 import {
   getLikesSelector,
   getUserId,
+  getUserRole,
 } from '../../redux/selectors/user-selector';
+import Preloader from '../../shared/components/Preloader/Preloader';
 import { ItemInitType, ItemType } from '../../types';
 import ItemPage from '../ItemPage/ItemPage';
 import CollectionPage from './CollectionPage';
@@ -49,13 +51,13 @@ interface ICollectionPageContainer {
   authorId: number;
   id: number;
   icon: any;
-  isAuth: boolean;
   description: string;
   theme: string;
   customFields: any;
   createdAt: string;
   targetItem: ItemType | null;
   list: ItemType[] | null;
+  isLoading: boolean;
   createNewItem: (itemInfo: ItemInitType) => void;
   deleteItem: (itemId: number) => void;
   getCollectionItems: (collectionId: number) => void;
@@ -103,25 +105,27 @@ const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<CollectionPage {...props} />} />
-      <Route
-        path={RoutesApp.Item}
-        element={(
-          <ItemPage
-            getTargetItem={props.getTargetItem}
-            targetItem={props.targetItem as ItemType}
-            toogleLike={props.toogleLike}
-            userId={props.userId}
-            likes={props.likes}
-            getAllComments={props.getAllComments}
-            leaveComment={props.leaveComment}
-            isAuth={props.isAuth}
-            setCommentsTouched={props.setCommentsTouched}
-          />
-        )}
-      />
-    </Routes>
+    <>
+      <Preloader isLoading={props.isLoading} />
+      <Routes>
+        <Route path="/" element={<CollectionPage {...props} />} />
+        <Route
+          path={RoutesApp.Item}
+          element={(
+            <ItemPage
+              getTargetItem={props.getTargetItem}
+              targetItem={props.targetItem as ItemType}
+              toogleLike={props.toogleLike}
+              userId={props.userId}
+              likes={props.likes}
+              getAllComments={props.getAllComments}
+              leaveComment={props.leaveComment}
+              setCommentsTouched={props.setCommentsTouched}
+            />
+          )}
+        />
+      </Routes>
+    </>
   );
 };
 
@@ -140,7 +144,8 @@ const mapStateToProps = (state: AppStateType) => ({
   likes: getLikesSelector(state),
   matchTags: getMatchTagsSelector(state),
   authorId: getAuthorIdSelector(state),
-  isAuth: getIsAuth(state),
+  role: getUserRole(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

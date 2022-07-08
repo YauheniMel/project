@@ -4,7 +4,16 @@ import {
   CollectionType,
   UserPersonalInfoType,
 } from '../../types';
-import { CredentialsType } from './auth-action';
+import { setIsAuthAction } from './auth-action';
+import { clearCollectionStateAction } from './collection-action';
+import { clearCollectionsStateAction } from './collections-action';
+
+export interface CredentialsType {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+}
 
 export enum UserActionTypes {
   setUserPersonalInfo = 'SET-USER-PERSONAL-INFO',
@@ -22,11 +31,19 @@ export enum UserActionTypes {
   getThemes = 'GET-THEMES',
   deleteCollection = 'DELETE-COLLECTION',
   updateCollection = 'UPDATE-COLLECTION',
+  setMeIsNotAdmin = 'SET-ME-IS-NOT-ADMIN',
+  logoutUser = 'LOGOUT-USER',
+  setIsLoading = 'SET-IS-USER-LOADING',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
   type: UserActionTypes.setUserPersonalInfo,
   payload,
+});
+
+export const setIsLoadingAction = (isLoading: boolean) => ({
+  type: UserActionTypes.setIsLoading,
+  isLoading,
 });
 
 const setCollectionThemesAction = (
@@ -81,6 +98,10 @@ const pullOutCollectionAction = (collectionId: CollectionType) => ({
   collectionId,
 });
 
+export const logoutUserAction = () => ({
+  type: UserActionTypes.logoutUser,
+});
+
 const setLikeAction = (itemId: number) => ({
   type: UserActionTypes.setLike,
   itemId,
@@ -101,11 +122,43 @@ const deleteCollectionAction = (collectionId: number) => ({
   collectionId,
 });
 
-export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
-  requestAPI.getUserInfo(payload).then((response) => {
-    if (response.isNew) alert('Hello new User');
-    dispatch(setUserPersonalInfoAction(response.user));
+export const setMeIsNotAdminAction = (userId: number) => ({
+  type: UserActionTypes.setMeIsNotAdmin,
+  userId,
+});
+
+export const signUpThunk = (credentials: CredentialsType) => (dispatch: any) => {
+  requestAPI.signUpUser(credentials).then((res) => {
+    dispatch(setUserPersonalInfoAction(res));
   });
+};
+
+export const logOutThunk = (userId: string) => (dispatch: any) => {
+  requestAPI.logOutUser(userId).then(() => {
+    dispatch(logoutUserAction());
+    dispatch(clearCollectionsStateAction());
+    dispatch(clearCollectionStateAction());
+  });
+};
+
+export const loginThunk = (userId: string) => (dispatch: any) => {
+  dispatch(setIsAuthAction(false));
+
+  requestAPI.loginUser(userId).finally(() => {
+    dispatch(setIsAuthAction(true));
+  });
+};
+
+export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
+  requestAPI
+    .getUserInfo(payload)
+    .finally(() => {
+      dispatch(setIsAuthAction(true));
+    })
+    .then((response) => {
+      console.log('111');
+      dispatch(setUserPersonalInfoAction(response.user));
+    });
 };
 
 export const getCollectionThemesThunk = () => (dispatch: any) => {
@@ -115,17 +168,27 @@ export const getCollectionThemesThunk = () => (dispatch: any) => {
 };
 
 export const getMyCollectionsThunk = (userId: number, page = 1) => (dispatch: any) => {
-  requestAPI.getMyCollections(userId, page).then((response) => {
-    dispatch(setMyCollectionsAction(response as CollectionType[]));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .getMyCollections(userId, page)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      dispatch(setMyCollectionsAction(response as CollectionType[]));
+    });
 };
 
 export const setEditCollectionThunk = (collectionId: number) => (dispatch: any) => {
-  requestAPI.setEditCollection(collectionId).then((response) => {
-    if (response.code === 1) {
-      dispatch(updateEditCollectionsAction(collectionId));
-    }
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .setEditCollection(collectionId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      if (response.code === 1) {
+        dispatch(updateEditCollectionsAction(collectionId));
+      }
+    });
 };
 
 export const getEditCollectionsThunk = (userId: string) => (dispatch: any) => {
@@ -135,11 +198,16 @@ export const getEditCollectionsThunk = (userId: string) => (dispatch: any) => {
 };
 
 export const setDeleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
-  requestAPI.setDeleteCollection(collectionId).then((response) => {
-    if (response.code === 1) {
-      dispatch(updateDeleteCollections(collectionId));
-    }
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .setDeleteCollection(collectionId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      if (response.code === 1) {
+        dispatch(updateDeleteCollections(collectionId));
+      }
+    });
 };
 
 export const getDeleteCollectionsThunk = (userId: string) => (dispatch: any) => {
@@ -149,8 +217,11 @@ export const getDeleteCollectionsThunk = (userId: string) => (dispatch: any) => 
 };
 
 export const updateCollectionThunk = (collection: any) => (dispatch: any) => {
+  dispatch(setIsLoadingAction(true));
+
   requestAPI
     .updateCollection(collection)
+    .finally(() => dispatch(setIsLoadingAction(false)))
     .then((response) => dispatch(updateCollectionAction(response)));
 };
 
@@ -176,15 +247,23 @@ export const toogleLikeThunk = (userId: number, itemId: number) => (dispatch: an
 };
 
 export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => (dispatch: any) => {
+  dispatch(setIsLoadingAction(true));
+
   requestAPI
     .createCollection(collectionInfo)
+    .finally(() => dispatch(setIsLoadingAction(false)))
     .then((response) => dispatch(addNewCollectionAction(response)));
 };
 
 export const deleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
-  requestAPI.deleteCollection(collectionId).then((response) => {
-    if (response.code === 1) {
-      dispatch(deleteCollectionAction(collectionId));
-    }
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .deleteCollection(collectionId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      if (response.code === 1) {
+        dispatch(deleteCollectionAction(collectionId));
+      }
+    });
 };

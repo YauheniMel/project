@@ -7,6 +7,7 @@ const initState: HomePageType = {
   collections: null,
   list: null,
   tags: null,
+  isLoading: false,
 };
 
 function homeReducer(state = initState, action: AnyAction) {
@@ -15,6 +16,12 @@ function homeReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         collections: [...action.collections],
+      };
+    }
+    case HomeActionTypes.setIsLoading: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     }
     case HomeActionTypes.getLastAddItems: {
@@ -57,6 +64,7 @@ function homeReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         list: newList || null,
+        isLoading: false,
       };
     }
     default:

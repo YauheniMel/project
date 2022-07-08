@@ -1,8 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { AppStateType } from '../../redux';
 import {
   blockUserThunk,
+  clearAdminStateAction,
   deleteUserThunk,
   getAllUsersThunk,
   getTargetUserCollectionsThunk,
@@ -16,7 +18,10 @@ import {
   getAdminTargetCollections,
   getAdminTargetUser,
   getAdminUsers,
+  getIsLoading,
 } from '../../redux/selectors/admin-selector';
+import { getUserRole } from '../../redux/selectors/user-selector';
+import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionType, TargetUserType } from '../../types';
 import AdminPage from './AdminPage';
 
@@ -28,11 +33,14 @@ interface IAdminPageContainer {
   getTargetUserCollections: (id: number) => void;
   setCollection: (collectionId: CollectionType) => void;
   getAllUsersThunk: () => void;
+  role: 'Admin' | 'User';
   blockUser: (userId: number) => void;
   unblockUser: (userId: number) => void;
   deleteUser: (userId: number) => void;
   setIsAdmin: (userId: number) => void;
   setIsNotAdmin: (userId: number) => void;
+  clearAdminState: () => void;
+  isLoading: boolean;
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
@@ -40,15 +48,32 @@ const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
     const { getAllUsersThunk } = props;
 
     getAllUsersThunk();
+
+    return props.clearAdminState;
   }, []);
 
-  return <AdminPage {...props} />;
+  const navigate = useNavigate();
+
+  if (props.role && props.role !== 'Admin') {
+    navigate(-1);
+
+    return null;
+  }
+
+  return (
+    <>
+      <Preloader isLoading={props.isLoading} />
+      <AdminPage {...props} />
+    </>
+  );
 };
 
 const mapStateToProps = (state: AppStateType) => ({
+  role: getUserRole(state),
   targetCollections: getAdminTargetCollections(state),
   targetUser: getAdminTargetUser(state),
   users: getAdminUsers(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -76,6 +101,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   setIsNotAdmin: (userId: number) => {
     dispatch(removeFromAdminsThunk(userId));
+  },
+  clearAdminState: () => {
+    dispatch(clearAdminStateAction());
   },
 });
 

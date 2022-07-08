@@ -59,9 +59,6 @@ const CardCollection: FC<ICardCollection> = ({
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.4 : 1,
     }),
-    end() {
-      setShowImage(0);
-    },
   });
 
   const classes = useStyles();

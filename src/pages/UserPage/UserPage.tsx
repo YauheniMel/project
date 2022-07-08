@@ -46,11 +46,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface IUserPage {
   id: number;
-  isAdmin: boolean;
   theme: 'light' | 'dark';
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
+  role: 'Admin' | 'User' | 'Reader';
   deleteCollection: (collectionId: number) => void;
   setTargetCollection: (collection: CollectionType) => void;
   setEditCollection: (collectionId: number) => void;
@@ -65,7 +65,7 @@ interface IUserPage {
 }
 
 const UserPage: FC<IUserPage> = ({
-  isAdmin,
+  role,
   theme,
   status,
   collections,
@@ -110,7 +110,7 @@ const UserPage: FC<IUserPage> = ({
     }),
   });
 
-  console.log(theme, status, isAdmin);
+  console.log(theme, status, role);
 
   return (
     <>

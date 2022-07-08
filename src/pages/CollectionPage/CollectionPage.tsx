@@ -177,7 +177,12 @@ const CollectionPage: FC<ICollectionPage> = ({
             </Box>
           </Box>
           {description && (
-            <MDEditor.Markdown source={description.replace(/&&#&&/gim, '\n')} />
+            <MDEditor.Markdown
+              source={description.replace(/&&#&&/gim, '\n')}
+              style={{
+                backgroundColor: 'transparent',
+              }}
+            />
           )}
           {!!list?.length && customFields && (
             <Table

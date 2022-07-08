@@ -46,8 +46,7 @@ const StyledPaper = styled(Paper)({
 interface IHeader {
   name: string;
   surname: string;
-  isAuth: boolean;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   search: (substr: string) => void;
   itemsSearch:
   | {
@@ -73,8 +72,7 @@ interface IHeader {
 const Header: FC<IHeader> = ({
   name,
   surname,
-  isAuth,
-  isAdmin,
+  role,
   untouchedComments,
   ...rest
 }) => {
@@ -102,8 +100,8 @@ const Header: FC<IHeader> = ({
           columnGap: '2rem',
         }}
       >
-        {isAuth && name ? (
-          <Logo name={name} isAdmin={isAdmin} surname={surname} />
+        {(role === 'Admin' || role === 'User') && name ? (
+          <Logo name={name} role={role} surname={surname} />
         ) : (
           <Link component={RouterLink} to={RoutesApp.Login}>
             Login

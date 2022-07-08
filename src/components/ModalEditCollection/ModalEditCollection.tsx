@@ -162,7 +162,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
       textKey3: '',
     },
     onSubmit: (values, { resetForm }) => {
-      debugger;
       updateCollection({
         collectionId,
         icon: image || null,

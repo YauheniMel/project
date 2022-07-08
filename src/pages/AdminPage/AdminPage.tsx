@@ -126,7 +126,7 @@ const AdminPage: FC<IAdminPage> = ({
                   color={user.status === 'active' ? 'primary' : 'error'}
                   size="small"
                 />
-                {user.isAdmin && (
+                {user.role === 'Admin' && (
                   <Chip
                     label="Admin"
                     color="primary"

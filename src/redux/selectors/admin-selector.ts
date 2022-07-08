@@ -14,3 +14,7 @@ export function getAdminTargetCollections(
 export function getAdminUsers(state: AppStateType): TargetUserType[] | null {
   return state.admin.users as TargetUserType[] | null;
 }
+
+export function getIsLoading(state: AppStateType): boolean {
+  return state.admin.isLoading;
+}

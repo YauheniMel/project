@@ -140,6 +140,9 @@ const ModalDelete: FC<IModalDelete> = ({
                   key={`Collection-${collection.createdAt}`}
                 >
                   <MDEditor.Markdown
+                    style={{
+                      backgroundColor: 'transparent',
+                    }}
                     source={collection.description!.replace(
                       /&&#&&/gim,
                       '\n',

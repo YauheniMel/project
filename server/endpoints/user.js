@@ -1,21 +1,21 @@
 const express = require('express');
+const Roles = require('../../seeders/utils/Roles');
 const models = require('../services/sequelize');
 
 const router = express.Router();
 
 router.post('/api/signUpUser', (req, res) => {
-  const { name, surname, id } = req.body;
+  const {
+    name, surname, id, email,
+  } = req.body;
 
   models.User.create({
     userId: id,
     name,
     surname,
-    isOnline: true,
+    email,
   })
-    .then(() => res.status(200).send({
-      code: 1,
-      message: 'SignUp success!',
-    }))
+    .then((response) => res.status(200).send(response))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -23,25 +23,23 @@ router.post('/api/signUpUser', (req, res) => {
 });
 
 router.get('/api/getUserInfo/', (req, res) => {
-  const { id, name, surname } = req.query;
+  const {
+    id, name, surname, email,
+  } = req.query;
 
   models.User.findOrCreate({
     where: {
       userId: id,
       name,
       surname,
+      email,
     },
     include: {
       model: models.Like,
       attributes: ['itemId'],
     },
-    defaults: {
-      isOnline: true,
-    },
   })
-    .then(([user, created]) => {
-      res.status(200).send({ user, isNew: created });
-    })
+    .then(([user, created]) => res.status(200).send({ user, isNew: created }))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,
@@ -93,10 +91,7 @@ router.get('/api/getAllUsers/', (req, res) => {
 router.post('/api/loginUser', (req, res) => {
   const { id } = req.body;
 
-  models.User.update(
-    { isOnline: true, loginDate: new Date() },
-    { where: { id } },
-  )
+  models.User.update({ loginDate: new Date() }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Login success!',
@@ -153,7 +148,7 @@ router.post('/api/unblockUser', (req, res) => {
 router.post('/api/setIsAdmin', (req, res) => {
   const { id } = req.body;
 
-  models.User.update({ isAdmin: true }, { where: { id } })
+  models.User.update({ role: Roles.Admin }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Unblocked success!',
@@ -167,7 +162,7 @@ router.post('/api/setIsAdmin', (req, res) => {
 router.post('/api/setIsNotAdmin', (req, res) => {
   const { id } = req.body;
 
-  models.User.update({ isAdmin: false }, { where: { id } })
+  models.User.update({ role: Roles.User }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Unblocked success!',
@@ -181,7 +176,7 @@ router.post('/api/setIsNotAdmin', (req, res) => {
 router.post('/api/logOutUser', (req, res) => {
   const { id } = req.body;
 
-  models.User.update({ isOnline: false }, { where: { id } })
+  models.User.update({ role: Roles.Reader }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
       message: 'Logout success!',

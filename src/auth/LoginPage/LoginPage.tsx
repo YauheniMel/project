@@ -1,18 +1,16 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
-  Box, Button, IconButton, Link, Paper,
+  Box, Button, IconButton, Link, Paper, TextField,
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import FacebookIcon from '@mui/icons-material/Facebook';
-// import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from '@mui/icons-material/Google';
 import RoutesApp from '../../constants/routes';
 import login from '../services/login';
 import { signInWithGoogle, signInWithFacebook } from '../firebase-config';
-// import googleIconUrl from '/assets/icon-google.svg';
 
 interface ILoginPage {
   id: string;
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '1.4rem',
     top: '50%',
     left: '50%',
-    minWidth: '14rem',
+    width: '500px',
     transform: 'translate(-50%, -50%)',
 
     [theme.breakpoints.down('sm')]: {
@@ -37,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   form: {
-    maxWidth: '15rem',
-
-    '& > *': {
-      margin: '0.7rem 0',
-    },
+    display: 'flex',
+    flexDirection: 'column',
+    rowGap: '1rem',
+    maxWidth: '500px',
+    width: '100%',
   },
   link: {
     position: 'relative',
@@ -110,61 +108,63 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   }
 
   return (
-    <>
-      <Link className={classes.link} component={RouterLink} to={RoutesApp.Root}>
-        App
-      </Link>
-      <Paper
-        sx={{
-          borderRadius: 0,
-        }}
-        className={classes.paper}
-      >
-        <form className={classes.form} onSubmit={formik.handleSubmit}>
-          <TextField
-            fullWidth
-            id="email"
-            name="email"
-            label="Email"
-            autoFocus
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <TextField
-            fullWidth
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-          <Box className={classes.action}>
-            <Button variant="contained" type="submit">
-              Login
-            </Button>
-            <IconButton onClick={handleLoginFacebook}>
-              <FacebookIcon
-                sx={{
-                  color: '#4267B2',
-                  fontSize: '2rem',
-                }}
-              />
-            </IconButton>
-            <IconButton onClick={handleLoginGoogle}>
-              <img width="2rem" alt="google" src="/assets/icon-google.svg" />
-            </IconButton>
-            <Link to={RoutesApp.SignUp} component={RouterLink}>
-              Sign Up
-            </Link>
-          </Box>
-        </form>
-      </Paper>
-    </>
+    <Paper
+      sx={{
+        borderRadius: 0,
+      }}
+      className={classes.paper}
+    >
+      <form className={classes.form} onSubmit={formik.handleSubmit}>
+        <Link
+          className={classes.link}
+          component={RouterLink}
+          to={RoutesApp.Root}
+        >
+          App
+        </Link>
+        <TextField
+          fullWidth
+          id="email"
+          name="email"
+          label="Email"
+          autoFocus
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+        <TextField
+          fullWidth
+          id="password"
+          name="password"
+          label="Password"
+          type="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+        />
+        <Box className={classes.action}>
+          <Button variant="contained" type="submit">
+            Login
+          </Button>
+          <IconButton onClick={handleLoginFacebook}>
+            <FacebookIcon
+              sx={{
+                color: '#4267B2',
+                fontSize: '2rem',
+              }}
+            />
+          </IconButton>
+          <IconButton onClick={handleLoginGoogle}>
+            <GoogleIcon />
+          </IconButton>
+          <Link to={RoutesApp.SignUp} component={RouterLink}>
+            Sign Up
+          </Link>
+        </Box>
+      </form>
+    </Paper>
   );
 };
 

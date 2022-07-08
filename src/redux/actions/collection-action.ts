@@ -23,7 +23,18 @@ export enum CollectionActionTypes {
   SetUntouchedComments = 'SET-UNTOUCHED-COMMENTS',
   SetCommentsTouched = 'SET-COMMENTS-TOUCHED',
   UpdateNewItem = 'UPDATE-NEW-ITEM',
+  ClearCollectionState = 'CLEAR-COLLECTION-STATE',
+  SetIsLoading = 'SET-IS-LOADING-COLLECTION',
 }
+
+export const setIsLoadingAction = (isLoading: boolean) => ({
+  type: CollectionActionTypes.SetIsLoading,
+  isLoading,
+});
+
+export const clearCollectionStateAction = () => ({
+  type: CollectionActionTypes.ClearCollectionState,
+});
 
 export const setTargetItemAction = (item: ItemType) => ({
   type: CollectionActionTypes.SetTargetItem,
@@ -101,9 +112,14 @@ export const setCommentsTouchedAction = (itemId: number) => ({
 });
 
 export const getCollectionItemsThunk = (collectionId: number) => (dispatch: any) => {
-  requestAPI.getCollectionItems(collectionId).then((response) => {
-    dispatch(setTargetCollectionItemsAction(response as ItemType[]));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .getCollectionItems(collectionId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      dispatch(setTargetCollectionItemsAction(response as ItemType[]));
+    });
 };
 
 export const getTargetCollectionThunk = (collectionId: number) => (dispatch: any) => {
@@ -118,34 +134,48 @@ export const getTargetItemThunk = (itemId: number, collectionId: number) => (dis
   });
 };
 
-export const delItemThunk = (itemId: number) => () => {
-  requestAPI.deleteItem(itemId).then((response) => console.log(response));
-};
-
 export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) => {
-  requestAPI.createItem(itemInfo).then((response) => {
-    dispatch(addNewItemAction(response));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .createItem(itemInfo)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      dispatch(addNewItemAction(response));
+    });
 };
 
 export const deleteItemThunk = (itemId: number) => (dispatch: any) => {
-  requestAPI.deleteItem(itemId).then((response) => {
-    if (response.code === 1) {
-      dispatch(deleteItemAction(itemId));
-      dispatch(pullOutItemAction(itemId));
-    }
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .deleteItem(itemId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      if (response.code === 1) {
+        dispatch(deleteItemAction(itemId));
+        dispatch(pullOutItemAction(itemId));
+      }
+    });
 };
 
 export const setEditItemsThunk = (itemIds: number[]) => (dispatch: any) => {
-  requestAPI.setEditItems(itemIds).then(() => {
-    dispatch(updateEditListItemsAction(itemIds));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .setEditItems(itemIds)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then(() => {
+      dispatch(updateEditListItemsAction(itemIds));
+    });
 };
 
 export const setDeleteItemsThunk = (itemIds: number[]) => (dispatch: any) => {
+  dispatch(setIsLoadingAction(true));
+
   requestAPI
     .setDeleteItems(itemIds)
+    .finally(() => dispatch(setIsLoadingAction(false)))
     .then(() => dispatch(updateDeleteListItemsAction(itemIds)));
 };
 
@@ -170,10 +200,14 @@ export const pullOutItemThunk = (itemId: number) => (dispatch: any) => {
 };
 
 export const updateItemThunk = (item: any) => (dispatch: any) => {
-  requestAPI.updateItem(item).then((response) => {
-    debugger;
-    dispatch(updateNewItemAction(response));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .updateItem(item)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      dispatch(updateNewItemAction(response));
+    });
 };
 
 export const searchMatchTagsThunk = (tag: string) => (dispatch: any) => {
@@ -189,9 +223,14 @@ export const getAllCommentsThunk = (itemId: number) => (dispatch: any) => {
 };
 
 export const leaveCommentThunk = (str: string, id: number, itemId: number) => (dispatch: any) => {
-  requestAPI.leaveComment(str, id, itemId).then(() => {
-    dispatch(getAllCommentsThunk(itemId));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .leaveComment(str, id, itemId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then(() => {
+      dispatch(getAllCommentsThunk(itemId));
+    });
 };
 
 export const getUntouchedCommentsThunk = (userId: number) => (dispatch: any) => {

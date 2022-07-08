@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
-import { loginThunk } from '../../redux/actions/auth-action';
-import { getIsLoading } from '../../redux/selectors/auth-selector';
+import { loginThunk } from '../../redux/actions/user-action';
 import { getUserIdFirebase } from '../../redux/selectors/user-selector';
 import LoginPage from './LoginPage';
 
@@ -17,7 +16,6 @@ const LoginPageContainer: FC<ILoginPageContainer> = (props) => (
 
 const mapStateToProps = (state: AppStateType) => ({
   id: getUserIdFirebase(state),
-  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

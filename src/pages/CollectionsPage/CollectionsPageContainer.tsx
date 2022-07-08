@@ -13,14 +13,17 @@ import {
 import {
   getMyCollectionsSelector,
   getUserId,
+  getUserRole,
 } from '../../redux/selectors/user-selector';
 import { getMyCollectionsThunk } from '../../redux/actions/user-action';
 import {
   getAllCollectionsSelector,
+  getIsLoading,
   getTargetCollectionsSelector,
 } from '../../redux/selectors/collections-selector';
 import TargetCollectionsPage from './TargetCollectionsPage';
 import RoutesApp from '../../constants/routes';
+import Preloader from '../../shared/components/Preloader/Preloader';
 
 interface ICollectionsPageContainer {
   id: number;
@@ -32,13 +35,15 @@ interface ICollectionsPageContainer {
     collections: CollectionType[] | null;
   }[]
   | null;
+  role: 'Admin' | 'User' | 'Reader';
   myCollections: CollectionType[] | null;
   setCollection: (collectionId: CollectionType) => void;
-  getAllCollections: (userId: number) => void;
+  getAllCollections: (userId?: number) => void;
   getMyCollections: (userId: number, page?: number) => void;
   getUserCollections: (userId: number, page?: number) => void;
   getTargetCollections: (userId: number | string, page?: number) => void;
   targetCollections: any;
+  isLoading: boolean;
 }
 
 const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => {
@@ -51,22 +56,29 @@ const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => {
       getMyCollections(id);
       if (!allCollections) getAllCollections(id);
     }
+
+    if (props.role === 'Reader') {
+      getAllCollections();
+    }
   }, [props.id]);
 
   return (
-    <Routes>
-      <Route path="/" element={<CollectionsPage {...props} />} />
-      <Route
-        path={RoutesApp.TargetCollections}
-        element={(
-          <TargetCollectionsPage
-            getTargetCollections={props.getTargetCollections}
-            targetCollections={props.targetCollections}
-            setTargetCollection={props.setCollection}
-          />
-        )}
-      />
-    </Routes>
+    <>
+      <Preloader isLoading={props.isLoading} />
+      <Routes>
+        <Route path="/" element={<CollectionsPage {...props} />} />
+        <Route
+          path={RoutesApp.TargetCollections}
+          element={(
+            <TargetCollectionsPage
+              getTargetCollections={props.getTargetCollections}
+              targetCollections={props.targetCollections}
+              setTargetCollection={props.setCollection}
+            />
+          )}
+        />
+      </Routes>
+    </>
   );
 };
 
@@ -75,13 +87,15 @@ const mapStateToProps = (state: AppStateType) => ({
   allCollections: getAllCollectionsSelector(state),
   myCollections: getMyCollectionsSelector(state),
   targetCollections: getTargetCollectionsSelector(state),
+  role: getUserRole(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   setCollection: (collection: CollectionType) => {
     dispatch(setTargetCollectionAction(collection));
   },
-  getAllCollections: (userId: number) => {
+  getAllCollections: (userId?: number) => {
     dispatch(getAllCollectionsThunk(userId));
   },
   getMyCollections: (userId: number, page?: number) => {

@@ -1,8 +1,3 @@
-export interface AuthType {
-  isAuth: boolean;
-  isLoading: boolean;
-}
-
 export interface CommentType {
   content: string;
   user: {
@@ -127,6 +122,7 @@ export interface CollectionType {
   userId: number | null;
   matchTags: any;
   untouchedComments: null | UntouchedCommentType[];
+  isLoading: boolean;
 }
 
 export interface CollectionsPageType {
@@ -136,23 +132,24 @@ export interface CollectionsPageType {
     surname: string;
     collections: Array<CollectionType[] | null>;
   } | null;
+  isLoading: boolean;
 }
 
 export interface HomePageType {
   collections: CollectionType[] | null;
   list: ItemType[] | null;
   tags: { content: string }[] | null;
+  isLoading: boolean;
 }
 
 export interface UserType {
   id: number | null;
   userId: null | string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User';
   name: string | null;
   surname: string | null;
   theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
-  isOnline: boolean;
   createdAt: null | string;
   updatedAt: null | string;
 }
@@ -160,12 +157,11 @@ export interface UserType {
 export interface UserPageType {
   id: number | null;
   userId: null | string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   name: string | null;
   surname: string | null;
   theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
-  isOnline: boolean;
   createdAt: null | string;
   updatedAt: null | string;
   myCollections: null | CollectionType[];
@@ -173,6 +169,7 @@ export interface UserPageType {
   listDeleteCollections: Array<CollectionType | null>;
   likes: { itemId: number }[] | null;
   themes: null | { id: number; value: string };
+  isLoading: boolean;
 }
 
 export interface SearchPageType {
@@ -192,17 +189,17 @@ export interface SearchPageType {
     collections: Array<CollectionType | null>;
   }[]
   | null;
+  isLoading: boolean;
 }
 
 export interface TargetUserType {
   id: number;
   userId: string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   name: string;
   surname: string;
   theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
-  isOnline: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -211,6 +208,7 @@ export interface AdminType {
   users: UserType[] | null;
   targetUser: UserType | null;
   targetCollections: CollectionType[] | null;
+  isLoading: boolean;
 }
 
 export interface UserPersonalInfoType {

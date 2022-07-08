@@ -60,3 +60,7 @@ export function getAuthorIdSelector(state: AppStateType) {
 export function getUntouchedComments(state: AppStateType) {
   return state.collection.untouchedComments;
 }
+
+export function getIsLoading(state: AppStateType): boolean {
+  return state.collection.isLoading;
+}
