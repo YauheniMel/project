@@ -32,14 +32,15 @@ const App: FC<IRootPage> = ({ loginUser, getUserPersonalInfo, toogleLike }) => {
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid, displayName } = user;
-        if (displayName) {
+        const { uid, displayName, email } = user;
+        if (displayName && email) {
           const [name, surname] = displayName.split(' ');
 
           getUserPersonalInfo({
             id: uid,
             name,
             surname,
+            email,
           });
           loginUser();
         }

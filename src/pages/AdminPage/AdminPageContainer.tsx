@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { AppStateType } from '../../redux';
 import {
   blockUserThunk,
@@ -17,6 +18,7 @@ import {
   getAdminTargetUser,
   getAdminUsers,
 } from '../../redux/selectors/admin-selector';
+import { getUserRole } from '../../redux/selectors/user-selector';
 import { CollectionType, TargetUserType } from '../../types';
 import AdminPage from './AdminPage';
 
@@ -28,6 +30,7 @@ interface IAdminPageContainer {
   getTargetUserCollections: (id: number) => void;
   setCollection: (collectionId: CollectionType) => void;
   getAllUsersThunk: () => void;
+  role: 'Admin' | 'User';
   blockUser: (userId: number) => void;
   unblockUser: (userId: number) => void;
   deleteUser: (userId: number) => void;
@@ -42,10 +45,19 @@ const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
     getAllUsersThunk();
   }, []);
 
+  const navigate = useNavigate();
+
+  if (props.role && props.role !== 'Admin') {
+    navigate(-1);
+
+    return null;
+  }
+
   return <AdminPage {...props} />;
 };
 
 const mapStateToProps = (state: AppStateType) => ({
+  role: getUserRole(state),
   targetCollections: getAdminTargetCollections(state),
   targetUser: getAdminTargetUser(state),
   users: getAdminUsers(state),

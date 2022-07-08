@@ -29,8 +29,8 @@ export function getUserCollectionThemes(state: AppStateType) {
   return state.user.themes;
 }
 
-export function getUserIsAdmin(state: AppStateType): boolean {
-  return state.user.isAdmin;
+export function getUserRole(state: AppStateType) {
+  return state.user.role;
 }
 
 export function getMyCollectionsSelector(

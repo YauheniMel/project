@@ -111,6 +111,7 @@ const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
             id: user.uid,
             name: values.name,
             surname: values.surname,
+            email: values.email,
           });
 
           navigate(RoutesApp.User);

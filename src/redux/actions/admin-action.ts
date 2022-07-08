@@ -1,5 +1,6 @@
 import { requestAPI } from '../../api/api';
 import { UserType } from '../../types';
+import { setMeIsNotAdminAction } from './user-action';
 
 export enum AdminActionTypes {
   setTargetUser = 'SET-TARGET-USER',
@@ -81,9 +82,10 @@ export const setIsAdminThunk = (userId: number) => (dispatch: any) => {
 };
 
 export const removeFromAdminsThunk = (userId: number) => (dispatch: any) => {
-  requestAPI
-    .setIsNotAdmin(userId)
-    .then(() => dispatch(setUserIsNotAdmin(userId)));
+  requestAPI.setIsNotAdmin(userId).then(() => {
+    dispatch(setUserIsNotAdmin(userId));
+    dispatch(setMeIsNotAdminAction(userId));
+  });
 };
 
 export const deleteUserThunk = (userId: number) => (dispatch: any) => {

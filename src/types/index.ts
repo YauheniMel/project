@@ -147,12 +147,11 @@ export interface HomePageType {
 export interface UserType {
   id: number | null;
   userId: null | string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User';
   name: string | null;
   surname: string | null;
   theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
-  isOnline: boolean;
   createdAt: null | string;
   updatedAt: null | string;
 }
@@ -160,12 +159,11 @@ export interface UserType {
 export interface UserPageType {
   id: number | null;
   userId: null | string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   name: string | null;
   surname: string | null;
   theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
-  isOnline: boolean;
   createdAt: null | string;
   updatedAt: null | string;
   myCollections: null | CollectionType[];
@@ -197,12 +195,11 @@ export interface SearchPageType {
 export interface TargetUserType {
   id: number;
   userId: string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   name: string;
   surname: string;
   theme?: 'light' | 'dark';
   status: 'active' | 'blocked';
-  isOnline: boolean;
   createdAt: string;
   updatedAt: string;
 }

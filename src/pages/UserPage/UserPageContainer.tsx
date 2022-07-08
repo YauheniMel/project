@@ -20,8 +20,8 @@ import {
   getMyCollectionsSelector,
   getUserCollectionThemes,
   getUserId,
-  getUserIsAdmin,
   getUserName,
+  getUserRole,
   getUserStatus,
   getUserSurname,
   getUserTheme,
@@ -33,7 +33,7 @@ interface IUserPageContainer {
   id: number;
   name: string;
   surname: string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User';
   theme: 'light' | 'dark';
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
@@ -77,7 +77,7 @@ const mapStateToProps = (state: AppStateType) => ({
   surname: getUserSurname(state),
   status: getUserStatus(state),
   theme: getUserTheme(state),
-  isAdmin: getUserIsAdmin(state),
+  role: getUserRole(state),
   collections: getMyCollectionsSelector(state),
   collectionsEdit: getEditCollections(state),
   collectionsDel: getDeleteCollections(state),

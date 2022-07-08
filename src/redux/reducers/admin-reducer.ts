@@ -61,7 +61,7 @@ function adminReducer(state = initState, action: AnyAction) {
         users: state.users && [
           ...state.users.map((user) => {
             if (user.id === action.userId) {
-              user.isAdmin = true;
+              user.role = 'Admin';
             }
 
             return user;
@@ -75,7 +75,7 @@ function adminReducer(state = initState, action: AnyAction) {
         users: state.users && [
           ...state.users.map((user) => {
             if (user.id === action.userId) {
-              user.isAdmin = false;
+              user.role = 'User';
             }
 
             return user;

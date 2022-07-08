@@ -5,11 +5,10 @@ import { UserActionTypes } from '../actions/user-action';
 const initState: UserPageType = {
   id: null,
   userId: null,
-  isAdmin: false,
+  role: 'Reader',
   name: null,
   surname: null,
   status: 'active',
-  isOnline: false,
   theme: 'light',
   createdAt: null,
   updatedAt: null,
@@ -38,6 +37,12 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         myCollections: [...action.collections],
+      };
+    }
+    case UserActionTypes.setMeIsNotAdmin: {
+      return {
+        ...state,
+        role: state.id === action.userId ? 'User' : 'Admin',
       };
     }
     case UserActionTypes.setEditCollections: {

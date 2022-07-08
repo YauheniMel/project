@@ -6,10 +6,10 @@ import RoutesApp from '../../constants/routes';
 interface ILogo {
   name: string;
   surname: string;
-  isAdmin: boolean;
+  role: 'Admin' | 'User';
 }
 
-const Logo: FC<ILogo> = ({ name, surname, isAdmin }) => {
+const Logo: FC<ILogo> = ({ name, surname, role }) => {
   const navigate = useNavigate();
 
   function handleClick() {
@@ -40,9 +40,9 @@ const Logo: FC<ILogo> = ({ name, surname, isAdmin }) => {
           />
         )}
         label={`${name} ${surname}`}
-        clickable={isAdmin}
+        clickable={role === 'Admin'}
         onClick={() => {
-          if (!isAdmin) return;
+          if (role === 'User') return;
           handleClick();
         }}
       />

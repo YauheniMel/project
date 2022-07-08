@@ -9,11 +9,10 @@ import { AppStateType } from '../../redux';
 import {
   getUserId,
   getUserIdFirebase,
-  getUserIsAdmin,
   getUserName,
+  getUserRole,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
-import { getIsAuth } from '../../redux/selectors/auth-selector';
 import { logOutThunk } from '../../redux/actions/auth-action';
 import {
   getSearchItemsSelector,
@@ -33,8 +32,7 @@ interface IRootPage {
   userId: number;
   name: string;
   surname: string;
-  isAuth: boolean;
-  isAdmin: boolean;
+  role: 'Admin' | 'User' | 'Reader';
   logOutUser: (id: string) => void;
   search: (substr: string) => void;
   itemsSearch: any;
@@ -98,8 +96,7 @@ const mapStateToProps = (state: AppStateType) => ({
   name: getUserName(state),
   untouchedComments: getUntouchedComments(state),
   surname: getUserSurname(state),
-  isAuth: getIsAuth(state),
-  isAdmin: getUserIsAdmin(state),
+  role: getUserRole(state),
   itemsSearch: getSearchItemsSelector(state),
   usersSearch: getSearchUsersSelector(state),
 });

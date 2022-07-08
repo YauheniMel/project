@@ -22,6 +22,7 @@ export enum UserActionTypes {
   getThemes = 'GET-THEMES',
   deleteCollection = 'DELETE-COLLECTION',
   updateCollection = 'UPDATE-COLLECTION',
+  setMeIsNotAdmin = 'SET-ME-IS-NOT-ADMIN',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
@@ -99,6 +100,11 @@ const updateDeleteCollections = (collectionId: number) => ({
 const deleteCollectionAction = (collectionId: number) => ({
   type: UserActionTypes.deleteCollection,
   collectionId,
+});
+
+export const setMeIsNotAdminAction = (userId: number) => ({
+  type: UserActionTypes.setMeIsNotAdmin,
+  userId,
 });
 
 export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {

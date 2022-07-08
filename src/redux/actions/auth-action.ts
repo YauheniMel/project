@@ -4,6 +4,7 @@ export interface CredentialsType {
   id: string;
   name: string;
   surname: string;
+  email: string;
 }
 
 export enum AUTH {
