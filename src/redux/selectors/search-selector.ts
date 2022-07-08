@@ -25,3 +25,7 @@ export function getSearchListSelector(state: AppStateType):
 | null {
   return state.search.listSearch;
 }
+
+export function getIsLoading(state: AppStateType): boolean {
+  return state.search.isLoading;
+}

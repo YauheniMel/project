@@ -6,6 +6,7 @@ const initState: SearchPageType = {
   itemsSearch: null,
   usersSearch: null,
   listSearch: null,
+  isLoading: false,
 };
 
 function searchReducer(state = initState, action: AnyAction) {
@@ -40,6 +41,7 @@ function searchReducer(state = initState, action: AnyAction) {
         usersSearch: null,
         itemsSearch: null,
         listSearch: searchList ? [...searchList] : null,
+        isLoading: false,
       };
     }
     default:

@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import { AppStateType } from '../../redux';
 import { getTargetUserCollectionsThunk } from '../../redux/actions/admin-action';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
-import { getSearchListSelector } from '../../redux/selectors/search-selector';
+import {
+  getIsLoading,
+  getSearchListSelector,
+} from '../../redux/selectors/search-selector';
 import {
   getLikesSelector,
   getUserId,
 } from '../../redux/selectors/user-selector';
+import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionType, ItemType } from '../../types';
 import SearchPage from './SearchPage';
 
@@ -25,16 +29,21 @@ interface ISearchPageContainer {
   getTargetUserCollections: (id: number, page?: number) => void;
   toogleLike: (userId: number, itemId: number) => void;
   likes: { itemId: number }[] | null;
+  isLoading: boolean;
 }
 
 const SearchPageContainer: FC<ISearchPageContainer> = (props) => (
-  <SearchPage {...props} />
+  <>
+    <Preloader isLoading={props.isLoading} />
+    <SearchPage {...props} />
+  </>
 );
 
 const mapStateToProps = (state: AppStateType) => ({
   listSearch: getSearchListSelector(state),
   userId: getUserId(state),
   likes: getLikesSelector(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

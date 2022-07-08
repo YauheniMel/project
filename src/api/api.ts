@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CredentialsType } from '../redux/actions/auth-action';
+import type { CredentialsType } from '../redux/actions/user-action';
 
 export const API = {
   SignUpUser: '/api/signUpUser',
@@ -337,7 +337,7 @@ export const requestAPI = {
       .then((response) => response.data)
       .catch((error) => console.log(error.message));
   },
-  getAllCollections(userId: number) {
+  getAllCollections(userId?: number) {
     return axios
       .get(API.GetAllCollections, {
         params: { userId },

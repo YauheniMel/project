@@ -247,6 +247,9 @@ const CollectionForm: FC<ICollectionForm> = ({
                 textareaProps={{
                   placeholder: 'description',
                 }}
+                style={{
+                  backgroundColor: 'transparent',
+                }}
                 value={description}
                 onChange={(e: any) => {
                   setIsSubmited(false);

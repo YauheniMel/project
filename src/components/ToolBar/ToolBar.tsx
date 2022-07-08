@@ -49,18 +49,19 @@ const useStyles = makeStyles((theme) => ({
 interface IToolBar {
   id: string;
   logOutUser: (id: string) => void;
+  role: 'Admin' | 'User' | 'Reader';
 }
 
-const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
+const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const classes = useStyles();
 
-  const toggleDrawer = () => {
+  function toggleDrawer() {
     setIsVisible(!isVisible);
-  };
+  }
 
-  const handleLogout = async () => {
+  async function handleLogout() {
     try {
       await logout();
 
@@ -68,7 +69,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
     } catch (error) {
       alert(error);
     }
-  };
+  }
 
   return (
     <Box>
@@ -89,21 +90,25 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id }) => {
             <HomeIcon fontSize="large" />
           </LinkButton>
         </Link>
-        <Link component={RouterLink} to={RoutesApp.User}>
-          <LinkButton>
-            <PersonIcon fontSize="large" />
-          </LinkButton>
-        </Link>
+        {role !== 'Reader' && (
+          <Link component={RouterLink} to={RoutesApp.User}>
+            <LinkButton>
+              <PersonIcon fontSize="large" />
+            </LinkButton>
+          </Link>
+        )}
         <Link component={RouterLink} to={RoutesApp.CollectionsLink}>
           <LinkButton>
             <CollectionsIcon fontSize="large" />
           </LinkButton>
         </Link>
-        <Link component={RouterLink} to={RoutesApp.Login}>
-          <LinkButton onClick={handleLogout}>
-            <LogoutIcon fontSize="large" />
-          </LinkButton>
-        </Link>
+        {role !== 'Reader' && (
+          <Link component={RouterLink} to={RoutesApp.Login}>
+            <LinkButton onClick={handleLogout}>
+              <LogoutIcon fontSize="large" />
+            </LinkButton>
+          </Link>
+        )}
       </Drawer>
     </Box>
   );

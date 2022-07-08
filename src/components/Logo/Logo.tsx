@@ -15,14 +15,17 @@ const Logo: FC<ILogo> = ({ name, surname, role }) => {
   function handleClick() {
     navigate(RoutesApp.Admin);
   }
+
   return (
     <Stack direction="row">
       <Chip
         sx={(theme) => ({
+          position: 'relative',
           fontSize: '1.2rem',
-          padding: '1.4rem 0',
+          paddingLeft: '3rem',
           height: '3rem',
           borderRadius: '3rem',
+          minWidth: '3rem',
 
           '& .MuiChip-label': {
             [theme.breakpoints.down('md')]: {
@@ -33,6 +36,8 @@ const Logo: FC<ILogo> = ({ name, surname, role }) => {
         avatar={(
           <Avatar
             style={{
+              position: 'absolute',
+              left: 0,
               height: '3rem',
               width: '3rem',
               marginLeft: 0,

@@ -17,3 +17,7 @@ export function getTargetCollectionsSelector(
 ): CollectionType[] | null {
   return state.collections.targetCollections;
 }
+
+export function getIsLoading(state: AppStateType): boolean {
+  return state.collections.isLoading;
+}

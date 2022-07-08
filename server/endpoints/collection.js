@@ -337,7 +337,7 @@ router.get('/api/getAllCollections/', (req, res) => {
     ],
     where: {
       id: {
-        [Op.ne]: userId,
+        [Op.ne]: userId || null,
       },
     },
     order: [['updatedAt', 'DESC']],

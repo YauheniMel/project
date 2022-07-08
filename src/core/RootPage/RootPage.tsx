@@ -13,7 +13,6 @@ import {
   getUserRole,
   getUserSurname,
 } from '../../redux/selectors/user-selector';
-import { logOutThunk } from '../../redux/actions/auth-action';
 import {
   getSearchItemsSelector,
   getSearchUsersSelector,
@@ -26,6 +25,7 @@ import {
 import { getUntouchedCommentsThunk } from '../../redux/actions/collection-action';
 import { UntouchedCommentType } from '../../types';
 import { getUntouchedComments } from '../../redux/selectors/collection-selector';
+import { logOutThunk } from '../../redux/actions/user-action';
 
 interface IRootPage {
   id: string;
@@ -49,6 +49,7 @@ const RootPage: FC<IRootPage> = ({
   itemsSearch,
   usersSearch,
   userId,
+  role,
   getUntouchedComments,
   ...rest
 }) => {
@@ -69,6 +70,7 @@ const RootPage: FC<IRootPage> = ({
     <>
       <Header
         {...rest}
+        role={role}
         itemsSearch={itemsSearch?.map((item: any) => ({
           link: item.title,
           routeId: item.collectionId,
@@ -85,7 +87,7 @@ const RootPage: FC<IRootPage> = ({
       <Container>
         <Outlet />
       </Container>
-      <ToolBar logOutUser={logOutUser} id={id} />
+      <ToolBar logOutUser={logOutUser} id={id} role={role} />
     </>
   );
 };

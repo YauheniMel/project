@@ -59,6 +59,7 @@ const initState: CollectionType = {
   userId: null,
   matchTags: null,
   untouchedComments: null,
+  isLoading: false,
 };
 
 function collectionReducer(state = initState, action: AnyAction) {
@@ -76,6 +77,12 @@ function collectionReducer(state = initState, action: AnyAction) {
         })),
         updatedAt: action.collection.updatedAt,
         userId: action.collection.userId,
+      };
+    }
+    case CollectionActionTypes.SetIsLoading: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     }
     case CollectionActionTypes.SetTargetItem: {
@@ -243,6 +250,47 @@ function collectionReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         list: newList || null,
+      };
+    }
+    case CollectionActionTypes.ClearCollectionState: {
+      return {
+        ...state,
+        id: null,
+        icon: null,
+        title: null,
+        description: null,
+        theme: null,
+        createdAt: null,
+        updatedAt: null,
+        isEdit: false,
+        isDelete: false,
+        radioKey1: null,
+        radioKey2: null,
+        radioKey3: null,
+        dateKey1: null,
+        dateKey2: null,
+        dateKey3: null,
+        multiLineKey1: null,
+        multiLineKey2: null,
+        multiLineKey3: null,
+        numberKey1: null,
+        numberKey2: null,
+        numberKey3: null,
+        textKey1: null,
+        textKey2: null,
+        textKey3: null,
+        checkboxKey1: null,
+        checkboxKey2: null,
+        checkboxKey3: null,
+        list: null,
+        targetItem: null,
+        customFields: null,
+        listEditItems: [],
+        listDeleteItems: [],
+        userId: null,
+        matchTags: null,
+        untouchedComments: null,
+        isLoading: false,
       };
     }
     default:

@@ -7,7 +7,13 @@ export enum HomeActionTypes {
   setLastItems = 'SET-LAST-ITEMS',
   getLastAddItems = 'GET-LAST-ADD-ITEMS',
   setAllTags = 'SET-ALL-TAGS',
+  setIsLoading = 'SET-IS-HOME-LOADING',
 }
+
+export const setIsLoadingAction = (isLoading: boolean) => ({
+  type: HomeActionTypes.setIsLoading,
+  isLoading,
+});
 
 export const setBigCollectionsAction = (collections: CollectionType[]) => ({
   type: HomeActionTypes.setBigCollections,
@@ -29,9 +35,14 @@ const getLastAddItemsAction = (items: ItemType[]) => ({
 });
 
 export const getBigCollectionsThunk = () => (dispatch: any) => {
-  requestAPI.getBigCollections().then((response) => {
-    dispatch(setBigCollectionsAction(response as CollectionType[]));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .getBigCollections()
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      dispatch(setBigCollectionsAction(response as CollectionType[]));
+    });
 };
 
 export const getLastAddItemsThunk = () => (dispatch: any) => {

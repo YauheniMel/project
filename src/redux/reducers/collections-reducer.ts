@@ -5,6 +5,7 @@ import { CollectionsActionTypes } from '../actions/collections-action';
 const initState: CollectionsPageType = {
   allCollections: null,
   targetCollections: null,
+  isLoading: false,
 };
 
 function collectionsReducer(state = initState, action: AnyAction) {
@@ -20,6 +21,12 @@ function collectionsReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         allCollections: allCollections ? [...allCollections] : null,
+      };
+    }
+    case CollectionsActionTypes.setIsLoading: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     }
     case CollectionsActionTypes.setTargetCollections: {
@@ -51,6 +58,14 @@ function collectionsReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         allCollections: [...allCollections],
+      };
+    }
+    case CollectionsActionTypes.clearCollectionsState: {
+      return {
+        ...state,
+        allCollections: null,
+        targetCollections: null,
+        isLoading: false,
       };
     }
     default:

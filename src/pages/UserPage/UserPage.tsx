@@ -50,7 +50,7 @@ interface IUserPage {
   status: 'active' | 'blocked';
   collections: CollectionType[] | null;
   createNewCollection: (collectionInfo: CollectionInitType) => void;
-  role: 'Admin' | 'User';
+  role: 'Admin' | 'User' | 'Reader';
   deleteCollection: (collectionId: number) => void;
   setTargetCollection: (collection: CollectionType) => void;
   setEditCollection: (collectionId: number) => void;

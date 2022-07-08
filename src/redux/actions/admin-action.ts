@@ -11,7 +11,14 @@ export enum AdminActionTypes {
   deleteUser = 'DELETE-USER',
   setUserIsAdmin = 'SET-USER-IS-ADMIN',
   setUserIsNotAdmin = 'SET-USER-IS-NOT-ADMIN',
+  clearAdminState = 'CLEAR-ADMIN-STATE',
+  setIsLoading = 'SET-IS-ADMIN-LOADING',
 }
+
+export const setIsLoadingAction = (isLoading: boolean) => ({
+  type: AdminActionTypes.setIsLoading,
+  isLoading,
+});
 
 export const setTargetUser = (user: any) => ({
   type: AdminActionTypes.setTargetUser,
@@ -38,6 +45,10 @@ export const setUserIsNotAdmin = (userId: number) => ({
   userId,
 });
 
+export const clearAdminStateAction = () => ({
+  type: AdminActionTypes.clearAdminState,
+});
+
 export const setUserUnblock = (userId: number) => ({
   type: AdminActionTypes.setUserUnblock,
   userId,
@@ -60,13 +71,23 @@ export const getTargetUserCollectionsThunk = (userId: number, page = 1) => (disp
 };
 
 export const getTargetUserThunk = (userId: number) => (dispatch: any) => {
-  requestAPI.getTargetUser(userId).then((response) => {
-    dispatch(setTargetUser(response));
-  });
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .getTargetUser(userId)
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => {
+      dispatch(setTargetUser(response));
+    });
 };
 
 export const getAllUsersThunk = () => (dispatch: any) => {
-  requestAPI.getAllUsers().then((response) => dispatch(setAllUsers(response)));
+  dispatch(setIsLoadingAction(true));
+
+  requestAPI
+    .getAllUsers()
+    .finally(() => dispatch(setIsLoadingAction(false)))
+    .then((response) => dispatch(setAllUsers(response)));
 };
 
 export const blockUserThunk = (userId: number) => (dispatch: any) => {

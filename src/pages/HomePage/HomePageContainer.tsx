@@ -9,6 +9,7 @@ import {
 } from '../../redux/actions/home-action';
 import {
   getCollectionsSelector,
+  getIsLoading,
   getItemsSelector,
   getTagsSelector,
 } from '../../redux/selectors/home-selector';
@@ -16,6 +17,7 @@ import {
   getLikesSelector,
   getUserId,
 } from '../../redux/selectors/user-selector';
+import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionType, ItemType } from '../../types';
 import HomePage from './HomePage';
 
@@ -30,6 +32,7 @@ interface IHomePageContainer {
   tags: any[];
   getAllTags: () => void;
   searchItemsByTag: (tag: string) => void;
+  isLoading: boolean;
 }
 
 const HomePageContainer: FC<IHomePageContainer> = (props) => {
@@ -49,7 +52,12 @@ const HomePageContainer: FC<IHomePageContainer> = (props) => {
 
     if (!list) getLastAddItems();
   }, []);
-  return <HomePage {...props} />;
+  return (
+    <>
+      <Preloader isLoading={props.isLoading} />
+      <HomePage {...props} />
+    </>
+  );
 };
 
 const mapStateToProps = (state: AppStateType) => ({
@@ -58,6 +66,7 @@ const mapStateToProps = (state: AppStateType) => ({
   list: getItemsSelector(state),
   likes: getLikesSelector(state),
   tags: getTagsSelector(state) as any[],
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

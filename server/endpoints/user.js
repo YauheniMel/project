@@ -5,17 +5,17 @@ const models = require('../services/sequelize');
 const router = express.Router();
 
 router.post('/api/signUpUser', (req, res) => {
-  const { name, surname, id } = req.body;
+  const {
+    name, surname, id, email,
+  } = req.body;
 
   models.User.create({
     userId: id,
     name,
     surname,
+    email,
   })
-    .then(() => res.status(200).send({
-      code: 1,
-      message: 'SignUp success!',
-    }))
+    .then((response) => res.status(200).send(response))
     .catch((err) => res.status(400).send({
       code: 0,
       message: err,

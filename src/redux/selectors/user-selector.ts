@@ -33,6 +33,10 @@ export function getUserRole(state: AppStateType) {
   return state.user.role;
 }
 
+export function getIsLoading(state: AppStateType) {
+  return state.user.isLoading;
+}
+
 export function getMyCollectionsSelector(
   state: AppStateType,
 ): CollectionType[] | null {

@@ -6,6 +6,7 @@ const initState: AdminType = {
   users: null,
   targetUser: null,
   targetCollections: null,
+  isLoading: false,
 };
 
 function adminReducer(state = initState, action: AnyAction) {
@@ -19,6 +20,12 @@ function adminReducer(state = initState, action: AnyAction) {
         targetCollections: action.user.collections.length
           ? [...action.user.collections]
           : null,
+      };
+    }
+    case AdminActionTypes.setIsLoading: {
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     }
     case AdminActionTypes.setTargetCollections: {
@@ -95,6 +102,14 @@ function adminReducer(state = initState, action: AnyAction) {
         users: state.users && [
           ...state.users.filter((user: UserType) => user.id !== action.userId),
         ],
+      };
+    }
+    case AdminActionTypes.clearAdminState: {
+      return {
+        ...state,
+        users: null,
+        targetUser: null,
+        targetCollections: null,
       };
     }
     default:

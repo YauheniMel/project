@@ -1,8 +1,3 @@
-export interface AuthType {
-  isAuth: boolean;
-  isLoading: boolean;
-}
-
 export interface CommentType {
   content: string;
   user: {
@@ -127,6 +122,7 @@ export interface CollectionType {
   userId: number | null;
   matchTags: any;
   untouchedComments: null | UntouchedCommentType[];
+  isLoading: boolean;
 }
 
 export interface CollectionsPageType {
@@ -136,12 +132,14 @@ export interface CollectionsPageType {
     surname: string;
     collections: Array<CollectionType[] | null>;
   } | null;
+  isLoading: boolean;
 }
 
 export interface HomePageType {
   collections: CollectionType[] | null;
   list: ItemType[] | null;
   tags: { content: string }[] | null;
+  isLoading: boolean;
 }
 
 export interface UserType {
@@ -171,6 +169,7 @@ export interface UserPageType {
   listDeleteCollections: Array<CollectionType | null>;
   likes: { itemId: number }[] | null;
   themes: null | { id: number; value: string };
+  isLoading: boolean;
 }
 
 export interface SearchPageType {
@@ -190,6 +189,7 @@ export interface SearchPageType {
     collections: Array<CollectionType | null>;
   }[]
   | null;
+  isLoading: boolean;
 }
 
 export interface TargetUserType {
@@ -208,6 +208,7 @@ export interface AdminType {
   users: UserType[] | null;
   targetUser: UserType | null;
   targetCollections: CollectionType[] | null;
+  isLoading: boolean;
 }
 
 export interface UserPersonalInfoType {

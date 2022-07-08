@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { AppStateType } from '../../redux';
 import {
   blockUserThunk,
+  clearAdminStateAction,
   deleteUserThunk,
   getAllUsersThunk,
   getTargetUserCollectionsThunk,
@@ -17,8 +18,10 @@ import {
   getAdminTargetCollections,
   getAdminTargetUser,
   getAdminUsers,
+  getIsLoading,
 } from '../../redux/selectors/admin-selector';
 import { getUserRole } from '../../redux/selectors/user-selector';
+import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionType, TargetUserType } from '../../types';
 import AdminPage from './AdminPage';
 
@@ -36,6 +39,8 @@ interface IAdminPageContainer {
   deleteUser: (userId: number) => void;
   setIsAdmin: (userId: number) => void;
   setIsNotAdmin: (userId: number) => void;
+  clearAdminState: () => void;
+  isLoading: boolean;
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
@@ -43,6 +48,8 @@ const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
     const { getAllUsersThunk } = props;
 
     getAllUsersThunk();
+
+    return props.clearAdminState;
   }, []);
 
   const navigate = useNavigate();
@@ -53,7 +60,12 @@ const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
     return null;
   }
 
-  return <AdminPage {...props} />;
+  return (
+    <>
+      <Preloader isLoading={props.isLoading} />
+      <AdminPage {...props} />
+    </>
+  );
 };
 
 const mapStateToProps = (state: AppStateType) => ({
@@ -61,6 +73,7 @@ const mapStateToProps = (state: AppStateType) => ({
   targetCollections: getAdminTargetCollections(state),
   targetUser: getAdminTargetUser(state),
   users: getAdminUsers(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -88,6 +101,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   setIsNotAdmin: (userId: number) => {
     dispatch(removeFromAdminsThunk(userId));
+  },
+  clearAdminState: () => {
+    dispatch(clearAdminStateAction());
   },
 });
 

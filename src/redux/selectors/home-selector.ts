@@ -16,3 +16,7 @@ export function getTagsSelector(
 ): { content: string }[] | null {
   return state.home.tags;
 }
+
+export function getIsLoading(state: AppStateType): boolean {
+  return state.home.isLoading;
+}

@@ -15,7 +15,6 @@ import { ItemType } from '../../types';
 
 interface IItemPage {
   userId: number;
-  isAuth: boolean;
   targetItem: ItemType;
   getTargetItem: (itemId: number, collectionId: number) => void;
   toogleLike: (userId: number, itemId: number) => void;
@@ -31,7 +30,6 @@ const ItemPage: FC<IItemPage> = ({
   toogleLike,
   userId,
   likes,
-  isAuth,
   getAllComments,
   leaveComment,
   setCommentsTouched,
@@ -102,26 +100,26 @@ const ItemPage: FC<IItemPage> = ({
           >
             Show comments
           </Button>
-          {isAuth && (
-            <form onSubmit={handleSubmit}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  columnGap: '0.7rem',
-                }}
-              >
-                <TextareaAutosize
-                  style={{ flex: 1 }}
-                  placeholder="Leave comments..."
-                  required
-                  value={value}
-                  onChange={(e: any) => setValue(e.target.value)}
-                />
-                <Button type="submit">Send</Button>
-              </Box>
-            </form>
-          )}
+          {/* {isAuth && ( */}
+          <form onSubmit={handleSubmit}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                columnGap: '0.7rem',
+              }}
+            >
+              <TextareaAutosize
+                style={{ flex: 1 }}
+                placeholder="Leave comments..."
+                required
+                value={value}
+                onChange={(e: any) => setValue(e.target.value)}
+              />
+              <Button type="submit">Send</Button>
+            </Box>
+          </form>
+          {/* )} */}
           <hr />
           {targetItem.comments
             && targetItem.comments.map((comment) => (
