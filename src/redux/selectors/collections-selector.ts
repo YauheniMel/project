@@ -6,7 +6,10 @@ export function getAllCollectionsSelector(state: AppStateType):
   id: number;
   name: string;
   surname: string;
-  collections: CollectionType[] | null;
+  collections: {
+    collections: CollectionType[] | null;
+    countCollections: number;
+  };
 }[]
 | null {
   return state.collections.allCollections;

@@ -39,7 +39,10 @@ interface IUserPageContainer {
   role: 'Admin' | 'User' | 'Reader';
   theme: 'light' | 'dark';
   status: 'active' | 'blocked';
-  collections: CollectionType[] | null;
+  collections: {
+    collections: CollectionType[] | null;
+    countCollections: number;
+  };
   setTargetCollection: (collection: CollectionType) => void;
   getMyCollections: (userId: number, page?: number) => void;
   createNewCollection: (collectionInfo: CollectionInitType) => void;

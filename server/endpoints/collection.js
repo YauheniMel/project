@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const sharp = require('sharp');
 const models = require('../services/sequelize');
 
-const PAGE_SIZE = 2; // suppose that need 'findAndCountAll'
+const PAGE_SIZE = 3; // suppose that need 'findAndCountAll'
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -86,18 +86,27 @@ router.get('/api/getMyCollections/', (req, res) => {
     limit,
   })
     .then((response) => {
-      let resWithImg;
-      if (response) {
-        resWithImg = response.map((collection) => {
-          const { icon } = collection;
-          if (icon) {
-            collection.icon = Buffer.from(icon).toString('base64');
-          }
+      models.Collection.count({
+        where: {
+          userId,
+        },
+      }).then((countCollections) => {
+        let resWithImg;
+        if (response) {
+          resWithImg = response.map((collection) => {
+            const { icon } = collection;
+            if (icon) {
+              collection.icon = Buffer.from(icon).toString('base64');
+            }
 
-          return collection;
+            return collection;
+          });
+        }
+        return res.status(200).send({
+          collections: resWithImg,
+          countCollections,
         });
-      }
-      return res.status(200).send(resWithImg);
+      });
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -118,18 +127,27 @@ router.get('/api/getUserCollections/', (req, res) => {
     limit,
   })
     .then((response) => {
-      let resWithImg;
-      if (response) {
-        resWithImg = response.map((collection) => {
-          const { icon } = collection;
-          if (icon) {
-            collection.icon = Buffer.from(icon).toString('base64');
-          }
+      models.Collection.count({
+        where: {
+          userId,
+        },
+      }).then((countCollections) => {
+        let resWithImg;
+        if (response) {
+          resWithImg = response.map((collection) => {
+            const { icon } = collection;
+            if (icon) {
+              collection.icon = Buffer.from(icon).toString('base64');
+            }
 
-          return collection;
+            return collection;
+          });
+        }
+        return res.status(200).send({
+          collections: resWithImg,
+          countCollections,
         });
-      }
-      return res.status(200).send(resWithImg);
+      });
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -185,7 +203,7 @@ router.put('/api/setEditCollection/', (req, res) => {
 
   models.Collection.update(
     { isEdit: true, isDelete: false },
-    { where: { id: +collectionId } },
+    { where: { id: +collectionId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -219,7 +237,7 @@ router.put('/api/pullOutCollection/', (req, res) => {
 
   models.Collection.update(
     { isEdit: false, isDelete: false },
-    { where: { id: +collectionId } },
+    { where: { id: +collectionId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -235,7 +253,7 @@ router.put('/api/setDeleteCollection/', (req, res) => {
 
   models.Collection.update(
     { isDelete: true, isEdit: false },
-    { where: { id: collectionId } },
+    { where: { id: collectionId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -332,7 +350,7 @@ router.get('/api/getAllCollections/', (req, res) => {
     include: [
       {
         model: models.Collection,
-        limit: 2,
+        limit: PAGE_SIZE,
       },
     ],
     where: {
@@ -356,13 +374,20 @@ router.get('/api/getAllCollections/', (req, res) => {
             return collection;
           });
         }
-
-        data.collections = resWithImg;
-
-        return data;
+        return {
+          data: {
+            collections: {
+              collections: resWithImg,
+              countCollections: resWithImg.length,
+            },
+            name: data.name,
+            surname: data.surname,
+            id: data.id,
+          },
+        };
       });
 
-      return res.status(200).send(dataWithImg);
+      return res.status(200).json(dataWithImg);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -458,13 +483,22 @@ router.post(
       userId,
     })
       .then((response) => {
-        const { icon } = response;
+        models.Collection.count({
+          where: {
+            userId,
+          },
+        }).then((countCollections) => {
+          const { icon } = response;
 
-        if (icon) {
-          response.icon = Buffer.from(icon).toString('base64');
-        }
+          if (icon) {
+            response.icon = Buffer.from(icon).toString('base64');
+          }
 
-        return res.status(200).send(response);
+          return res.status(200).send({
+            collection: response,
+            countCollections,
+          });
+        });
       })
       .catch((err) => res.status(400).send({
         code: 0,

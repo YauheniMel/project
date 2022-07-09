@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { CollectionsPageType, CollectionType } from '../../types';
+import { CollectionsPageType } from '../../types';
 import { CollectionsActionTypes } from '../actions/collections-action';
 
 const initState: CollectionsPageType = {
@@ -12,10 +12,10 @@ function collectionsReducer(state = initState, action: AnyAction) {
   switch (action.type) {
     case CollectionsActionTypes.setAllCollections: {
       const allCollections = action.users.map((user: any) => ({
-        id: user.id,
-        name: user.name,
-        surname: user.surname,
-        collections: user.collections,
+        id: user.data.id,
+        name: user.data.name,
+        surname: user.data.surname,
+        collections: user.data.collections,
       }));
 
       return {
@@ -37,27 +37,18 @@ function collectionsReducer(state = initState, action: AnyAction) {
       };
     }
     case CollectionsActionTypes.setAllUserCollections: {
-      const allCollections = state.allCollections.map(
-        (
-          user: {
-            id: string;
-            name: string;
-            surname: string;
-            collections: CollectionType[] | null;
-          } | null,
-        ) => {
-          if (user && user.id === action.user.id) {
-            user.collections = [...action.user.collections];
-
-            return user;
-          }
+      const allCollections = state.allCollections?.map((user) => {
+        if (user && user.id === action.user.id) {
+          user.collections.collections = [...action.user.collections];
 
           return user;
-        },
-      );
+        }
+
+        return user;
+      });
       return {
         ...state,
-        allCollections: [...allCollections],
+        allCollections: allCollections ? [...allCollections] : null,
       };
     }
     case CollectionsActionTypes.clearCollectionsState: {

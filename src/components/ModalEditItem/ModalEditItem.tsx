@@ -17,10 +17,7 @@ import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import CheckIcon from '@mui/icons-material/Check';
 import InputFile from '../../shared/components/InputFile/InputFile';
 import { ItemType } from '../../types';
 import UpdateItemFormField from '../UpdateItemFormField/UpdateItemFormField';
@@ -229,12 +226,6 @@ const ModalEditItem: FC<IModalEditItem> = ({
                           {formik.values.title || item.title}
                         </Typography>
                         <Box>
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton>
-                            <CheckIcon />
-                          </IconButton>
                           <IconButton
                             onClick={() => {
                               formik.resetForm({
@@ -269,16 +260,6 @@ const ModalEditItem: FC<IModalEditItem> = ({
                         }}
                       >
                         <Box>
-                          <IconButton>
-                            {image ? (
-                              <EditIcon />
-                            ) : (
-                              <AddCircleOutlineRoundedIcon />
-                            )}
-                          </IconButton>
-                          <IconButton>
-                            <CheckIcon />
-                          </IconButton>
                           <IconButton
                             onClick={() => {
                               setImage(null);

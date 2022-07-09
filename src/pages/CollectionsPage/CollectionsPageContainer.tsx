@@ -1,6 +1,5 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Route, Routes } from 'react-router';
 import { AppStateType } from '../../redux';
 import CollectionsPage from './CollectionsPage';
 import { CollectionType } from '../../types';
@@ -21,8 +20,6 @@ import {
   getIsLoading,
   getTargetCollectionsSelector,
 } from '../../redux/selectors/collections-selector';
-import TargetCollectionsPage from './TargetCollectionsPage';
-import RoutesApp from '../../constants/routes';
 import Preloader from '../../shared/components/Preloader/Preloader';
 
 interface ICollectionsPageContainer {
@@ -32,11 +29,17 @@ interface ICollectionsPageContainer {
     id: number;
     name: string;
     surname: string;
-    collections: CollectionType[] | null;
+    collections: {
+      collections: CollectionType[] | null;
+      countCollections: number;
+    };
   }[]
   | null;
   role: 'Admin' | 'User' | 'Reader';
-  myCollections: CollectionType[] | null;
+  myCollections: {
+    countCollections: number;
+    collections: CollectionType[] | null;
+  };
   setCollection: (collectionId: CollectionType) => void;
   getAllCollections: (userId?: number) => void;
   getMyCollections: (userId: number, page?: number) => void;
@@ -56,28 +59,12 @@ const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => {
       getMyCollections(id);
       if (!allCollections) getAllCollections(id);
     }
-
-    if (props.role === 'Reader') {
-      getAllCollections();
-    }
   }, [props.id]);
 
   return (
     <>
       <Preloader isLoading={props.isLoading} />
-      <Routes>
-        <Route path="/" element={<CollectionsPage {...props} />} />
-        <Route
-          path={RoutesApp.TargetCollections}
-          element={(
-            <TargetCollectionsPage
-              getTargetCollections={props.getTargetCollections}
-              targetCollections={props.targetCollections}
-              setTargetCollection={props.setCollection}
-            />
-          )}
-        />
-      </Routes>
+      <CollectionsPage {...props} />
     </>
   );
 };

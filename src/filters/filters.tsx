@@ -296,9 +296,7 @@ export const compareCountTagsComparator: GridComparatorFn<
 { content: string }[]
 > = (arr1, arr2) => arr1.length - arr2.length;
 
-export const compareCountLikesComparator: GridComparatorFn<
-{ itemId: number }[]
-> = (arr1, arr2) => arr1.length - arr2.length;
+export const likesComparator: GridComparatorFn<number> = (value1, value2) => value2 - value1;
 
 export const operatorContains: GridFilterOperator = {
   label: 'Contains',

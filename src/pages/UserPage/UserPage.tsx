@@ -9,8 +9,6 @@ import {
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useDrop } from 'react-dnd';
-import { makeStyles } from '@material-ui/core';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import CollectionForm from '../../components/CollectionForm/CollectionForm';
 import Slider from '../../components/Slider/Slider';
@@ -18,37 +16,14 @@ import { CollectionInitType, CollectionType } from '../../types';
 import ModalEditCollection from '../../components/ModalEditCollection/ModalEditCollection';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
 
-const useStyles = makeStyles((theme) => ({
-  edit: {
-    color: theme.palette.warning.main,
-    width: '100%',
-  },
-  delete: {
-    color: theme.palette.error.main,
-    width: '100%',
-  },
-  activeEdit: {
-    transform: 'scale(1.1)',
-    color: theme.palette.warning.main,
-
-    '& .MuiTouchRipple-root': {
-      color: theme.palette.warning.main,
-    },
-  },
-  activeDelete: {
-    transform: 'scale(1.1)',
-
-    '& .MuiTouchRipple-root': {
-      color: theme.palette.warning.main,
-    },
-  },
-}));
-
 interface IUserPage {
   id: number;
   theme: 'light' | 'dark';
   status: 'active' | 'blocked';
-  collections: CollectionType[] | null;
+  collections: {
+    collections: CollectionType[] | null;
+    countCollections: number;
+  };
   createNewCollection: (collectionInfo: CollectionInitType) => void;
   role: 'Admin' | 'User' | 'Reader';
   deleteCollection: (collectionId: number) => void;
@@ -87,29 +62,6 @@ const UserPage: FC<IUserPage> = ({
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
 
-  const classes = useStyles();
-
-  const [{ isOver: overEdit, canDrop }, dropEdit] = useDrop({
-    accept: 'avatar',
-    drop: (item: { id: number }) => {
-      setEditCollection(item.id);
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
-    }),
-  });
-
-  const [{ isOver: overDelete }, dropDelete] = useDrop({
-    accept: 'avatar',
-    drop: (item: { id: number }) => {
-      setDeleteCollection(item.id);
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  });
-
   console.log(theme, status, role);
 
   return (
@@ -139,7 +91,7 @@ const UserPage: FC<IUserPage> = ({
       <Grid
         sx={{ height: '100%' }}
         container
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        // columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
           <Sidebar>
@@ -159,20 +111,17 @@ const UserPage: FC<IUserPage> = ({
             <ListItemButton
               sx={{
                 width: '100%',
-                color: (theme) => (canDrop ? theme.palette.warning.main : ''),
               }}
-              className={canDrop ? classes.activeEdit : ''}
               onClick={() => {
                 if (collectionsEdit.length === 0) return;
                 if (!collectionThemes) getCollectionThemes();
 
                 setOpenModalEdit(true);
               }}
-              ref={dropEdit}
             >
               <ListItemIcon>
                 <Badge badgeContent={collectionsEdit.length} color="warning">
-                  <EditIcon className={overEdit ? classes.edit : ''} />
+                  <EditIcon />
                 </Badge>
               </ListItemIcon>
               <ListItemText primary="Edit" />
@@ -180,19 +129,16 @@ const UserPage: FC<IUserPage> = ({
             <ListItemButton
               sx={{
                 width: '100%',
-                color: (theme) => (canDrop ? theme.palette.error.main : ''),
               }}
-              className={canDrop ? classes.activeDelete : ''}
               onClick={() => {
                 if (collectionsDel.length === 0) return;
 
                 setOpenModalDelete(true);
               }}
-              ref={dropDelete}
             >
               <ListItemIcon>
                 <Badge badgeContent={collectionsDel.length} color="error">
-                  <DeleteIcon className={overDelete ? classes.delete : ''} />
+                  <DeleteIcon />
                 </Badge>
               </ListItemIcon>
               <ListItemText primary="Delete" />
@@ -200,10 +146,12 @@ const UserPage: FC<IUserPage> = ({
           </Sidebar>
         </Grid>
         <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
-          {!!collections?.length && (
+          {collections.collections !== null && (
             <Slider
               type="private"
               id={id}
+              setEditCollection={setEditCollection}
+              setDeleteCollection={setDeleteCollection}
               collections={collections}
               setCollection={setTargetCollection}
               getUserCollections={getMyCollections}

@@ -11,6 +11,7 @@ import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import RoutesApp from '../../constants/routes';
 import logout from '../../auth/services/logout';
+import { logError } from '../../services/logger';
 
 const ToogleButton = styled(Button)(({ theme }) => ({
   position: 'fixed',
@@ -66,8 +67,8 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
       await logout();
 
       logOutUser(id);
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      logError(error.message);
     }
   }
 
@@ -78,11 +79,10 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
       </ToogleButton>
       <Drawer
         className={classes.drawer}
-        BackdropProps={{ invisible: true }}
         anchor="right"
         open={isVisible}
         onClose={toggleDrawer}
-        variant="persistent"
+        variant="temporary"
       >
         <div className={classes.toolbar} />
         <Link component={RouterLink} to={RoutesApp.Home}>

@@ -93,15 +93,17 @@ const CollectionPage: FC<ICollectionPage> = ({
         pullOutItem={pullOutItem}
         deleteItem={deleteItem}
       />
-      <ItemForm
-        customFields={customFields}
-        collectionId={id}
-        openForm={openForm}
-        setOpenForm={setOpenForm}
-        createNewItem={createNewItem}
-        searchMatchTags={searchMatchTags}
-        matchTags={matchTags}
-      />
+      {customFields && (
+        <ItemForm
+          customFields={customFields}
+          collectionId={id}
+          openForm={openForm}
+          setOpenForm={setOpenForm}
+          createNewItem={createNewItem}
+          searchMatchTags={searchMatchTags}
+          matchTags={matchTags}
+        />
+      )}
       <Grid
         sx={{ height: '100%' }}
         container
@@ -184,7 +186,7 @@ const CollectionPage: FC<ICollectionPage> = ({
               }}
             />
           )}
-          {!!list?.length && customFields && (
+          {customFields && (
             <Table
               collectionId={id}
               list={list}

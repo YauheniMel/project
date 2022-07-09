@@ -26,7 +26,10 @@ import { CollectionType, TargetUserType } from '../../types';
 import AdminPage from './AdminPage';
 
 interface IAdminPageContainer {
-  targetCollections: CollectionType[] | null;
+  targetCollections: {
+    countCollections: number;
+    collections: CollectionType[] | null;
+  };
   targetUser: TargetUserType | null;
   users: TargetUserType[] | null;
   getTargetUser: (id: number) => void;

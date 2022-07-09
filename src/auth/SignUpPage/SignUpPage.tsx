@@ -11,6 +11,7 @@ import { getAuth, updateProfile } from 'firebase/auth';
 import RoutesApp from '../../constants/routes';
 import signup from '../services/signup';
 import { CredentialsType } from '../../redux/actions/user-action';
+import { logError } from '../../services/logger';
 
 interface ISignUpPage {
   signUpUser: (credentials: CredentialsType) => void;
@@ -124,8 +125,8 @@ const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
             confirm: '',
           },
         });
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        logError(error.message);
       }
     },
   });

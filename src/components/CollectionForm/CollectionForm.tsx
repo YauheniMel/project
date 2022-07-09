@@ -140,6 +140,25 @@ const CollectionForm: FC<ICollectionForm> = ({
     onSubmit: (values, { resetForm }) => {
       if (!description.trim()) return;
 
+      function getCheckboxKeys(
+        checkboxes: {
+          field: string;
+          count: number;
+          values: string[];
+        }[],
+      ) {
+        const checkboxesKeys: Array<{ [key: string]: string }> = [];
+        checkboxes.forEach((checkbox, idx) => {
+          if (checkbox.field) {
+            checkboxesKeys.push({
+              [`checkboxKey${idx + 1}`]: `${checkbox.field}:${checkbox.values}`,
+            });
+          }
+        });
+
+        return checkboxesKeys;
+      }
+
       createNewCollection({
         userId,
         icon: image,
@@ -152,9 +171,7 @@ const CollectionForm: FC<ICollectionForm> = ({
         textKeys: values.texts[0] ? values.texts : null,
         radioKeys: values.radioFields[0] ? values.radioFields : null,
         checkboxKeys: values.checkboxes[0].field
-          ? values.checkboxes.map((checkbox, idx) => ({
-            [`checkboxKey${idx + 1}`]: `${checkbox.field}:${checkbox.values}`,
-          }))
+          ? getCheckboxKeys(values.checkboxes)
           : null,
       });
 

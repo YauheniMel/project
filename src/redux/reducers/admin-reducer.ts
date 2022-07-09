@@ -5,7 +5,10 @@ import { AdminActionTypes } from '../actions/admin-action';
 const initState: AdminType = {
   users: null,
   targetUser: null,
-  targetCollections: null,
+  targetCollections: {
+    collections: null,
+    countCollections: 0,
+  },
   isLoading: false,
 };
 
@@ -17,9 +20,13 @@ function adminReducer(state = initState, action: AnyAction) {
         targetUser: {
           ...action.user,
         },
-        targetCollections: action.user.collections.length
-          ? [...action.user.collections]
-          : null,
+        targetCollections: {
+          ...state.targetCollections,
+          collections: action.user.collections.countCollections
+            ? [...action.user.collections.collections]
+            : null,
+          countCollections: action.user.collections.countCollections,
+        },
       };
     }
     case AdminActionTypes.setIsLoading: {
@@ -31,7 +38,10 @@ function adminReducer(state = initState, action: AnyAction) {
     case AdminActionTypes.setTargetCollections: {
       return {
         ...state,
-        targetCollections: [...action.collections],
+        targetCollections: {
+          collections: [...action.collections.collections],
+          countCollections: action.collections.countCollections,
+        },
       };
     }
     case AdminActionTypes.setUserBlock: {
@@ -109,7 +119,10 @@ function adminReducer(state = initState, action: AnyAction) {
         ...state,
         users: null,
         targetUser: null,
-        targetCollections: null,
+        targetCollections: {
+          collections: null,
+          countCollections: 0,
+        },
       };
     }
     default:

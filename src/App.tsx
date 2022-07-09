@@ -21,6 +21,7 @@ import {
 import SearchPageContainer from './pages/SearchPage/SearchPageContainer';
 import { AppStateType } from './redux';
 import { setIsAuthAction } from './redux/actions/auth-action';
+import Toastify from './components/Toastify/Toastify';
 
 interface IRootPage {
   getUserPersonalInfo: (payload: CredentialsType) => void;
@@ -38,8 +39,6 @@ const App: FC<IRootPage> = ({
     const auth = getAuth();
 
     onAuthStateChanged(auth, (user) => {
-      setIsAuth(false);
-
       if (user) {
         const { uid, displayName, email } = user;
         if (displayName && email) {
@@ -92,6 +91,7 @@ const App: FC<IRootPage> = ({
           />
         </Route>
       </Routes>
+      <Toastify />
     </div>
   );
 };

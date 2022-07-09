@@ -60,7 +60,7 @@ interface IItemForm {
   collectionId: number;
   openForm: boolean;
   setOpenForm: (state: boolean) => void;
-  customFields: any;
+  customFields: string[];
   createNewItem: (itemInfo: any) => void;
   searchMatchTags: (tag: string) => void;
   matchTags: any;
@@ -82,10 +82,10 @@ const ItemForm: FC<IItemForm> = ({
 
   const classes = useStyles();
 
-  function getInitFields(customFields: any) {
+  function getInitFields(customFields: string[]) {
     let obj = {};
 
-    customFields?.forEach((customField: any) => {
+    customFields.forEach((customField: any) => {
       const [key] = Object.keys(customField);
       obj = {
         ...obj,
@@ -142,10 +142,17 @@ const ItemForm: FC<IItemForm> = ({
 
       handleClose();
     },
-    onReset: () => {
+    onReset: (values, { setValues }) => {
       setIsSubmited(false);
       setTags([]);
       setImage('');
+
+      setValues({
+        title: '',
+        tags: '',
+        ...getInitFields(customFields),
+      });
+      console.log(values);
     },
     enableReinitialize: true,
   });
@@ -197,7 +204,10 @@ const ItemForm: FC<IItemForm> = ({
                     setShowSearchTags(true);
                   }
 
-                  if (e.key === 'Enter' && formik.values.tags.trim()) {
+                  if (
+                    (e.code === 'Enter' || e.code === 'NumpadEnter')
+                    && formik.values.tags.trim()
+                  ) {
                     e.preventDefault();
                     setIsSubmited(false);
                     setTags([

@@ -1,33 +1,56 @@
 import React, { FC, useState } from 'react';
-import { Box, Button } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
+import Carousel from 'react-material-ui-carousel';
+import { Box, IconButton } from '@mui/material';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { CollectionType } from '../../types';
 import CardCollection from '../../shared/components/CardCollection/CardCollection';
+import { logWarning } from '../../services/logger';
 
 interface ISlider {
   id: number;
-  collections: CollectionType[];
+  collections: {
+    countCollections: number;
+    collections: CollectionType[] | null;
+  };
   setCollection: (collection: CollectionType) => void;
   getUserCollections: (userId: number, page?: number) => void;
   type?: 'private' | 'public';
+  setEditCollection?: (collectionId: number) => void;
+  setDeleteCollection?: (collectionId: number) => void;
 }
 
 const useStyles = makeStyles({
-  wrap: {
-    position: 'relative',
-    width: '90%',
+  carousel: {
+    height: '70vh',
+
+    '& > :first-child': {
+      height: '100% !important',
+      '& > :first-child': {
+        height: '100% !important',
+        '& > *': {
+          height: '100% !important',
+          '& > *': {
+            '& > *': {
+              height: '100% !important',
+            },
+          },
+        },
+      },
+    },
   },
-  sliderX: {
+  page: {
     display: 'flex',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    overflowX: 'auto',
-  },
-  sliderY: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    maxHeight: '20rem',
-    alignItems: 'center',
-    overflowY: 'auto',
+    height: '100%',
+    padding: '3rem',
+
+    '& > *:hover': {
+      transform: 'scale(1.1)',
+      zIndex: 2,
+    },
   },
 });
 
@@ -37,60 +60,88 @@ const Slider: FC<ISlider> = ({
   getUserCollections,
   id,
   setCollection,
+  setEditCollection,
+  setDeleteCollection,
 }) => {
-  const [showAllCollections, setShowAllCollections] = useState<boolean>(false);
+  const [page, setPage] = useState(1);
+  const [btnDisable, setBtnDisable] = useState('');
+
+  const PAGE_SIZE = 3;
+
   const classes = useStyles();
 
+  function checkLimit(
+    page: number,
+    pageSize: number,
+    countAllCollections: number,
+  ) {
+    return pageSize * page >= countAllCollections;
+  }
+
+  function handleIncreasePage() {
+    if (checkLimit(page, PAGE_SIZE, collections.countCollections)) {
+      logWarning('No more collections.');
+      setBtnDisable('next');
+      return;
+    }
+    setBtnDisable('');
+    setPage(page + 1);
+    getUserCollections(id, page + 1);
+  }
+
+  function handleDecreasePage() {
+    if (page === 1) {
+      setBtnDisable('prev');
+      return;
+    }
+
+    setBtnDisable('');
+    setPage(page - 1);
+  }
+
   return (
-    <Box className={classes.wrap}>
-      {!showAllCollections ? (
-        <Button
-          sx={{
-            position: 'absolute',
-            zIndex: 2,
-            top: 0,
-            right: 0,
-          }}
-          onClick={() => {
-            setShowAllCollections(true);
-
-            getUserCollections(id, 2);
-          }}
+    <Carousel
+      autoPlay={false}
+      NextIcon={(
+        <IconButton
+          disabled={btnDisable === 'next'}
+          onClick={handleIncreasePage}
         >
-          All...
-        </Button>
-      ) : (
-        <Button
-          sx={{
-            position: 'absolute',
-            zIndex: 2,
-            top: 0,
-            right: 0,
-          }}
-          variant="contained"
-          onClick={() => {
-            // need only action, without thunk
-            getUserCollections(id);
-
-            setShowAllCollections(false);
-          }}
-        >
-          Hidden...
-        </Button>
+          <ChevronRightIcon htmlColor="white" />
+        </IconButton>
       )}
-      <Box className={showAllCollections ? classes.sliderY : classes.sliderX}>
-        {collections.map(
-          (collection) => collection && (
-          <CardCollection
-            key={collection.id}
-            collection={collection}
-            type={type}
-            setCollection={setCollection}
-          />
-          ),
-        )}
+      PrevIcon={(
+        <IconButton
+          onClick={handleDecreasePage}
+          disabled={btnDisable === 'prev'}
+        >
+          <ChevronLeftIcon htmlColor="white" />
+        </IconButton>
+      )}
+      sx={{ height: '100%' }}
+      className={classes.carousel}
+      navButtonsAlwaysVisible
+    >
+      <Box className={classes.page}>
+        {collections.collections
+          ?.slice(
+            page === 1 ? 0 : PAGE_SIZE * (page - 1),
+            page === 1 ? PAGE_SIZE : PAGE_SIZE * (page - 1) + 1 + PAGE_SIZE,
+          )
+          .map(
+            (collection) => collection && (
+            <CardCollection
+              key={collection.id}
+              collection={collection}
+              type={type}
+              setCollection={setCollection}
+              setEditCollection={setEditCollection}
+              setDeleteCollection={setDeleteCollection}
+            />
+            ),
+          )}
       </Box>
-    </Box>
+    </Carousel>
   );
 };
 

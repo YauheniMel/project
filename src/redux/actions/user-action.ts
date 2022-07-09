@@ -1,4 +1,5 @@
 import { requestAPI } from '../../api/api';
+import { logSuccess } from '../../services/logger';
 import {
   CollectionInitType,
   CollectionType,
@@ -53,9 +54,12 @@ const setCollectionThemesAction = (
   themes,
 });
 
-const addNewCollectionAction = (collection: CollectionType) => ({
+const addNewCollectionAction = (data: {
+  collection: CollectionType;
+  countCollections: number;
+}) => ({
   type: UserActionTypes.addNewCollection,
-  collection,
+  data,
 });
 
 const updateCollectionAction = (collection: CollectionType) => ({
@@ -128,9 +132,16 @@ export const setMeIsNotAdminAction = (userId: number) => ({
 });
 
 export const signUpThunk = (credentials: CredentialsType) => (dispatch: any) => {
-  requestAPI.signUpUser(credentials).then((res) => {
-    dispatch(setUserPersonalInfoAction(res));
-  });
+  dispatch(setIsAuthAction(false));
+
+  requestAPI
+    .signUpUser(credentials)
+    .finally(() => {
+      dispatch(setIsAuthAction(true));
+    })
+    .then((res) => {
+      dispatch(setUserPersonalInfoAction(res));
+    });
 };
 
 export const logOutThunk = (userId: string) => (dispatch: any) => {
@@ -150,6 +161,8 @@ export const loginThunk = (userId: string) => (dispatch: any) => {
 };
 
 export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
+  dispatch(setIsAuthAction(false));
+
   requestAPI
     .getUserInfo(payload)
     .finally(() => {
@@ -222,7 +235,10 @@ export const updateCollectionThunk = (collection: any) => (dispatch: any) => {
   requestAPI
     .updateCollection(collection)
     .finally(() => dispatch(setIsLoadingAction(false)))
-    .then((response) => dispatch(updateCollectionAction(response)));
+    .then((response) => {
+      logSuccess('The collection has been updated');
+      dispatch(updateCollectionAction(response));
+    });
 };
 
 export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => {
@@ -252,7 +268,10 @@ export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => 
   requestAPI
     .createCollection(collectionInfo)
     .finally(() => dispatch(setIsLoadingAction(false)))
-    .then((response) => dispatch(addNewCollectionAction(response)));
+    .then((response) => {
+      dispatch(addNewCollectionAction(response));
+      logSuccess('The collection has been created');
+    });
 };
 
 export const deleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
@@ -264,6 +283,7 @@ export const deleteCollectionThunk = (collectionId: number) => (dispatch: any) =
     .then((response) => {
       if (response.code === 1) {
         dispatch(deleteCollectionAction(collectionId));
+        logSuccess('The collection has been deleted');
       }
     });
 };

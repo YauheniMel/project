@@ -1,4 +1,5 @@
 import { requestAPI } from '../../api/api';
+import { logSuccess } from '../../services/logger';
 import {
   CollectionType,
   CommentType,
@@ -142,6 +143,7 @@ export const createNewItemThunk = (itemInfo: ItemInitType) => (dispatch: any) =>
     .finally(() => dispatch(setIsLoadingAction(false)))
     .then((response) => {
       dispatch(addNewItemAction(response));
+      logSuccess('The element has been created.');
     });
 };
 
@@ -153,6 +155,8 @@ export const deleteItemThunk = (itemId: number) => (dispatch: any) => {
     .finally(() => dispatch(setIsLoadingAction(false)))
     .then((response) => {
       if (response.code === 1) {
+        logSuccess('The element collection is deleted.');
+
         dispatch(deleteItemAction(itemId));
         dispatch(pullOutItemAction(itemId));
       }
@@ -206,6 +210,8 @@ export const updateItemThunk = (item: any) => (dispatch: any) => {
     .updateItem(item)
     .finally(() => dispatch(setIsLoadingAction(false)))
     .then((response) => {
+      logSuccess('The element collection is updated.');
+
       dispatch(updateNewItemAction(response));
     });
 };

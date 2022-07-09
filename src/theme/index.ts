@@ -54,6 +54,22 @@ const theme = createTheme({
           backgroundColor: Colors.black,
         },
         ':root': {
+          height: '100%',
+
+          body: {
+            height: '100%',
+          },
+
+          '#root': {
+            height: '100%',
+          },
+
+          '.App': {
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          },
+
           [breakpoints.up('md')]: {
             fontSize: '18px',
           },
@@ -61,7 +77,7 @@ const theme = createTheme({
             fontSize: '16px',
           },
           [breakpoints.down('xs')]: {
-            fontSize: '12px',
+            fontSize: '14px',
           },
         },
       },

@@ -28,8 +28,6 @@ const UpdateFormField: FC<any> = ({ formik, value, field }) => {
 
   const classes = useStyles();
 
-  console.log(value);
-
   return (
     <Box>
       <Box className={classes.head}>

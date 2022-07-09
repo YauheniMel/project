@@ -40,7 +40,7 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => (
     {collections?.map((collection: CollectionType) => (
       <Link
         component={RouterLink}
-        to={RoutesApp.CollectionsLink}
+        to={`${RoutesApp.CollectionLink}${collection.id}`}
         key={collection.id}
       >
         <StyledPaper>

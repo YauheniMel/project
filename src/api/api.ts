@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { CredentialsType } from '../redux/actions/user-action';
+import { logError } from '../services/logger';
 
 export const API = {
   SignUpUser: '/api/signUpUser',
@@ -63,25 +64,25 @@ export const requestAPI = {
     return axios
       .get(API.GetThemes)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getAllUntouchedComments(userId: number) {
     return axios
       .get(API.GetAllUntouchedComments, { params: { userId } })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setCommentsTouched(itemId: number) {
     return axios
       .put(API.SetCommentsTouched, { itemId })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   leaveComment(content: string, userId: number, itemId: number) {
     return axios
       .post(API.LeaveComment, { content, userId, itemId })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getAllComments(itemId: number) {
     return axios
@@ -91,7 +92,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterContains(collectionId: number, column: string, str: string) {
     return axios
@@ -103,7 +104,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterMoreThan(collectionId: number, column: string, num: string) {
     return axios
@@ -115,7 +116,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterLessThan(collectionId: number, column: string, num: string) {
     return axios
@@ -127,7 +128,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterExistTag(collectionId: number, str: string) {
     return axios
@@ -138,7 +139,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterIsEmpty(collectionId: number, column: string) {
     return axios
@@ -149,7 +150,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterIsNotEmpty(collectionId: number, column: string) {
     return axios
@@ -160,7 +161,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterStartsWithThunk(collectionId: number, column: string, str: string) {
     return axios
@@ -172,7 +173,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   filterEqualsThunk(collectionId: number, column: string, str: string) {
     return axios
@@ -184,13 +185,13 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   signUpUser(credentials: CredentialsType) {
     return axios
       .post(API.SignUpUser, credentials)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   loginUser(userId: string) {
     return axios
@@ -198,7 +199,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   deleteUser(userId: number) {
     return axios
@@ -206,7 +207,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   blockUser(userId: number) {
     return axios
@@ -214,7 +215,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setIsAdmin(userId: number) {
     return axios
@@ -222,7 +223,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setIsNotAdmin(userId: number) {
     return axios
@@ -230,7 +231,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   unblockUser(userId: number) {
     return axios
@@ -238,7 +239,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   logOutUser(userId: string) {
     return axios
@@ -246,7 +247,7 @@ export const requestAPI = {
         id: userId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   toogleLike(userId: number, itemId: number) {
     return axios
@@ -255,7 +256,7 @@ export const requestAPI = {
         itemId,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   searchMatchTag(tag: string) {
     return axios
@@ -263,19 +264,19 @@ export const requestAPI = {
         params: { tag },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getAllTags() {
     return axios
       .get(API.GetAllTags)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getAllUsers() {
     return axios
       .get(API.GetAllUsers)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getUserInfo(payload: CredentialsType) {
     return axios
@@ -283,7 +284,7 @@ export const requestAPI = {
         params: payload,
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   search(substr: string) {
     return axios
@@ -291,7 +292,7 @@ export const requestAPI = {
         params: { substr },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getMyCollections(userId: number, page: number) {
     return axios
@@ -299,7 +300,7 @@ export const requestAPI = {
         params: { userId, page },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getUserCollections(userId: number, page: number) {
     return axios
@@ -307,7 +308,7 @@ export const requestAPI = {
         params: { userId, page },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getTargetCollections(userId: number | string, page: number) {
     return axios
@@ -315,13 +316,13 @@ export const requestAPI = {
         params: { userId, page },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getBigCollections() {
     return axios
       .get(API.GetBigCollections)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   searchItemsByTag(tag: string) {
     return axios
@@ -329,13 +330,13 @@ export const requestAPI = {
         params: { tag },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getLastAddItems() {
     return axios
       .get(API.GetLastAddItems)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getAllCollections(userId?: number) {
     return axios
@@ -343,7 +344,7 @@ export const requestAPI = {
         params: { userId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getCollectionItems(collectionId: number) {
     return axios
@@ -351,7 +352,7 @@ export const requestAPI = {
         params: { collectionId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getCollection(collectionId: number) {
     return axios
@@ -359,7 +360,7 @@ export const requestAPI = {
         params: { collectionId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getItem(itemId: number, collectionId: number) {
     return axios
@@ -367,7 +368,7 @@ export const requestAPI = {
         params: { itemId, collectionId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   createCollection(collectionInfo: any) {
     const formData = new FormData();
@@ -387,7 +388,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   createItem(itemInfo: any) {
     const formData = new FormData();
@@ -402,7 +403,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   deleteCollection(collectionId: number) {
     return axios
@@ -412,7 +413,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   deleteItem(itemId: number) {
     return axios
@@ -422,19 +423,19 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setEditCollection(collectionId: number) {
     return axios
       .put(API.SetEditCollection, { collectionId })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setEditItems(itemIds: number[]) {
     return axios
       .put(API.SetEditItems, itemIds)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getEditItems(collectionId: number) {
     return axios
@@ -442,7 +443,7 @@ export const requestAPI = {
         params: { collectionId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getTargetUser(userId: number) {
     return axios
@@ -450,7 +451,7 @@ export const requestAPI = {
         params: { userId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getEditCollections(userId: string) {
     return axios
@@ -458,19 +459,19 @@ export const requestAPI = {
         params: { userId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setDeleteCollection(collectionId: number) {
     return axios
       .put(API.SetDeleteCollection, { collectionId })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   setDeleteItems(itemIds: number[]) {
     return axios
       .put(API.SetDeleteItems, itemIds)
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getDeleteItems(collectionId: number) {
     return axios
@@ -478,7 +479,7 @@ export const requestAPI = {
         params: { collectionId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   getDeleteCollections(userId: string) {
     return axios
@@ -486,19 +487,19 @@ export const requestAPI = {
         params: { userId },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   pullOutItem(itemId: number) {
     return axios
       .put(API.PullOutItem, { itemId })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   pullOutCollection(collectionId: number) {
     return axios
       .put(API.PullOutCollection, { collectionId })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   updateCollection(collectionInfo: any) {
     const formData = new FormData();
@@ -513,7 +514,7 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
   updateItem(itemInfo: any) {
     const formData = new FormData();
@@ -528,6 +529,6 @@ export const requestAPI = {
         },
       })
       .then((response) => response.data)
-      .catch((error) => console.log(error.message));
+      .catch((error) => logError(error.message));
   },
 };
