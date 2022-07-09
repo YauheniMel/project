@@ -54,9 +54,12 @@ const setCollectionThemesAction = (
   themes,
 });
 
-const addNewCollectionAction = (collection: CollectionType) => ({
+const addNewCollectionAction = (data: {
+  collection: CollectionType;
+  countCollections: number;
+}) => ({
   type: UserActionTypes.addNewCollection,
-  collection,
+  data,
 });
 
 const updateCollectionAction = (collection: CollectionType) => ({
@@ -129,9 +132,16 @@ export const setMeIsNotAdminAction = (userId: number) => ({
 });
 
 export const signUpThunk = (credentials: CredentialsType) => (dispatch: any) => {
-  requestAPI.signUpUser(credentials).then((res) => {
-    dispatch(setUserPersonalInfoAction(res));
-  });
+  dispatch(setIsAuthAction(false));
+
+  requestAPI
+    .signUpUser(credentials)
+    .finally(() => {
+      dispatch(setIsAuthAction(true));
+    })
+    .then((res) => {
+      dispatch(setUserPersonalInfoAction(res));
+    });
 };
 
 export const logOutThunk = (userId: string) => (dispatch: any) => {
@@ -151,6 +161,8 @@ export const loginThunk = (userId: string) => (dispatch: any) => {
 };
 
 export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch: any) => {
+  dispatch(setIsAuthAction(false));
+
   requestAPI
     .getUserInfo(payload)
     .finally(() => {

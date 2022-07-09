@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     padding: '3rem',
 
     '& > *:hover': {
-      transform: 'scale(1.2)',
+      transform: 'scale(1.1)',
       zIndex: 2,
     },
   },

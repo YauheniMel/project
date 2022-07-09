@@ -145,9 +145,9 @@ function userReducer(state = initState, action: AnyAction) {
         myCollections: {
           ...state.myCollections,
           collections: state.myCollections.collections
-            ? [action.collection, ...state.myCollections.collections]
-            : [action.collection],
-          countCollections: action.collections.countCollections,
+            ? [action.data.collection, ...state.myCollections.collections]
+            : [action.data.collection],
+          countCollections: action.data.countCollections,
         },
       };
     }

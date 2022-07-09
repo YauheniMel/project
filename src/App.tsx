@@ -39,8 +39,6 @@ const App: FC<IRootPage> = ({
     const auth = getAuth();
 
     onAuthStateChanged(auth, (user) => {
-      setIsAuth(false);
-
       if (user) {
         const { uid, displayName, email } = user;
         if (displayName && email) {

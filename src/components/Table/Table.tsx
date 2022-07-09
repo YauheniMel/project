@@ -27,7 +27,6 @@ import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemType } from '../../types';
 import RoutesApp from '../../constants/routes';
 import {
-  compareCountLikesComparator,
   compareCountTagsComparator,
   operatorContains,
   operatorIs,
@@ -38,12 +37,13 @@ import {
   operatorIsEmpty,
   operatorIsNotEmpty,
   operatorStartsWith,
+  likesComparator,
 } from '../../filters/filters';
 
 interface ITable {
   collectionId: number;
   userId: number;
-  list: ItemType[];
+  list: ItemType[] | null;
   authorId: number;
   setTargetItem: (item: ItemType) => void;
   setEditItems: (itemIds: number[]) => void;
@@ -178,7 +178,7 @@ const Table: FC<ITable> = ({
       type: 'number',
       valueGetter: (params) => params.row.likes.length,
       width: 100,
-      sortComparator: compareCountLikesComparator,
+      sortComparator: likesComparator,
       renderCell: (params) => params.row.likes && params.row.likes.length,
       filterable: false,
     },
@@ -486,7 +486,7 @@ const Table: FC<ITable> = ({
           </>
         )}
       </Box>
-      {customFields && (
+      {customFields && list && (
         <StyledDataGrid
           autoHeight
           rows={list}

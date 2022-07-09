@@ -103,7 +103,7 @@ router.put('/api/pullOutItem/', (req, res) => {
 
   models.Item.update(
     { isEdit: false, isDelete: false },
-    { where: { id: +itemId } },
+    { where: { id: +itemId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -173,7 +173,7 @@ router.put('/api/setEditItems/', (req, res) => {
 
   models.Item.update(
     { isEdit: true, isDelete: false },
-    { where: { id: itemIds } },
+    { where: { id: itemIds }, silent: true },
   )
     .then(([response]) => res.status(200).send({
       code: 1,
@@ -277,7 +277,7 @@ router.put('/api/setDeleteItems/', (req, res) => {
 
   models.Item.update(
     { isEdit: false, isDelete: true },
-    { where: { id: itemIds } },
+    { where: { id: itemIds }, silent: true },
   )
     .then(([response]) => res.status(200).send({
       code: 1,

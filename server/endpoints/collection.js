@@ -203,7 +203,7 @@ router.put('/api/setEditCollection/', (req, res) => {
 
   models.Collection.update(
     { isEdit: true, isDelete: false },
-    { where: { id: +collectionId } },
+    { where: { id: +collectionId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -237,7 +237,7 @@ router.put('/api/pullOutCollection/', (req, res) => {
 
   models.Collection.update(
     { isEdit: false, isDelete: false },
-    { where: { id: +collectionId } },
+    { where: { id: +collectionId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -253,7 +253,7 @@ router.put('/api/setDeleteCollection/', (req, res) => {
 
   models.Collection.update(
     { isDelete: true, isEdit: false },
-    { where: { id: collectionId } },
+    { where: { id: collectionId }, silent: true },
   )
     .then(() => res.status(200).send({
       code: 1,
@@ -483,13 +483,22 @@ router.post(
       userId,
     })
       .then((response) => {
-        const { icon } = response;
+        models.Collection.count({
+          where: {
+            userId,
+          },
+        }).then((countCollections) => {
+          const { icon } = response;
 
-        if (icon) {
-          response.icon = Buffer.from(icon).toString('base64');
-        }
+          if (icon) {
+            response.icon = Buffer.from(icon).toString('base64');
+          }
 
-        return res.status(200).send(response);
+          return res.status(200).send({
+            collection: response,
+            countCollections,
+          });
+        });
       })
       .catch((err) => res.status(400).send({
         code: 0,

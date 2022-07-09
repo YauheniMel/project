@@ -25,9 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MDEditor from '@uiw/react-md-editor';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import EditIcon from '@mui/icons-material/Edit';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
-import CheckIcon from '@mui/icons-material/Check';
 import InputFile from '../../shared/components/InputFile/InputFile';
 import { CollectionType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
@@ -304,12 +302,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                           {formik.values.title || collection.title}
                         </Typography>
                         <Box>
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton>
-                            <CheckIcon />
-                          </IconButton>
                           <IconButton
                             onClick={() => handleResetForm(formik, 'title')}
                           >
@@ -343,12 +335,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                           {formik.values.theme || collection.theme}
                         </Typography>
                         <Box>
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton>
-                            <CheckIcon />
-                          </IconButton>
                           <IconButton
                             onClick={() => handleResetForm(formik, 'theme')}
                           >
@@ -416,12 +402,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                               }
                         />
                         <Box>
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton>
-                            <CheckIcon />
-                          </IconButton>
                           <IconButton onClick={() => setDescription('')}>
                             <CleaningServicesIcon />
                           </IconButton>
@@ -447,12 +427,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                         }}
                       >
                         <Box>
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton>
-                            <CheckIcon />
-                          </IconButton>
                           <IconButton onClick={() => setImage(null)}>
                             <CleaningServicesIcon />
                           </IconButton>

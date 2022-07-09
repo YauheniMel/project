@@ -95,6 +95,8 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   async function handleLoginGoogle() {
     try {
       await signInWithGoogle();
+
+      navigate(RoutesApp.User);
     } catch (error: any) {
       logError(error.message);
     }
@@ -103,6 +105,8 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   async function handleLoginFacebook() {
     try {
       await signInWithFacebook();
+
+      navigate(RoutesApp.User);
     } catch (error: any) {
       logError(error.message);
     }
