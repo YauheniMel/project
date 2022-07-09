@@ -37,9 +37,10 @@ export function getIsLoading(state: AppStateType) {
   return state.user.isLoading;
 }
 
-export function getMyCollectionsSelector(
-  state: AppStateType,
-): CollectionType[] | null {
+export function getMyCollectionsSelector(state: AppStateType): {
+  collections: CollectionType[] | null;
+  countCollections: number;
+} {
   return state.user.myCollections;
 }
 

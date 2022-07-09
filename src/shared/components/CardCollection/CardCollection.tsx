@@ -1,15 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  CardMedia, Link, Typography, Avatar, Box, alpha,
+  CardMedia, Link, Typography, Box, alpha, Button,
 } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import { makeStyles } from '@material-ui/core';
-import { VscMove } from 'react-icons/vsc';
 import MDEditor from '@uiw/react-md-editor';
 import { styled } from '@mui/material/styles';
-import { useDrag } from 'react-dnd';
 import RoutesApp from '../../../constants/routes';
 import { CollectionType } from '../../../types';
 
@@ -38,67 +36,70 @@ const useStyles = makeStyles({
   body: {
     height: '20rem',
   },
+  action: {
+    position: 'absolute',
+    top: 0,
+    display: 'flex',
+    width: '100%',
+    zIndex: 1,
+
+    '& > .MuiButton-root': {
+      borderRadius: 0,
+      flex: 1,
+    },
+  },
 });
 
 interface ICardCollection {
   collection: CollectionType;
   setCollection: (collection: CollectionType) => void;
   type: 'private' | 'public';
+  setEditCollection?: (collectionId: number) => void;
+  setDeleteCollection?: (collectionId: number) => void;
 }
 
 const CardCollection: FC<ICardCollection> = ({
   collection,
   setCollection,
   type,
+  setEditCollection,
+  setDeleteCollection,
 }) => {
-  const [showImage, setShowImage] = useState<number>(0);
-
-  const [{ opacity }, drag] = useDrag({
-    type: 'avatar',
-    item: { id: collection.id },
-    collect: (monitor) => ({
-      opacity: monitor.isDragging() ? 0.4 : 1,
-    }),
-  });
-
   const classes = useStyles();
-
-  const src = collection.id && +showImage === +collection.id
-    ? `data:application/pdf;base64,${collection.icon}`
-    : null;
-
   return (
     <Box className={classes.card}>
+      {type === 'private' && (
+        <Box className={classes.action}>
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={() => {
+              if (collection.id) {
+                setEditCollection!(collection.id);
+              }
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => {
+              if (collection.id) {
+                setDeleteCollection!(collection.id);
+              }
+            }}
+          >
+            Delete
+          </Button>
+        </Box>
+      )}
       <Link
         component={RouterLink}
         to={`${RoutesApp.CollectionLink}${collection.id}`}
         onClick={() => setCollection(collection)}
       >
-        {type !== 'public' && (
-          <Avatar
-            src={src?.toString()}
-            sx={{
-              position: 'absolute',
-              cursor: 'grab',
-              top: 0,
-              backgroundColor: 'transparent',
-            }}
-            onMouseDown={() => {
-              if (collection.id) setShowImage(+collection.id);
-            }}
-            onMouseUp={() => {
-              if (collection.id) setShowImage(0);
-            }}
-            ref={drag}
-          >
-            {collection.id && +showImage === +collection.id ? (
-              ''
-            ) : (
-              <VscMove size="30" />
-            )}
-          </Avatar>
-        )}
-        <StyledCard variant="outlined" sx={{ opacity }}>
+        <StyledCard variant="outlined">
           {collection.icon ? (
             <CardMedia
               component="img"

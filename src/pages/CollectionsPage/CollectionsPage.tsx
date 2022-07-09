@@ -10,10 +10,16 @@ interface ICollectionsPage {
     id: number;
     name: string;
     surname: string;
-    collections: CollectionType[] | null;
+    collections: {
+      collections: CollectionType[] | null;
+      countCollections: number;
+    };
   }[]
   | null;
-  myCollections: CollectionType[] | null;
+  myCollections: {
+    countCollections: number;
+    collections: CollectionType[] | null;
+  };
   setCollection: (collectionId: CollectionType) => void;
   getMyCollections: (userId: number, page?: number) => void;
   getUserCollections: (userId: number, page?: number) => void;
@@ -28,7 +34,7 @@ const CollectionsPage: FC<ICollectionsPage> = ({
   getMyCollections,
 }) => (
   <>
-    {!!myCollections?.length && (
+    {myCollections.countCollections !== 0 && (
       <Box>
         <Typography variant="h3">My collections</Typography>
         <Slider
@@ -40,7 +46,7 @@ const CollectionsPage: FC<ICollectionsPage> = ({
       </Box>
     )}
     {allCollections?.map(
-      (user) => !!user.collections?.length && (
+      (user) => user.collections.countCollections !== 0 && (
       <Box key={user.id}>
         <Typography variant="h3">{user.name}</Typography>
         <Typography variant="h3">{user.surname}</Typography>

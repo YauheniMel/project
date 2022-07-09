@@ -79,11 +79,10 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
       </ToogleButton>
       <Drawer
         className={classes.drawer}
-        BackdropProps={{ invisible: true }}
         anchor="right"
         open={isVisible}
         onClose={toggleDrawer}
-        variant="persistent"
+        variant="temporary"
       >
         <div className={classes.toolbar} />
         <Link component={RouterLink} to={RoutesApp.Home}>

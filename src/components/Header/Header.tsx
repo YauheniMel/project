@@ -24,7 +24,7 @@ import InputSearch from '../InputSearch/InputSearch';
 import { UntouchedCommentType } from '../../types';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  position: 'sticky',
+  position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
   left: 0,

@@ -18,7 +18,10 @@ import { CollectionType, TargetUserType } from '../../types';
 import Slider from '../../components/Slider/Slider';
 
 interface IAdminPage {
-  targetCollections: CollectionType[] | null;
+  targetCollections: {
+    countCollections: number;
+    collections: CollectionType[] | null;
+  };
   targetUser: TargetUserType | null;
   getTargetUser: (id: number) => void;
   getTargetUserCollections: (id: number, page?: number) => void;

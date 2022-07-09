@@ -84,7 +84,7 @@ const RootPage: FC<IRootPage> = ({
           icons: user.collections.map((collection: any) => collection.icon),
         }))}
       />
-      <Container>
+      <Container sx={{ flex: 1, paddingTop: '3.2rem' }}>
         <Outlet />
       </Container>
       <ToolBar logOutUser={logOutUser} id={id} role={role} />

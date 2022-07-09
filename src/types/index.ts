@@ -126,7 +126,17 @@ export interface CollectionType {
 }
 
 export interface CollectionsPageType {
-  allCollections: any;
+  allCollections:
+  | {
+    id: number;
+    name: string;
+    surname: string;
+    collections: {
+      collections: CollectionType[] | null;
+      countCollections: number;
+    };
+  }[]
+  | null;
   targetCollections: {
     name: string;
     surname: string;
@@ -164,7 +174,10 @@ export interface UserPageType {
   status: 'active' | 'blocked';
   createdAt: null | string;
   updatedAt: null | string;
-  myCollections: null | CollectionType[];
+  myCollections: {
+    countCollections: number;
+    collections: CollectionType[] | null;
+  };
   listEditCollections: Array<CollectionType | null>;
   listDeleteCollections: Array<CollectionType | null>;
   likes: { itemId: number }[] | null;
@@ -207,7 +220,10 @@ export interface TargetUserType {
 export interface AdminType {
   users: UserType[] | null;
   targetUser: UserType | null;
-  targetCollections: CollectionType[] | null;
+  targetCollections: {
+    collections: CollectionType[] | null;
+    countCollections: number;
+  };
   isLoading: boolean;
 }
 

@@ -12,9 +12,12 @@ const initState: UserPageType = {
   theme: 'light',
   createdAt: null,
   updatedAt: null,
-  myCollections: null,
   listEditCollections: [],
   listDeleteCollections: [],
+  myCollections: {
+    countCollections: 0,
+    collections: null,
+  },
   likes: null,
   themes: null,
   isLoading: false,
@@ -45,7 +48,10 @@ function userReducer(state = initState, action: AnyAction) {
         theme: 'light',
         createdAt: null,
         updatedAt: null,
-        myCollections: null,
+        myCollections: {
+          countCollections: 0,
+          collections: null,
+        },
         listEditCollections: [],
         listDeleteCollections: [],
         likes: null,
@@ -61,7 +67,10 @@ function userReducer(state = initState, action: AnyAction) {
     case UserActionTypes.setMyCollections: {
       return {
         ...state,
-        myCollections: [...action.collections],
+        myCollections: {
+          countCollections: action.collections.countCollections,
+          collections: [...action.collections.collections],
+        },
       };
     }
     case UserActionTypes.setMeIsNotAdmin: {
@@ -79,11 +88,14 @@ function userReducer(state = initState, action: AnyAction) {
     case UserActionTypes.deleteCollection: {
       return {
         ...state,
-        myCollections: [
-          ...state.myCollections!.filter(
-            (collection) => collection.id !== action.collectionId,
-          ),
-        ],
+        myCollections: {
+          ...state.myCollections,
+          collections: [
+            ...state.myCollections.collections!.filter(
+              (collection) => collection.id !== action.collectionId,
+            ),
+          ],
+        },
         listDeleteCollections: [
           ...state.listDeleteCollections.filter(
             (collection) => collection!.id !== action.collectionId,
@@ -94,12 +106,15 @@ function userReducer(state = initState, action: AnyAction) {
     case UserActionTypes.updateCollection: {
       return {
         ...state,
-        myCollections: [
-          action.collection,
-          ...state.myCollections!.filter(
-            (collection) => collection.id !== action.collection.id,
-          ),
-        ],
+        myCollections: {
+          ...state.myCollections,
+          collections: [
+            action.collection,
+            ...state.myCollections.collections!.filter(
+              (collection) => collection.id !== action.collection.id,
+            ),
+          ],
+        },
       };
     }
     case UserActionTypes.setDeleteCollections: {
@@ -127,13 +142,17 @@ function userReducer(state = initState, action: AnyAction) {
     case UserActionTypes.addNewCollection: {
       return {
         ...state,
-        myCollections: state.myCollections
-          ? [action.collection, ...state.myCollections]
-          : [action.collection],
+        myCollections: {
+          ...state.myCollections,
+          collections: state.myCollections.collections
+            ? [action.collection, ...state.myCollections.collections]
+            : [action.collection],
+          countCollections: action.collections.countCollections,
+        },
       };
     }
     case UserActionTypes.updateEditCollections: {
-      const [collection] = state.myCollections!.filter(
+      const [collection] = state.myCollections.collections!.filter(
         (collection) => collection.id === action.collectionId,
       );
 
@@ -162,7 +181,7 @@ function userReducer(state = initState, action: AnyAction) {
       };
     }
     case UserActionTypes.updateDeleteCollections: {
-      const [collection] = state.myCollections!.filter(
+      const [collection] = state.myCollections.collections!.filter(
         (collection) => collection.id === action.collectionId,
       );
 

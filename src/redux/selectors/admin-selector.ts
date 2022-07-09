@@ -1,13 +1,11 @@
 import { AppStateType } from '..';
-import { CollectionType, TargetUserType } from '../../types';
+import { TargetUserType } from '../../types';
 
 export function getAdminTargetUser(state: AppStateType): TargetUserType {
   return state.admin.targetUser as TargetUserType;
 }
 
-export function getAdminTargetCollections(
-  state: AppStateType,
-): CollectionType[] | null {
+export function getAdminTargetCollections(state: AppStateType) {
   return state.admin.targetCollections;
 }
 
