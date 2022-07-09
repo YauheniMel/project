@@ -61,7 +61,7 @@ const theme = createTheme({
             fontSize: '16px',
           },
           [breakpoints.down('xs')]: {
-            fontSize: '12px',
+            fontSize: '14px',
           },
         },
       },

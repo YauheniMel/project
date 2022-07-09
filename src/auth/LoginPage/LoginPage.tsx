@@ -11,6 +11,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import RoutesApp from '../../constants/routes';
 import login from '../services/login';
 import { signInWithGoogle, signInWithFacebook } from '../firebase-config';
+import { logError } from '../../services/logger';
 
 interface ILoginPage {
   id: string;
@@ -85,8 +86,8 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
         navigate(RoutesApp.User);
 
         resetForm({ values: { email: '', password: '' } });
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        logError(error.message);
       }
     },
   });
@@ -94,16 +95,16 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   async function handleLoginGoogle() {
     try {
       await signInWithGoogle();
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      logError(error.message);
     }
   }
 
   async function handleLoginFacebook() {
     try {
       await signInWithFacebook();
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      logError(error.message);
     }
   }
 

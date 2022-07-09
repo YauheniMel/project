@@ -1,4 +1,5 @@
 import { requestAPI } from '../../api/api';
+import { logSuccess } from '../../services/logger';
 import {
   CollectionInitType,
   CollectionType,
@@ -222,7 +223,10 @@ export const updateCollectionThunk = (collection: any) => (dispatch: any) => {
   requestAPI
     .updateCollection(collection)
     .finally(() => dispatch(setIsLoadingAction(false)))
-    .then((response) => dispatch(updateCollectionAction(response)));
+    .then((response) => {
+      logSuccess('The collection has been updated');
+      dispatch(updateCollectionAction(response));
+    });
 };
 
 export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => {
@@ -252,7 +256,10 @@ export const createNewCollectionThunk = (collectionInfo: CollectionInitType) => 
   requestAPI
     .createCollection(collectionInfo)
     .finally(() => dispatch(setIsLoadingAction(false)))
-    .then((response) => dispatch(addNewCollectionAction(response)));
+    .then((response) => {
+      dispatch(addNewCollectionAction(response));
+      logSuccess('The collection has been created');
+    });
 };
 
 export const deleteCollectionThunk = (collectionId: number) => (dispatch: any) => {
@@ -264,6 +271,7 @@ export const deleteCollectionThunk = (collectionId: number) => (dispatch: any) =
     .then((response) => {
       if (response.code === 1) {
         dispatch(deleteCollectionAction(collectionId));
+        logSuccess('The collection has been deleted');
       }
     });
 };

@@ -21,6 +21,7 @@ import {
 import SearchPageContainer from './pages/SearchPage/SearchPageContainer';
 import { AppStateType } from './redux';
 import { setIsAuthAction } from './redux/actions/auth-action';
+import Toastify from './components/Toastify/Toastify';
 
 interface IRootPage {
   getUserPersonalInfo: (payload: CredentialsType) => void;
@@ -92,6 +93,7 @@ const App: FC<IRootPage> = ({
           />
         </Route>
       </Routes>
+      <Toastify />
     </div>
   );
 };
