@@ -29,7 +29,6 @@ const useStyles = makeStyles({
     position: 'relative',
     maxWidth: '12rem',
     minWidth: '12rem',
-    overflow: 'hidden',
   },
   body: {
     height: '20rem',

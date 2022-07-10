@@ -5,13 +5,13 @@ module.exports = {
   async up() {
     await models.User.findOrCreate({
       where: {
-        name: 'Yauheni',
-        surname: 'Melnik',
+        name: 'Евгений',
+        surname: 'Мельник',
         email: '207melnik@gmail.com',
         userId: 'NcIuwThJUAPjXynArVackzGtAvx1',
       },
     }).then(() => models.User.update(
-      { role: Roles.Admin },
+      { role: Roles.Admin, status: 'active' },
       { where: { userId: 'NcIuwThJUAPjXynArVackzGtAvx1' } },
     ));
   },

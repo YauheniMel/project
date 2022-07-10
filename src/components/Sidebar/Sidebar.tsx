@@ -8,7 +8,7 @@ interface ISidebar {
 const Sidebar: FC<ISidebar> = ({ children }) => (
   <Box
     sx={(theme) => ({
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         display: 'flex',
       },
     })}

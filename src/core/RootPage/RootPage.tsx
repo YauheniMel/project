@@ -28,6 +28,8 @@ import { getUntouchedComments } from '../../redux/selectors/collection-selector'
 import { logOutThunk } from '../../redux/actions/user-action';
 import { getThemeValue, toggleTheme } from '../../services/theme';
 import { getLanguageValue, toggleLanguage } from '../../services/language';
+import logout from '../../auth/services/logout';
+import { logError, logSuccess, logWarning } from '../../services/logger';
 
 interface IRootPage {
   id: string;
@@ -57,6 +59,20 @@ const RootPage: FC<IRootPage> = ({
 }) => {
   const socket = io('https://course-project-melnik.herokuapp.com/');
 
+  async function handlePolicy(event: any) {
+    event.stopPropagation();
+
+    try {
+      await logout();
+
+      logOutUser(id);
+
+      window.removeEventListener('click', handlePolicy, { capture: true });
+    } catch (err: any) {
+      logError(err.message);
+    }
+  }
+
   useEffect(() => {
     if (userId) {
       getUntouchedComments(userId);
@@ -74,8 +90,29 @@ const RootPage: FC<IRootPage> = ({
     }
 
     socket.on('comment', (res: any) => {
+      console.log(res);
+
       if (userId === res.userId) {
         getUntouchedComments(userId);
+      }
+    });
+
+    socket.on('block', (res: any) => {
+      console.log(res);
+      if (userId === res.userId) {
+        logWarning('Your account has been blocked');
+        window.addEventListener('click', handlePolicy, {
+          capture: true,
+          once: true,
+        });
+      }
+    });
+
+    socket.on('unblock', (res: any) => {
+      if (userId === res.userId) {
+        logSuccess('Your account has been unblocked');
+
+        window.removeEventListener('click', handlePolicy, { capture: true });
       }
     });
   }, [userId]);
