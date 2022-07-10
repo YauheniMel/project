@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import { FieldArray } from 'formik';
 import React, { FC } from 'react';
+import { LanguageContext } from '../../context/LanguageContext';
 
 const useStyles = makeStyles({
   wrap: {
@@ -32,53 +33,56 @@ const FormArray: FC<IFormArray> = ({ formik, type }) => {
   const classes = useStyles();
 
   return (
-    <FieldArray
-      name={type}
-      render={(fieldArrayProps) => {
-        const { push, remove, form } = fieldArrayProps;
-        const { values } = form;
-        return (
-          <Box className={classes.wrap}>
-            <Box className={classes.label}>
-              <Typography variant="body1">
-                Form fields:
-                {type}
-              </Typography>
-              <Button
-                onClick={() => {
-                  push('');
-                }}
-                disabled={formik.values[`${type}`].length === 3}
-                sx={{ flex: 1 }}
-              >
-                Add field
-              </Button>
-            </Box>
-            {values[`${type}`].map((number: string, idx: any) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Box className={classes.input} key={idx}>
-                <Button
-                  onClick={() => {
-                    remove(idx);
-                  }}
-                  sx={{ padding: '0 2rem' }}
-                >
-                  Delete
-                </Button>
-                <TextField
-                  name={`${type}[${idx}]`}
-                  fullWidth
-                  required
-                  label="Name field"
-                  value={formik.values[`${type}`][idx]}
-                  onChange={formik.handleChange}
-                />
+    <LanguageContext.Consumer>
+      {({ language }) => (
+        <FieldArray
+          name={type}
+          render={(fieldArrayProps) => {
+            const { push, remove, form } = fieldArrayProps;
+            const { values } = form;
+            return (
+              <Box className={classes.wrap}>
+                <Box className={classes.label}>
+                  <Typography variant="body1">
+                    {language.modalCreateCollection[type]}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      push('');
+                    }}
+                    disabled={formik.values[`${type}`].length === 3}
+                    sx={{ flex: 1 }}
+                  >
+                    {language.modalCreateCollection.addField}
+                  </Button>
+                </Box>
+                {values[`${type}`].map((number: string, idx: any) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Box className={classes.input} key={idx}>
+                    <Button
+                      onClick={() => {
+                        remove(idx);
+                      }}
+                      sx={{ padding: '0 2rem' }}
+                    >
+                      {language.modalCreateCollection.delete}
+                    </Button>
+                    <TextField
+                      name={`${type}[${idx}]`}
+                      fullWidth
+                      required
+                      label={language.modalCreateCollection.nameField}
+                      value={formik.values[`${type}`][idx]}
+                      onChange={formik.handleChange}
+                    />
+                  </Box>
+                ))}
               </Box>
-            ))}
-          </Box>
-        );
-      }}
-    />
+            );
+          }}
+        />
+      )}
+    </LanguageContext.Consumer>
   );
 };
 

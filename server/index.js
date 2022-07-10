@@ -142,7 +142,7 @@ router.put('/api/setCommentsTouched/', (req, res) => {
     }));
 });
 
-router.post('/api/leaveComment/', (req, res) => {
+router.post('/api/addComment/', (req, res) => {
   const { content, userId, itemId } = req.body;
 
   models.Comment.create({

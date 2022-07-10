@@ -112,21 +112,22 @@ const ItemForm: FC<IItemForm> = ({
     setTags(tags.filter((tag) => tag !== str));
   };
 
-  function handlePushTag(e: any, formik: any) {
+  function handleSetTag(formik: any) {
     if (formik.values.tags.trim()) {
       searchMatchTags(formik.values.tags);
       setShowSearchTags(true);
     }
+  }
 
-    if (e.keyCode === 13 && formik.values.tags.trim()) {
-      e.preventDefault();
-      setIsSubmited(false);
-      setTags([
-        ...tags.filter((tag) => tag !== formik.values.tags),
-        formik.values.tags,
-      ]);
-      formik.values.tags = '';
-    }
+  function handlePushTag(formik: any) {
+    if (!formik.values.tags.trim()) return;
+
+    setIsSubmited(false);
+    setTags([
+      ...tags.filter((tag) => tag !== formik.values.tags),
+      formik.values.tags,
+    ]);
+    formik.values.tags = '';
   }
 
   const formik = useFormik({
@@ -213,9 +214,13 @@ const ItemForm: FC<IItemForm> = ({
                 name="tags"
                 label="Enter tags"
                 value={formik.values.tags}
-                onChange={formik.handleChange}
-                onKeyDown={(e) => {
-                  handlePushTag(e, formik);
+                onKeyDown={() => {
+                  handleSetTag(formik);
+                }}
+                onChange={(e: any) => {
+                  setIsSubmited(false);
+
+                  formik.handleChange(e);
                 }}
                 InputProps={{
                   startAdornment: tags.map((tag, idx) => (
@@ -232,9 +237,9 @@ const ItemForm: FC<IItemForm> = ({
               />
               {isSubmited && <Alert severity="error">Tags is required</Alert>}
               {!isSubmited && (
-                <Alert severity="warning">
+                <Button fullWidth onClick={() => handlePushTag(formik)}>
                   Please press enter to add a new tag
-                </Alert>
+                </Button>
               )}
             </Box>
             <Box sx={{ display: showSearchTags ? 'block' : 'none' }}>

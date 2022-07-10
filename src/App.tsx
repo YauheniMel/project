@@ -32,6 +32,8 @@ import Toastify from './components/Toastify/Toastify';
 import { getThemeValue } from './services/theme';
 import { themeDark, themeLight } from './theme';
 import { ThemeContext, themes } from './context/ThemeContext';
+import { LanguageContext, languages } from './context/LanguageContext';
+import { getLanguageValue } from './services/language';
 
 interface IRootPage {
   getUserPersonalInfo: (payload: CredentialsType) => void;
@@ -46,6 +48,7 @@ const App: FC<IRootPage> = ({
   setIsAuth,
 }) => {
   const [theme, setTheme] = useState(themes.on);
+  const [language, setLanguage] = useState(languages.eng);
 
   const themeProviderValue = useMemo(() => ({ theme, setTheme }), [theme]);
 
@@ -53,6 +56,18 @@ const App: FC<IRootPage> = ({
     const theme = getThemeValue();
     if (theme) {
       setTheme(theme);
+    }
+  }, []);
+
+  const languageProviderValue = useMemo(
+    () => ({ language, setLanguage }),
+    [language],
+  );
+
+  useEffect(() => {
+    const language = getLanguageValue();
+    if (language) {
+      setLanguage(languages[language]);
     }
   }, []);
 
@@ -88,36 +103,44 @@ const App: FC<IRootPage> = ({
 
   return (
     <ThemeContext.Provider value={themeProviderValue}>
-      <ThemeProvider theme={theme === 'light' ? themeLight : themeDark}>
-        <CssBaseline />
-        <div className="App">
-          <Routes>
-            <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
-            <Route path={RoutesApp.SignUp} element={<SignUpPageContainer />} />
-            <Route path={RoutesApp.Root} element={<RootPage />}>
-              <Route path={RoutesApp.Admin} element={<AdminPageContainer />} />
+      <LanguageContext.Provider value={languageProviderValue}>
+        <ThemeProvider theme={theme === 'light' ? themeLight : themeDark}>
+          <CssBaseline />
+          <div className="App">
+            <Routes>
+              <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
               <Route
-                path={RoutesApp.Home}
-                element={<HomePageContainer toogleLike={toogleLike} />}
+                path={RoutesApp.SignUp}
+                element={<SignUpPageContainer />}
               />
-              <Route path={RoutesApp.User} element={<UserPageContainer />} />
-              <Route
-                path={RoutesApp.Collection}
-                element={<CollectionPageContainer toogleLike={toogleLike} />}
-              />
-              <Route
-                path={RoutesApp.Collections}
-                element={<CollectionsPageContainer />}
-              />
-              <Route
-                path={RoutesApp.Search}
-                element={<SearchPageContainer toogleLike={toogleLike} />}
-              />
-            </Route>
-          </Routes>
-          <Toastify />
-        </div>
-      </ThemeProvider>
+              <Route path={RoutesApp.Root} element={<RootPage />}>
+                <Route
+                  path={RoutesApp.Admin}
+                  element={<AdminPageContainer />}
+                />
+                <Route
+                  path={RoutesApp.Home}
+                  element={<HomePageContainer toogleLike={toogleLike} />}
+                />
+                <Route path={RoutesApp.User} element={<UserPageContainer />} />
+                <Route
+                  path={RoutesApp.Collection}
+                  element={<CollectionPageContainer toogleLike={toogleLike} />}
+                />
+                <Route
+                  path={RoutesApp.Collections}
+                  element={<CollectionsPageContainer />}
+                />
+                <Route
+                  path={RoutesApp.Search}
+                  element={<SearchPageContainer toogleLike={toogleLike} />}
+                />
+              </Route>
+            </Routes>
+            <Toastify />
+          </div>
+        </ThemeProvider>
+      </LanguageContext.Provider>
     </ThemeContext.Provider>
   );
 };

@@ -49,7 +49,7 @@ const CarouselComponent: FC<ICarousel> = ({ collections }) => (
             <Typography variant="body2">
               Created:
               {' '}
-              {moment(collection.createdAt).format('DD MMMM YYYY')}
+              {moment(collection.createdAt).format('DD/MM/YYYY')}
             </Typography>
             <MDEditor.Markdown
               style={{

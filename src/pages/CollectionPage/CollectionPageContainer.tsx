@@ -12,7 +12,7 @@ import {
   getEditItemsThunk,
   getTargetCollectionThunk,
   getTargetItemThunk,
-  leaveCommentThunk,
+  addCommentThunk,
   pullOutItemThunk,
   searchMatchTagsThunk,
   setCommentsTouchedThunk,
@@ -53,7 +53,7 @@ interface ICollectionPageContainer {
   icon: any;
   description: string;
   theme: string;
-  customFields: any;
+  customFields: string[];
   createdAt: string;
   targetItem: ItemType | null;
   list: ItemType[] | null;
@@ -77,7 +77,7 @@ interface ICollectionPageContainer {
   searchMatchTags: (tag: string) => void;
   matchTags: any;
   getAllComments: (itemId: number) => void;
-  leaveComment: (content: string, userId: number, itemId: number) => void;
+  addComment: (content: string, userId: number, itemId: number) => void;
   setCommentsTouched: (itemId: number) => void;
 }
 
@@ -119,7 +119,8 @@ const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
               userId={props.userId}
               likes={props.likes}
               getAllComments={props.getAllComments}
-              leaveComment={props.leaveComment}
+              addComment={props.addComment}
+              customFields={props.customFields}
               setCommentsTouched={props.setCommentsTouched}
             />
           )}
@@ -187,8 +188,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   getAllComments: (itemId: number) => {
     dispatch(getAllCommentsThunk(itemId));
   },
-  leaveComment: (content: string, userId: number, itemId: number) => {
-    dispatch(leaveCommentThunk(content, userId, itemId));
+  addComment: (content: string, userId: number, itemId: number) => {
+    dispatch(addCommentThunk(content, userId, itemId));
   },
   setCommentsTouched: (itemId: number) => {
     dispatch(setCommentsTouchedThunk(itemId));

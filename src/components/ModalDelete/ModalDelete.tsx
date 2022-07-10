@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import { CollectionType, ItemType } from '../../types';
+import { LanguageContext } from '../../context/LanguageContext';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
@@ -95,151 +96,155 @@ const ModalDelete: FC<IModalDelete> = ({
   }, [collectionsDel]);
 
   return (
-    <Backdrop className={classes.back} open={openModal}>
-      <Paper className={classes.paper}>
-        <StyledButton onClick={() => setOpen(false)} variant="contained">
-          <CloseIcon fontSize="large" />
-        </StyledButton>
-        <List
-          sx={{
-            bgcolor: 'background.paper',
-            overflow: 'auto',
-            paddingBottom: 0,
-            width: '100%',
-            height: '100%',
-          }}
-          subheader={<li />}
-        >
-          {collectionsDel?.map(
-            (collection) => collection && (
-            <ListItem
+    <LanguageContext.Consumer>
+      {({ language }) => (
+        <Backdrop className={classes.back} open={openModal}>
+          <Paper className={classes.paper}>
+            <StyledButton onClick={() => setOpen(false)} variant="contained">
+              <CloseIcon fontSize="large" />
+            </StyledButton>
+            <List
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 0,
+                bgcolor: 'background.paper',
+                overflow: 'auto',
+                paddingBottom: 0,
+                width: '100%',
                 height: '100%',
               }}
-              key={collection.id}
+              subheader={<li />}
             >
-              <ListSubheader
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  zIndex: '1000',
-                  width: '100%',
-                  bgcolor: 'background.paper',
-                }}
-              >
-                {collection.theme}
-              </ListSubheader>
-              <Box className={classes.listItem}>
+              {collectionsDel?.map(
+                (collection) => collection && (
                 <ListItem
-                  sx={{ flex: 1 }}
-                  key={`Collection-${collection.createdAt}`}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: 0,
+                    height: '100%',
+                  }}
+                  key={collection.id}
                 >
-                  <MDEditor.Markdown
-                    style={{
-                      backgroundColor: 'transparent',
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
                     }}
-                    source={collection.description!.replace(
-                      /&&#&&/gim,
-                      '\n',
-                    )}
-                  />
+                  >
+                    {collection.theme}
+                  </ListSubheader>
+                  <Box className={classes.listItem}>
+                    <ListItem
+                      sx={{ flex: 1 }}
+                      key={`Collection-${collection.createdAt}`}
+                    >
+                      <MDEditor.Markdown
+                        style={{
+                          backgroundColor: 'transparent',
+                        }}
+                        source={collection.description!.replace(
+                          /&&#&&/gim,
+                          '\n',
+                        )}
+                      />
+                    </ListItem>
+                  </Box>
+                  <Box className={classes.action}>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        if (collection.id) deleteCollection!(collection.id);
+                      }}
+                      color="error"
+                    >
+                      {language.modalDelete.delete}
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        if (collection.id) pullOutCollection!(collection.id);
+                      }}
+                    >
+                      {language.modalDelete.pullOut}
+                    </Button>
+                  </Box>
                 </ListItem>
-              </Box>
-              <Box className={classes.action}>
-                <Button
+                ),
+              )}
+              {itemsDel?.map(
+                (item) => item && (
+                <ListItem
                   sx={{
-                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: 0,
+                    height: '100%',
                   }}
-                  onClick={() => {
-                    if (collection.id) deleteCollection!(collection.id);
-                  }}
-                  color="error"
+                  key={item.id}
                 >
-                  Delete
-                </Button>
-                <Button
-                  sx={{
-                    flex: 1,
-                  }}
-                  onClick={() => {
-                    if (collection.id) pullOutCollection!(collection.id);
-                  }}
-                >
-                  Pull out
-                </Button>
-              </Box>
-            </ListItem>
-            ),
-          )}
-          {itemsDel?.map(
-            (item) => item && (
-            <ListItem
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 0,
-                height: '100%',
-              }}
-              key={item.id}
-            >
-              <ListSubheader
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  zIndex: '1000',
-                  width: '100%',
-                  bgcolor: 'background.paper',
-                }}
-              >
-                <Typography variant="h4">{item.title}</Typography>
-                <Typography variant="subtitle1">
-                  Created:
-                  {' '}
-                  {moment(item.createdAt).format('DD MMMM YYYY')}
-                </Typography>
-              </ListSubheader>
-              <Box className={classes.listItem}>
-                {item.icon && (
-                <Avatar
-                  alt={item.title}
-                  src={`data:application/pdf;base64,${item.icon}`}
-                />
-                )}
-              </Box>
-              <Box className={classes.action}>
-                <Button
-                  sx={{
-                    flex: 1,
-                  }}
-                  onClick={() => {
-                    if (item.id) deleteItem!(item.id);
-                  }}
-                  color="warning"
-                >
-                  Delete
-                </Button>
-                <Button
-                  sx={{
-                    flex: 1,
-                  }}
-                  onClick={() => {
-                    if (item.id) pullOutItem!(item.id);
-                  }}
-                >
-                  Pull out
-                </Button>
-              </Box>
-            </ListItem>
-            ),
-          )}
-        </List>
-      </Paper>
-    </Backdrop>
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
+                    }}
+                  >
+                    <Typography variant="h4">{item.title}</Typography>
+                    <Typography variant="subtitle1">
+                      {language.modalDelete.created}
+                      {' '}
+                      {moment(item.createdAt).format('DD/MM/YYYY')}
+                    </Typography>
+                  </ListSubheader>
+                  <Box className={classes.listItem}>
+                    {item.icon && (
+                    <Avatar
+                      alt={item.title}
+                      src={`data:application/pdf;base64,${item.icon}`}
+                    />
+                    )}
+                  </Box>
+                  <Box className={classes.action}>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        if (item.id) deleteItem!(item.id);
+                      }}
+                      color="warning"
+                    >
+                      {language.modalDelete.delete}
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        if (item.id) pullOutItem!(item.id);
+                      }}
+                    >
+                      {language.modalDelete.pullOut}
+                    </Button>
+                  </Box>
+                </ListItem>
+                ),
+              )}
+            </List>
+          </Paper>
+        </Backdrop>
+      )}
+    </LanguageContext.Consumer>
   );
 };
 

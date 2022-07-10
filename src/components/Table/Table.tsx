@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import {
   DataGrid,
   GridColDef,
@@ -39,6 +39,7 @@ import {
   operatorStartsWith,
   likesComparator,
 } from '../../filters/filters';
+import { LanguageContext } from '../../context/LanguageContext';
 
 interface ITable {
   collectionId: number;
@@ -111,10 +112,12 @@ const Table: FC<ITable> = ({
 
   const { CollectionLink, ItemLink } = RoutesApp;
 
+  const { language } = useContext(LanguageContext);
+
   const columns: GridColDef[] = [
     {
       field: 'title',
-      headerName: 'Title',
+      headerName: language.collectionPage.title,
       flex: 1,
       minWidth: 150,
       valueGetter: (params) => params.row.title,
@@ -159,27 +162,27 @@ const Table: FC<ITable> = ({
     },
     {
       field: 'tags',
-      headerName: 'Tags',
+      headerName: language.collectionPage.tags,
       type: 'string',
       valueGetter: (params) => params.row.tags
-        .map((tag: { content: string }) => tag.content)
+        ?.map((tag: { content: string }) => tag.content)
         .join(','),
       sortComparator: compareCountTagsComparator,
       minWidth: 150,
       flex: 1,
-      renderCell: (params) => params.row.tags.map((tag: any) => <Chip label={tag.content} />),
+      renderCell: (params) => params.row.tags?.map((tag: any) => <Chip label={tag.content} />),
       filterOperators: getGridStringOperators()
         .filter((operator) => operator.value === 'contains')
         .map(() => operatorExistTag),
     },
     {
       field: 'likes',
-      headerName: 'Likes',
+      headerName: language.collectionPage.likes,
       type: 'number',
-      valueGetter: (params) => params.row.likes.length,
+      valueGetter: (params) => params.row.likes?.length,
       width: 100,
       sortComparator: likesComparator,
-      renderCell: (params) => params.row.likes && params.row.likes.length,
+      renderCell: (params) => params.row.likes && params.row.likes?.length,
       filterable: false,
     },
     {
@@ -456,69 +459,76 @@ const Table: FC<ITable> = ({
   }
 
   return (
-    <Box sx={{ position: 'relative', paddingTop: '1.4rem' }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          right: 0,
-          top: '-1.4rem',
-        }}
-      >
-        <Button onClick={() => getCollectionItems(collectionId)} color="error">
-          Filter cleaning
-        </Button>
-        {authorId === userId && (
-          <>
+    <LanguageContext.Consumer>
+      {({ language }) => (
+        <Box sx={{ position: 'relative', paddingTop: '1.4rem' }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              right: 0,
+              top: '-1.4rem',
+            }}
+          >
             <Button
-              onClick={() => setDeleteItems(selectRows)}
+              onClick={() => getCollectionItems(collectionId)}
               color="error"
-              disabled={selectRows.length === 0}
             >
-              Put Delete
+              {language.collectionPage.filterCleaning}
             </Button>
-            <Button
-              onClick={() => setEditItems(selectRows)}
-              disabled={selectRows.length === 0}
-              color="warning"
-            >
-              Put Update
-            </Button>
-          </>
-        )}
-      </Box>
-      {customFields && list && (
-        <StyledDataGrid
-          autoHeight
-          rows={list}
-          getRowClassName={(params) => {
-            const { indexRelativeToCurrentPage } = params;
+            {authorId === userId && (
+              <>
+                <Button
+                  onClick={() => setDeleteItems(selectRows)}
+                  color="error"
+                  disabled={selectRows.length === 0}
+                >
+                  {language.collectionPage.putDelete}
+                </Button>
+                <Button
+                  onClick={() => setEditItems(selectRows)}
+                  disabled={selectRows.length === 0}
+                  color="warning"
+                >
+                  {language.collectionPage.putEdit}
+                </Button>
+              </>
+            )}
+          </Box>
+          {customFields && list && (
+            <StyledDataGrid
+              autoHeight
+              rows={list}
+              getRowClassName={(params) => {
+                const { indexRelativeToCurrentPage } = params;
 
-            return indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
-          }}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-          columns={columns}
-          disableColumnSelector
-          initialState={{
-            columns: {
-              columnVisibilityModel: {
-                dateValue1: !!customFields[3].dateKey1,
-                dateValue2: !!customFields[4].dateKey2,
-                dateValue3: !!customFields[5].dateKey3,
-                textValue1: !!customFields[12].textKey1,
-                textValue2: !!customFields[13].textKey2,
-                textValue3: !!customFields[14].textKey3,
-              },
-            },
-          }}
-          disableExtendRowFullWidth
-          checkboxSelection
-          onStateChange={handleChangeStateTable}
-          disableSelectionOnClick
-        />
+                return indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
+              }}
+              components={{
+                Toolbar: CustomToolbar,
+              }}
+              columns={columns}
+              disableColumnSelector
+              initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    dateValue1: !!customFields[3].dateKey1,
+                    dateValue2: !!customFields[4].dateKey2,
+                    dateValue3: !!customFields[5].dateKey3,
+                    textValue1: !!customFields[12].textKey1,
+                    textValue2: !!customFields[13].textKey2,
+                    textValue3: !!customFields[14].textKey3,
+                  },
+                },
+              }}
+              disableExtendRowFullWidth
+              checkboxSelection
+              onStateChange={handleChangeStateTable}
+              disableSelectionOnClick
+            />
+          )}
+        </Box>
       )}
-    </Box>
+    </LanguageContext.Consumer>
   );
 };
 

@@ -54,7 +54,7 @@ export const API = {
   SetIsAdmin: '/api/setIsAdmin',
   SetIsNotAdmin: '/api/setIsNotAdmin',
   GetAllComments: '/api/getAllComments',
-  LeaveComment: '/api/leaveComment',
+  addComment: '/api/addComment',
   SetCommentsTouched: '/api/setCommentsTouched',
   GetAllUntouchedComments: '/api/getAllUntouchedComments',
 };
@@ -78,9 +78,9 @@ export const requestAPI = {
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
-  leaveComment(content: string, userId: number, itemId: number) {
+  addComment(content: string, userId: number, itemId: number) {
     return axios
-      .post(API.LeaveComment, { content, userId, itemId })
+      .post(API.addComment, { content, userId, itemId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
