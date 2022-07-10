@@ -100,7 +100,15 @@ const UserPage: FC<IUserPage> = ({
 
                     setOpenForm(true);
                   }}
-                  sx={{ width: '100%' }}
+                  sx={(theme) => ({
+                    width: '100%',
+
+                    '& .MuiListItemText-root': {
+                      [theme.breakpoints.down('md')]: {
+                        display: 'none',
+                      },
+                    },
+                  })}
                 >
                   <ListItemIcon>
                     <AddCircleOutlineIcon />
@@ -108,9 +116,15 @@ const UserPage: FC<IUserPage> = ({
                   <ListItemText primary={language.userPage.createCollection} />
                 </ListItemButton>
                 <ListItemButton
-                  sx={{
+                  sx={(theme) => ({
                     width: '100%',
-                  }}
+
+                    '& .MuiListItemText-root': {
+                      [theme.breakpoints.down('md')]: {
+                        display: 'none',
+                      },
+                    },
+                  })}
                   onClick={() => {
                     if (collectionsEdit.length === 0) return;
                     if (!collectionThemes) getCollectionThemes();
@@ -129,9 +143,15 @@ const UserPage: FC<IUserPage> = ({
                   <ListItemText primary={language.userPage.edit} />
                 </ListItemButton>
                 <ListItemButton
-                  sx={{
+                  sx={(theme) => ({
                     width: '100%',
-                  }}
+
+                    '& .MuiListItemText-root': {
+                      [theme.breakpoints.down('md')]: {
+                        display: 'none',
+                      },
+                    },
+                  })}
                   onClick={() => {
                     if (collectionsDel.length === 0) return;
 
@@ -148,7 +168,7 @@ const UserPage: FC<IUserPage> = ({
               </Sidebar>
             </Grid>
             <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
-              {collections.collections !== null && (
+              {!!collections.collections?.length && (
                 <Slider
                   type="private"
                   id={id}

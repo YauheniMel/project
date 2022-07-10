@@ -1,5 +1,6 @@
 import { requestAPI } from '../../api/api';
-import { logSuccess } from '../../services/logger';
+import logout from '../../auth/services/logout';
+import { logError, logSuccess } from '../../services/logger';
 import {
   CollectionInitType,
   CollectionType,
@@ -169,7 +170,13 @@ export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch:
       dispatch(setIsAuthAction(true));
     })
     .then((response) => {
-      dispatch(setUserPersonalInfoAction(response.user));
+      if (response.user.status === 'blocked') {
+        logError('Your account has been blocked');
+
+        logout();
+      } else {
+        dispatch(setUserPersonalInfoAction(response.user));
+      }
     });
 };
 

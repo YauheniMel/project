@@ -117,34 +117,6 @@ router.post('/api/deleteUser', (req, res) => {
     }));
 });
 
-router.post('/api/blockUser', (req, res) => {
-  const { id } = req.body;
-
-  models.User.update({ status: 'blocked' }, { where: { id } })
-    .then(() => res.status(200).send({
-      code: 1,
-      message: 'Blocked success!',
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.post('/api/unblockUser', (req, res) => {
-  const { id } = req.body;
-
-  models.User.update({ status: 'active' }, { where: { id } })
-    .then(() => res.status(200).send({
-      code: 1,
-      message: 'Unblocked success!',
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
 router.post('/api/setIsAdmin', (req, res) => {
   const { id } = req.body;
 
