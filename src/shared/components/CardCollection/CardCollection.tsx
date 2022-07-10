@@ -16,11 +16,9 @@ const StyledCard = styled(Card)(({ theme }) => ({
   width: '12rem',
   height: '15rem',
   overflow: 'auto',
-  borderRadius: 0,
-  backgroundColor: theme.palette.common.white,
 
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.65),
+    backgroundColor: alpha(theme.palette.common.black, 0.25),
   },
 }));
 
@@ -31,7 +29,6 @@ const useStyles = makeStyles({
     maxWidth: '12rem',
     minWidth: '12rem',
     overflow: 'hidden',
-    borderRadius: 0,
   },
   body: {
     height: '20rem',
@@ -44,7 +41,6 @@ const useStyles = makeStyles({
     zIndex: 1,
 
     '& > .MuiButton-root': {
-      borderRadius: 0,
       flex: 1,
     },
   },

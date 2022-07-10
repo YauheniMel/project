@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import MDEditor from '@uiw/react-md-editor';
-import { Backdrop, makeStyles, Paper } from '@material-ui/core';
+import { Backdrop, makeStyles } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Alert,
@@ -14,6 +14,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Paper,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -33,7 +34,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   minWidth: '3.2rem',
   minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -58,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
     width: '60%',
     minWidth: '15rem',
     padding: '1.4rem 0',
-    borderRadius: 0,
     backgroundColor: theme.palette.common.white,
+    borderRadius: 0,
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -274,9 +274,7 @@ const CollectionForm: FC<ICollectionForm> = ({
                 }}
               />
               {isSubmited && (
-                <Alert sx={{ borderRadius: 0 }} severity="error">
-                  Description is required
-                </Alert>
+                <Alert severity="error">Description is required</Alert>
               )}
             </Box>
             <InputFile image={image} setImage={setImage} />

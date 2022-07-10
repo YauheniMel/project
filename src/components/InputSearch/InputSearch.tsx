@@ -11,9 +11,9 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 import RoutesApp from '../../constants/routes';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
-  borderRadius: 0,
   height: '100%',
   paddingLeft: '0.7rem',
+  position: 'relative',
   borderBottom: `1px solid ${theme.palette.primary.dark}`,
 }));
 

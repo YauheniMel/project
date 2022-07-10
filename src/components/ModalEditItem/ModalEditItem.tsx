@@ -20,7 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import InputFile from '../../shared/components/InputFile/InputFile';
 import { ItemType } from '../../types';
-import UpdateItemFormField from '../UpdateItemFormField/UpdateItemFormField';
+import CustomField from '../CustomField/CustomField';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
@@ -32,7 +32,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   minWidth: '3.2rem',
   minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: '60%',
     minWidth: '300px',
-    height: '300px',
+    height: '500px',
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -318,7 +317,8 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     <Box>
                       {customFields
                             && customFields.map((field: any, idx: any) => (
-                              <UpdateItemFormField
+                              <CustomField
+                                typeField="update"
                                 // eslint-disable-next-line react/no-array-index-key
                                 key={idx}
                                 formik={formik}
@@ -331,7 +331,6 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     <Button
                       sx={{
                         flex: 1,
-                        borderRadius: 0,
                       }}
                       onClick={() => {
                         setItemId(item.id);
@@ -344,7 +343,6 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     <Button
                       sx={{
                         flex: 1,
-                        borderRadius: 0,
                       }}
                       type="reset"
                       color="warning"
@@ -355,7 +353,6 @@ const ModalEditItem: FC<IModalEditItem> = ({
                     <Button
                       sx={{
                         flex: 1,
-                        borderRadius: 0,
                       }}
                       onClick={() => {
                         if (item.id) pullOutItem(item.id);
