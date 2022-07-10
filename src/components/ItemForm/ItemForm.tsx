@@ -23,7 +23,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   minWidth: '3.2rem',
   minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: '0',
   color: theme.palette.common.white,
 }));
 
@@ -113,6 +112,23 @@ const ItemForm: FC<IItemForm> = ({
     setTags(tags.filter((tag) => tag !== str));
   };
 
+  function handlePushTag(e: any, formik: any) {
+    if (formik.values.tags.trim()) {
+      searchMatchTags(formik.values.tags);
+      setShowSearchTags(true);
+    }
+
+    if (e.keyCode === 13 && formik.values.tags.trim()) {
+      e.preventDefault();
+      setIsSubmited(false);
+      setTags([
+        ...tags.filter((tag) => tag !== formik.values.tags),
+        formik.values.tags,
+      ]);
+      formik.values.tags = '';
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -199,26 +215,8 @@ const ItemForm: FC<IItemForm> = ({
                 value={formik.values.tags}
                 onChange={formik.handleChange}
                 onKeyDown={(e) => {
-                  if (formik.values.tags.trim()) {
-                    searchMatchTags(formik.values.tags);
-                    setShowSearchTags(true);
-                  }
-
-                  if (
-                    (e.code === 'Enter' || e.code === 'NumpadEnter')
-                    && formik.values.tags.trim()
-                  ) {
-                    e.preventDefault();
-                    setIsSubmited(false);
-                    setTags([
-                      ...tags.filter((tag) => tag !== formik.values.tags),
-                      formik.values.tags,
-                    ]);
-                    formik.values.tags = '';
-                  }
+                  handlePushTag(e, formik);
                 }}
-                error={formik.touched.tags && Boolean(formik.errors.tags)}
-                helperText={formik.touched.tags && formik.errors.tags}
                 InputProps={{
                   startAdornment: tags.map((tag, idx) => (
                     <Chip
@@ -232,9 +230,10 @@ const ItemForm: FC<IItemForm> = ({
                   )),
                 }}
               />
-              {isSubmited && (
-                <Alert sx={{ borderRadius: 0 }} severity="error">
-                  Tags is required
+              {isSubmited && <Alert severity="error">Tags is required</Alert>}
+              {!isSubmited && (
+                <Alert severity="warning">
+                  Please press enter to add a new tag
                 </Alert>
               )}
             </Box>
@@ -259,7 +258,12 @@ const ItemForm: FC<IItemForm> = ({
             </Box>
             {customFields
               && customFields.map((field: any, index: any) => (
-                <CustomField key={index} field={field} formik={formik} />
+                <CustomField
+                  typeField="create"
+                  key={index}
+                  field={field}
+                  formik={formik}
+                />
               ))}
             <Button
               color="primary"

@@ -23,12 +23,10 @@ const StyledCard = styled(Card)(({ theme }) => ({
   width: '12rem',
   height: '15rem',
   overflow: 'auto',
-  borderRadius: 0,
-  backgroundColor: theme.palette.common.white,
 
   '&:hover': {
     transform: 'scale(1.01)',
-    backgroundColor: alpha(theme.palette.common.white, 0.65),
+    backgroundColor: alpha(theme.palette.common.black, 0.25),
   },
 }));
 

@@ -13,7 +13,7 @@ import RoutesApp from '../../constants/routes';
 import logout from '../../auth/services/logout';
 import { logError } from '../../services/logger';
 
-const ToogleButton = styled(Button)(({ theme }) => ({
+const ToggleButton = styled(Button)(({ theme }) => ({
   position: 'fixed',
   zIndex: theme.zIndex.drawer + 1,
   top: 0,
@@ -24,7 +24,6 @@ const ToogleButton = styled(Button)(({ theme }) => ({
   maxHeight: '3.2rem',
   minWidth: '3.2rem',
   minHeight: '3.2rem',
-  borderRadius: 0,
 }));
 
 const LinkButton = styled(Button)({
@@ -32,15 +31,11 @@ const LinkButton = styled(Button)({
   maxHeight: '4.4rem',
   minWidth: '3.2rem',
   minHeight: '4.4rem',
-  borderRadius: 0,
 });
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
     zIndex: theme.zIndex.appBar - 1,
-  },
-  active: {
-    color: theme.palette.secondary.main,
   },
   toolbar: {
     minHeight: '3.2rem',
@@ -74,9 +69,9 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
 
   return (
     <Box>
-      <ToogleButton onClick={toggleDrawer} variant="contained">
+      <ToggleButton onClick={toggleDrawer} variant="contained">
         <CloseIcon fontSize="large" />
-      </ToogleButton>
+      </ToggleButton>
       <Drawer
         className={classes.drawer}
         anchor="right"

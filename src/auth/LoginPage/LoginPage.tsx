@@ -113,12 +113,7 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   }
 
   return (
-    <Paper
-      sx={{
-        borderRadius: 0,
-      }}
-      className={classes.paper}
-    >
+    <Paper className={classes.paper}>
       <form className={classes.form} onSubmit={formik.handleSubmit}>
         <Link
           className={classes.link}

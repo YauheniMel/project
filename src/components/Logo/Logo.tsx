@@ -23,7 +23,7 @@ const Logo: FC<ILogo> = ({ name, surname, role }) => {
           position: 'relative',
           fontSize: '1.2rem',
           paddingLeft: '3rem',
-          height: '3rem',
+          height: '2.8rem',
           borderRadius: '3rem',
           minWidth: '3rem',
 
@@ -38,8 +38,8 @@ const Logo: FC<ILogo> = ({ name, surname, role }) => {
             style={{
               position: 'absolute',
               left: 0,
-              height: '3rem',
-              width: '3rem',
+              height: '2.8rem',
+              width: '2.8rem',
               marginLeft: 0,
             }}
           />

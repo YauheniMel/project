@@ -169,7 +169,6 @@ export const getUserPersonalInfoThunk = (payload: CredentialsType) => (dispatch:
       dispatch(setIsAuthAction(true));
     })
     .then((response) => {
-      console.log('111');
       dispatch(setUserPersonalInfoAction(response.user));
     });
 };

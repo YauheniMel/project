@@ -40,7 +40,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   minWidth: '3.2rem',
   minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -470,7 +469,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                     <Button
                       sx={{
                         flex: 1,
-                        borderRadius: 0,
                       }}
                       onClick={() => {
                         setCollectionId(collection.id);
@@ -483,7 +481,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                     <Button
                       sx={{
                         flex: 1,
-                        borderRadius: 0,
                       }}
                       type="reset"
                       color="warning"
@@ -494,7 +491,6 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
                     <Button
                       sx={{
                         flex: 1,
-                        borderRadius: 0,
                       }}
                       onClick={() => {
                         if (collection.id) {

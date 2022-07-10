@@ -26,6 +26,7 @@ import { getUntouchedCommentsThunk } from '../../redux/actions/collection-action
 import { UntouchedCommentType } from '../../types';
 import { getUntouchedComments } from '../../redux/selectors/collection-selector';
 import { logOutThunk } from '../../redux/actions/user-action';
+import { getThemeValue, toggleTheme } from '../../services/theme';
 
 interface IRootPage {
   id: string;
@@ -59,6 +60,13 @@ const RootPage: FC<IRootPage> = ({
     if (userId) {
       getUntouchedComments(userId);
     }
+
+    const theme = getThemeValue();
+
+    if (!theme) {
+      toggleTheme('light');
+    }
+
     socket.on('comment', (res: any) => {
       if (userId === res.userId) {
         getUntouchedComments(userId);

@@ -25,7 +25,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   minWidth: '3.2rem',
   minHeight: '3.2rem',
   backgroundColor: theme.palette.primary.dark,
-  borderRadius: 0,
   color: theme.palette.common.white,
 }));
 
@@ -154,7 +153,6 @@ const ModalDelete: FC<IModalDelete> = ({
                 <Button
                   sx={{
                     flex: 1,
-                    borderRadius: 0,
                   }}
                   onClick={() => {
                     if (collection.id) deleteCollection!(collection.id);
@@ -166,7 +164,6 @@ const ModalDelete: FC<IModalDelete> = ({
                 <Button
                   sx={{
                     flex: 1,
-                    borderRadius: 0,
                   }}
                   onClick={() => {
                     if (collection.id) pullOutCollection!(collection.id);
@@ -218,7 +215,6 @@ const ModalDelete: FC<IModalDelete> = ({
                 <Button
                   sx={{
                     flex: 1,
-                    borderRadius: 0,
                   }}
                   onClick={() => {
                     if (item.id) deleteItem!(item.id);
@@ -230,7 +226,6 @@ const ModalDelete: FC<IModalDelete> = ({
                 <Button
                   sx={{
                     flex: 1,
-                    borderRadius: 0,
                   }}
                   onClick={() => {
                     if (item.id) pullOutItem!(item.id);

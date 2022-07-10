@@ -15,9 +15,8 @@ const Colors = {
 
 const breakpoints = createBreakpoints({});
 
-const theme = createTheme({
+export const themeLight = createTheme({
   palette: {
-    mode: 'light',
     primary: {
       main: Colors.primary_main,
       light: Colors.primary_light,
@@ -41,7 +40,7 @@ const theme = createTheme({
     },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 0,
   },
   components: {
     MuiCssBaseline: {
@@ -70,6 +69,10 @@ const theme = createTheme({
             height: '100%',
           },
 
+          '.MuiPaper-root': {
+            backgroundColor: Colors.white,
+          },
+
           [breakpoints.up('md')]: {
             fontSize: '18px',
           },
@@ -85,4 +88,75 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export const themeDark = createTheme({
+  palette: {
+    primary: {
+      main: Colors.secondary_main,
+      light: Colors.primary_dark,
+      dark: Colors.primary_light,
+    },
+    common: {
+      white: Colors.black,
+      black: Colors.gray,
+    },
+    secondary: {
+      main: Colors.secondary_main,
+    },
+    background: {
+      default: Colors.black,
+    },
+    error: {
+      main: Colors.error,
+    },
+    warning: {
+      main: Colors.warning,
+    },
+  },
+  shape: {
+    borderRadius: 0,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '::-webkit-scrollbar': {
+          width: '0.3rem',
+          height: '0.3rem',
+        },
+        '::-webkit-scrollbar-thumb': {
+          backgroundColor: Colors.black,
+        },
+        ':root': {
+          height: '100%',
+
+          body: {
+            height: '100%',
+          },
+
+          '#root': {
+            height: '100%',
+          },
+
+          '.App': {
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          },
+
+          '.MuiPaper-root': {
+            backgroundColor: Colors.primary_light,
+          },
+
+          [breakpoints.up('md')]: {
+            fontSize: '18px',
+          },
+          [breakpoints.down('md')]: {
+            fontSize: '16px',
+          },
+          [breakpoints.down('xs')]: {
+            fontSize: '14px',
+          },
+        },
+      },
+    },
+  },
+});

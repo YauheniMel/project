@@ -163,7 +163,7 @@ const Table: FC<ITable> = ({
       type: 'string',
       valueGetter: (params) => params.row.tags
         .map((tag: { content: string }) => tag.content)
-        .join(' '),
+        .join(','),
       sortComparator: compareCountTagsComparator,
       minWidth: 150,
       flex: 1,

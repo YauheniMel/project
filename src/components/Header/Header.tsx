@@ -22,6 +22,8 @@ import Logo from '../Logo/Logo';
 import RoutesApp from '../../constants/routes';
 import InputSearch from '../InputSearch/InputSearch';
 import { UntouchedCommentType } from '../../types';
+import Toggle from '../Toggle/Toggle';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: 'fixed',
@@ -38,10 +40,6 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
     height: '3.2rem',
   },
 }));
-
-const StyledPaper = styled(Paper)({
-  borderRadius: 0,
-});
 
 interface IHeader {
   name: string;
@@ -80,7 +78,7 @@ const Header: FC<IHeader> = ({
 
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
-  const { CollectionLink, ItemLink } = RoutesApp;
+  const { CollectionLink: collection, ItemLink } = RoutesApp;
 
   function getCountUntouchedComments(data: UntouchedCommentType[]) {
     let count = 0;
@@ -93,98 +91,105 @@ const Header: FC<IHeader> = ({
   }
 
   return (
-    <StyledAppBar>
-      <Toolbar
-        sx={{
-          justifyContent: 'space-around',
-          columnGap: '2rem',
-        }}
-      >
-        {(role === 'Admin' || role === 'User') && name ? (
-          <Logo name={name} role={role} surname={surname} />
-        ) : (
-          <Link component={RouterLink} to={RoutesApp.Login}>
-            Login
-          </Link>
-        )}
-        <InputSearch {...rest} />
-        {!!untouchedComments?.length && (
-          <>
-            <IconButton
-              size="large"
-              onClick={() => setOpen(true)}
-              ref={anchorRef}
-            >
-              <Badge
-                badgeContent={getCountUntouchedComments(untouchedComments)}
-                color="error"
-              >
-                <InsertCommentSharpIcon />
-              </Badge>
-            </IconButton>
-            <Popper
-              open={open}
-              placement="bottom-start"
-              transition
-              disablePortal
-              anchorEl={anchorRef.current}
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom-start' ? 'left top' : 'left bottom',
-                  }}
+    <ThemeContext.Consumer>
+      {({ theme, setTheme }) => (
+        <StyledAppBar>
+          <Toolbar
+            sx={{
+              justifyContent: 'space-around',
+              columnGap: '2rem',
+            }}
+          >
+            {(role === 'Admin' || role === 'User') && name ? (
+              <Logo name={name} role={role} surname={surname} />
+            ) : (
+              <Link component={RouterLink} to={RoutesApp.Login}>
+                Login
+              </Link>
+            )}
+            <InputSearch {...rest} />
+            <Toggle setTheme={setTheme} theme={theme} />
+            {!!untouchedComments?.length && (
+              <>
+                <IconButton
+                  size="large"
+                  onClick={() => setOpen(true)}
+                  ref={anchorRef}
                 >
-                  <StyledPaper>
-                    <ClickAwayListener onClickAway={() => setOpen(false)}>
-                      <MenuList
-                        sx={{ p: 0 }}
-                        autoFocusItem={open}
-                        id="composition-menu"
-                        aria-labelledby="composition-button"
-                      >
-                        {untouchedComments.map((info) => (
-                          <MenuItem
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              columnGap: '0.7rem',
-                              height: '4.5rem',
-                            }}
+                  <Badge
+                    badgeContent={getCountUntouchedComments(untouchedComments)}
+                    color="error"
+                  >
+                    <InsertCommentSharpIcon />
+                  </Badge>
+                </IconButton>
+                <Popper
+                  open={open}
+                  placement="bottom-start"
+                  transition
+                  disablePortal
+                  anchorEl={anchorRef.current}
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === 'bottom-start'
+                            ? 'left top'
+                            : 'left bottom',
+                      }}
+                    >
+                      <Paper>
+                        <ClickAwayListener onClickAway={() => setOpen(false)}>
+                          <MenuList
+                            sx={{ p: 0 }}
+                            autoFocusItem={open}
+                            id="composition-menu"
+                            aria-labelledby="composition-button"
                           >
-                            <Link
-                              component={RouterLink}
-                              to={`${CollectionLink}${info.collectionId}${ItemLink}${info.itemId}`}
-                            >
-                              <Typography variant="body2">
-                                {info.icon && (
-                                  <Avatar
-                                    alt={info.title}
-                                    src={`data:application/pdf;base64,${info.icon}`}
-                                  />
-                                )}
-                                {info.title}
-                                {' '}
-                              </Typography>
-                              <Typography variant="subtitle2">
-                                comments...
-                              </Typography>
-                            </Link>
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </StyledPaper>
-                </Grow>
-              )}
-            </Popper>
-          </>
-        )}
-        <Box sx={{ flexGrow: '2rem' }} />
-      </Toolbar>
-    </StyledAppBar>
+                            {untouchedComments.map((info) => (
+                              <MenuItem
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                  columnGap: '0.7rem',
+                                  height: '4.5rem',
+                                }}
+                              >
+                                <Link
+                                  component={RouterLink}
+                                  to={`${collection}${info.collectionId}${ItemLink}${info.itemId}`}
+                                >
+                                  <Typography variant="body2">
+                                    {info.icon && (
+                                      <Avatar
+                                        alt={info.title}
+                                        src={`data:application/pdf;base64,${info.icon}`}
+                                      />
+                                    )}
+                                    {info.title}
+                                    {' '}
+                                  </Typography>
+                                  <Typography variant="subtitle2">
+                                    comments...
+                                  </Typography>
+                                </Link>
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </>
+            )}
+            <Box sx={{ flexGrow: '2rem' }} />
+          </Toolbar>
+        </StyledAppBar>
+      )}
+    </ThemeContext.Consumer>
   );
 };
 
