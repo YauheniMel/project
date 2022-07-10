@@ -15,6 +15,7 @@ import Slider from '../../components/Slider/Slider';
 import { CollectionInitType, CollectionType } from '../../types';
 import ModalEditCollection from '../../components/ModalEditCollection/ModalEditCollection';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
+import { LanguageContext } from '../../context/LanguageContext';
 
 interface IUserPage {
   id: number;
@@ -65,101 +66,104 @@ const UserPage: FC<IUserPage> = ({
   console.log(theme, status, role);
 
   return (
-    <>
-      <CollectionForm
-        userId={id}
-        openForm={openForm}
-        setOpenForm={setOpenForm}
-        createNewCollection={createNewCollection}
-        collectionThemes={collectionThemes}
-      />
-      <ModalEditCollection
-        openModal={openModalEdit}
-        setOpen={setOpenModalEdit}
-        collectionsEdit={collectionsEdit}
-        updateCollection={updateCollection}
-        pullOutCollection={pullOutCollection}
-        collectionThemes={collectionThemes}
-      />
-      <ModalDelete
-        openModal={openModalDelete}
-        setOpen={setOpenModalDelete}
-        collectionsDel={collectionsDel}
-        pullOutCollection={pullOutCollection}
-        deleteCollection={deleteCollection}
-      />
-      <Grid
-        sx={{ height: '100%' }}
-        container
-        // columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-      >
-        <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
-          <Sidebar>
-            <ListItemButton
-              onClick={() => {
-                if (!collectionThemes) getCollectionThemes();
+    <LanguageContext.Consumer>
+      {({ language }) => (
+        <>
+          <CollectionForm
+            userId={id}
+            openForm={openForm}
+            setOpenForm={setOpenForm}
+            createNewCollection={createNewCollection}
+            collectionThemes={collectionThemes}
+          />
+          <ModalEditCollection
+            openModal={openModalEdit}
+            setOpen={setOpenModalEdit}
+            collectionsEdit={collectionsEdit}
+            updateCollection={updateCollection}
+            pullOutCollection={pullOutCollection}
+            collectionThemes={collectionThemes}
+          />
+          <ModalDelete
+            openModal={openModalDelete}
+            setOpen={setOpenModalDelete}
+            collectionsDel={collectionsDel}
+            pullOutCollection={pullOutCollection}
+            deleteCollection={deleteCollection}
+          />
+          <Grid sx={{ height: '100%' }} container>
+            <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
+              <Sidebar>
+                <ListItemButton
+                  onClick={() => {
+                    if (!collectionThemes) getCollectionThemes();
 
-                setOpenForm(true);
-              }}
-              sx={{ width: '100%' }}
-            >
-              <ListItemIcon>
-                <AddCircleOutlineIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create collection" />
-            </ListItemButton>
-            <ListItemButton
-              sx={{
-                width: '100%',
-              }}
-              onClick={() => {
-                if (collectionsEdit.length === 0) return;
-                if (!collectionThemes) getCollectionThemes();
+                    setOpenForm(true);
+                  }}
+                  sx={{ width: '100%' }}
+                >
+                  <ListItemIcon>
+                    <AddCircleOutlineIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={language.userPage.createCollection} />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{
+                    width: '100%',
+                  }}
+                  onClick={() => {
+                    if (collectionsEdit.length === 0) return;
+                    if (!collectionThemes) getCollectionThemes();
 
-                setOpenModalEdit(true);
-              }}
-            >
-              <ListItemIcon>
-                <Badge badgeContent={collectionsEdit.length} color="warning">
-                  <EditIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="Edit" />
-            </ListItemButton>
-            <ListItemButton
-              sx={{
-                width: '100%',
-              }}
-              onClick={() => {
-                if (collectionsDel.length === 0) return;
+                    setOpenModalEdit(true);
+                  }}
+                >
+                  <ListItemIcon>
+                    <Badge
+                      badgeContent={collectionsEdit.length}
+                      color="warning"
+                    >
+                      <EditIcon />
+                    </Badge>
+                  </ListItemIcon>
+                  <ListItemText primary={language.userPage.edit} />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{
+                    width: '100%',
+                  }}
+                  onClick={() => {
+                    if (collectionsDel.length === 0) return;
 
-                setOpenModalDelete(true);
-              }}
-            >
-              <ListItemIcon>
-                <Badge badgeContent={collectionsDel.length} color="error">
-                  <DeleteIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="Delete" />
-            </ListItemButton>
-          </Sidebar>
-        </Grid>
-        <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
-          {collections.collections !== null && (
-            <Slider
-              type="private"
-              id={id}
-              setEditCollection={setEditCollection}
-              setDeleteCollection={setDeleteCollection}
-              collections={collections}
-              setCollection={setTargetCollection}
-              getUserCollections={getMyCollections}
-            />
-          )}
-        </Grid>
-      </Grid>
-    </>
+                    setOpenModalDelete(true);
+                  }}
+                >
+                  <ListItemIcon>
+                    <Badge badgeContent={collectionsDel.length} color="error">
+                      <DeleteIcon />
+                    </Badge>
+                  </ListItemIcon>
+                  <ListItemText primary={language.userPage.delete} />
+                </ListItemButton>
+              </Sidebar>
+            </Grid>
+            <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
+              {collections.collections !== null && (
+                <Slider
+                  type="private"
+                  id={id}
+                  setEditCollection={setEditCollection}
+                  setDeleteCollection={setDeleteCollection}
+                  collections={collections}
+                  setCollection={setTargetCollection}
+                  getUserCollections={getMyCollections}
+                />
+              )}
+            </Grid>
+          </Grid>
+        </>
+      )}
+    </LanguageContext.Consumer>
   );
 };
 

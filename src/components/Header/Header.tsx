@@ -24,6 +24,8 @@ import InputSearch from '../InputSearch/InputSearch';
 import { UntouchedCommentType } from '../../types';
 import Toggle from '../Toggle/Toggle';
 import { ThemeContext } from '../../context/ThemeContext';
+import { LanguageContext } from '../../context/LanguageContext';
+import ToggleLanguage from '../ToggleLanguage/ToggleLanguage';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: 'fixed',
@@ -91,105 +93,115 @@ const Header: FC<IHeader> = ({
   }
 
   return (
-    <ThemeContext.Consumer>
-      {({ theme, setTheme }) => (
-        <StyledAppBar>
-          <Toolbar
-            sx={{
-              justifyContent: 'space-around',
-              columnGap: '2rem',
-            }}
-          >
-            {(role === 'Admin' || role === 'User') && name ? (
-              <Logo name={name} role={role} surname={surname} />
-            ) : (
-              <Link component={RouterLink} to={RoutesApp.Login}>
-                Login
-              </Link>
-            )}
-            <InputSearch {...rest} />
-            <Toggle setTheme={setTheme} theme={theme} />
-            {!!untouchedComments?.length && (
-              <>
-                <IconButton
-                  size="large"
-                  onClick={() => setOpen(true)}
-                  ref={anchorRef}
-                >
-                  <Badge
-                    badgeContent={getCountUntouchedComments(untouchedComments)}
-                    color="error"
-                  >
-                    <InsertCommentSharpIcon />
-                  </Badge>
-                </IconButton>
-                <Popper
-                  open={open}
-                  placement="bottom-start"
-                  transition
-                  disablePortal
-                  anchorEl={anchorRef.current}
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === 'bottom-start'
-                            ? 'left top'
-                            : 'left bottom',
-                      }}
+    <LanguageContext.Consumer>
+      {({ language, setLanguage }) => (
+        <ThemeContext.Consumer>
+          {({ theme, setTheme }) => (
+            <StyledAppBar>
+              <Toolbar
+                sx={{
+                  justifyContent: 'space-around',
+                  columnGap: '2rem',
+                }}
+              >
+                {(role === 'Admin' || role === 'User') && name ? (
+                  <Logo name={name} role={role} surname={surname} />
+                ) : (
+                  <Link component={RouterLink} to={RoutesApp.Login}>
+                    Login
+                  </Link>
+                )}
+                <InputSearch {...rest} />
+                <Toggle setTheme={setTheme} theme={theme} />
+                <ToggleLanguage setLanguage={setLanguage} language={language} />
+                {!!untouchedComments?.length && (
+                  <>
+                    <IconButton
+                      size="large"
+                      onClick={() => setOpen(true)}
+                      ref={anchorRef}
                     >
-                      <Paper>
-                        <ClickAwayListener onClickAway={() => setOpen(false)}>
-                          <MenuList
-                            sx={{ p: 0 }}
-                            autoFocusItem={open}
-                            id="composition-menu"
-                            aria-labelledby="composition-button"
-                          >
-                            {untouchedComments.map((info) => (
-                              <MenuItem
-                                sx={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between',
-                                  columnGap: '0.7rem',
-                                  height: '4.5rem',
-                                }}
+                      <Badge
+                        badgeContent={getCountUntouchedComments(
+                          untouchedComments,
+                        )}
+                        color="error"
+                      >
+                        <InsertCommentSharpIcon />
+                      </Badge>
+                    </IconButton>
+                    <Popper
+                      open={open}
+                      placement="bottom-start"
+                      transition
+                      disablePortal
+                      anchorEl={anchorRef.current}
+                    >
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin:
+                              placement === 'bottom-start'
+                                ? 'left top'
+                                : 'left bottom',
+                          }}
+                        >
+                          <Paper>
+                            <ClickAwayListener
+                              onClickAway={() => setOpen(false)}
+                            >
+                              <MenuList
+                                sx={{ p: 0 }}
+                                autoFocusItem={open}
+                                id="composition-menu"
+                                aria-labelledby="composition-button"
                               >
-                                <Link
-                                  component={RouterLink}
-                                  to={`${collection}${info.collectionId}${ItemLink}${info.itemId}`}
-                                >
-                                  <Typography variant="body2">
-                                    {info.icon && (
-                                      <Avatar
-                                        alt={info.title}
-                                        src={`data:application/pdf;base64,${info.icon}`}
-                                      />
-                                    )}
-                                    {info.title}
-                                    {' '}
-                                  </Typography>
-                                  <Typography variant="subtitle2">
-                                    comments...
-                                  </Typography>
-                                </Link>
-                              </MenuItem>
-                            ))}
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </>
-            )}
-            <Box sx={{ flexGrow: '2rem' }} />
-          </Toolbar>
-        </StyledAppBar>
+                                {untouchedComments.map((info) => (
+                                  <MenuItem
+                                    sx={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      columnGap: '0.7rem',
+                                      height: '4.5rem',
+                                    }}
+                                  >
+                                    <Link
+                                      component={RouterLink}
+                                      to={`
+                                    ${collection}${info.collectionId}${ItemLink}${info.itemId}`}
+                                    >
+                                      <Typography variant="body2">
+                                        {info.icon && (
+                                          <Avatar
+                                            alt={info.title}
+                                            src={`data:application/pdf;base64,${info.icon}`}
+                                          />
+                                        )}
+                                        {info.title}
+                                        {' '}
+                                      </Typography>
+                                      <Typography variant="subtitle2">
+                                        comments...
+                                      </Typography>
+                                    </Link>
+                                  </MenuItem>
+                                ))}
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                  </>
+                )}
+                <Box sx={{ flexGrow: '2rem' }} />
+              </Toolbar>
+            </StyledAppBar>
+          )}
+        </ThemeContext.Consumer>
       )}
-    </ThemeContext.Consumer>
+    </LanguageContext.Consumer>
   );
 };
 

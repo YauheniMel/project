@@ -27,6 +27,7 @@ import { UntouchedCommentType } from '../../types';
 import { getUntouchedComments } from '../../redux/selectors/collection-selector';
 import { logOutThunk } from '../../redux/actions/user-action';
 import { getThemeValue, toggleTheme } from '../../services/theme';
+import { getLanguageValue, toggleLanguage } from '../../services/language';
 
 interface IRootPage {
   id: string;
@@ -65,6 +66,11 @@ const RootPage: FC<IRootPage> = ({
 
     if (!theme) {
       toggleTheme('light');
+    }
+    const language = getLanguageValue();
+
+    if (!language) {
+      toggleLanguage('eng');
     }
 
     socket.on('comment', (res: any) => {

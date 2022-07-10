@@ -12,6 +12,7 @@ import RoutesApp from '../../constants/routes';
 import login from '../services/login';
 import { signInWithGoogle, signInWithFacebook } from '../firebase-config';
 import { logError } from '../../services/logger';
+import { LanguageContext } from '../../context/LanguageContext';
 
 interface ILoginPage {
   id: string;
@@ -113,58 +114,62 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   }
 
   return (
-    <Paper className={classes.paper}>
-      <form className={classes.form} onSubmit={formik.handleSubmit}>
-        <Link
-          className={classes.link}
-          component={RouterLink}
-          to={RoutesApp.Root}
-        >
-          App
-        </Link>
-        <TextField
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          autoFocus
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-        <Box className={classes.action}>
-          <Button variant="contained" type="submit">
-            Login
-          </Button>
-          <IconButton onClick={handleLoginFacebook}>
-            <FacebookIcon
-              sx={{
-                color: '#4267B2',
-                fontSize: '2rem',
-              }}
+    <LanguageContext.Consumer>
+      {({ language }) => (
+        <Paper className={classes.paper}>
+          <form className={classes.form} onSubmit={formik.handleSubmit}>
+            <Link
+              className={classes.link}
+              component={RouterLink}
+              to={RoutesApp.Root}
+            >
+              App
+            </Link>
+            <TextField
+              fullWidth
+              id="email"
+              name="email"
+              label={language.auth.email}
+              autoFocus
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
-          </IconButton>
-          <IconButton onClick={handleLoginGoogle}>
-            <GoogleIcon />
-          </IconButton>
-          <Link to={RoutesApp.SignUp} component={RouterLink}>
-            Sign Up
-          </Link>
-        </Box>
-      </form>
-    </Paper>
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label={language.auth.password}
+              type="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+            />
+            <Box className={classes.action}>
+              <Button variant="contained" type="submit">
+                {language.auth.login}
+              </Button>
+              <IconButton onClick={handleLoginFacebook}>
+                <FacebookIcon
+                  sx={{
+                    color: '#4267B2',
+                    fontSize: '2rem',
+                  }}
+                />
+              </IconButton>
+              <IconButton onClick={handleLoginGoogle}>
+                <GoogleIcon />
+              </IconButton>
+              <Link to={RoutesApp.SignUp} component={RouterLink}>
+                {language.auth.signUp}
+              </Link>
+            </Box>
+          </form>
+        </Paper>
+      )}
+    </LanguageContext.Consumer>
   );
 };
 

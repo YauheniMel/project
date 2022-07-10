@@ -29,6 +29,16 @@ router.get('/api/getItem/', (req, res) => {
         as: 'tags',
         attributes: ['content'],
       },
+      {
+        model: models.Collection,
+        attributes: ['theme'],
+        include: [
+          {
+            model: models.User,
+            attributes: ['name', 'surname'],
+          },
+        ],
+      },
     ],
     where: {
       id: itemId,
@@ -190,7 +200,6 @@ router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
     itemId,
     title,
     tags,
-    comments,
     radioKey1: radioValue1 = null,
     radioKey2: radioValue2 = null,
     radioKey3: radioValue3 = null,
@@ -211,7 +220,11 @@ router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
     checkboxKey3: checkboxValue3 = null,
   } = JSON.parse(JSON.stringify(req.body));
 
-  const arrTags = tags.split(',').map((tag) => ({ content: tag }));
+  let arrTags = [];
+
+  if (tags) {
+    arrTags = tags.split(',').map((tag) => ({ content: tag }));
+  }
 
   let profilePicture = null;
   if (req.file) {
@@ -221,8 +234,7 @@ router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
   models.Item.update(
     {
       icon: profilePicture || null,
-      title: title || null,
-      comments,
+      title: title || models.sequelize.col('title'),
       dateValue1,
       dateValue2,
       dateValue3,
@@ -241,30 +253,43 @@ router.put('/api/updateItem/', upload.single('icon'), async (req, res) => {
       checkboxValue1,
       checkboxValue2,
       checkboxValue3,
-      arrTags,
     },
     { where: { id: itemId } },
   )
-    .then(() => models.Item.findByPk(itemId, {
-      include: [
-        {
-          model: models.Like,
-          attributes: ['itemId'],
-        },
-        {
-          model: models.Tag,
-          as: 'tags',
-          attributes: ['content'],
-        },
-      ],
-    }))
-    .then((response) => {
-      const { icon } = response;
-      if (icon) {
-        response.icon = Buffer.from(icon).toString('base64');
+    .then(() => models.Item.findByPk(itemId))
+    .then((item) => {
+      if (arrTags.length) {
+        return models.Tag.bulkCreate(arrTags, {
+          ignoreDuplicates: true,
+        }).then((tag) => {
+          item.addTag(tag).then(() => {
+            models.Item.findOne({
+              where: { id: item.id },
+              include: [
+                {
+                  model: models.Like,
+                  attributes: ['itemId'],
+                },
+                {
+                  model: models.Tag,
+                  as: 'tags',
+                  attributes: ['content'],
+                },
+              ],
+            }).then((response) => {
+              const { icon } = response;
+
+              if (icon) {
+                response.icon = Buffer.from(icon).toString('base64');
+              }
+
+              res.status(200).send(response);
+            });
+          });
+        });
       }
 
-      return res.status(200).send(response);
+      return res.status(200).send(item);
     })
     .catch((err) => res.status(400).send({
       code: 0,

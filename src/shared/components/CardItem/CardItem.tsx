@@ -107,7 +107,7 @@ const CardItem: FC<ICardItem> = ({
         >
           Created:
           {' '}
-          {moment(item.createdAt).format('DD MMMM YYYY')}
+          {moment(item.createdAt).format('DD/MM/YYYY')}
         </Typography>
       </CardContent>
     )}

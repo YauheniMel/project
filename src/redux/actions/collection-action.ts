@@ -228,11 +228,11 @@ export const getAllCommentsThunk = (itemId: number) => (dispatch: any) => {
   });
 };
 
-export const leaveCommentThunk = (str: string, id: number, itemId: number) => (dispatch: any) => {
+export const addCommentThunk = (str: string, id: number, itemId: number) => (dispatch: any) => {
   dispatch(setIsLoadingAction(true));
 
   requestAPI
-    .leaveComment(str, id, itemId)
+    .addComment(str, id, itemId)
     .finally(() => dispatch(setIsLoadingAction(false)))
     .then(() => {
       dispatch(getAllCommentsThunk(itemId));

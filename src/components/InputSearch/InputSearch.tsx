@@ -9,6 +9,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import RoutesApp from '../../constants/routes';
+import { LanguageContext } from '../../context/LanguageContext';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   height: '100%',
@@ -95,115 +96,120 @@ const InputSearch: FC<IInputSearch> = ({
   }, [substr]);
 
   return (
-    <Autocomplete
-      popupIcon={null}
-      options={
-        itemsSearch
-        || usersSearch || [
-          {
-            link: '',
-            id: 0,
-            routeId: 0,
-            icons: [''],
-          },
-        ]
-      }
-      id="asynchronous-demo"
-      sx={{ flex: 1 }}
-      open={open}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' && substr.trim()) {
-          setSearchList();
+    <LanguageContext.Consumer>
+      {({ language }) => (
+        <Autocomplete
+          popupIcon={null}
+          options={
+            itemsSearch
+            || usersSearch || [
+              {
+                link: '',
+                id: 0,
+                routeId: 0,
+                icons: [''],
+              },
+            ]
+          }
+          id="asynchronous-demo"
+          sx={{ flex: 1 }}
+          open={open}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && substr.trim()) {
+              setSearchList();
 
-          navigate(RoutesApp.Search);
-        }
-      }}
-      className={classes.wrap}
-      getOptionLabel={(option) => option.link}
-      renderOption={() => (itemsSearch
-        ? itemsSearch?.map(
-          (option) => !!option.id && (
-            <Box className={classes.link}>
-              {!!option.icons?.length && (
-              <AvatarGroup max={4}>
-                {option.icons.map((icon) => (
-                  <Avatar
-                    alt="Remy Sharp"
-                    src={`data:application/pdf;base64,${icon}`}
-                  />
-                ))}
-              </AvatarGroup>
-              )}
-              <Link
-                component={RouterLink}
-                to={`${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
-                style={{
-                  display: 'block',
-                }}
-              >
-                {option.link}
-              </Link>
-            </Box>
-          ),
-        )
-        : usersSearch?.map(
-          (option) => !!option.id && (
-            <Box className={classes.link}>
-              {!!option.icons?.length && (
-              <AvatarGroup max={4}>
-                {option.icons.map((icon, idx: any) => (
-                  <Avatar
-                    id={idx}
-                    alt="Remy Sharp"
-                    src={`data:application/pdf;base64,${icon}`}
-                  />
-                ))}
-              </AvatarGroup>
-              )}
-              <Link
-                component={RouterLink}
-                to={`${RoutesApp.CollectionsLink}user/${option.routeId}`}
-                style={{
-                  display: 'block',
-                }}
-              >
-                {option.link}
-              </Link>
-            </Box>
-          ),
-        ))}
-      loading={loading}
-      onBlur={() => {
-        setOpen(false);
-        clearSearchData();
-      }}
-      renderInput={(params) => (
-        <StyledTextField
-          {...params}
-          placeholder="Search"
-          onChange={(e: any) => {
-            setOpen(true);
-            setSubstr(e.target.value);
+              navigate(RoutesApp.Search);
+            }
           }}
-          variant="standard"
-          fullWidth
-          InputProps={{
-            ...params.InputProps,
-            disableUnderline: true,
-            style: { fontSize: '1.5rem' },
-            endAdornment: (
-              <Box className={classes.icon}>
-                {loading ? (
-                  <CircularProgress color="inherit" size="1.4rem" />
-                ) : (
-                  <BsSearch size="1.4rem" />
-                )}
-              </Box>
-            ),
+          className={classes.wrap}
+          getOptionLabel={(option) => option.link}
+          renderOption={() => (itemsSearch
+            ? itemsSearch?.map(
+              (option) => !!option.id && (
+                <Box className={classes.link}>
+                  {!!option.icons?.length && (
+                  <AvatarGroup max={4}>
+                    {option.icons.map((icon) => (
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={`data:application/pdf;base64,${icon}`}
+                      />
+                    ))}
+                  </AvatarGroup>
+                  )}
+                  <Link
+                    component={RouterLink}
+                    to={`
+                  ${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
+                    style={{
+                      display: 'block',
+                    }}
+                  >
+                    {option.link}
+                  </Link>
+                </Box>
+              ),
+            )
+            : usersSearch?.map(
+              (option) => !!option.id && (
+                <Box className={classes.link}>
+                  {!!option.icons?.length && (
+                  <AvatarGroup max={4}>
+                    {option.icons.map((icon, idx: any) => (
+                      <Avatar
+                        id={idx}
+                        alt="Remy Sharp"
+                        src={`data:application/pdf;base64,${icon}`}
+                      />
+                    ))}
+                  </AvatarGroup>
+                  )}
+                  <Link
+                    component={RouterLink}
+                    to={`${RoutesApp.CollectionsLink}user/${option.routeId}`}
+                    style={{
+                      display: 'block',
+                    }}
+                  >
+                    {option.link}
+                  </Link>
+                </Box>
+              ),
+            ))}
+          loading={loading}
+          onBlur={() => {
+            setOpen(false);
+            clearSearchData();
           }}
+          renderInput={(params) => (
+            <StyledTextField
+              {...params}
+              placeholder={language.search}
+              onChange={(e: any) => {
+                setOpen(true);
+                setSubstr(e.target.value);
+              }}
+              variant="standard"
+              fullWidth
+              InputProps={{
+                ...params.InputProps,
+                disableUnderline: true,
+                style: { fontSize: '1.5rem' },
+                endAdornment: (
+                  <Box className={classes.icon}>
+                    {loading ? (
+                      <CircularProgress color="inherit" size="1.4rem" />
+                    ) : (
+                      <BsSearch size="1.4rem" />
+                    )}
+                  </Box>
+                ),
+              }}
+            />
+          )}
         />
       )}
-    />
+    </LanguageContext.Consumer>
   );
 };
 

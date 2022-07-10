@@ -89,7 +89,6 @@ const UpdateFormField: FC<any> = ({ formik, value, field }) => {
           <TextField
             name={field}
             fullWidth
-            label={field}
             value={formik.values[field]}
             onChange={formik.handleChange}
             error={formik.touched[field] && Boolean(formik.errors[field])}
@@ -101,7 +100,6 @@ const UpdateFormField: FC<any> = ({ formik, value, field }) => {
           <Box>
             <TextField
               name={`${field}.field`}
-              label="Name field"
               value={formik.values[field].field}
               onChange={formik.handleChange}
             />
@@ -114,7 +112,6 @@ const UpdateFormField: FC<any> = ({ formik, value, field }) => {
                 },
               }}
               name={`${field}.count`}
-              label="How many checkboxes?"
               value={formik.values[field].count}
               onChange={formik.handleChange}
             />
@@ -134,7 +131,6 @@ const UpdateFormField: FC<any> = ({ formik, value, field }) => {
                       <Box key={index}>
                         <TextField
                           name={`${field}.values[${index}]`}
-                          label="Name field"
                           value={formik.values[field].values[index]}
                           onChange={formik.handleChange}
                         />
