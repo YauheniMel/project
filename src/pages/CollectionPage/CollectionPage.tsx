@@ -114,12 +114,20 @@ const CollectionPage: FC<ICollectionPage> = ({
             container
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
+            <Grid item lg={2.5} md={2.7} xs={12} sm={12}>
               {authorId === userId && (
                 <Sidebar>
                   <ListItemButton
                     onClick={() => setOpenForm(true)}
-                    sx={{ width: '100%' }}
+                    sx={(theme) => ({
+                      width: '100%',
+
+                      '& .MuiListItemText-root': {
+                        [theme.breakpoints.down('md')]: {
+                          display: 'none',
+                        },
+                      },
+                    })}
                   >
                     <ListItemIcon>
                       <AddCircleOutlineIcon />
@@ -129,7 +137,15 @@ const CollectionPage: FC<ICollectionPage> = ({
                     />
                   </ListItemButton>
                   <ListItemButton
-                    sx={{ width: '100%' }}
+                    sx={(theme) => ({
+                      width: '100%',
+
+                      '& .MuiListItemText-root': {
+                        [theme.breakpoints.down('md')]: {
+                          display: 'none',
+                        },
+                      },
+                    })}
                     onClick={() => {
                       if (listEditItems?.length === 0) return;
 
@@ -147,7 +163,15 @@ const CollectionPage: FC<ICollectionPage> = ({
                     <ListItemText primary={language.collectionPage.edit} />
                   </ListItemButton>
                   <ListItemButton
-                    sx={{ width: '100%' }}
+                    sx={(theme) => ({
+                      width: '100%',
+
+                      '& .MuiListItemText-root': {
+                        [theme.breakpoints.down('md')]: {
+                          display: 'none',
+                        },
+                      },
+                    })}
                     onClick={() => {
                       if (listDeleteItems?.length === 0) return;
 
@@ -167,13 +191,17 @@ const CollectionPage: FC<ICollectionPage> = ({
                 </Sidebar>
               )}
             </Grid>
-            <Grid item={false} lg={9.5} md={9.3} xs={12} sm={8}>
+            <Grid item={false} lg={9.5} md={9.3} xs={12} sm={12}>
               <Box
-                sx={{
+                sx={(theme) => ({
                   display: 'flex',
                   columnGap: '2rem',
                   padding: '1.4rem',
-                }}
+
+                  [theme.breakpoints.down('md')]: {
+                    flexDirection: 'column',
+                  },
+                })}
               >
                 <Avatar
                   src={`data:application/pdf;base64,${icon}`}

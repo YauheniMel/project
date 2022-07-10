@@ -139,8 +139,8 @@ const InputSearch: FC<IInputSearch> = ({
                   )}
                   <Link
                     component={RouterLink}
-                    to={`
-                  ${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
+                    // eslint-disable-next-line max-len
+                    to={`${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
                     style={{
                       display: 'block',
                     }}

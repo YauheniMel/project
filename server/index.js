@@ -171,6 +171,53 @@ router.post('/api/addComment/', (req, res) => {
       message: err,
     }));
 });
+
+router.post('/api/blockUser', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ status: 'blocked' }, { where: { id } })
+    .then(() => {
+      io.to('update').emit(
+        'block',
+        {
+          userId: id,
+        },
+      );
+
+      return res.status(200).send({
+        code: 1,
+        message: 'Blocked success!',
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/unblockUser', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ status: 'active' }, { where: { id } })
+    .then(() => {
+      io.to('update').emit(
+        'unblock',
+        {
+          userId: id,
+        },
+      );
+
+      return res.status(200).send({
+        code: 1,
+        message: 'Unblocked success!',
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
 //
 
 app.use(router);

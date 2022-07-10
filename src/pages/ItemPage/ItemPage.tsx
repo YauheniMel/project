@@ -71,8 +71,6 @@ const ItemPage: FC<IItemPage> = ({
     return collectionInfo;
   }
 
-  console.log(targetItem);
-
   return (
     <LanguageContext.Consumer>
       {({ language }) => (
@@ -160,7 +158,7 @@ const ItemPage: FC<IItemPage> = ({
                 >
                   <TextareaAutosize
                     style={{ flex: 1 }}
-                    placeholder="Leave comments..."
+                    placeholder={language.itemPage.addComment}
                     required
                     value={value}
                     onChange={(e: any) => setValue(e.target.value)}

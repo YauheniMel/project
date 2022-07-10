@@ -463,11 +463,12 @@ const Table: FC<ITable> = ({
       {({ language }) => (
         <Box sx={{ position: 'relative', paddingTop: '1.4rem' }}>
           <Box
-            sx={{
-              position: 'absolute',
-              right: 0,
-              top: '-1.4rem',
-            }}
+            sx={(theme) => ({
+              [theme.breakpoints.down('md')]: {
+                display: 'flex',
+                flexDirection: 'column',
+              },
+            })}
           >
             <Button
               onClick={() => getCollectionItems(collectionId)}

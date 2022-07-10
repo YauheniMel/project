@@ -168,8 +168,8 @@ const Header: FC<IHeader> = ({
                                   >
                                     <Link
                                       component={RouterLink}
-                                      to={`
-                                    ${collection}${info.collectionId}${ItemLink}${info.itemId}`}
+                                      // eslint-disable-next-line max-len
+                                      to={`${collection}${info.collectionId}${ItemLink}${info.itemId}`}
                                     >
                                       <Typography variant="body2">
                                         {info.icon && (

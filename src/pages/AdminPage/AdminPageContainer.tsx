@@ -1,6 +1,5 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router';
 import { AppStateType } from '../../redux';
 import {
   blockUserThunk,
@@ -54,14 +53,6 @@ const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
 
     return props.clearAdminState;
   }, []);
-
-  const navigate = useNavigate();
-
-  if (props.role && props.role !== 'Admin') {
-    navigate(-1);
-
-    return null;
-  }
 
   return (
     <>
