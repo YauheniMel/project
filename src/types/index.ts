@@ -167,10 +167,11 @@ export interface UserType {
 export interface UserPageType {
   id: number | null;
   userId: null | string;
-  role: 'Admin' | 'User' | 'Reader';
+  role: 'Admin' | 'User' | 'Reader' | null;
   name: string | null;
   surname: string | null;
   theme?: 'light' | 'dark';
+  email: null | string;
   status: 'active' | 'blocked';
   createdAt: null | string;
   updatedAt: null | string;

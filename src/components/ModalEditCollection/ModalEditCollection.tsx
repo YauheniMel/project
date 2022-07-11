@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: '60%',
     minWidth: '300px',
-    height: '300px',
+    height: '500px',
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',

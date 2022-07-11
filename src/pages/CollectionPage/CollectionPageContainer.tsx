@@ -64,6 +64,7 @@ interface ICollectionPageContainer {
   setTargetItem: (item: ItemType) => void;
   getTargetCollection: (collectionId: number) => void;
   getTargetItem: (itemId: number, collectionId: number) => void;
+  role: 'Admin' | 'User' | 'Reader' | null;
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
   setEditItems: (itemIds: number[]) => void;

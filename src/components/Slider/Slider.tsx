@@ -21,12 +21,19 @@ interface ISlider {
   setDeleteCollection?: (collectionId: number) => void;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   carousel: {
-    height: '70vh',
+    height: '16rem',
+    marginTop: '3.5rem',
+
+    [theme.breakpoints.down('sm')]: {
+      height: '20rem',
+    },
 
     '& > :first-child': {
       height: '100% !important',
+      overflowX: 'auto',
+
       '& > :first-child': {
         height: '100% !important',
         '& > *': {
@@ -47,12 +54,17 @@ const useStyles = makeStyles({
     height: '100%',
     padding: '3rem',
 
+    [theme.breakpoints.down('sm')]: {
+      width: '900px',
+      paddingBottom: '2rem',
+    },
+
     '& > *:hover': {
       transform: 'scale(1.1)',
       zIndex: 2,
     },
   },
-});
+}));
 
 const Slider: FC<ISlider> = ({
   type = 'public',

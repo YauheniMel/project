@@ -187,10 +187,7 @@ const ModalEditItem: FC<IModalEditItem> = ({
                 overflow: 'auto',
                 paddingBottom: 0,
                 width: '100%',
-                height: {
-                  sm: '100%',
-                  '*': '300px',
-                },
+                height: '100%',
               }}
               subheader={<li />}
             >
@@ -328,26 +325,29 @@ const ModalEditItem: FC<IModalEditItem> = ({
                             {language.modalEditItem.enterBtn}
                           </Button>
                         </Box>
-                        {matchTags
-                              && matchTags.map(
-                                (matchTag: { content: string }, idx: any) => (
-                                  <Chip
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    key={idx}
-                                    label={matchTag.content}
-                                    onClick={() => {
-                                      setTags([
-                                        ...tags.filter(
-                                          (tag) => matchTag.content !== tag,
-                                        ),
-                                        matchTag.content,
-                                      ]);
+                        {matchTags && (
+                        <Box>
+                          {matchTags.map(
+                            (matchTag: { content: string }, idx: any) => (
+                              <Chip
+                                      // eslint-disable-next-line react/no-array-index-key
+                                key={idx}
+                                label={matchTag.content}
+                                onClick={() => {
+                                  setTags([
+                                    ...tags.filter(
+                                      (tag) => matchTag.content !== tag,
+                                    ),
+                                    matchTag.content,
+                                  ]);
 
-                                      formik.values.tags = '';
-                                    }}
-                                  />
-                                ),
-                              )}
+                                  formik.values.tags = '';
+                                }}
+                              />
+                            ),
+                          )}
+                        </Box>
+                        )}
                         <Box>
                           {customFields
                                 && customFields.map((field: any, idx: any) => (
