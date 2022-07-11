@@ -2,12 +2,12 @@ const { Sequelize, DataTypes } = require('sequelize');
 const Roles = require('../../seeders/utils/Roles');
 
 const sequelize = new Sequelize(
-  'heroku_a2bd434709364ef',
-  'b76365a37ff35f',
-  'f3c65d82',
+  'collectionsdb_v7sj',
+  'collectionsdb_v7sj_user',
+  '8uLHqu1zhRAaLv81ZxeYMnyHNjJACR5J',
   {
     dialect: 'mysql',
-    host: 'eu-cdbr-west-02.cleardb.net',
+    host: 'dpg-cgm61vpmbg56g431n4l0-a',
   },
 );
 

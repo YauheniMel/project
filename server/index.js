@@ -20,11 +20,7 @@ const app = express();
 
 const server = http.createServer(app);
 
-const io = socketIo(server, {
-  cors: {
-    origin: '*',
-  },
-});
+const io = socketIo(server, { cors: '*' });
 
 io.on('connection', (socket) => {
   console.log('USER CONNECTED: ', socket.id);

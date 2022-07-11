@@ -24,10 +24,10 @@ const SearchPage: FC<ISearchPage> = ({
   <>
     Search result
     {' '}
-    {listSearch.length}
+    {listSearch?.length}
     {' '}
-    {listSearch.length === 1 ? 'link' : 'links'}
-    {listSearch.map((data: any) => (data?.name ? (
+    {listSearch?.length === 1 ? 'link' : 'links'}
+    {listSearch?.map((data: any) => (data?.name ? (
       <>
         <Typography variant="body2">
           {data.name}

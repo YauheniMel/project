@@ -53,7 +53,7 @@ interface IAdminPageContainer {
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
-  const socket = io('https://course-project-melnik.herokuapp.com/');
+  const socket = io('http://localhost:5000/');
 
   const navigate = useNavigate();
 

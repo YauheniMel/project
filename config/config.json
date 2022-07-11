@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "b76365a37ff35f",
-    "password": "f3c65d82",
-    "database": "heroku_a2bd434709364ef",
-    "host": "eu-cdbr-west-02.cleardb.net",
+    "username": "collectionsdb_v7sj_user",
+    "password": "8uLHqu1zhRAaLv81ZxeYMnyHNjJACR5J",
+    "database": "collectionsdb_v7sj",
+    "host": "dpg-cgm61vpmbg56g431n4l0-a",
     "dialect": "mysql"
   },
   "test": {
-    "username": "b76365a37ff35f",
-    "password": "f3c65d82",
-    "database": "heroku_a2bd434709364ef",
-    "host": "eu-cdbr-west-02.cleardb.net",
+    "username": "collectionsdb_v7sj_user",
+    "password": "8uLHqu1zhRAaLv81ZxeYMnyHNjJACR5J",
+    "database": "collectionsdb_v7sj",
+    "host": "dpg-cgm61vpmbg56g431n4l0-a",
     "dialect": "mysql"
   },
   "production": {
-    "username": "b76365a37ff35f",
-    "password": "f3c65d82",
-    "database": "heroku_a2bd434709364ef",
-    "host": "eu-cdbr-west-02.cleardb.net",
+    "username": "collectionsdb_v7sj_user",
+    "password": "8uLHqu1zhRAaLv81ZxeYMnyHNjJACR5J",
+    "database": "collectionsdb_v7sj",
+    "host": "dpg-cgm61vpmbg56g431n4l0-a",
     "dialect": "mysql"
   }
 }
