@@ -1,5 +1,5 @@
-import { Box } from '@mui/material';
 import React, { FC } from 'react';
+import { Box } from '@mui/material';
 
 interface ISidebar {
   children: JSX.Element[] | JSX.Element;
@@ -8,8 +8,9 @@ interface ISidebar {
 const Sidebar: FC<ISidebar> = ({ children }) => (
   <Box
     sx={(theme) => ({
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'flex',
+        justifyContent: 'space-between',
       },
     })}
   >

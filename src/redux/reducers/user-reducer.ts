@@ -5,8 +5,9 @@ import { UserActionTypes } from '../actions/user-action';
 const initState: UserPageType = {
   id: null,
   userId: null,
-  role: 'Reader',
+  role: null,
   name: null,
+  email: null,
   surname: null,
   status: 'active',
   theme: 'light',
@@ -29,6 +30,12 @@ function userReducer(state = initState, action: AnyAction) {
       return {
         ...state,
         isLoading: action.isLoading,
+      };
+    }
+    case UserActionTypes.setUserId: {
+      return {
+        ...state,
+        id: action.userId,
       };
     }
     case UserActionTypes.setUserPersonalInfo: {

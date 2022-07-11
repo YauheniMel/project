@@ -38,6 +38,10 @@ export const themeLight = createTheme({
     warning: {
       main: Colors.warning,
     },
+    text: {
+      primary: Colors.black,
+      secondary: Colors.primary_light,
+    },
   },
   shape: {
     borderRadius: 0,
@@ -110,6 +114,10 @@ export const themeDark = createTheme({
     },
     warning: {
       main: Colors.warning,
+    },
+    text: {
+      primary: Colors.white,
+      secondary: Colors.primary_light,
     },
   },
   shape: {

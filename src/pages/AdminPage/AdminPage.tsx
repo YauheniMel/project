@@ -3,6 +3,7 @@ import {
   Box,
   Chip,
   Grid,
+  Link,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -14,8 +15,11 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { Link as RouterLink } from 'react-router-dom';
 import { CollectionType, TargetUserType } from '../../types';
 import Slider from '../../components/Slider/Slider';
+import { LanguageContext } from '../../context/LanguageContext';
+import RoutesApp from '../../constants/routes';
 
 interface IAdminPage {
   targetCollections: {
@@ -32,6 +36,7 @@ interface IAdminPage {
   deleteUser: (userId: number) => void;
   setIsAdmin: (userId: number) => void;
   setIsNotAdmin: (userId: number) => void;
+  setUserId: (userId: number) => void;
 }
 
 const AdminPage: FC<IAdminPage> = ({
@@ -46,103 +51,146 @@ const AdminPage: FC<IAdminPage> = ({
   deleteUser,
   setIsAdmin,
   setIsNotAdmin,
+  setUserId,
 }) => (
-  <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-    <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
-      {targetUser && (
-        <>
-          <ListItemButton onClick={() => blockUser(targetUser.id)}>
+  <LanguageContext.Consumer>
+    {({ language }) => (
+      <Grid container direction="row">
+        <Grid item lg={2.5} md={2.7} xs={12} sm={3}>
+          <ListItemButton
+            onClick={() => {
+              if (targetUser) blockUser(targetUser.id);
+            }}
+          >
             <ListItemIcon>
               <BlockIcon />
             </ListItemIcon>
-            <ListItemText primary="Block the user" />
+            <ListItemText primary={language.adminPage.block} />
           </ListItemButton>
-          <ListItemButton onClick={() => unblockUser(targetUser.id)}>
+          <ListItemButton
+            onClick={() => {
+              if (targetUser) unblockUser(targetUser.id);
+            }}
+          >
             <ListItemIcon>
               <LockOpenIcon />
             </ListItemIcon>
-            <ListItemText primary="Unlock the user" />
+            <ListItemText primary={language.adminPage.unblock} />
           </ListItemButton>
-          <ListItemButton onClick={() => setIsAdmin(targetUser.id)}>
+          <ListItemButton
+            onClick={() => {
+              if (targetUser) setIsAdmin(targetUser.id);
+            }}
+          >
             <ListItemIcon>
               <EmojiEventsIcon />
             </ListItemIcon>
-            <ListItemText primary="Make an admin" />
+            <ListItemText primary={language.adminPage.makeAdmin} />
           </ListItemButton>
-          <ListItemButton onClick={() => setIsNotAdmin(targetUser.id)}>
+          <ListItemButton
+            onClick={() => {
+              if (targetUser) setIsNotAdmin(targetUser.id);
+            }}
+          >
             <ListItemIcon>
               <SentimentVeryDissatisfiedIcon />
             </ListItemIcon>
-            <ListItemText primary="Remove from admins" />
+            <ListItemText primary={language.adminPage.removeAdmin} />
           </ListItemButton>
-          <ListItemButton onClick={() => deleteUser(targetUser.id)}>
+          <ListItemButton
+            onClick={() => {
+              if (targetUser) deleteUser(targetUser.id);
+            }}
+          >
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            <ListItemText primary="Delete the user" />
+            <ListItemText primary={language.adminPage.delete} />
           </ListItemButton>
-        </>
-      )}
-    </Grid>
-    <Grid item lg={6.5} md={7.3} xs={10} sm={6}>
-      {targetUser && (
-        <Typography
-          variant="h4"
-          sx={{
-            paddingBottom: '1.4rem',
-          }}
-        >
-          {targetUser.name}
-          {' '}
-          {targetUser.surname}
-        </Typography>
-      )}
-      {targetCollections && (
-        <Box>
-          <Slider
-            id={1}
-            getUserCollections={getTargetUserCollections}
-            collections={targetCollections}
-            setCollection={setCollection}
-          />
-        </Box>
-      )}
-    </Grid>
-    <Grid item xs={3}>
-      <Box>
-        {users
-          && users.map((user) => (
-            <ListItemButton
-              onClick={() => getTargetUser(user.id)}
-              key={user.id}
+        </Grid>
+        <Grid item lg={6.5} md={6.3} xs={12} sm={6}>
+          {targetUser && (
+            <Typography
+              variant="h4"
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
+                paddingBottom: '1.4rem',
               }}
             >
-              {user.name}
+              {targetUser.name}
               {' '}
-              {user.surname}
-              <Stack direction="row" spacing={1}>
-                <Chip
-                  label={user.status}
-                  color={user.status === 'active' ? 'primary' : 'error'}
-                  size="small"
-                />
-                {user.role === 'Admin' && (
-                  <Chip
-                    label="Admin"
-                    color="primary"
-                    variant="outlined"
-                    size="small"
-                  />
-                )}
-              </Stack>
-            </ListItemButton>
-          ))}
-      </Box>
-    </Grid>
-  </Grid>
+              {targetUser.surname}
+            </Typography>
+          )}
+          {!!targetCollections.collections?.length && (
+            <Box>
+              <Slider
+                id={1}
+                getUserCollections={getTargetUserCollections}
+                collections={targetCollections}
+                setCollection={setCollection}
+              />
+            </Box>
+          )}
+        </Grid>
+        <Grid item lg={3} md={3} sm={3} xs={12}>
+          <Box>
+            {users
+              && users.map((user) => (
+                <ListItemButton
+                  onClick={() => getTargetUser(user.id)}
+                  key={user.id}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  {user.name}
+                  {' '}
+                  {user.surname}
+                  <Link
+                    component={RouterLink}
+                    to={RoutesApp.User}
+                    sx={{
+                      position: 'relative',
+                      zIndex: 2,
+                    }}
+                    onClick={() => {
+                      setUserId(user.id);
+                    }}
+                  >
+                    <Chip
+                      label="User page"
+                      color="primary"
+                      variant="outlined"
+                      size="small"
+                    />
+                  </Link>
+                  <Stack direction="row" spacing={1}>
+                    <Chip
+                      label={
+                        user.status === 'active'
+                          ? language.adminPage.active
+                          : language.adminPage.blocked
+                      }
+                      color={user.status === 'active' ? 'primary' : 'error'}
+                      size="small"
+                    />
+                    {user.role === 'Admin' && (
+                      <Chip
+                        label={language.adminPage.admin}
+                        color="primary"
+                        variant="outlined"
+                        size="small"
+                      />
+                    )}
+                  </Stack>
+                </ListItemButton>
+              ))}
+          </Box>
+        </Grid>
+      </Grid>
+    )}
+  </LanguageContext.Consumer>
 );
 
 export default AdminPage;
