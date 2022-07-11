@@ -139,7 +139,7 @@ const InputSearch: FC<IInputSearch> = ({
                   )}
                   <Link
                     component={RouterLink}
-                    // eslint-disable-next-line max-len
+                          // eslint-disable-next-line max-len
                     to={`${RoutesApp.CollectionLink}${option.routeId}${RoutesApp.ItemLink}${option.id}`}
                     style={{
                       display: 'block',

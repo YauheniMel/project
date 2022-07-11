@@ -15,6 +15,7 @@ const initState: AdminType = {
 function adminReducer(state = initState, action: AnyAction) {
   switch (action.type) {
     case AdminActionTypes.setTargetUser: {
+      console.log(action);
       return {
         ...state,
         targetUser: {
@@ -112,6 +113,11 @@ function adminReducer(state = initState, action: AnyAction) {
         users: state.users && [
           ...state.users.filter((user: UserType) => user.id !== action.userId),
         ],
+        targetUser: null,
+        targetCollections: {
+          collections: null,
+          countCollections: 0,
+        },
       };
     }
     case AdminActionTypes.clearAdminState: {

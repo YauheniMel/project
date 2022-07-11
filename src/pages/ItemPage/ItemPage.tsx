@@ -40,7 +40,7 @@ const ItemPage: FC<IItemPage> = ({
   customFields,
 }) => {
   const [value, setValue] = useState<string>('');
-  console.log(customFields);
+
   const { collectionId, itemId } = useParams();
 
   useEffect(() => {
@@ -64,7 +64,9 @@ const ItemPage: FC<IItemPage> = ({
     const collectionInfo: any = [];
     allFields.forEach((obj: { [key: string]: string }) => {
       const [key] = Object.keys(obj);
+
       const newKey = key.replace(/Key/, 'Value');
+
       if (obj[key]) collectionInfo.push({ [newKey]: obj[key] });
     });
 
@@ -99,11 +101,6 @@ const ItemPage: FC<IItemPage> = ({
                 {' '}
                 {moment(targetItem.createdAt).format('DD/MM/YYYY')}
               </Typography>
-              <Typography variant="body1">
-                {language.itemPage.updated}
-                {' '}
-                {moment(targetItem.updatedAt).format('DD/MM/YYYY')}
-              </Typography>
               <Avatar
                 src={`data:application/pdf;base64,${targetItem.icon}`}
                 sx={{ width: '10rem', height: '10rem' }}
@@ -136,7 +133,12 @@ const ItemPage: FC<IItemPage> = ({
                             padding: '1rem',
                           }}
                         >
-                          <Typography variant="body2">{obj[key]}</Typography>
+                          <Typography
+                            sx={{ textDecoration: 'underline' }}
+                            variant="body2"
+                          >
+                            {obj[key].split(':')[0] || obj[key]}
+                          </Typography>
                           <Typography variant="body1">
                             {targetItem[key as keyof ItemType]}
                           </Typography>

@@ -57,8 +57,8 @@ const CollectionsPageContainer: FC<ICollectionsPageContainer> = (props) => {
 
     if (id) {
       getMyCollections(id);
-      if (!allCollections) getAllCollections(id);
     }
+    if (!allCollections) getAllCollections();
   }, [props.id]);
 
   return (

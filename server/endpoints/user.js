@@ -70,8 +70,17 @@ router.get('/api/getTargetUser/', (req, res) => {
         });
       }
 
-      response.collections = resWithImg;
-      return res.status(200).send(response);
+      const result = {
+        name: response.name,
+        surname: response.surname,
+        id: response.id,
+        collections: {
+          collections: resWithImg,
+          countCollections: resWithImg.length,
+        },
+      };
+
+      return res.status(200).send(result);
     })
     .catch((err) => res.status(400).send({
       code: 0,
@@ -104,40 +113,13 @@ router.post('/api/loginUser', (req, res) => {
 
 router.post('/api/deleteUser', (req, res) => {
   const { id } = req.body;
+
   models.User.destroy({
     where: { id },
   })
-    .then((res) => res.status(200).send({
-      code: 1,
-      message: 'Login success!',
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.post('/api/setIsAdmin', (req, res) => {
-  const { id } = req.body;
-
-  models.User.update({ role: Roles.Admin }, { where: { id } })
     .then(() => res.status(200).send({
       code: 1,
-      message: 'Unblocked success!',
-    }))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
-});
-
-router.post('/api/setIsNotAdmin', (req, res) => {
-  const { id } = req.body;
-
-  models.User.update({ role: Roles.User }, { where: { id } })
-    .then(() => res.status(200).send({
-      code: 1,
-      message: 'Unblocked success!',
+      message: 'Delete success!',
     }))
     .catch((err) => res.status(400).send({
       code: 0,

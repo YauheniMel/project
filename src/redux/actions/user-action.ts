@@ -36,6 +36,7 @@ export enum UserActionTypes {
   setMeIsNotAdmin = 'SET-ME-IS-NOT-ADMIN',
   logoutUser = 'LOGOUT-USER',
   setIsLoading = 'SET-IS-USER-LOADING',
+  setUserId = 'SET-USER-ID',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
@@ -71,6 +72,11 @@ const updateCollectionAction = (collection: CollectionType) => ({
 const decreaseLikesAction = (itemId: number) => ({
   type: UserActionTypes.decreaseLikes,
   itemId,
+});
+
+export const setUserIdAction = (userId: number) => ({
+  type: UserActionTypes.setUserId,
+  userId,
 });
 
 const increaseLikesAction = (itemId: number) => ({

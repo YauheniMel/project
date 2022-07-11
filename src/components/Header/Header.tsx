@@ -35,6 +35,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   paddingRight: '1.4rem',
   height: '3.2rem',
+  overflowX: 'auto',
 
   '& .MuiToolbar-root': {
     minHeight: '3.2rem',
@@ -46,7 +47,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 interface IHeader {
   name: string;
   surname: string;
-  role: 'Admin' | 'User' | 'Reader';
+  role: 'Admin' | 'User' | 'Reader' | null;
   search: (substr: string) => void;
   itemsSearch:
   | {
@@ -102,6 +103,7 @@ const Header: FC<IHeader> = ({
                 sx={{
                   justifyContent: 'space-around',
                   columnGap: '2rem',
+                  minWidth: '600px',
                 }}
               >
                 {(role === 'Admin' || role === 'User') && name ? (

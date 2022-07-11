@@ -12,6 +12,7 @@ const routerTag = require('./endpoints/tag');
 const routerFilters = require('./endpoints/filters');
 const connection = require('./services/mySQL');
 const models = require('./services/sequelize');
+const Roles = require('../seeders/utils/Roles');
 
 const port = process.env.PORT || 5000;
 
@@ -21,7 +22,7 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: '*',
+    origin: 'https://collections-front.onrender.com',
   },
 });
 
@@ -71,10 +72,12 @@ router.get('/api/getAllComments/', (req, res) => {
     ],
   })
     .then((result) => res.status(200).send(result))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
 });
 
 router.get('/api/getAllUntouchedComments/', (req, res) => {
@@ -125,10 +128,12 @@ router.get('/api/getAllUntouchedComments/', (req, res) => {
       });
       res.status(200).send(untoucnhedComments);
     })
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
 });
 
 router.put('/api/setCommentsTouched/', (req, res) => {
@@ -136,10 +141,12 @@ router.put('/api/setCommentsTouched/', (req, res) => {
 
   models.Comment.update({ status: 'touched' }, { where: { itemId } })
     .then((result) => res.status(200).send(result))
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
 });
 
 router.post('/api/addComment/', (req, res) => {
@@ -161,15 +168,18 @@ router.post('/api/addComment/', (req, res) => {
           .then((collection) => {
             io.to('update').emit('comment', {
               userId: collection.userId,
+              itemId,
             });
             return res.status(200).send('The message was sent!');
           });
       }
     })
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
 });
 
 router.post('/api/blockUser', (req, res) => {
@@ -177,22 +187,21 @@ router.post('/api/blockUser', (req, res) => {
 
   models.User.update({ status: 'blocked' }, { where: { id } })
     .then(() => {
-      io.to('update').emit(
-        'block',
-        {
-          userId: id,
-        },
-      );
+      io.to('update').emit('block', {
+        userId: id,
+      });
 
       return res.status(200).send({
         code: 1,
         message: 'Blocked success!',
       });
     })
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
 });
 
 router.post('/api/unblockUser', (req, res) => {
@@ -200,22 +209,65 @@ router.post('/api/unblockUser', (req, res) => {
 
   models.User.update({ status: 'active' }, { where: { id } })
     .then(() => {
-      io.to('update').emit(
-        'unblock',
-        {
-          userId: id,
-        },
-      );
+      io.to('update').emit('unblock', {
+        userId: id,
+      });
 
       return res.status(200).send({
         code: 1,
         message: 'Unblocked success!',
       });
     })
-    .catch((err) => res.status(400).send({
-      code: 0,
-      message: err,
-    }));
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
+});
+
+router.post('/api/setIsAdmin', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ role: Roles.Admin }, { where: { id } })
+    .then(() => {
+      io.to('update').emit('isAdmin', {
+        userId: id,
+      });
+
+      return res.status(200).send({
+        code: 1,
+        message: 'Set isAdmin success!',
+      });
+    })
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
+});
+
+router.post('/api/setIsNotAdmin', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ role: Roles.User }, { where: { id } })
+    .then(() => {
+      io.to('update').emit('isNotAdmin', {
+        userId: id,
+      });
+
+      return res.status(200).send({
+        code: 1,
+        message: 'Set isNotAdmin success!',
+      });
+    })
+    .catch((err) =>
+      res.status(400).send({
+        code: 0,
+        message: err,
+      }),
+    );
 });
 
 //

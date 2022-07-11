@@ -110,5 +110,5 @@ export const removeFromAdminsThunk = (userId: number) => (dispatch: any) => {
 };
 
 export const deleteUserThunk = (userId: number) => (dispatch: any) => {
-  requestAPI.deleteUser(userId).then(() => dispatch(setUserUnblock(userId)));
+  requestAPI.deleteUser(userId).then(() => dispatch(deleteUser(userId)));
 };
