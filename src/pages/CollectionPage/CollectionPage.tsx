@@ -7,13 +7,14 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  styled,
   Typography,
 } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
-import UpgradeIcon from '@mui/icons-material/Upgrade';
+import EditIcon from '@mui/icons-material/Edit';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
+import AddIcon from '@mui/icons-material/Add';
 import { ItemInitType, ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
@@ -21,6 +22,12 @@ import ItemForm from '../../components/ItemForm/ItemForm';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
 import ModalEditItem from '../../components/ModalEditItem/ModalEditItem';
 import { LanguageContext } from '../../context/LanguageContext';
+
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
 
 interface ICollectionPage {
   userId: number;
@@ -31,6 +38,7 @@ interface ICollectionPage {
   customFields: any;
   createdAt: string;
   list: ItemType[] | null;
+  role: 'Admin' | 'User' | 'Reader' | null;
   createNewItem: (itemInfo: ItemInitType) => void;
   setTargetItem: (item: ItemType) => void;
   listEditItems: Array<ItemType | null>;
@@ -58,6 +66,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   setTargetItem,
   createNewItem,
   list,
+  role,
   listEditItems,
   listDeleteItems,
   setEditItems,
@@ -115,33 +124,51 @@ const CollectionPage: FC<ICollectionPage> = ({
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid item lg={2.5} md={2.7} xs={12} sm={12}>
-              {authorId === userId && (
+              {(authorId === userId || role === 'Admin') && (
                 <Sidebar>
-                  <ListItemButton
+                  <StyledListItemButton
                     onClick={() => setOpenForm(true)}
                     sx={(theme) => ({
                       width: '100%',
 
+                      [theme.breakpoints.down('sm')]: {
+                        justifyContent: 'center',
+                      },
+
+                      '& .MuiListItemIcon-root': {
+                        [theme.breakpoints.down('sm')]: {
+                          justifyContent: 'center',
+                        },
+                      },
                       '& .MuiListItemText-root': {
-                        [theme.breakpoints.down('md')]: {
+                        [theme.breakpoints.down('sm')]: {
                           display: 'none',
                         },
                       },
                     })}
                   >
                     <ListItemIcon>
-                      <AddCircleOutlineIcon />
+                      <AddIcon color="secondary" />
                     </ListItemIcon>
                     <ListItemText
                       primary={language.collectionPage.createItem}
                     />
-                  </ListItemButton>
-                  <ListItemButton
+                  </StyledListItemButton>
+                  <StyledListItemButton
                     sx={(theme) => ({
                       width: '100%',
 
+                      [theme.breakpoints.down('sm')]: {
+                        justifyContent: 'center',
+                      },
+
+                      '& .MuiListItemIcon-root': {
+                        [theme.breakpoints.down('sm')]: {
+                          justifyContent: 'center',
+                        },
+                      },
                       '& .MuiListItemText-root': {
-                        [theme.breakpoints.down('md')]: {
+                        [theme.breakpoints.down('sm')]: {
                           display: 'none',
                         },
                       },
@@ -157,17 +184,26 @@ const CollectionPage: FC<ICollectionPage> = ({
                         badgeContent={listEditItems.length}
                         color="warning"
                       >
-                        <UpgradeIcon />
+                        <EditIcon color="secondary" />
                       </Badge>
                     </ListItemIcon>
                     <ListItemText primary={language.collectionPage.edit} />
-                  </ListItemButton>
-                  <ListItemButton
+                  </StyledListItemButton>
+                  <StyledListItemButton
                     sx={(theme) => ({
                       width: '100%',
 
+                      [theme.breakpoints.down('sm')]: {
+                        justifyContent: 'center',
+                      },
+
+                      '& .MuiListItemIcon-root': {
+                        [theme.breakpoints.down('sm')]: {
+                          justifyContent: 'center',
+                        },
+                      },
                       '& .MuiListItemText-root': {
-                        [theme.breakpoints.down('md')]: {
+                        [theme.breakpoints.down('sm')]: {
                           display: 'none',
                         },
                       },
@@ -183,11 +219,11 @@ const CollectionPage: FC<ICollectionPage> = ({
                         badgeContent={listDeleteItems.length}
                         color="error"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon color="secondary" />
                       </Badge>
                     </ListItemIcon>
                     <ListItemText primary={language.collectionPage.delete} />
-                  </ListItemButton>
+                  </StyledListItemButton>
                 </Sidebar>
               )}
             </Grid>

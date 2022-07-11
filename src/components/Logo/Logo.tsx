@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Avatar, Chip, Stack } from '@mui/material';
 import { useNavigate } from 'react-router';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RoutesApp from '../../constants/routes';
 
 interface ILogo {
@@ -38,11 +39,13 @@ const Logo: FC<ILogo> = ({ name, surname, role }) => {
             style={{
               position: 'absolute',
               left: 0,
-              height: '2.8rem',
-              width: '2.8rem',
+              height: '3rem',
+              width: '3rem',
               marginLeft: 0,
             }}
-          />
+          >
+            {role === 'Admin' ? <RadioButtonCheckedIcon /> : null}
+          </Avatar>
         )}
         label={`${name} ${surname}`}
         clickable={role === 'Admin'}

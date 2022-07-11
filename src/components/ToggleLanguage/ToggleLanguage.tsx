@@ -46,37 +46,34 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const ToggleLanguage: FC<any> = ({ language, setLanguage }) => {
-  console.log(language);
-  return (
-    <FormGroup>
-      <FormControlLabel
-        sx={{
-          '& .MuiFormControlLabel-label': {
-            color: (theme) => theme.palette.common.black,
-          },
-        }}
-        color="primary"
-        control={(
-          <MaterialUISwitch
-            sx={{ m: 1 }}
-            onChange={() => {
-              if (language.mode === 'eng') {
-                toggleLanguage('by');
-                setLanguage(languages.by);
-                return;
-              }
+const ToggleLanguage: FC<any> = ({ language, setLanguage }) => (
+  <FormGroup>
+    <FormControlLabel
+      sx={{
+        '& .MuiFormControlLabel-label': {
+          color: (theme) => theme.palette.common.black,
+        },
+      }}
+      color="primary"
+      control={(
+        <MaterialUISwitch
+          sx={{ m: 1 }}
+          onChange={() => {
+            if (language.mode === 'eng') {
+              toggleLanguage('by');
+              setLanguage(languages.by);
+              return;
+            }
 
-              toggleLanguage('eng');
-              setLanguage(languages.eng);
-            }}
-            checked={language.mode === 'by'}
-          />
-        )}
-        label={language.mode}
-      />
-    </FormGroup>
-  );
-};
+            toggleLanguage('eng');
+            setLanguage(languages.eng);
+          }}
+          checked={language.mode === 'by'}
+        />
+      )}
+      label={language.mode}
+    />
+  </FormGroup>
+);
 
 export default ToggleLanguage;

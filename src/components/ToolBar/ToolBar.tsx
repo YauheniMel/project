@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 interface IToolBar {
   id: string;
   logOutUser: (id: string) => void;
-  role: 'Admin' | 'User' | 'Reader';
+  role: 'Admin' | 'User' | 'Reader' | null;
 }
 
 const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
@@ -85,7 +85,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
             <HomeIcon fontSize="large" />
           </LinkButton>
         </Link>
-        {role !== 'Reader' && (
+        {role && role !== 'Reader' && (
           <Link component={RouterLink} to={RoutesApp.User}>
             <LinkButton>
               <PersonIcon fontSize="large" />
@@ -97,7 +97,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
             <CollectionsIcon fontSize="large" />
           </LinkButton>
         </Link>
-        {role !== 'Reader' && (
+        {role && role !== 'Reader' && (
           <Link component={RouterLink} to={RoutesApp.Login}>
             <LinkButton onClick={handleLogout}>
               <LogoutIcon fontSize="large" />
