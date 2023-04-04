@@ -472,7 +472,7 @@ const Table: FC<ITable> = ({
           >
             <Button
               onClick={() => getCollectionItems(collectionId)}
-              color="error"
+              color="secondary"
             >
               {language.collectionPage.filterCleaning}
             </Button>

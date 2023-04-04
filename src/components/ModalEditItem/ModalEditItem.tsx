@@ -325,29 +325,32 @@ const ModalEditItem: FC<IModalEditItem> = ({
                             {language.modalEditItem.enterBtn}
                           </Button>
                         </Box>
-                        {matchTags && (
                         <Box>
-                          {matchTags.map(
-                            (matchTag: { content: string }, idx: any) => (
-                              <Chip
+                          <Box>
+                            {matchTags?.map(
+                              (matchTag: { content: string }, idx: any) => (
+                                <Chip
                                       // eslint-disable-next-line react/no-array-index-key
-                                key={idx}
-                                label={matchTag.content}
-                                onClick={() => {
-                                  setTags([
-                                    ...tags.filter(
-                                      (tag) => matchTag.content !== tag,
-                                    ),
-                                    matchTag.content,
-                                  ]);
+                                  key={idx}
+                                  sx={{
+                                    marginRight: '.3rem',
+                                  }}
+                                  label={matchTag.content}
+                                  onClick={() => {
+                                    setTags([
+                                      ...tags.filter(
+                                        (tag) => matchTag.content !== tag,
+                                      ),
+                                      matchTag.content,
+                                    ]);
 
-                                  formik.values.tags = '';
-                                }}
-                              />
-                            ),
-                          )}
+                                    formik.values.tags = '';
+                                  }}
+                                />
+                              ),
+                            )}
+                          </Box>
                         </Box>
-                        )}
                         <Box>
                           {customFields
                                 && customFields.map((field: any, idx: any) => (

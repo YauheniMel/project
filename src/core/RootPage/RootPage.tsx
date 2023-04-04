@@ -62,7 +62,7 @@ const RootPage: FC<IRootPage> = ({
   getAllComments,
   ...rest
 }) => {
-  const socket = io('https://course-project-melnik.herokuapp.com/');
+  const socket = io('https://collections-back-haoe.onrender.com/');
 
   async function handlePolicy(event: any) {
     event.stopPropagation();

@@ -104,9 +104,9 @@ const validationSchema = yup.object({
   theme: yup
     .string()
     .trim()
-    .min(2, 'Theme must have more than 2 letters')
-    .max(30, 'Theme must have less than 30 letters')
-    .required('Theme is required'),
+    .min(2, 'Subject must have more than 2 letters')
+    .max(30, 'Subject must have less than 30 letters')
+    .required('Subject is required'),
 });
 
 const CollectionForm: FC<ICollectionForm> = ({

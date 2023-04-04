@@ -1,14 +1,18 @@
 /* eslint-disable react/no-array-index-key */
 import React, { FC, useState } from 'react';
 import { FormikProvider, useFormik } from 'formik';
-import {
-  Backdrop, Chip, makeStyles, Paper,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import * as yup from 'yup';
 import {
-  Alert, Box, TextField, Button,
+  Alert,
+  Box,
+  TextField,
+  Button,
+  Backdrop,
+  Paper,
+  Chip,
 } from '@mui/material';
 import CustomField from '../CustomField/CustomField';
 import InputFile from '../../shared/components/InputFile/InputFile';
@@ -76,7 +80,6 @@ const ItemForm: FC<IItemForm> = ({
 }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [image, setImage] = useState<any>();
-  const [showSearchTags, setShowSearchTags] = useState(false);
   const [isSubmited, setIsSubmited] = useState(false);
 
   const classes = useStyles();
@@ -115,7 +118,6 @@ const ItemForm: FC<IItemForm> = ({
   function handleSetTag(formik: any) {
     if (formik.values.tags.trim()) {
       searchMatchTags(formik.values.tags);
-      setShowSearchTags(true);
     }
   }
 
@@ -169,7 +171,6 @@ const ItemForm: FC<IItemForm> = ({
         tags: '',
         ...getInitFields(customFields),
       });
-      console.log(values);
     },
     enableReinitialize: true,
   });
@@ -242,24 +243,21 @@ const ItemForm: FC<IItemForm> = ({
                 </Button>
               )}
             </Box>
-            <Box sx={{ display: showSearchTags ? 'block' : 'none' }}>
-              {matchTags
-                && matchTags.map((matchTag: { content: string }, idx: any) => (
-                  <Chip
-                    key={idx}
-                    label={matchTag.content}
-                    onClick={() => {
-                      setTags([
-                        ...tags.filter((tag) => matchTag.content !== tag),
-                        matchTag.content,
-                      ]);
+            <Box>
+              {matchTags?.map((matchTag: { content: string }, idx: any) => (
+                <Chip
+                  key={idx}
+                  label={matchTag.content}
+                  onClick={() => {
+                    setTags([
+                      ...tags.filter((tag) => matchTag.content !== tag),
+                      matchTag.content,
+                    ]);
 
-                      formik.values.tags = '';
-
-                      setShowSearchTags(false);
-                    }}
-                  />
-                ))}
+                    formik.values.tags = '';
+                  }}
+                />
+              ))}
             </Box>
             {customFields
               && customFields.map((field: any, index: any) => (

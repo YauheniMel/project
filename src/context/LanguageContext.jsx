@@ -48,7 +48,7 @@ export const languages = {
     },
     modalCreateCollection: {
       title: 'Title',
-      theme: 'Theme',
+      theme: 'Subject',
       description: 'Description',
       nameField: 'Name field',
       nameOption: 'Name option',
@@ -65,7 +65,7 @@ export const languages = {
     },
     modalEditCollection: {
       title: 'Title',
-      theme: 'Theme',
+      theme: 'Subject',
       description: 'Description',
       variants: 'Variants',
       update: 'Update',
