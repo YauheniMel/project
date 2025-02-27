@@ -2,12 +2,13 @@ const { Sequelize, DataTypes } = require('sequelize');
 const Roles = require('../../seeders/utils/Roles');
 
 const sequelize = new Sequelize(
-  'collectionsdb_v7sj',
-  'collectionsdb_v7sj_user',
-  '8uLHqu1zhRAaLv81ZxeYMnyHNjJACR5J',
+  process.env.DATABASE_MYSQL,
+  process.env.USERNAME_MYSQL,
+  process.env.PASSWORD_MYSQL,
   {
     dialect: 'mysql',
-    host: 'dpg-cgm61vpmbg56g431n4l0-a',
+    host: process.env.HOST_MYSQL,
+    port: process.env.PORT_MYSQL,
   },
 );
 

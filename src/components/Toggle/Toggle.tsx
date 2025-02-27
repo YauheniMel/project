@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { toggleTheme } from '../../services/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -53,8 +53,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const Toggle: FC<any> = ({ theme, setTheme }) => {
-  console.log(theme);
+const Toggle: FC<any> = () => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <FormGroup>
       <FormControlLabel
@@ -69,12 +70,10 @@ const Toggle: FC<any> = ({ theme, setTheme }) => {
             sx={{ m: 1 }}
             onChange={() => {
               if (theme === 'light') {
-                toggleTheme('dark');
                 setTheme('dark');
                 return;
               }
 
-              toggleTheme('light');
               setTheme('light');
             }}
             checked={theme === 'dark'}

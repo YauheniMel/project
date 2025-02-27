@@ -22,13 +22,11 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: 'https://collections-front.onrender.com',
+    origin: process.env.BASE_URL,
   },
 });
 
 io.on('connection', (socket) => {
-  console.log('USER CONNECTED: ', socket.id);
-
   socket.join('update');
 });
 
@@ -72,12 +70,10 @@ router.get('/api/getAllComments/', (req, res) => {
     ],
   })
     .then((result) => res.status(200).send(result))
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.get('/api/getAllUntouchedComments/', (req, res) => {
@@ -128,12 +124,10 @@ router.get('/api/getAllUntouchedComments/', (req, res) => {
       });
       res.status(200).send(untoucnhedComments);
     })
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.put('/api/setCommentsTouched/', (req, res) => {
@@ -141,12 +135,10 @@ router.put('/api/setCommentsTouched/', (req, res) => {
 
   models.Comment.update({ status: 'touched' }, { where: { itemId } })
     .then((result) => res.status(200).send(result))
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.post('/api/addComment/', (req, res) => {
@@ -174,12 +166,10 @@ router.post('/api/addComment/', (req, res) => {
           });
       }
     })
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.post('/api/blockUser', (req, res) => {
@@ -196,12 +186,10 @@ router.post('/api/blockUser', (req, res) => {
         message: 'Blocked success!',
       });
     })
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.post('/api/unblockUser', (req, res) => {
@@ -218,12 +206,10 @@ router.post('/api/unblockUser', (req, res) => {
         message: 'Unblocked success!',
       });
     })
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.post('/api/setIsAdmin', (req, res) => {
@@ -240,12 +226,10 @@ router.post('/api/setIsAdmin', (req, res) => {
         message: 'Set isAdmin success!',
       });
     })
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 router.post('/api/setIsNotAdmin', (req, res) => {
@@ -262,12 +246,10 @@ router.post('/api/setIsNotAdmin', (req, res) => {
         message: 'Set isNotAdmin success!',
       });
     })
-    .catch((err) =>
-      res.status(400).send({
-        code: 0,
-        message: err,
-      }),
-    );
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
 });
 
 //

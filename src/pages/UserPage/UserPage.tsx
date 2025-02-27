@@ -16,7 +16,7 @@ import Slider from '../../components/Slider/Slider';
 import { CollectionInitType, CollectionType } from '../../types';
 import ModalEditCollection from '../../components/ModalEditCollection/ModalEditCollection';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -64,152 +64,147 @@ const UserPage: FC<IUserPage> = ({
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
 
+  const { language } = useLanguage();
+
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <>
-          <CollectionForm
-            userId={id}
-            openForm={openForm}
-            setOpenForm={setOpenForm}
-            createNewCollection={createNewCollection}
-            collectionThemes={collectionThemes}
-          />
-          <ModalEditCollection
-            openModal={openModalEdit}
-            setOpen={setOpenModalEdit}
-            collectionsEdit={collectionsEdit}
-            updateCollection={updateCollection}
-            pullOutCollection={pullOutCollection}
-            collectionThemes={collectionThemes}
-          />
-          <ModalDelete
-            openModal={openModalDelete}
-            setOpen={setOpenModalDelete}
-            collectionsDel={collectionsDel}
-            pullOutCollection={pullOutCollection}
-            deleteCollection={deleteCollection}
-          />
-          <Grid sx={{ height: '100%' }} container>
-            <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
-              <Sidebar>
-                <StyledListItemButton
-                  onClick={() => {
-                    if (!collectionThemes) getCollectionThemes();
+    <>
+      <CollectionForm
+        userId={id}
+        openForm={openForm}
+        setOpenForm={setOpenForm}
+        createNewCollection={createNewCollection}
+        collectionThemes={collectionThemes}
+      />
+      <ModalEditCollection
+        openModal={openModalEdit}
+        setOpen={setOpenModalEdit}
+        collectionsEdit={collectionsEdit}
+        updateCollection={updateCollection}
+        pullOutCollection={pullOutCollection}
+        collectionThemes={collectionThemes}
+      />
+      <ModalDelete
+        openModal={openModalDelete}
+        setOpen={setOpenModalDelete}
+        collectionsDel={collectionsDel}
+        pullOutCollection={pullOutCollection}
+        deleteCollection={deleteCollection}
+      />
+      <Grid sx={{ height: '100%' }} container>
+        <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
+          <Sidebar>
+            <StyledListItemButton
+              onClick={() => {
+                if (!collectionThemes) getCollectionThemes();
 
-                    setOpenForm(true);
-                  }}
-                  sx={(theme) => ({
-                    width: '100%',
+                setOpenForm(true);
+              }}
+              sx={(theme) => ({
+                width: '100%',
 
-                    [theme.breakpoints.down('sm')]: {
-                      justifyContent: 'center',
-                    },
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center',
+                },
 
-                    '& .MuiListItemIcon-root': {
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: 'center',
-                      },
-                    },
-                    '& .MuiListItemText-root': {
-                      [theme.breakpoints.down('sm')]: {
-                        display: 'none',
-                      },
-                    },
-                  })}
-                >
-                  <ListItemIcon>
-                    <AddIcon color="secondary" />
-                  </ListItemIcon>
-                  <ListItemText primary={language.userPage.createCollection} />
-                </StyledListItemButton>
-                <StyledListItemButton
-                  sx={(theme) => ({
-                    width: '100%',
+                '& .MuiListItemIcon-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+                },
+                '& .MuiListItemText-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'none',
+                  },
+                },
+              })}
+            >
+              <ListItemIcon>
+                <AddIcon color="secondary" />
+              </ListItemIcon>
+              <ListItemText primary={language.userPage.createCollection} />
+            </StyledListItemButton>
+            <StyledListItemButton
+              sx={(theme) => ({
+                width: '100%',
 
-                    [theme.breakpoints.down('sm')]: {
-                      justifyContent: 'center',
-                    },
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center',
+                },
 
-                    '& .MuiListItemIcon-root': {
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: 'center',
-                      },
-                    },
-                    '& .MuiListItemText-root': {
-                      [theme.breakpoints.down('sm')]: {
-                        display: 'none',
-                      },
-                    },
-                  })}
-                  onClick={() => {
-                    if (collectionsEdit.length === 0) return;
-                    if (!collectionThemes) getCollectionThemes();
+                '& .MuiListItemIcon-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+                },
+                '& .MuiListItemText-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'none',
+                  },
+                },
+              })}
+              onClick={() => {
+                if (collectionsEdit.length === 0) return;
+                if (!collectionThemes) getCollectionThemes();
 
-                    setOpenModalEdit(true);
-                  }}
-                >
-                  <ListItemIcon>
-                    <Badge
-                      badgeContent={collectionsEdit.length}
-                      color="warning"
-                    >
-                      <EditIcon color="secondary" />
-                    </Badge>
-                  </ListItemIcon>
-                  <ListItemText primary={language.userPage.edit} />
-                </StyledListItemButton>
-                <StyledListItemButton
-                  sx={(theme) => ({
-                    width: '100%',
+                setOpenModalEdit(true);
+              }}
+            >
+              <ListItemIcon>
+                <Badge badgeContent={collectionsEdit.length} color="warning">
+                  <EditIcon color="secondary" />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText primary={language.userPage.edit} />
+            </StyledListItemButton>
+            <StyledListItemButton
+              sx={(theme) => ({
+                width: '100%',
 
-                    [theme.breakpoints.down('sm')]: {
-                      justifyContent: 'center',
-                    },
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center',
+                },
 
-                    '& .MuiListItemIcon-root': {
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: 'center',
-                      },
-                    },
-                    '& .MuiListItemText-root': {
-                      [theme.breakpoints.down('sm')]: {
-                        display: 'none',
-                      },
-                    },
-                  })}
-                  onClick={() => {
-                    if (collectionsDel.length === 0) return;
+                '& .MuiListItemIcon-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+                },
+                '& .MuiListItemText-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'none',
+                  },
+                },
+              })}
+              onClick={() => {
+                if (collectionsDel.length === 0) return;
 
-                    setOpenModalDelete(true);
-                  }}
-                >
-                  <ListItemIcon>
-                    <Badge badgeContent={collectionsDel.length} color="error">
-                      <DeleteIcon color="secondary" />
-                    </Badge>
-                  </ListItemIcon>
-                  <ListItemText primary={language.userPage.delete} />
-                </StyledListItemButton>
-              </Sidebar>
-            </Grid>
-            <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
-              {!!collections.collections?.length && (
-                <Slider
-                  type="private"
-                  id={id}
-                  setEditCollection={setEditCollection}
-                  setDeleteCollection={setDeleteCollection}
-                  collections={collections}
-                  setCollection={setTargetCollection}
-                  getUserCollections={getMyCollections}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </>
-      )}
-    </LanguageContext.Consumer>
+                setOpenModalDelete(true);
+              }}
+            >
+              <ListItemIcon>
+                <Badge badgeContent={collectionsDel.length} color="error">
+                  <DeleteIcon color="secondary" />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText primary={language.userPage.delete} />
+            </StyledListItemButton>
+          </Sidebar>
+        </Grid>
+        <Grid item lg={9.5} md={9.3} xs={12} sm={8}>
+          {!!collections.collections?.length && (
+            <Slider
+              type="private"
+              id={id}
+              setEditCollection={setEditCollection}
+              setDeleteCollection={setDeleteCollection}
+              collections={collections}
+              setCollection={setTargetCollection}
+              getUserCollections={getMyCollections}
+            />
+          )}
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

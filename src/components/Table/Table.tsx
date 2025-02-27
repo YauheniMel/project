@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   DataGrid,
   GridColDef,
@@ -39,7 +39,7 @@ import {
   operatorStartsWith,
   likesComparator,
 } from '../../filters/filters';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ITable {
   collectionId: number;
@@ -49,7 +49,7 @@ interface ITable {
   setTargetItem: (item: ItemType) => void;
   setEditItems: (itemIds: number[]) => void;
   setDeleteItems: (itemIds: number[]) => void;
-  toogleLike: (userId: number, itemId: number) => void;
+  toggleLike: (userId: number, itemId: number) => void;
   likes: { itemId: number }[] | null;
   getCollectionItems: (collectionId: number) => void;
   customFields: any;
@@ -101,7 +101,7 @@ const Table: FC<ITable> = ({
   setTargetItem,
   setEditItems,
   setDeleteItems,
-  toogleLike,
+  toggleLike,
   userId,
   likes,
   getCollectionItems,
@@ -112,7 +112,7 @@ const Table: FC<ITable> = ({
 
   const { CollectionLink, ItemLink } = RoutesApp;
 
-  const { language } = useContext(LanguageContext);
+  const { language } = useLanguage();
 
   const columns: GridColDef[] = [
     {
@@ -445,7 +445,7 @@ const Table: FC<ITable> = ({
             checkedIcon={<Favorite color="error" />}
             onChange={() => {
               if (userId && params.row.id) {
-                toogleLike(userId, params.row.id);
+                toggleLike(userId, params.row.id);
               }
             }}
           />
@@ -459,77 +459,73 @@ const Table: FC<ITable> = ({
   }
 
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Box sx={{ position: 'relative', paddingTop: '1.4rem' }}>
-          <Box
-            sx={(theme) => ({
-              [theme.breakpoints.down('md')]: {
-                display: 'flex',
-                flexDirection: 'column',
-              },
-            })}
-          >
+    <Box sx={{ position: 'relative', paddingTop: '1.4rem' }}>
+      <Box
+        sx={(theme) => ({
+          [theme.breakpoints.down('md')]: {
+            display: 'flex',
+            flexDirection: 'column',
+          },
+        })}
+      >
+        <Button
+          onClick={() => getCollectionItems(collectionId)}
+          color="secondary"
+        >
+          {language.collectionPage.filterCleaning}
+        </Button>
+        {authorId === userId && (
+          <>
             <Button
-              onClick={() => getCollectionItems(collectionId)}
-              color="secondary"
+              onClick={() => setDeleteItems(selectRows)}
+              color="error"
+              disabled={selectRows.length === 0}
             >
-              {language.collectionPage.filterCleaning}
+              {language.collectionPage.putDelete}
             </Button>
-            {authorId === userId && (
-              <>
-                <Button
-                  onClick={() => setDeleteItems(selectRows)}
-                  color="error"
-                  disabled={selectRows.length === 0}
-                >
-                  {language.collectionPage.putDelete}
-                </Button>
-                <Button
-                  onClick={() => setEditItems(selectRows)}
-                  disabled={selectRows.length === 0}
-                  color="warning"
-                >
-                  {language.collectionPage.putEdit}
-                </Button>
-              </>
-            )}
-          </Box>
-          {customFields && list && (
-            <StyledDataGrid
-              autoHeight
-              rows={list}
-              getRowClassName={(params) => {
-                const { indexRelativeToCurrentPage } = params;
+            <Button
+              onClick={() => setEditItems(selectRows)}
+              disabled={selectRows.length === 0}
+              color="warning"
+            >
+              {language.collectionPage.putEdit}
+            </Button>
+          </>
+        )}
+      </Box>
+      {customFields && list && (
+        <StyledDataGrid
+          autoHeight
+          rows={list}
+          getRowClassName={(params) => {
+            const { indexRelativeToCurrentPage } = params;
 
-                return indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
-              }}
-              components={{
-                Toolbar: CustomToolbar,
-              }}
-              columns={columns}
-              disableColumnSelector
-              initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    dateValue1: !!customFields[3].dateKey1,
-                    dateValue2: !!customFields[4].dateKey2,
-                    dateValue3: !!customFields[5].dateKey3,
-                    textValue1: !!customFields[12].textKey1,
-                    textValue2: !!customFields[13].textKey2,
-                    textValue3: !!customFields[14].textKey3,
-                  },
-                },
-              }}
-              disableExtendRowFullWidth
-              checkboxSelection
-              onStateChange={handleChangeStateTable}
-              disableSelectionOnClick
-            />
-          )}
-        </Box>
+            return indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
+          }}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          columns={columns}
+          disableColumnSelector
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                dateValue1: !!customFields[3].dateKey1,
+                dateValue2: !!customFields[4].dateKey2,
+                dateValue3: !!customFields[5].dateKey3,
+                textValue1: !!customFields[12].textKey1,
+                textValue2: !!customFields[13].textKey2,
+                textValue3: !!customFields[14].textKey3,
+              },
+            },
+          }}
+          disableExtendRowFullWidth
+          checkboxSelection
+          onStateChange={handleChangeStateTable}
+          disableSelectionOnClick
+        />
       )}
-    </LanguageContext.Consumer>
+    </Box>
   );
 };
 

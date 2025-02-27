@@ -1,10 +1,11 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: 'dpg-cgm61vpmbg56g431n4l0-a',
-  user: 'collectionsdb_v7sj_user',
-  database: 'collectionsdb_v7sj',
-  password: '8uLHqu1zhRAaLv81ZxeYMnyHNjJACR5J',
+  host: process.env.HOST_MYSQL,
+  user: process.env.USERNAME_MYSQL,
+  port: process.env.PORT_MYSQL,
+  database: process.env.DATABASE_MYSQL,
+  password: process.env.PASSWORD_MYSQL,
   multipleStatements: true,
   connectionLimit: 100,
 });

@@ -12,7 +12,7 @@ import RoutesApp from '../../constants/routes';
 import login from '../services/login';
 import { signInWithGoogle, signInWithFacebook } from '../firebase-config';
 import { logError } from '../../services/logger';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ILoginPage {
   id: string;
@@ -70,6 +70,8 @@ const validationSchema = yup.object({
 const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   const classes = useStyles();
 
+  const { language } = useLanguage();
+
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -114,62 +116,58 @@ const LoginPage: FC<ILoginPage> = ({ id, loginUser }) => {
   }
 
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Paper className={classes.paper}>
-          <form className={classes.form} onSubmit={formik.handleSubmit}>
-            <Link
-              className={classes.link}
-              component={RouterLink}
-              to={RoutesApp.Root}
-            >
-              App
-            </Link>
-            <TextField
-              fullWidth
-              id="email"
-              name="email"
-              label={language.auth.email}
-              autoFocus
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+    <Paper className={classes.paper}>
+      <form className={classes.form} onSubmit={formik.handleSubmit}>
+        <Link
+          className={classes.link}
+          component={RouterLink}
+          to={RoutesApp.Root}
+        >
+          App
+        </Link>
+        <TextField
+          fullWidth
+          id="email"
+          name="email"
+          label={language.auth.email}
+          autoFocus
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+        <TextField
+          fullWidth
+          id="password"
+          name="password"
+          label={language.auth.password}
+          type="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+        />
+        <Box className={classes.action}>
+          <Button variant="contained" type="submit">
+            {language.auth.login}
+          </Button>
+          <IconButton onClick={handleLoginFacebook}>
+            <FacebookIcon
+              sx={{
+                color: '#4267B2',
+                fontSize: '2rem',
+              }}
             />
-            <TextField
-              fullWidth
-              id="password"
-              name="password"
-              label={language.auth.password}
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            <Box className={classes.action}>
-              <Button variant="contained" type="submit">
-                {language.auth.login}
-              </Button>
-              <IconButton onClick={handleLoginFacebook}>
-                <FacebookIcon
-                  sx={{
-                    color: '#4267B2',
-                    fontSize: '2rem',
-                  }}
-                />
-              </IconButton>
-              <IconButton onClick={handleLoginGoogle}>
-                <GoogleIcon />
-              </IconButton>
-              <Link to={RoutesApp.SignUp} component={RouterLink}>
-                {language.auth.signUp}
-              </Link>
-            </Box>
-          </form>
-        </Paper>
-      )}
-    </LanguageContext.Consumer>
+          </IconButton>
+          <IconButton onClick={handleLoginGoogle}>
+            <GoogleIcon />
+          </IconButton>
+          <Link to={RoutesApp.SignUp} component={RouterLink}>
+            {language.auth.signUp}
+          </Link>
+        </Box>
+      </form>
+    </Paper>
   );
 };
 

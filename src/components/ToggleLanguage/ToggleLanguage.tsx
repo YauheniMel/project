@@ -4,8 +4,7 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { toggleLanguage } from '../../services/language';
-import { languages } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -46,34 +45,36 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const ToggleLanguage: FC<any> = ({ language, setLanguage }) => (
-  <FormGroup>
-    <FormControlLabel
-      sx={{
-        '& .MuiFormControlLabel-label': {
-          color: (theme) => theme.palette.common.black,
-        },
-      }}
-      color="primary"
-      control={(
-        <MaterialUISwitch
-          sx={{ m: 1 }}
-          onChange={() => {
-            if (language.mode === 'eng') {
-              toggleLanguage('by');
-              setLanguage(languages.by);
-              return;
-            }
+const ToggleLanguage: FC<any> = () => {
+  const { setLanguage, language } = useLanguage();
 
-            toggleLanguage('eng');
-            setLanguage(languages.eng);
-          }}
-          checked={language.mode === 'by'}
-        />
-      )}
-      label={language.mode}
-    />
-  </FormGroup>
-);
+  return (
+    <FormGroup>
+      <FormControlLabel
+        sx={{
+          '& .MuiFormControlLabel-label': {
+            color: (theme) => theme.palette.common.black,
+          },
+        }}
+        color="primary"
+        control={(
+          <MaterialUISwitch
+            sx={{ m: 1 }}
+            onChange={() => {
+              if (language.mode === 'eng') {
+                setLanguage('by');
+                return;
+              }
+
+              setLanguage('eng');
+            }}
+            checked={language.mode === 'by'}
+          />
+            )}
+        label={language.mode}
+      />
+    </FormGroup>
+  );
+};
 
 export default ToggleLanguage;
