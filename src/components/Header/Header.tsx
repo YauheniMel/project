@@ -23,8 +23,6 @@ import RoutesApp from '../../constants/routes';
 import InputSearch from '../InputSearch/InputSearch';
 import { UntouchedCommentType } from '../../types';
 import Toggle from '../Toggle/Toggle';
-import { ThemeContext } from '../../context/ThemeContext';
-import { LanguageContext } from '../../context/LanguageContext';
 import ToggleLanguage from '../ToggleLanguage/ToggleLanguage';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -94,116 +92,102 @@ const Header: FC<IHeader> = ({
   }
 
   return (
-    <LanguageContext.Consumer>
-      {({ language, setLanguage }) => (
-        <ThemeContext.Consumer>
-          {({ theme, setTheme }) => (
-            <StyledAppBar>
-              <Toolbar
-                sx={{
-                  justifyContent: 'space-around',
-                  columnGap: '2rem',
-                  minWidth: '600px',
-                }}
+    <StyledAppBar>
+      <Toolbar
+        sx={{
+          justifyContent: 'space-around',
+          columnGap: '2rem',
+          minWidth: '600px',
+        }}
+      >
+        {(role === 'Admin' || role === 'User') && name ? (
+          <Logo name={name} role={role} surname={surname} />
+        ) : (
+          <Link component={RouterLink} to={RoutesApp.Login}>
+            Login
+          </Link>
+        )}
+        <InputSearch {...rest} />
+        <Toggle />
+        <ToggleLanguage />
+        {!!untouchedComments?.length && (
+          <>
+            <IconButton
+              size="large"
+              onClick={() => setOpen(true)}
+              ref={anchorRef}
+            >
+              <Badge
+                badgeContent={getCountUntouchedComments(untouchedComments)}
+                color="error"
               >
-                {(role === 'Admin' || role === 'User') && name ? (
-                  <Logo name={name} role={role} surname={surname} />
-                ) : (
-                  <Link component={RouterLink} to={RoutesApp.Login}>
-                    Login
-                  </Link>
-                )}
-                <InputSearch {...rest} />
-                <Toggle setTheme={setTheme} theme={theme} />
-                <ToggleLanguage setLanguage={setLanguage} language={language} />
-                {!!untouchedComments?.length && (
-                  <>
-                    <IconButton
-                      size="large"
-                      onClick={() => setOpen(true)}
-                      ref={anchorRef}
-                    >
-                      <Badge
-                        badgeContent={getCountUntouchedComments(
-                          untouchedComments,
-                        )}
-                        color="error"
+                <InsertCommentSharpIcon />
+              </Badge>
+            </IconButton>
+            <Popper
+              open={open}
+              placement="bottom-start"
+              transition
+              disablePortal
+              anchorEl={anchorRef.current}
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom-start' ? 'left top' : 'left bottom',
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={() => setOpen(false)}>
+                      <MenuList
+                        sx={{ p: 0 }}
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
                       >
-                        <InsertCommentSharpIcon />
-                      </Badge>
-                    </IconButton>
-                    <Popper
-                      open={open}
-                      placement="bottom-start"
-                      transition
-                      disablePortal
-                      anchorEl={anchorRef.current}
-                    >
-                      {({ TransitionProps, placement }) => (
-                        <Grow
-                          {...TransitionProps}
-                          style={{
-                            transformOrigin:
-                              placement === 'bottom-start'
-                                ? 'left top'
-                                : 'left bottom',
-                          }}
-                        >
-                          <Paper>
-                            <ClickAwayListener
-                              onClickAway={() => setOpen(false)}
+                        {untouchedComments.map((info) => (
+                          <MenuItem
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              columnGap: '0.7rem',
+                              height: '4.5rem',
+                            }}
+                          >
+                            <Link
+                              component={RouterLink}
+                              // eslint-disable-next-line max-len
+                              to={`${collection}${info.collectionId}${ItemLink}${info.itemId}`}
                             >
-                              <MenuList
-                                sx={{ p: 0 }}
-                                autoFocusItem={open}
-                                id="composition-menu"
-                                aria-labelledby="composition-button"
-                              >
-                                {untouchedComments.map((info) => (
-                                  <MenuItem
-                                    sx={{
-                                      display: 'flex',
-                                      justifyContent: 'space-between',
-                                      columnGap: '0.7rem',
-                                      height: '4.5rem',
-                                    }}
-                                  >
-                                    <Link
-                                      component={RouterLink}
-                                      // eslint-disable-next-line max-len
-                                      to={`${collection}${info.collectionId}${ItemLink}${info.itemId}`}
-                                    >
-                                      <Typography variant="body2">
-                                        {info.icon && (
-                                          <Avatar
-                                            alt={info.title}
-                                            src={`data:application/pdf;base64,${info.icon}`}
-                                          />
-                                        )}
-                                        {info.title}
-                                        {' '}
-                                      </Typography>
-                                      <Typography variant="subtitle2">
-                                        comments...
-                                      </Typography>
-                                    </Link>
-                                  </MenuItem>
-                                ))}
-                              </MenuList>
-                            </ClickAwayListener>
-                          </Paper>
-                        </Grow>
-                      )}
-                    </Popper>
-                  </>
-                )}
-                <Box sx={{ flexGrow: '2rem' }} />
-              </Toolbar>
-            </StyledAppBar>
-          )}
-        </ThemeContext.Consumer>
-      )}
-    </LanguageContext.Consumer>
+                              <Typography variant="body2">
+                                {info.icon && (
+                                  <Avatar
+                                    alt={info.title}
+                                    src={`data:application/pdf;base64,${info.icon}`}
+                                  />
+                                )}
+                                {info.title}
+                                {' '}
+                              </Typography>
+                              <Typography variant="subtitle2">
+                                comments...
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </>
+        )}
+        <Box sx={{ flexGrow: '2rem' }} />
+      </Toolbar>
+    </StyledAppBar>
   );
 };
 

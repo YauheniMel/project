@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { CredentialsType } from '../redux/actions/user-action';
 import { logError } from '../services/logger';
 
-const baseURL = 'https://collections-back-haoe.onrender.com';
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 export const API = {
   SignUpUser: '/api/signUpUser',

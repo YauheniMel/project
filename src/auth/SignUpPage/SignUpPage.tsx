@@ -12,7 +12,7 @@ import RoutesApp from '../../constants/routes';
 import signup from '../services/signup';
 import { CredentialsType } from '../../redux/actions/user-action';
 import { logError } from '../../services/logger';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ISignUpPage {
   signUpUser: (credentials: CredentialsType) => void;
@@ -85,7 +85,10 @@ const validationSchema = yup.object({
 
 const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
   const classes = useStyles();
+
   const navigate = useNavigate();
+
+  const { language } = useLanguage();
 
   const formik = useFormik({
     initialValues: {
@@ -133,82 +136,78 @@ const SignUpPage: FC<ISignUpPage> = ({ signUpUser }) => {
   });
 
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Paper className={classes.paper}>
-          <form className={classes.form} onSubmit={formik.handleSubmit}>
-            <Link
-              className={classes.link}
-              component={RouterLink}
-              to={RoutesApp.Root}
-            >
-              App
-            </Link>
-            <TextField
-              fullWidth
-              id="name"
-              name="name"
-              label={language.auth.name}
-              autoFocus
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
-            />
-            <TextField
-              fullWidth
-              id="surname"
-              name="surname"
-              label={language.auth.surname}
-              value={formik.values.surname}
-              onChange={formik.handleChange}
-              error={formik.touched.surname && Boolean(formik.errors.surname)}
-              helperText={formik.touched.surname && formik.errors.surname}
-            />
-            <TextField
-              fullWidth
-              id="email"
-              name="email"
-              label={language.auth.email}
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-            <TextField
-              fullWidth
-              id="password"
-              name="password"
-              label={language.auth.password}
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            <TextField
-              fullWidth
-              id="confirm"
-              name="confirm"
-              label={language.auth.confirmPassword}
-              type="password"
-              value={formik.values.confirm}
-              onChange={formik.handleChange}
-              error={formik.touched.confirm && Boolean(formik.errors.confirm)}
-              helperText={formik.touched.confirm && formik.errors.confirm}
-            />
-            <Box className={classes.action}>
-              <Button variant="contained" type="submit">
-                {language.auth.signUp}
-              </Button>
-              <Link component={RouterLink} to={RoutesApp.Login}>
-                {language.auth.login}
-              </Link>
-            </Box>
-          </form>
-        </Paper>
-      )}
-    </LanguageContext.Consumer>
+    <Paper className={classes.paper}>
+      <form className={classes.form} onSubmit={formik.handleSubmit}>
+        <Link
+          className={classes.link}
+          component={RouterLink}
+          to={RoutesApp.Root}
+        >
+          App
+        </Link>
+        <TextField
+          fullWidth
+          id="name"
+          name="name"
+          label={language.auth.name}
+          autoFocus
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
+        <TextField
+          fullWidth
+          id="surname"
+          name="surname"
+          label={language.auth.surname}
+          value={formik.values.surname}
+          onChange={formik.handleChange}
+          error={formik.touched.surname && Boolean(formik.errors.surname)}
+          helperText={formik.touched.surname && formik.errors.surname}
+        />
+        <TextField
+          fullWidth
+          id="email"
+          name="email"
+          label={language.auth.email}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+        <TextField
+          fullWidth
+          id="password"
+          name="password"
+          label={language.auth.password}
+          type="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+        />
+        <TextField
+          fullWidth
+          id="confirm"
+          name="confirm"
+          label={language.auth.confirmPassword}
+          type="password"
+          value={formik.values.confirm}
+          onChange={formik.handleChange}
+          error={formik.touched.confirm && Boolean(formik.errors.confirm)}
+          helperText={formik.touched.confirm && formik.errors.confirm}
+        />
+        <Box className={classes.action}>
+          <Button variant="contained" type="submit">
+            {language.auth.signUp}
+          </Button>
+          <Link component={RouterLink} to={RoutesApp.Login}>
+            {language.auth.login}
+          </Link>
+        </Box>
+      </form>
+    </Paper>
   );
 };
 

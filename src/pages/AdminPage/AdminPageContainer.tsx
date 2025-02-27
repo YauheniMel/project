@@ -53,7 +53,7 @@ interface IAdminPageContainer {
 }
 
 const AdminPageContainer: FC<IAdminPageContainer> = (props) => {
-  const socket = io('http://localhost:5000/');
+  const socket = io(process.env.REACT_APP_BASE_URL);
 
   const navigate = useNavigate();
 

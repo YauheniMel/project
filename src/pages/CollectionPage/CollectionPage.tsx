@@ -21,7 +21,7 @@ import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
 import ModalEditItem from '../../components/ModalEditItem/ModalEditItem';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -86,203 +86,193 @@ const CollectionPage: FC<ICollectionPage> = ({
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
 
+  const { language } = useLanguage();
+
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <>
-          <ModalEditItem
-            customFields={customFields}
-            openModal={openModalEdit}
-            setOpen={setOpenModalEdit}
-            itemsEdit={listEditItems}
-            pullOutItem={pullOutItem}
-            updateItem={updateItem}
-            searchMatchTags={searchMatchTags}
-            matchTags={matchTags}
-          />
-          <ModalDelete
-            openModal={openModalDelete}
-            setOpen={setOpenModalDelete}
-            itemsDel={listDeleteItems}
-            pullOutItem={pullOutItem}
-            deleteItem={deleteItem}
-          />
-          {customFields && (
-            <ItemForm
-              customFields={customFields}
-              collectionId={id}
-              openForm={openForm}
-              setOpenForm={setOpenForm}
-              createNewItem={createNewItem}
-              searchMatchTags={searchMatchTags}
-              matchTags={matchTags}
-            />
-          )}
-          <Grid
-            sx={{ height: '100%' }}
-            container
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid item lg={2.5} md={2.7} xs={12} sm={12}>
-              {(authorId === userId || role === 'Admin') && (
-                <Sidebar>
-                  <StyledListItemButton
-                    onClick={() => setOpenForm(true)}
-                    sx={(theme) => ({
-                      width: '100%',
-
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: 'center',
-                      },
-
-                      '& .MuiListItemIcon-root': {
-                        [theme.breakpoints.down('sm')]: {
-                          justifyContent: 'center',
-                        },
-                      },
-                      '& .MuiListItemText-root': {
-                        [theme.breakpoints.down('sm')]: {
-                          display: 'none',
-                        },
-                      },
-                    })}
-                  >
-                    <ListItemIcon>
-                      <AddIcon color="secondary" />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={language.collectionPage.createItem}
-                    />
-                  </StyledListItemButton>
-                  <StyledListItemButton
-                    sx={(theme) => ({
-                      width: '100%',
-
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: 'center',
-                      },
-
-                      '& .MuiListItemIcon-root': {
-                        [theme.breakpoints.down('sm')]: {
-                          justifyContent: 'center',
-                        },
-                      },
-                      '& .MuiListItemText-root': {
-                        [theme.breakpoints.down('sm')]: {
-                          display: 'none',
-                        },
-                      },
-                    })}
-                    onClick={() => {
-                      if (listEditItems?.length === 0) return;
-
-                      setOpenModalEdit(true);
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Badge
-                        badgeContent={listEditItems.length}
-                        color="warning"
-                      >
-                        <EditIcon color="secondary" />
-                      </Badge>
-                    </ListItemIcon>
-                    <ListItemText primary={language.collectionPage.edit} />
-                  </StyledListItemButton>
-                  <StyledListItemButton
-                    sx={(theme) => ({
-                      width: '100%',
-
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: 'center',
-                      },
-
-                      '& .MuiListItemIcon-root': {
-                        [theme.breakpoints.down('sm')]: {
-                          justifyContent: 'center',
-                        },
-                      },
-                      '& .MuiListItemText-root': {
-                        [theme.breakpoints.down('sm')]: {
-                          display: 'none',
-                        },
-                      },
-                    })}
-                    onClick={() => {
-                      if (listDeleteItems?.length === 0) return;
-
-                      setOpenModalDelete(true);
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Badge
-                        badgeContent={listDeleteItems.length}
-                        color="error"
-                      >
-                        <DeleteIcon color="secondary" />
-                      </Badge>
-                    </ListItemIcon>
-                    <ListItemText primary={language.collectionPage.delete} />
-                  </StyledListItemButton>
-                </Sidebar>
-              )}
-            </Grid>
-            <Grid item={false} lg={9.5} md={9.3} xs={12} sm={12}>
-              <Box
+    <>
+      <ModalEditItem
+        customFields={customFields}
+        openModal={openModalEdit}
+        setOpen={setOpenModalEdit}
+        itemsEdit={listEditItems}
+        pullOutItem={pullOutItem}
+        updateItem={updateItem}
+        searchMatchTags={searchMatchTags}
+        matchTags={matchTags}
+      />
+      <ModalDelete
+        openModal={openModalDelete}
+        setOpen={setOpenModalDelete}
+        itemsDel={listDeleteItems}
+        pullOutItem={pullOutItem}
+        deleteItem={deleteItem}
+      />
+      {customFields && (
+        <ItemForm
+          customFields={customFields}
+          collectionId={id}
+          openForm={openForm}
+          setOpenForm={setOpenForm}
+          createNewItem={createNewItem}
+          searchMatchTags={searchMatchTags}
+          matchTags={matchTags}
+        />
+      )}
+      <Grid
+        sx={{ height: '100%' }}
+        container
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      >
+        <Grid item lg={2.5} md={2.7} xs={12} sm={12}>
+          {(authorId === userId || role === 'Admin') && (
+            <Sidebar>
+              <StyledListItemButton
+                onClick={() => setOpenForm(true)}
                 sx={(theme) => ({
-                  display: 'flex',
-                  columnGap: '2rem',
-                  padding: '1.4rem',
+                  width: '100%',
 
-                  [theme.breakpoints.down('md')]: {
-                    flexDirection: 'column',
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+
+                  '& .MuiListItemIcon-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      justifyContent: 'center',
+                    },
+                  },
+                  '& .MuiListItemText-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'none',
+                    },
                   },
                 })}
               >
-                <Avatar
-                  src={`data:application/pdf;base64,${icon}`}
-                  alt="mmmmm"
-                  sx={{ width: '10rem', height: '10rem' }}
-                >
-                  {icon && 'Empty'}
-                </Avatar>
-                <Box>
-                  <Typography variant="h2">{theme}</Typography>
-                  <Typography variant="body2">
-                    {language.collectionPage.created}
-                    {' '}
-                    {moment(createdAt).format('DD/MM/YYYY')}
-                  </Typography>
-                </Box>
-              </Box>
-              {description && (
-                <MDEditor.Markdown
-                  source={description.replace(/&&#&&/gim, '\n')}
-                  style={{
-                    backgroundColor: 'transparent',
-                  }}
-                />
-              )}
-              {customFields && (
-                <Table
-                  collectionId={id}
-                  list={list}
-                  setTargetItem={setTargetItem}
-                  setEditItems={setEditItems}
-                  setDeleteItems={setDeleteItems}
-                  toogleLike={toogleLike}
-                  userId={userId}
-                  authorId={authorId}
-                  likes={likes}
-                  getCollectionItems={getCollectionItems}
-                  customFields={customFields}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </>
-      )}
-    </LanguageContext.Consumer>
+                <ListItemIcon>
+                  <AddIcon color="secondary" />
+                </ListItemIcon>
+                <ListItemText primary={language.collectionPage.createItem} />
+              </StyledListItemButton>
+              <StyledListItemButton
+                sx={(theme) => ({
+                  width: '100%',
+
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+
+                  '& .MuiListItemIcon-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      justifyContent: 'center',
+                    },
+                  },
+                  '& .MuiListItemText-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'none',
+                    },
+                  },
+                })}
+                onClick={() => {
+                  if (listEditItems?.length === 0) return;
+
+                  setOpenModalEdit(true);
+                }}
+              >
+                <ListItemIcon>
+                  <Badge badgeContent={listEditItems.length} color="warning">
+                    <EditIcon color="secondary" />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary={language.collectionPage.edit} />
+              </StyledListItemButton>
+              <StyledListItemButton
+                sx={(theme) => ({
+                  width: '100%',
+
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+
+                  '& .MuiListItemIcon-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      justifyContent: 'center',
+                    },
+                  },
+                  '& .MuiListItemText-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'none',
+                    },
+                  },
+                })}
+                onClick={() => {
+                  if (listDeleteItems?.length === 0) return;
+
+                  setOpenModalDelete(true);
+                }}
+              >
+                <ListItemIcon>
+                  <Badge badgeContent={listDeleteItems.length} color="error">
+                    <DeleteIcon color="secondary" />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary={language.collectionPage.delete} />
+              </StyledListItemButton>
+            </Sidebar>
+          )}
+        </Grid>
+        <Grid item={false} lg={9.5} md={9.3} xs={12} sm={12}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              columnGap: '2rem',
+              padding: '1.4rem',
+
+              [theme.breakpoints.down('md')]: {
+                flexDirection: 'column',
+              },
+            })}
+          >
+            <Avatar
+              src={`data:application/pdf;base64,${icon}`}
+              alt="mmmmm"
+              sx={{ width: '10rem', height: '10rem' }}
+            >
+              {icon && 'Empty'}
+            </Avatar>
+            <Box>
+              <Typography variant="h2">{theme}</Typography>
+              <Typography variant="body2">
+                {language.collectionPage.created}
+                {' '}
+                {moment(createdAt).format('DD/MM/YYYY')}
+              </Typography>
+            </Box>
+          </Box>
+          {description && (
+            <MDEditor.Markdown
+              source={description.replace(/&&#&&/gim, '\n')}
+              style={{
+                backgroundColor: 'transparent',
+              }}
+            />
+          )}
+          {customFields && (
+            <Table
+              collectionId={id}
+              list={list}
+              setTargetItem={setTargetItem}
+              setEditItems={setEditItems}
+              setDeleteItems={setDeleteItems}
+              toggleLike={toogleLike}
+              userId={userId}
+              authorId={authorId}
+              likes={likes}
+              getCollectionItems={getCollectionItems}
+              customFields={customFields}
+            />
+          )}
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

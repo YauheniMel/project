@@ -261,7 +261,7 @@ export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => 
   });
 };
 
-export const toogleLikeThunk = (userId: number, itemId: number) => (dispatch: any) => {
+export const toggleLikeThunk = (userId: number, itemId: number) => (dispatch: any) => {
   requestAPI.toogleLike(userId, itemId).then((response) => {
     if (response.code === 0) return;
     if (response.message === 'like') {

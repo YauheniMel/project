@@ -29,8 +29,6 @@ import {
 import { UntouchedCommentType } from '../../types';
 import { getUntouchedComments } from '../../redux/selectors/collection-selector';
 import { logOutThunk } from '../../redux/actions/user-action';
-import { getThemeValue, toggleTheme } from '../../services/theme';
-import { getLanguageValue, toggleLanguage } from '../../services/language';
 import logout from '../../auth/services/logout';
 import { logError, logSuccess, logWarning } from '../../services/logger';
 
@@ -62,7 +60,7 @@ const RootPage: FC<IRootPage> = ({
   getAllComments,
   ...rest
 }) => {
-  const socket = io('http://localhost:5000/');
+  const socket = io(process.env.REACT_APP_BASE_URL);
 
   async function handlePolicy(event: any) {
     event.stopPropagation();
@@ -81,17 +79,6 @@ const RootPage: FC<IRootPage> = ({
   useEffect(() => {
     if (userId) {
       getUntouchedComments(userId);
-    }
-
-    const theme = getThemeValue();
-
-    if (!theme) {
-      toggleTheme('light');
-    }
-    const language = getLanguageValue();
-
-    if (!language) {
-      toggleLanguage('eng');
     }
 
     socket.on('comment', (res: any) => {

@@ -15,7 +15,6 @@ const initState: AdminType = {
 function adminReducer(state = initState, action: AnyAction) {
   switch (action.type) {
     case AdminActionTypes.setTargetUser: {
-      console.log(action);
       return {
         ...state,
         targetUser: {

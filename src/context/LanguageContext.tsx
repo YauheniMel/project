@@ -1,4 +1,11 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+} from 'react';
 
 export const languages = {
   eng: {
@@ -195,4 +202,56 @@ export const languages = {
   },
 };
 
-export const LanguageContext = React.createContext();
+type LanguageType = 'eng' | 'by';
+
+interface ILanguage {
+  language: any;
+  setLanguage:(language: any) => void;
+}
+
+export function setLanguageValue(value: LanguageType) {
+  localStorage.setItem('language', value);
+}
+
+export function getLanguage() {
+  return localStorage.getItem('language') as LanguageType | null;
+}
+
+const LanguageContext = createContext<ILanguage | null>(null);
+
+export const LanguageContextProvider: FC<{ children: ReactElement }> = ({
+  children,
+}) => {
+  const [language, setLanguage] = useState(languages[getLanguage() || 'eng']);
+
+  const handleSetLanguage = (language: LanguageType) => {
+    setLanguage(languages[language]);
+
+    setLanguageValue(language);
+  };
+
+  if (!getLanguage()) {
+    handleSetLanguage('eng');
+  }
+
+  const languageProviderValue = useMemo(
+    () => ({ language, setLanguage: handleSetLanguage }),
+    [language],
+  );
+
+  return (
+    <LanguageContext.Provider value={languageProviderValue}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => {
+  const languageContext = useContext(LanguageContext);
+
+  if (!languageContext) {
+    throw new Error('languageContext is not provided');
+  }
+
+  return languageContext;
+};
