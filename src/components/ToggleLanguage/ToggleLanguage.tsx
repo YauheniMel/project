@@ -4,8 +4,7 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { toggleLanguage } from '../../services/language';
-import { languages } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -46,8 +45,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const ToggleLanguage: FC<any> = ({ language, setLanguage }) => {
-  console.log(language);
+const ToggleLanguage: FC<any> = () => {
+  const { setLanguage, language } = useLanguage();
+
   return (
     <FormGroup>
       <FormControlLabel
@@ -62,17 +62,15 @@ const ToggleLanguage: FC<any> = ({ language, setLanguage }) => {
             sx={{ m: 1 }}
             onChange={() => {
               if (language.mode === 'eng') {
-                toggleLanguage('by');
-                setLanguage(languages.by);
+                setLanguage('by');
                 return;
               }
 
-              toggleLanguage('eng');
-              setLanguage(languages.eng);
+              setLanguage('eng');
             }}
             checked={language.mode === 'by'}
           />
-        )}
+            )}
         label={language.mode}
       />
     </FormGroup>

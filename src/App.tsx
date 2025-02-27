@@ -1,75 +1,34 @@
-import React, {
-  FC, useEffect, useMemo, useState,
-} from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import 'firebase/compat/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import {
-  Backdrop,
-  CircularProgress,
-  CssBaseline,
-  ThemeProvider,
+  Backdrop, CircularProgress, ThemeProvider, CssBaseline,
 } from '@mui/material';
-import RootPage from './core/RootPage/RootPage';
-import LoginPageContainer from './auth/LoginPage/LoginPageContainer';
-import RoutesApp from './constants/routes';
-import SignUpPageContainer from './auth/SignUpPage/SignUpPageContainer';
-import HomePageContainer from './pages/HomePage/HomePageContainer';
-import UserPageContainer from './pages/UserPage/UserPageContainer';
-import CollectionPageContainer from './pages/CollectionPage/CollectionPageContainer';
-import AdminPageContainer from './pages/AdminPage/AdminPageContainer';
-import CollectionsPageContainer from './pages/CollectionsPage/CollectionsPageContainer';
 import {
   CredentialsType,
   getUserPersonalInfoThunk,
-  toogleLikeThunk,
+  toggleLikeThunk,
 } from './redux/actions/user-action';
-import SearchPageContainer from './pages/SearchPage/SearchPageContainer';
 import { AppStateType } from './redux';
 import { setIsAuthAction } from './redux/actions/auth-action';
 import Toastify from './components/Toastify/Toastify';
-import { getThemeValue } from './services/theme';
-import { themeDark, themeLight } from './theme';
-import { ThemeContext, themes } from './context/ThemeContext';
-import { LanguageContext, languages } from './context/LanguageContext';
-import { getLanguageValue } from './services/language';
+import AppRoutes from './routes';
+import { useTheme, themes } from './context/ThemeContext';
 
 interface IRootPage {
   getUserPersonalInfo: (payload: CredentialsType) => void;
-  toogleLike: (userId: number, itemId: number) => void;
+  toggleLike: (userId: number, itemId: number) => void;
   isAuth: boolean;
   setIsAuth: (isAuth: boolean) => void;
 }
 const App: FC<IRootPage> = ({
   getUserPersonalInfo,
-  toogleLike,
+  toggleLike,
   isAuth,
   setIsAuth,
 }) => {
-  const [theme, setTheme] = useState(themes.on);
-  const [language, setLanguage] = useState(languages.eng);
-
-  const themeProviderValue = useMemo(() => ({ theme, setTheme }), [theme]);
-
-  useEffect(() => {
-    const theme = getThemeValue();
-    if (theme) {
-      setTheme(theme);
-    }
-  }, []);
-
-  const languageProviderValue = useMemo(
-    () => ({ language, setLanguage }),
-    [language],
-  );
-
-  useEffect(() => {
-    const language = getLanguageValue();
-    if (language) {
-      setLanguage(languages[language]);
-    }
-  }, []);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const auth = getAuth();
@@ -102,46 +61,13 @@ const App: FC<IRootPage> = ({
   }
 
   return (
-    <ThemeContext.Provider value={themeProviderValue}>
-      <LanguageContext.Provider value={languageProviderValue}>
-        <ThemeProvider theme={theme === 'light' ? themeLight : themeDark}>
-          <CssBaseline />
-          <div className="App">
-            <Routes>
-              <Route path={RoutesApp.Login} element={<LoginPageContainer />} />
-              <Route
-                path={RoutesApp.SignUp}
-                element={<SignUpPageContainer />}
-              />
-              <Route path={RoutesApp.Root} element={<RootPage />}>
-                <Route
-                  path={RoutesApp.Admin}
-                  element={<AdminPageContainer />}
-                />
-                <Route
-                  path={RoutesApp.Home}
-                  element={<HomePageContainer toogleLike={toogleLike} />}
-                />
-                <Route path={RoutesApp.User} element={<UserPageContainer />} />
-                <Route
-                  path={RoutesApp.Collection}
-                  element={<CollectionPageContainer toogleLike={toogleLike} />}
-                />
-                <Route
-                  path={RoutesApp.Collections}
-                  element={<CollectionsPageContainer />}
-                />
-                <Route
-                  path={RoutesApp.Search}
-                  element={<SearchPageContainer toogleLike={toogleLike} />}
-                />
-              </Route>
-            </Routes>
-            <Toastify />
-          </div>
-        </ThemeProvider>
-      </LanguageContext.Provider>
-    </ThemeContext.Provider>
+    <ThemeProvider theme={themes[theme]}>
+      <CssBaseline />
+      <div className="App">
+        <AppRoutes toggleLike={toggleLike} />
+        <Toastify />
+      </div>
+    </ThemeProvider>
   );
 };
 const mapStateToProps = (state: AppStateType) => ({
@@ -150,7 +76,7 @@ const mapStateToProps = (state: AppStateType) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   getUserPersonalInfo: (payload: CredentialsType) => dispatch(getUserPersonalInfoThunk(payload)),
-  toogleLike: (userId: number, itemId: number) => dispatch(toogleLikeThunk(userId, itemId)),
+  toggleLike: (userId: number, itemId: number) => dispatch(toggleLikeThunk(userId, itemId)),
   setIsAuth: (isAuth: boolean) => dispatch(setIsAuthAction(isAuth)),
 });
 

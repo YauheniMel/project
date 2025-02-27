@@ -22,11 +22,9 @@ import {
   getMyCollectionsSelector,
   getUserCollectionThemes,
   getUserId,
+  getUserIdFirebase,
   getUserName,
-  getUserRole,
-  getUserStatus,
   getUserSurname,
-  getUserTheme,
 } from '../../redux/selectors/user-selector';
 import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionInitType, CollectionType } from '../../types';
@@ -36,9 +34,6 @@ interface IUserPageContainer {
   id: number;
   name: string;
   surname: string;
-  role: 'Admin' | 'User' | 'Reader';
-  theme: 'light' | 'dark';
-  status: 'active' | 'blocked';
   collections: {
     collections: CollectionType[] | null;
     countCollections: number;
@@ -75,14 +70,6 @@ const UserPageContainer: FC<IUserPageContainer> = (props) => {
     }
   }, [props.id]);
 
-  // const navigate = useNavigate();
-
-  // if (props.role && props.role === 'Reader') {
-  //   navigate(-1);
-
-  //   return null;
-  // }
-
   return (
     <>
       <Preloader isLoading={props.isLoading} />
@@ -93,11 +80,9 @@ const UserPageContainer: FC<IUserPageContainer> = (props) => {
 
 const mapStateToProps = (state: AppStateType) => ({
   id: getUserId(state),
+  userId: getUserIdFirebase(state),
   name: getUserName(state),
   surname: getUserSurname(state),
-  status: getUserStatus(state),
-  theme: getUserTheme(state),
-  role: getUserRole(state),
   collections: getMyCollectionsSelector(state),
   collectionsEdit: getEditCollections(state),
   collectionsDel: getDeleteCollections(state),

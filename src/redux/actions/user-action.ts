@@ -36,6 +36,7 @@ export enum UserActionTypes {
   setMeIsNotAdmin = 'SET-ME-IS-NOT-ADMIN',
   logoutUser = 'LOGOUT-USER',
   setIsLoading = 'SET-IS-USER-LOADING',
+  setUserId = 'SET-USER-ID',
 }
 
 const setUserPersonalInfoAction = (payload: UserPersonalInfoType) => ({
@@ -71,6 +72,11 @@ const updateCollectionAction = (collection: CollectionType) => ({
 const decreaseLikesAction = (itemId: number) => ({
   type: UserActionTypes.decreaseLikes,
   itemId,
+});
+
+export const setUserIdAction = (userId: number) => ({
+  type: UserActionTypes.setUserId,
+  userId,
 });
 
 const increaseLikesAction = (itemId: number) => ({
@@ -255,7 +261,7 @@ export const pullOutCollectionThunk = (collectionId: any) => (dispatch: any) => 
   });
 };
 
-export const toogleLikeThunk = (userId: number, itemId: number) => (dispatch: any) => {
+export const toggleLikeThunk = (userId: number, itemId: number) => (dispatch: any) => {
   requestAPI.toogleLike(userId, itemId).then((response) => {
     if (response.code === 0) return;
     if (response.message === 'like') {

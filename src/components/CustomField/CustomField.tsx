@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { Field } from 'formik';
 import EditIcon from '@mui/icons-material/Edit';
-import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 
 interface ICustomField {
   formik: any;
@@ -38,15 +37,6 @@ const CustomField: FC<ICustomField> = ({ formik, field, typeField }) => {
             <Box sx={{ display: typeField === 'update' ? 'block' : 'none' }}>
               <IconButton onClick={() => setShowFormEl(true)}>
                 <EditIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  formik.resetForm({
-                    values: { ...formik.values, [field]: '' },
-                  });
-                }}
-              >
-                <CleaningServicesIcon />
               </IconButton>
             </Box>
           </Box>
@@ -80,15 +70,6 @@ const CustomField: FC<ICustomField> = ({ formik, field, typeField }) => {
               <IconButton onClick={() => setShowFormEl(true)}>
                 <EditIcon />
               </IconButton>
-              <IconButton
-                onClick={() => {
-                  formik.resetForm({
-                    values: { ...formik.values, [field]: '' },
-                  });
-                }}
-              >
-                <CleaningServicesIcon />
-              </IconButton>
             </Box>
           </Box>
           {(showFormEl || typeField === 'create')
@@ -120,15 +101,6 @@ const CustomField: FC<ICustomField> = ({ formik, field, typeField }) => {
             <Box sx={{ display: typeField === 'update' ? 'block' : 'none' }}>
               <IconButton onClick={() => setShowFormEl(true)}>
                 <EditIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  formik.resetForm({
-                    values: { ...formik.values, [field]: '' },
-                  });
-                }}
-              >
-                <CleaningServicesIcon />
               </IconButton>
             </Box>
           </Box>
@@ -165,13 +137,6 @@ const CustomField: FC<ICustomField> = ({ formik, field, typeField }) => {
           <Box sx={{ display: typeField === 'update' ? 'block' : 'none' }}>
             <IconButton onClick={() => setShowFormEl(true)}>
               <EditIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                formik.resetForm({ values: { ...formik.values, [field]: '' } });
-              }}
-            >
-              <CleaningServicesIcon />
             </IconButton>
           </Box>
         </Box>

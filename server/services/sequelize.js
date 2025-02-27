@@ -2,12 +2,13 @@ const { Sequelize, DataTypes } = require('sequelize');
 const Roles = require('../../seeders/utils/Roles');
 
 const sequelize = new Sequelize(
-  'heroku_a2bd434709364ef',
-  'b76365a37ff35f',
-  'f3c65d82',
+  process.env.DATABASE_MYSQL,
+  process.env.USERNAME_MYSQL,
+  process.env.PASSWORD_MYSQL,
   {
     dialect: 'mysql',
-    host: 'eu-cdbr-west-02.cleardb.net',
+    host: process.env.HOST_MYSQL,
+    port: process.env.PORT_MYSQL,
   },
 );
 

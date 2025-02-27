@@ -5,28 +5,32 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  styled,
 } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import CollectionForm from '../../components/CollectionForm/CollectionForm';
 import Slider from '../../components/Slider/Slider';
 import { CollectionInitType, CollectionType } from '../../types';
 import ModalEditCollection from '../../components/ModalEditCollection/ModalEditCollection';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
+
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
 
 interface IUserPage {
   id: number;
-  theme: 'light' | 'dark';
-  status: 'active' | 'blocked';
   collections: {
     collections: CollectionType[] | null;
     countCollections: number;
   };
   createNewCollection: (collectionInfo: CollectionInitType) => void;
-  role: 'Admin' | 'User' | 'Reader';
   deleteCollection: (collectionId: number) => void;
   setTargetCollection: (collection: CollectionType) => void;
   setEditCollection: (collectionId: number) => void;
@@ -41,9 +45,6 @@ interface IUserPage {
 }
 
 const UserPage: FC<IUserPage> = ({
-  role,
-  theme,
-  status,
   collections,
   createNewCollection,
   setTargetCollection,
@@ -63,40 +64,101 @@ const UserPage: FC<IUserPage> = ({
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
 
-  console.log(theme, status, role);
+  const { language } = useLanguage();
 
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <>
-          <CollectionForm
-            userId={id}
-            openForm={openForm}
-            setOpenForm={setOpenForm}
-            createNewCollection={createNewCollection}
-            collectionThemes={collectionThemes}
-          />
-          <ModalEditCollection
-            openModal={openModalEdit}
-            setOpen={setOpenModalEdit}
-            collectionsEdit={collectionsEdit}
-            updateCollection={updateCollection}
-            pullOutCollection={pullOutCollection}
-            collectionThemes={collectionThemes}
-          />
-          <ModalDelete
-            openModal={openModalDelete}
-            setOpen={setOpenModalDelete}
-            collectionsDel={collectionsDel}
-            pullOutCollection={pullOutCollection}
-            deleteCollection={deleteCollection}
-          />
-          <Grid sx={{ height: '100%' }} container>
-            <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
-              <Sidebar>
-                <ListItemButton
-                  onClick={() => {
-                    if (!collectionThemes) getCollectionThemes();
+    <>
+      <CollectionForm
+        userId={id}
+        openForm={openForm}
+        setOpenForm={setOpenForm}
+        createNewCollection={createNewCollection}
+        collectionThemes={collectionThemes}
+      />
+      <ModalEditCollection
+        openModal={openModalEdit}
+        setOpen={setOpenModalEdit}
+        collectionsEdit={collectionsEdit}
+        updateCollection={updateCollection}
+        pullOutCollection={pullOutCollection}
+        collectionThemes={collectionThemes}
+      />
+      <ModalDelete
+        openModal={openModalDelete}
+        setOpen={setOpenModalDelete}
+        collectionsDel={collectionsDel}
+        pullOutCollection={pullOutCollection}
+        deleteCollection={deleteCollection}
+      />
+      <Grid sx={{ height: '100%' }} container>
+        <Grid item lg={2.5} md={2.7} xs={12} sm={4}>
+          <Sidebar>
+            <StyledListItemButton
+              onClick={() => {
+                if (!collectionThemes) getCollectionThemes();
+
+                setOpenForm(true);
+              }}
+              sx={(theme) => ({
+                width: '100%',
+
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center',
+                },
+
+                '& .MuiListItemIcon-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+                },
+                '& .MuiListItemText-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'none',
+                  },
+                },
+              })}
+            >
+              <ListItemIcon>
+                <AddIcon color="secondary" />
+              </ListItemIcon>
+              <ListItemText primary={language.userPage.createCollection} />
+            </StyledListItemButton>
+            <StyledListItemButton
+              sx={(theme) => ({
+                width: '100%',
+
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center',
+                },
+
+                '& .MuiListItemIcon-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+                },
+                '& .MuiListItemText-root': {
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'none',
+                  },
+                },
+              })}
+              onClick={() => {
+                if (collectionsEdit.length === 0) return;
+                if (!collectionThemes) getCollectionThemes();
+
+                setOpenModalEdit(true);
+              }}
+            >
+              <ListItemIcon>
+                <Badge badgeContent={collectionsEdit.length} color="warning">
+                  <EditIcon color="secondary" />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText primary={language.userPage.edit} />
+            </StyledListItemButton>
+            <StyledListItemButton
+              sx={(theme) => ({
+                width: '100%',
 
                     setOpenForm(true);
                   }}
@@ -182,8 +244,6 @@ const UserPage: FC<IUserPage> = ({
             </Grid>
           </Grid>
         </>
-      )}
-    </LanguageContext.Consumer>
   );
 };
 

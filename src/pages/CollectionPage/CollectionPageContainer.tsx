@@ -64,6 +64,7 @@ interface ICollectionPageContainer {
   setTargetItem: (item: ItemType) => void;
   getTargetCollection: (collectionId: number) => void;
   getTargetItem: (itemId: number, collectionId: number) => void;
+  role: 'Admin' | 'User' | 'Reader' | null;
   listEditItems: Array<ItemType | null>;
   listDeleteItems: Array<ItemType | null>;
   setEditItems: (itemIds: number[]) => void;
@@ -115,7 +116,7 @@ const CollectionPageContainer: FC<ICollectionPageContainer> = (props) => {
             <ItemPage
               getTargetItem={props.getTargetItem}
               targetItem={props.targetItem as ItemType}
-              toogleLike={props.toogleLike}
+              toggleLike={props.toogleLike}
               userId={props.userId}
               likes={props.likes}
               getAllComments={props.getAllComments}

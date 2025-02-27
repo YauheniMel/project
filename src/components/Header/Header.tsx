@@ -23,8 +23,6 @@ import RoutesApp from '../../constants/routes';
 import InputSearch from '../InputSearch/InputSearch';
 import { UntouchedCommentType } from '../../types';
 import Toggle from '../Toggle/Toggle';
-import { ThemeContext } from '../../context/ThemeContext';
-import { LanguageContext } from '../../context/LanguageContext';
 import ToggleLanguage from '../ToggleLanguage/ToggleLanguage';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -35,6 +33,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   paddingRight: '1.4rem',
   height: '3.2rem',
+  overflowX: 'auto',
 
   '& .MuiToolbar-root': {
     minHeight: '3.2rem',
@@ -46,7 +45,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 interface IHeader {
   name: string;
   surname: string;
-  role: 'Admin' | 'User' | 'Reader';
+  role: 'Admin' | 'User' | 'Reader' | null;
   search: (substr: string) => void;
   itemsSearch:
   | {
@@ -93,63 +92,74 @@ const Header: FC<IHeader> = ({
   }
 
   return (
-    <LanguageContext.Consumer>
-      {({ language, setLanguage }) => (
-        <ThemeContext.Consumer>
-          {({ theme, setTheme }) => (
-            <StyledAppBar>
-              <Toolbar
-                sx={{
-                  justifyContent: 'space-around',
-                  columnGap: '2rem',
-                }}
+    <StyledAppBar>
+      <Toolbar
+        sx={{
+          justifyContent: 'space-around',
+          columnGap: '2rem',
+          minWidth: '600px',
+        }}
+      >
+        {(role === 'Admin' || role === 'User') && name ? (
+          <Logo name={name} role={role} surname={surname} />
+        ) : (
+          <Link component={RouterLink} to={RoutesApp.Login}>
+            Login
+          </Link>
+        )}
+        <InputSearch {...rest} />
+        <Toggle />
+        <ToggleLanguage />
+        {!!untouchedComments?.length && (
+          <>
+            <IconButton
+              size="large"
+              onClick={() => setOpen(true)}
+              ref={anchorRef}
+            >
+              <Badge
+                badgeContent={getCountUntouchedComments(untouchedComments)}
+                color="error"
               >
-                {(role === 'Admin' || role === 'User') && name ? (
-                  <Logo name={name} role={role} surname={surname} />
-                ) : (
-                  <Link component={RouterLink} to={RoutesApp.Login}>
-                    Login
-                  </Link>
-                )}
-                <InputSearch {...rest} />
-                <Toggle setTheme={setTheme} theme={theme} />
-                <ToggleLanguage setLanguage={setLanguage} language={language} />
-                {!!untouchedComments?.length && (
-                  <>
-                    <IconButton
-                      size="large"
-                      onClick={() => setOpen(true)}
-                      ref={anchorRef}
-                    >
-                      <Badge
-                        badgeContent={getCountUntouchedComments(
-                          untouchedComments,
-                        )}
-                        color="error"
+                <InsertCommentSharpIcon />
+              </Badge>
+            </IconButton>
+            <Popper
+              open={open}
+              placement="bottom-start"
+              transition
+              disablePortal
+              anchorEl={anchorRef.current}
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom-start' ? 'left top' : 'left bottom',
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={() => setOpen(false)}>
+                      <MenuList
+                        sx={{ p: 0 }}
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
                       >
-                        <InsertCommentSharpIcon />
-                      </Badge>
-                    </IconButton>
-                    <Popper
-                      open={open}
-                      placement="bottom-start"
-                      transition
-                      disablePortal
-                      anchorEl={anchorRef.current}
-                    >
-                      {({ TransitionProps, placement }) => (
-                        <Grow
-                          {...TransitionProps}
-                          style={{
-                            transformOrigin:
-                              placement === 'bottom-start'
-                                ? 'left top'
-                                : 'left bottom',
-                          }}
-                        >
-                          <Paper>
-                            <ClickAwayListener
-                              onClickAway={() => setOpen(false)}
+                        {untouchedComments.map((info) => (
+                          <MenuItem
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              columnGap: '0.7rem',
+                              height: '4.5rem',
+                            }}
+                          >
+                            <Link
+                              component={RouterLink}
+                              // eslint-disable-next-line max-len
+                              to={`${collection}${info.collectionId}${ItemLink}${info.itemId}`}
                             >
                               <MenuList
                                 sx={{ p: 0 }}
@@ -198,10 +208,6 @@ const Header: FC<IHeader> = ({
                 <Box sx={{ flexGrow: '2rem' }} />
               </Toolbar>
             </StyledAppBar>
-          )}
-        </ThemeContext.Consumer>
-      )}
-    </LanguageContext.Consumer>
   );
 };
 

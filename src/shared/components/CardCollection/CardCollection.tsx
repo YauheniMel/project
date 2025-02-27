@@ -10,7 +10,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { styled } from '@mui/material/styles';
 import RoutesApp from '../../../constants/routes';
 import { CollectionType } from '../../../types';
-import { LanguageContext } from '../../../context/LanguageContext';
+import { useLanguage } from '../../../context/LanguageContext';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   minWidth: '12rem',
@@ -29,6 +29,7 @@ const useStyles = makeStyles({
     position: 'relative',
     maxWidth: '12rem',
     minWidth: '12rem',
+
   },
   body: {
     height: '20rem',
@@ -62,66 +63,65 @@ const CardCollection: FC<ICardCollection> = ({
   setDeleteCollection,
 }) => {
   const classes = useStyles();
+
+  const { language } = useLanguage();
+
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Box className={classes.card}>
-          {type === 'private' && (
-            <Box className={classes.action}>
-              <Button
-                variant="contained"
-                color="warning"
-                onClick={() => {
-                  if (collection.id) {
-                    setEditCollection!(collection.id);
-                  }
-                }}
-              >
-                {language.userPage.edit}
-              </Button>
-              <Button
-                color="error"
-                variant="contained"
-                onClick={() => {
-                  if (collection.id) {
-                    setDeleteCollection!(collection.id);
-                  }
-                }}
-              >
-                {language.userPage.delete}
-              </Button>
-            </Box>
-          )}
-          <Link
-            component={RouterLink}
-            to={`${RoutesApp.CollectionLink}${collection.id}`}
-            onClick={() => setCollection(collection)}
+    <Box className={classes.card}>
+      {type === 'private' && (
+        <Box className={classes.action}>
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={() => {
+              if (collection.id) {
+                setEditCollection!(collection.id);
+              }
+            }}
           >
-            <StyledCard variant="outlined">
-              {collection.icon && (
-                <CardMedia
-                  component="img"
-                  height="194"
-                  image={`data:application/pdf;base64,${collection.icon}`}
-                  alt={collection.title?.toString()}
-                />
-              )}
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {collection.theme}
-                </Typography>
-                <MDEditor.Markdown
-                  style={{
-                    backgroundColor: 'transparent',
-                  }}
-                  source={collection.description?.replace(/&&#&&/gim, '\n')}
-                />
-              </CardContent>
-            </StyledCard>
-          </Link>
+            {language.userPage.edit}
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => {
+              if (collection.id) {
+                setDeleteCollection!(collection.id);
+              }
+            }}
+          >
+            {language.userPage.delete}
+          </Button>
         </Box>
       )}
-    </LanguageContext.Consumer>
+      <Link
+        component={RouterLink}
+        to={`${RoutesApp.CollectionLink}${collection.id}`}
+        onClick={() => setCollection(collection)}
+      >
+        <StyledCard variant="outlined">
+          {collection.icon && (
+            <CardMedia
+              component="img"
+              height="194"
+              image={`data:application/pdf;base64,${collection.icon}`}
+              alt={collection.title?.toString()}
+            />
+          )}
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              {collection.theme}
+            </Typography>
+            <MDEditor.Markdown
+              style={{
+                backgroundColor: 'transparent',
+              }}
+              source={collection.description?.replace(/&&#&&/gim, '\n')}
+            />
+          </CardContent>
+        </StyledCard>
+      </Link>
+    </Box>
   );
 };
 

@@ -2,6 +2,8 @@ import axios from 'axios';
 import type { CredentialsType } from '../redux/actions/user-action';
 import { logError } from '../services/logger';
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 export const API = {
   SignUpUser: '/api/signUpUser',
   LoginUser: '/api/loginUser',
@@ -62,31 +64,31 @@ export const API = {
 export const requestAPI = {
   getThemes() {
     return axios
-      .get(API.GetThemes)
+      .get(baseURL + API.GetThemes)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getAllUntouchedComments(userId: number) {
     return axios
-      .get(API.GetAllUntouchedComments, { params: { userId } })
+      .get(baseURL + API.GetAllUntouchedComments, { params: { userId } })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   setCommentsTouched(itemId: number) {
     return axios
-      .put(API.SetCommentsTouched, { itemId })
+      .put(baseURL + API.SetCommentsTouched, { itemId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   addComment(content: string, userId: number, itemId: number) {
     return axios
-      .post(API.addComment, { content, userId, itemId })
+      .post(baseURL + API.addComment, { content, userId, itemId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getAllComments(itemId: number) {
     return axios
-      .get(API.GetAllComments, {
+      .get(baseURL + API.GetAllComments, {
         params: {
           itemId,
         },
@@ -96,7 +98,7 @@ export const requestAPI = {
   },
   filterContains(collectionId: number, column: string, str: string) {
     return axios
-      .get(API.FilterContains, {
+      .get(baseURL + API.FilterContains, {
         params: {
           column,
           str,
@@ -108,7 +110,7 @@ export const requestAPI = {
   },
   filterMoreThan(collectionId: number, column: string, num: string) {
     return axios
-      .get(API.FilterMoreThan, {
+      .get(baseURL + API.FilterMoreThan, {
         params: {
           column,
           num,
@@ -120,7 +122,7 @@ export const requestAPI = {
   },
   filterLessThan(collectionId: number, column: string, num: string) {
     return axios
-      .get(API.FilterLessThan, {
+      .get(baseURL + API.FilterLessThan, {
         params: {
           column,
           num,
@@ -132,7 +134,7 @@ export const requestAPI = {
   },
   filterExistTag(collectionId: number, str: string) {
     return axios
-      .get(API.FilterExistTag, {
+      .get(baseURL + API.FilterExistTag, {
         params: {
           str,
           collectionId,
@@ -143,7 +145,7 @@ export const requestAPI = {
   },
   filterIsEmpty(collectionId: number, column: string) {
     return axios
-      .get(API.FilterIsEmpty, {
+      .get(baseURL + API.FilterIsEmpty, {
         params: {
           collectionId,
           column,
@@ -154,7 +156,7 @@ export const requestAPI = {
   },
   filterIsNotEmpty(collectionId: number, column: string) {
     return axios
-      .get(API.FilterIsNotEmpty, {
+      .get(baseURL + API.FilterIsNotEmpty, {
         params: {
           collectionId,
           column,
@@ -165,7 +167,7 @@ export const requestAPI = {
   },
   filterStartsWithThunk(collectionId: number, column: string, str: string) {
     return axios
-      .get(API.FilterStartsWithThunk, {
+      .get(baseURL + API.FilterStartsWithThunk, {
         params: {
           column,
           str,
@@ -177,7 +179,7 @@ export const requestAPI = {
   },
   filterEqualsThunk(collectionId: number, column: string, str: string) {
     return axios
-      .get(API.FilterEqualsThunk, {
+      .get(baseURL + API.FilterEqualsThunk, {
         params: {
           column,
           str,
@@ -189,13 +191,13 @@ export const requestAPI = {
   },
   signUpUser(credentials: CredentialsType) {
     return axios
-      .post(API.SignUpUser, credentials)
+      .post(baseURL + API.SignUpUser, credentials)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   loginUser(userId: string) {
     return axios
-      .post(API.LoginUser, {
+      .post(baseURL + API.LoginUser, {
         id: userId,
       })
       .then((response) => response.data)
@@ -203,7 +205,7 @@ export const requestAPI = {
   },
   deleteUser(userId: number) {
     return axios
-      .post(API.DeleteUser, {
+      .post(baseURL + API.DeleteUser, {
         id: userId,
       })
       .then((response) => response.data)
@@ -211,7 +213,7 @@ export const requestAPI = {
   },
   blockUser(userId: number) {
     return axios
-      .post(API.BlockUser, {
+      .post(baseURL + API.BlockUser, {
         id: userId,
       })
       .then((response) => response.data)
@@ -219,7 +221,7 @@ export const requestAPI = {
   },
   setIsAdmin(userId: number) {
     return axios
-      .post(API.SetIsAdmin, {
+      .post(baseURL + API.SetIsAdmin, {
         id: userId,
       })
       .then((response) => response.data)
@@ -227,7 +229,7 @@ export const requestAPI = {
   },
   setIsNotAdmin(userId: number) {
     return axios
-      .post(API.SetIsNotAdmin, {
+      .post(baseURL + API.SetIsNotAdmin, {
         id: userId,
       })
       .then((response) => response.data)
@@ -235,7 +237,7 @@ export const requestAPI = {
   },
   unblockUser(userId: number) {
     return axios
-      .post(API.UnblockUser, {
+      .post(baseURL + API.UnblockUser, {
         id: userId,
       })
       .then((response) => response.data)
@@ -243,7 +245,7 @@ export const requestAPI = {
   },
   logOutUser(userId: string) {
     return axios
-      .post(API.LogOutUser, {
+      .post(baseURL + API.LogOutUser, {
         id: userId,
       })
       .then((response) => response.data)
@@ -251,7 +253,7 @@ export const requestAPI = {
   },
   toogleLike(userId: number, itemId: number) {
     return axios
-      .post(API.ToogleLike, {
+      .post(baseURL + API.ToogleLike, {
         userId,
         itemId,
       })
@@ -260,7 +262,7 @@ export const requestAPI = {
   },
   searchMatchTag(tag: string) {
     return axios
-      .get(API.SearchMatchTag, {
+      .get(baseURL + API.SearchMatchTag, {
         params: { tag },
       })
       .then((response) => response.data)
@@ -268,19 +270,19 @@ export const requestAPI = {
   },
   getAllTags() {
     return axios
-      .get(API.GetAllTags)
+      .get(baseURL + API.GetAllTags)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getAllUsers() {
     return axios
-      .get(API.GetAllUsers)
+      .get(baseURL + API.GetAllUsers)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getUserInfo(payload: CredentialsType) {
     return axios
-      .get(API.GetUserInfo, {
+      .get(baseURL + API.GetUserInfo, {
         params: payload,
       })
       .then((response) => response.data)
@@ -288,7 +290,7 @@ export const requestAPI = {
   },
   search(substr: string) {
     return axios
-      .get(API.Search, {
+      .get(baseURL + API.Search, {
         params: { substr },
       })
       .then((response) => response.data)
@@ -296,7 +298,7 @@ export const requestAPI = {
   },
   getMyCollections(userId: number, page: number) {
     return axios
-      .get(API.GetMyCollections, {
+      .get(baseURL + API.GetMyCollections, {
         params: { userId, page },
       })
       .then((response) => response.data)
@@ -304,7 +306,7 @@ export const requestAPI = {
   },
   getUserCollections(userId: number, page: number) {
     return axios
-      .get(API.GetUserCollections, {
+      .get(baseURL + API.GetUserCollections, {
         params: { userId, page },
       })
       .then((response) => response.data)
@@ -312,7 +314,7 @@ export const requestAPI = {
   },
   getTargetCollections(userId: number | string, page: number) {
     return axios
-      .get(API.GetTargetCollections, {
+      .get(baseURL + API.GetTargetCollections, {
         params: { userId, page },
       })
       .then((response) => response.data)
@@ -320,13 +322,13 @@ export const requestAPI = {
   },
   getBigCollections() {
     return axios
-      .get(API.GetBigCollections)
+      .get(baseURL + API.GetBigCollections)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   searchItemsByTag(tag: string) {
     return axios
-      .get(API.SearchItemsByTag, {
+      .get(baseURL + API.SearchItemsByTag, {
         params: { tag },
       })
       .then((response) => response.data)
@@ -334,13 +336,13 @@ export const requestAPI = {
   },
   getLastAddItems() {
     return axios
-      .get(API.GetLastAddItems)
+      .get(baseURL + API.GetLastAddItems)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getAllCollections(userId?: number) {
     return axios
-      .get(API.GetAllCollections, {
+      .get(baseURL + API.GetAllCollections, {
         params: { userId },
       })
       .then((response) => response.data)
@@ -348,7 +350,7 @@ export const requestAPI = {
   },
   getCollectionItems(collectionId: number) {
     return axios
-      .get(API.GetCollectionItems, {
+      .get(baseURL + API.GetCollectionItems, {
         params: { collectionId },
       })
       .then((response) => response.data)
@@ -356,7 +358,7 @@ export const requestAPI = {
   },
   getCollection(collectionId: number) {
     return axios
-      .get(API.GetCollection, {
+      .get(baseURL + API.GetCollection, {
         params: { collectionId },
       })
       .then((response) => response.data)
@@ -364,7 +366,7 @@ export const requestAPI = {
   },
   getItem(itemId: number, collectionId: number) {
     return axios
-      .get(API.GetItem, {
+      .get(baseURL + API.GetItem, {
         params: { itemId, collectionId },
       })
       .then((response) => response.data)
@@ -382,7 +384,7 @@ export const requestAPI = {
       formData.append(key, collectionInfo[key]);
     });
     return axios
-      .post(API.CreateCollection, formData, {
+      .post(baseURL + API.CreateCollection, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -397,7 +399,7 @@ export const requestAPI = {
     Object.keys(itemInfo).forEach((key: string) => formData.append(key, itemInfo[key]));
 
     return axios
-      .post(API.CreateItem, formData, {
+      .post(baseURL + API.CreateItem, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -407,7 +409,7 @@ export const requestAPI = {
   },
   deleteCollection(collectionId: number) {
     return axios
-      .delete(API.DeleteCollection, {
+      .delete(baseURL + API.DeleteCollection, {
         params: {
           id: collectionId,
         },
@@ -417,7 +419,7 @@ export const requestAPI = {
   },
   deleteItem(itemId: number) {
     return axios
-      .delete(API.DeleteItem, {
+      .delete(baseURL + API.DeleteItem, {
         params: {
           itemId,
         },
@@ -427,19 +429,19 @@ export const requestAPI = {
   },
   setEditCollection(collectionId: number) {
     return axios
-      .put(API.SetEditCollection, { collectionId })
+      .put(baseURL + API.SetEditCollection, { collectionId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   setEditItems(itemIds: number[]) {
     return axios
-      .put(API.SetEditItems, itemIds)
+      .put(baseURL + API.SetEditItems, itemIds)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getEditItems(collectionId: number) {
     return axios
-      .get(API.GetEditItems, {
+      .get(baseURL + API.GetEditItems, {
         params: { collectionId },
       })
       .then((response) => response.data)
@@ -447,7 +449,7 @@ export const requestAPI = {
   },
   getTargetUser(userId: number) {
     return axios
-      .get(API.GetTargetUser, {
+      .get(baseURL + API.GetTargetUser, {
         params: { userId },
       })
       .then((response) => response.data)
@@ -455,7 +457,7 @@ export const requestAPI = {
   },
   getEditCollections(userId: string) {
     return axios
-      .get(API.GetEditCollections, {
+      .get(baseURL + API.GetEditCollections, {
         params: { userId },
       })
       .then((response) => response.data)
@@ -463,19 +465,19 @@ export const requestAPI = {
   },
   setDeleteCollection(collectionId: number) {
     return axios
-      .put(API.SetDeleteCollection, { collectionId })
+      .put(baseURL + API.SetDeleteCollection, { collectionId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   setDeleteItems(itemIds: number[]) {
     return axios
-      .put(API.SetDeleteItems, itemIds)
+      .put(baseURL + API.SetDeleteItems, itemIds)
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   getDeleteItems(collectionId: number) {
     return axios
-      .get(API.GetDeleteItems, {
+      .get(baseURL + API.GetDeleteItems, {
         params: { collectionId },
       })
       .then((response) => response.data)
@@ -483,7 +485,7 @@ export const requestAPI = {
   },
   getDeleteCollections(userId: string) {
     return axios
-      .get(API.GetDeleteCollections, {
+      .get(baseURL + API.GetDeleteCollections, {
         params: { userId },
       })
       .then((response) => response.data)
@@ -491,13 +493,13 @@ export const requestAPI = {
   },
   pullOutItem(itemId: number) {
     return axios
-      .put(API.PullOutItem, { itemId })
+      .put(baseURL + API.PullOutItem, { itemId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
   pullOutCollection(collectionId: number) {
     return axios
-      .put(API.PullOutCollection, { collectionId })
+      .put(baseURL + API.PullOutCollection, { collectionId })
       .then((response) => response.data)
       .catch((error) => logError(error.message));
   },
@@ -508,7 +510,7 @@ export const requestAPI = {
     Object.keys(collectionInfo).forEach((key: string) => formData.append(key, collectionInfo[key]));
 
     return axios
-      .put(API.UpdateCollection, formData, {
+      .put(baseURL + API.UpdateCollection, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -523,7 +525,7 @@ export const requestAPI = {
     Object.keys(itemInfo).forEach((key: string) => formData.append(key, itemInfo[key]));
 
     return axios
-      .put(API.UpdateItem, formData, {
+      .put(baseURL + API.UpdateItem, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

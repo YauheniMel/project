@@ -1,19 +1,13 @@
+import React, {
+  FC,
+  ReactElement,
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+} from 'react';
 import { createTheme } from '@mui/material';
-import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
-
-const Colors = {
-  primary_dark: '#1f2a2f',
-  primary_main: '#1f2a2f',
-  primary_light: '#607D8B',
-  secondary_main: '#00BCD4',
-  error: '#E53935',
-  warning: '#FFA000',
-  gray: '#f1f1f1',
-  white: '#ffffff',
-  black: '#1f2a2f',
-};
-
-const breakpoints = createBreakpoints({});
+import { breakpoints, Colors } from '../styles';
 
 export const themeLight = createTheme({
   palette: {
@@ -37,6 +31,10 @@ export const themeLight = createTheme({
     },
     warning: {
       main: Colors.warning,
+    },
+    text: {
+      primary: Colors.black,
+      secondary: Colors.primary_light,
     },
   },
   shape: {
@@ -111,6 +109,10 @@ export const themeDark = createTheme({
     warning: {
       main: Colors.warning,
     },
+    text: {
+      primary: Colors.white,
+      secondary: Colors.primary_light,
+    },
   },
   shape: {
     borderRadius: 0,
@@ -160,3 +162,59 @@ export const themeDark = createTheme({
     },
   },
 });
+
+export const themes = {
+  light: themeLight,
+  dark: themeDark,
+};
+
+type ThemeType = 'light' | 'dark';
+
+interface ITheme {
+  theme: ThemeType;
+  setTheme:(theme: ThemeType) => void;
+}
+
+function setThemeValue(theme: ThemeType) {
+  localStorage.setItem('theme', theme);
+}
+
+function getTheme() {
+  return localStorage.getItem('theme') as ThemeType | null;
+}
+
+const ThemeContext = createContext<ITheme | null>(null);
+
+export const ThemeContextProvider: FC<{ children: ReactElement }> = ({
+  children,
+}) => {
+  const [theme, setTheme] = useState<ThemeType>('light');
+
+  const handleSetTheme = (theme: ThemeType) => {
+    setTheme(theme);
+
+    setThemeValue(theme);
+  };
+
+  if (!getTheme()) {
+    handleSetTheme('light');
+  }
+
+  const themeProviderValue = useMemo(() => ({ theme, setTheme: handleSetTheme }), [theme]);
+
+  return (
+    <ThemeContext.Provider value={themeProviderValue}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => {
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    throw new Error('themeContext is not provided');
+  }
+
+  return themeContext;
+};

@@ -29,7 +29,7 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import InputFile from '../../shared/components/InputFile/InputFile';
 import { CollectionType } from '../../types';
 import UpdateFormField from '../UpdateFormField/UpdateFormField';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: '60%',
     minWidth: '300px',
-    height: '300px',
+    height: '500px',
 
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -123,6 +123,8 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
   const [image, setImage] = useState<any>();
   const [description, setDescription] = useState<any>('');
   const [collectionId, setCollectionId] = useState<any>('');
+
+  const { language } = useLanguage();
 
   useEffect(() => {
     if (!collectionsEdit.length) setOpen(false);
@@ -240,290 +242,279 @@ const ModalEditCollection: FC<IModalEditCollection> = ({
   });
 
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Backdrop className={classes.back} open={openModal}>
-          <Paper className={classes.paper}>
-            <StyledButton onClick={() => setOpen(false)} variant="contained">
-              <CloseIcon fontSize="large" />
-            </StyledButton>
-            <List
-              sx={{
-                bgcolor: 'background.paper',
-                overflow: 'auto',
-                paddingBottom: 0,
-                width: '100%',
-                height: '100%',
-              }}
-              subheader={<li />}
-            >
-              {collectionsEdit?.map(
-                (collection: any) => collection && (
-                <FormikProvider key={collection.id} value={formik}>
-                  <form
-                    encType="multipart/form-data"
-                    onSubmit={formik.handleSubmit}
+    <Backdrop className={classes.back} open={openModal}>
+      <Paper className={classes.paper}>
+        <StyledButton onClick={() => setOpen(false)} variant="contained">
+          <CloseIcon fontSize="large" />
+        </StyledButton>
+        <List
+          sx={{
+            bgcolor: 'background.paper',
+            overflow: 'auto',
+            paddingBottom: 0,
+            width: '100%',
+            height: '100%',
+          }}
+          subheader={<li />}
+        >
+          {collectionsEdit?.map(
+            (collection: any) => collection && (
+            <FormikProvider key={collection.id} value={formik}>
+              <form
+                encType="multipart/form-data"
+                onSubmit={formik.handleSubmit}
+              >
+                <ListItem
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 0,
+                  }}
+                >
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
+                    }}
                   >
-                    <ListItem
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        p: 0,
-                      }}
+                    <Typography variant="h4">{collection.title}</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ marginRight: '3.4rem' }}
                     >
-                      <ListSubheader
+                      {language.modalEditCollection.created}
+                      {' '}
+                      {moment(collection.createdAt).format('DD/MM/YYYY')}
+                    </Typography>
+                  </ListSubheader>
+                  <Box className={classes.listItem}>
+                    <Box>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {formik.values.title || collection.title}
+                        </Typography>
+                        <Box>
+                          <IconButton
+                            onClick={() => handleResetForm(formik, 'title')}
+                          >
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <TextField
+                        name="title"
+                        fullWidth
+                        label={language.modalEditCollection.title}
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        error={
+                              formik.touched.title
+                              && Boolean(formik.errors.title)
+                            }
+                        helperText={
+                              formik.touched.title && formik.errors.title
+                            }
+                      />
+                    </Box>
+                    <Box>
+                      <Box
                         sx={{
                           display: 'flex',
                           justifyContent: 'space-between',
-                          alignItems: 'center',
-                          zIndex: '1000',
-                          width: '100%',
-                          bgcolor: 'background.paper',
                         }}
                       >
-                        <Typography variant="h4">
-                          {collection.title}
+                        <Typography variant="body2">
+                          {formik.values.theme || collection.theme}
                         </Typography>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ marginRight: '3.4rem' }}
-                        >
-                          {language.modalEditCollection.created}
-                          {' '}
-                          {moment(collection.createdAt).format(
-                            'DD/MM/YYYY',
-                          )}
-                        </Typography>
-                      </ListSubheader>
-                      <Box className={classes.listItem}>
                         <Box>
-                          <Box
-                            sx={{
-                              width: '100%',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
+                          <IconButton
+                            onClick={() => handleResetForm(formik, 'theme')}
                           >
-                            <Typography variant="body2">
-                              {formik.values.title || collection.title}
-                            </Typography>
-                            <Box>
-                              <IconButton
-                                onClick={() => handleResetForm(formik, 'title')}
-                              >
-                                <CleaningServicesIcon />
-                              </IconButton>
-                            </Box>
-                          </Box>
-                          <TextField
-                            name="title"
-                            fullWidth
-                            label={language.modalEditCollection.title}
-                            value={formik.values.title}
-                            onChange={formik.handleChange}
-                            error={
-                                  formik.touched.title
-                                  && Boolean(formik.errors.title)
-                                }
-                            helperText={
-                                  formik.touched.title && formik.errors.title
-                                }
-                          />
+                            <CleaningServicesIcon />
+                          </IconButton>
                         </Box>
-                        <Box>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Typography variant="body2">
-                              {formik.values.theme || collection.theme}
-                            </Typography>
-                            <Box>
-                              <IconButton
-                                onClick={() => handleResetForm(formik, 'theme')}
-                              >
-                                <CleaningServicesIcon />
-                              </IconButton>
-                            </Box>
-                          </Box>
-                          <FormControl
-                            error={
-                                  !!formik.touched.theme
-                                  && !!formik.errors.theme
-                                }
-                          >
-                            <InputLabel>
-                              {language.modalEditCollection.theme}
-                            </InputLabel>
-                            <Select
-                              name="theme"
-                              label={language.modalEditCollection.theme}
-                              value={formik.values.theme}
-                              onChange={formik.handleChange}
-                              fullWidth
-                              IconComponent={
-                                    collectionThemes
-                                      ? KeyboardDoubleArrowDownIcon
-                                      : HourglassTopIcon
-                                  }
-                              error={
-                                    formik.touched.theme
-                                    && Boolean(formik.errors.theme)
-                                  }
-                            >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              {collectionThemes
-                                    && collectionThemes.map(
-                                      (theme: { value: string }) => (
-                                        <MenuItem value={theme.value}>
-                                          {theme.value}
-                                        </MenuItem>
-                                      ),
-                                    )}
-                            </Select>
-                            <FormHelperText>
-                              {formik.touched.theme && formik.errors.theme}
-                            </FormHelperText>
-                          </FormControl>
-                        </Box>
-                        <Box>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <MDEditor.Markdown
-                              style={{
-                                backgroundColor: 'transparent',
-                              }}
-                              source={
-                                    description
-                                      ? description.replace(/&&#&&/gim, '\n')
-                                      : collection.description.replace(
-                                        /&&#&&/gim,
-                                        '\n',
-                                      )
-                                  }
-                            />
-                            <Box>
-                              <IconButton
-                                onClick={() => setDescription('')}
-                              >
-                                <CleaningServicesIcon />
-                              </IconButton>
-                            </Box>
-                          </Box>
-                          <MDEditor
-                            style={{
-                              backgroundColor: 'transparent',
-                            }}
-                            height={300}
-                            textareaProps={{
-                              placeholder:
-                                    language.modalEditCollection.description,
-                            }}
-                            value={description}
-                            onChange={setDescription}
-                          />
-                        </Box>
-                        <Box>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Box>
-                              <IconButton onClick={() => setImage(null)}>
-                                <CleaningServicesIcon />
-                              </IconButton>
-                            </Box>
-                          </Box>
-                          <InputFile setImage={setImage} image={image} />
-                          {collection.icon && !image && (
-                          <CardMedia
-                            component="img"
-                            height="194"
-                            image={`data:application/pdf;base64,${collection.icon}`}
-                            alt={collection.title}
-                          />
-                          )}
-                        </Box>
-                        {Object.keys(collection).map(
-                          (key, idx: any) => collection[key]
-                                && ![
-                                  'isEdit',
-                                  'id',
-                                  'isDelete',
-                                  'createdAt',
-                                  'title',
-                                  'theme',
-                                  'icon',
-                                  'description',
-                                  'updatedAt',
-                                  'userId',
-                                ].includes(key) && (
-                                  <UpdateFormField
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    key={`${key}-${idx}`}
-                                    formik={formik}
-                                    value={collection[key]}
-                                    field={key}
-                                  />
-                          ),
-                        )}
                       </Box>
-                      <Box className={classes.action}>
-                        <Button
-                          sx={{
-                            flex: 1,
-                          }}
-                          onClick={() => {
-                            setCollectionId(collection.id);
-                            formik.handleSubmit();
-                          }}
-                          color="warning"
-                        >
-                          Update
-                        </Button>
-                        <Button
-                          sx={{
-                            flex: 1,
-                          }}
-                          type="reset"
-                          color="warning"
-                          onClick={formik.handleReset}
-                        >
-                          Reset
-                        </Button>
-                        <Button
-                          sx={{
-                            flex: 1,
-                          }}
-                          onClick={() => {
-                            if (collection.id) {
-                              pullOutCollection(collection.id);
+                      <FormControl
+                        error={
+                              !!formik.touched.theme && !!formik.errors.theme
                             }
-                          }}
+                      >
+                        <InputLabel>
+                          {language.modalEditCollection.theme}
+                        </InputLabel>
+                        <Select
+                          name="theme"
+                          label={language.modalEditCollection.theme}
+                          value={formik.values.theme}
+                          onChange={formik.handleChange}
+                          fullWidth
+                          IconComponent={
+                                collectionThemes
+                                  ? KeyboardDoubleArrowDownIcon
+                                  : HourglassTopIcon
+                              }
+                          error={
+                                formik.touched.theme
+                                && Boolean(formik.errors.theme)
+                              }
                         >
-                          Pull out
-                        </Button>
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          {collectionThemes
+                                && collectionThemes.map(
+                                  (theme: { value: string }) => (
+                                    <MenuItem value={theme.value}>
+                                      {theme.value}
+                                    </MenuItem>
+                                  ),
+                                )}
+                        </Select>
+                        <FormHelperText>
+                          {formik.touched.theme && formik.errors.theme}
+                        </FormHelperText>
+                      </FormControl>
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <MDEditor.Markdown
+                          style={{
+                            backgroundColor: 'transparent',
+                          }}
+                          source={
+                                description
+                                  ? description.replace(/&&#&&/gim, '\n')
+                                  : collection.description.replace(
+                                    /&&#&&/gim,
+                                    '\n',
+                                  )
+                              }
+                        />
+                        <Box>
+                          <IconButton onClick={() => setDescription('')}>
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
                       </Box>
-                    </ListItem>
-                  </form>
-                </FormikProvider>
-                ),
-              )}
-            </List>
-          </Paper>
-        </Backdrop>
-      )}
-    </LanguageContext.Consumer>
+                      <MDEditor
+                        style={{
+                          backgroundColor: 'transparent',
+                        }}
+                        height={300}
+                        textareaProps={{
+                          placeholder:
+                                language.modalEditCollection.description,
+                        }}
+                        value={description}
+                        onChange={setDescription}
+                      />
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Box>
+                          <IconButton onClick={() => setImage(null)}>
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <InputFile setImage={setImage} image={image} />
+                      {collection.icon && !image && (
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={`data:application/pdf;base64,${collection.icon}`}
+                        alt={collection.title}
+                      />
+                      )}
+                    </Box>
+                    {Object.keys(collection).map(
+                      (key, idx: any) => collection[key]
+                            && ![
+                              'isEdit',
+                              'id',
+                              'isDelete',
+                              'createdAt',
+                              'title',
+                              'theme',
+                              'icon',
+                              'description',
+                              'updatedAt',
+                              'userId',
+                            ].includes(key) && (
+                              <UpdateFormField
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={`${key}-${idx}`}
+                                formik={formik}
+                                value={collection[key]}
+                                field={key}
+                              />
+                      ),
+                    )}
+                  </Box>
+                  <Box className={classes.action}>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        setCollectionId(collection.id);
+                        formik.handleSubmit();
+                      }}
+                      color="warning"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      type="reset"
+                      color="warning"
+                      onClick={formik.handleReset}
+                    >
+                      Reset
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        if (collection.id) {
+                          pullOutCollection(collection.id);
+                        }
+                      }}
+                    >
+                      Pull out
+                    </Button>
+                  </Box>
+                </ListItem>
+              </form>
+            </FormikProvider>
+            ),
+          )}
+        </List>
+      </Paper>
+    </Backdrop>
   );
 };
 

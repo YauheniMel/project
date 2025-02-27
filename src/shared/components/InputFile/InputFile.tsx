@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { LanguageContext } from '../../../context/LanguageContext';
+import { useLanguage } from '../../../context/LanguageContext';
 
 const useStyles = makeStyles({
   file: {
@@ -35,42 +35,40 @@ interface IInputFile {
 const InputFile: FC<IInputFile> = ({ image, setImage }) => {
   const classes = useStyles();
 
+  const { language } = useLanguage();
+
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Box>
-          <Input
-            id="icon"
-            name="icon"
-            inputProps={{ accept: 'image/*' }}
-            className={classes.file}
-            type="file"
-            onChange={(e: any) => {
-              setImage(e.target.files[0]);
-            }}
-          />
-          {image ? (
-            <Button fullWidth className={classes.ready}>
-              <FileDownloadDoneIcon />
-              {language.modalCreateCollection.ready}
-            </Button>
-          ) : (
-            <Button fullWidth className={classes.title}>
-              <FileDownloadIcon />
-              {language.modalCreateCollection.addPhoto}
-            </Button>
-          )}
-          {image && (
-            <CardMedia
-              component="img"
-              image={URL.createObjectURL(image)}
-              alt="download"
-              height="190"
-            />
-          )}
-        </Box>
+    <Box>
+      <Input
+        id="icon"
+        name="icon"
+        inputProps={{ accept: 'image/*' }}
+        className={classes.file}
+        type="file"
+        onChange={(e: any) => {
+          setImage(e.target.files[0]);
+        }}
+      />
+      {image ? (
+        <Button fullWidth className={classes.ready}>
+          <FileDownloadDoneIcon />
+          {language.modalCreateCollection.ready}
+        </Button>
+      ) : (
+        <Button fullWidth className={classes.title}>
+          <FileDownloadIcon />
+          {language.modalCreateCollection.addPhoto}
+        </Button>
       )}
-    </LanguageContext.Consumer>
+      {image && (
+        <CardMedia
+          component="img"
+          image={URL.createObjectURL(image)}
+          alt="download"
+          height="190"
+        />
+      )}
+    </Box>
   );
 };
 

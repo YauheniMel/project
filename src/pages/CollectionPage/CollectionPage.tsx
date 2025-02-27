@@ -7,20 +7,27 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  styled,
   Typography,
 } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
-import UpgradeIcon from '@mui/icons-material/Upgrade';
+import EditIcon from '@mui/icons-material/Edit';
 import MDEditor from '@uiw/react-md-editor';
 import moment from 'moment';
+import AddIcon from '@mui/icons-material/Add';
 import { ItemInitType, ItemType } from '../../types';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Table from '../../components/Table/Table';
 import ItemForm from '../../components/ItemForm/ItemForm';
 import ModalDelete from '../../components/ModalDelete/ModalDelete';
 import ModalEditItem from '../../components/ModalEditItem/ModalEditItem';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
+
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
 
 interface ICollectionPage {
   userId: number;
@@ -31,6 +38,7 @@ interface ICollectionPage {
   customFields: any;
   createdAt: string;
   list: ItemType[] | null;
+  role: 'Admin' | 'User' | 'Reader' | null;
   createNewItem: (itemInfo: ItemInitType) => void;
   setTargetItem: (item: ItemType) => void;
   listEditItems: Array<ItemType | null>;
@@ -58,6 +66,7 @@ const CollectionPage: FC<ICollectionPage> = ({
   setTargetItem,
   createNewItem,
   list,
+  role,
   listEditItems,
   listDeleteItems,
   setEditItems,
@@ -77,9 +86,9 @@ const CollectionPage: FC<ICollectionPage> = ({
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
 
+  const { language } = useLanguage();
+
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
         <>
           <ModalEditItem
             customFields={customFields}
@@ -202,51 +211,103 @@ const CollectionPage: FC<ICollectionPage> = ({
                     flexDirection: 'column',
                   },
                 })}
+
+                <ListItemIcon>
+                  <Badge badgeContent={listEditItems.length} color="warning">
+                    <EditIcon color="secondary" />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary={language.collectionPage.edit} />
+              </StyledListItemButton>
+              <StyledListItemButton
+                sx={(theme) => ({
+                  width: '100%',
+
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                  },
+
+                  '& .MuiListItemIcon-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      justifyContent: 'center',
+                    },
+                  },
+                  '& .MuiListItemText-root': {
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'none',
+                    },
+                  },
+                })}
+                onClick={() => {
+                  if (listDeleteItems?.length === 0) return;
+
+                  setOpenModalDelete(true);
+                }}
               >
-                <Avatar
-                  src={`data:application/pdf;base64,${icon}`}
-                  alt="mmmmm"
-                  sx={{ width: '10rem', height: '10rem' }}
-                >
-                  {icon && 'Empty'}
-                </Avatar>
-                <Box>
-                  <Typography variant="h2">{theme}</Typography>
-                  <Typography variant="body2">
-                    {language.collectionPage.created}
-                    {' '}
-                    {moment(createdAt).format('DD/MM/YYYY')}
-                  </Typography>
-                </Box>
-              </Box>
-              {description && (
-                <MDEditor.Markdown
-                  source={description.replace(/&&#&&/gim, '\n')}
-                  style={{
-                    backgroundColor: 'transparent',
-                  }}
-                />
-              )}
-              {customFields && (
-                <Table
-                  collectionId={id}
-                  list={list}
-                  setTargetItem={setTargetItem}
-                  setEditItems={setEditItems}
-                  setDeleteItems={setDeleteItems}
-                  toogleLike={toogleLike}
-                  userId={userId}
-                  authorId={authorId}
-                  likes={likes}
-                  getCollectionItems={getCollectionItems}
-                  customFields={customFields}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </>
-      )}
-    </LanguageContext.Consumer>
+                <ListItemIcon>
+                  <Badge badgeContent={listDeleteItems.length} color="error">
+                    <DeleteIcon color="secondary" />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary={language.collectionPage.delete} />
+              </StyledListItemButton>
+            </Sidebar>
+          )}
+        </Grid>
+        <Grid item={false} lg={9.5} md={9.3} xs={12} sm={12}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              columnGap: '2rem',
+              padding: '1.4rem',
+
+              [theme.breakpoints.down('md')]: {
+                flexDirection: 'column',
+              },
+            })}
+          >
+            <Avatar
+              src={`data:application/pdf;base64,${icon}`}
+              alt="mmmmm"
+              sx={{ width: '10rem', height: '10rem' }}
+            >
+              {icon && 'Empty'}
+            </Avatar>
+            <Box>
+              <Typography variant="h2">{theme}</Typography>
+              <Typography variant="body2">
+                {language.collectionPage.created}
+                {' '}
+                {moment(createdAt).format('DD/MM/YYYY')}
+              </Typography>
+            </Box>
+          </Box>
+          {description && (
+            <MDEditor.Markdown
+              source={description.replace(/&&#&&/gim, '\n')}
+              style={{
+                backgroundColor: 'transparent',
+              }}
+            />
+          )}
+          {customFields && (
+            <Table
+              collectionId={id}
+              list={list}
+              setTargetItem={setTargetItem}
+              setEditItems={setEditItems}
+              setDeleteItems={setDeleteItems}
+              toggleLike={toogleLike}
+              userId={userId}
+              authorId={authorId}
+              likes={likes}
+              getCollectionItems={getCollectionItems}
+              customFields={customFields}
+            />
+          )}
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

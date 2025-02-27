@@ -112,6 +112,11 @@ function adminReducer(state = initState, action: AnyAction) {
         users: state.users && [
           ...state.users.filter((user: UserType) => user.id !== action.userId),
         ],
+        targetUser: null,
+        targetCollections: {
+          collections: null,
+          countCollections: 0,
+        },
       };
     }
     case AdminActionTypes.clearAdminState: {

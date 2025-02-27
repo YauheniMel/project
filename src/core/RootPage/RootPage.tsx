@@ -22,12 +22,13 @@ import {
   searchThunk,
   setSearchListAction,
 } from '../../redux/actions/search-action';
-import { getUntouchedCommentsThunk } from '../../redux/actions/collection-action';
+import {
+  getAllCommentsThunk,
+  getUntouchedCommentsThunk,
+} from '../../redux/actions/collection-action';
 import { UntouchedCommentType } from '../../types';
 import { getUntouchedComments } from '../../redux/selectors/collection-selector';
 import { logOutThunk } from '../../redux/actions/user-action';
-import { getThemeValue, toggleTheme } from '../../services/theme';
-import { getLanguageValue, toggleLanguage } from '../../services/language';
 import logout from '../../auth/services/logout';
 import { logError, logSuccess, logWarning } from '../../services/logger';
 
@@ -36,7 +37,7 @@ interface IRootPage {
   userId: number;
   name: string;
   surname: string;
-  role: 'Admin' | 'User' | 'Reader';
+  role: 'Admin' | 'User' | 'Reader' | null;
   logOutUser: (id: string) => void;
   search: (substr: string) => void;
   itemsSearch: any;
@@ -45,6 +46,7 @@ interface IRootPage {
   setSearchList: () => void;
   untouchedComments: UntouchedCommentType[] | null;
   getUntouchedComments: (userId: number) => void;
+  getAllComments: (itemId: number) => void;
 }
 
 const RootPage: FC<IRootPage> = ({
@@ -55,9 +57,10 @@ const RootPage: FC<IRootPage> = ({
   userId,
   role,
   getUntouchedComments,
+  getAllComments,
   ...rest
 }) => {
-  const socket = io('https://course-project-melnik.herokuapp.com/');
+  const socket = io(process.env.REACT_APP_BASE_URL);
 
   async function handlePolicy(event: any) {
     event.stopPropagation();
@@ -78,15 +81,21 @@ const RootPage: FC<IRootPage> = ({
       getUntouchedComments(userId);
     }
 
-    const theme = getThemeValue();
 
-    if (!theme) {
-      toggleTheme('light');
+    try {
+      await logout();
+
+      logOutUser(id);
+
+      window.removeEventListener('click', handlePolicy, { capture: true });
+    } catch (err: any) {
+      logError(err.message);
     }
-    const language = getLanguageValue();
+  }
 
-    if (!language) {
-      toggleLanguage('eng');
+  useEffect(() => {
+    if (userId) {
+      getUntouchedComments(userId);
     }
 
     socket.on('comment', (res: any) => {
@@ -94,6 +103,25 @@ const RootPage: FC<IRootPage> = ({
 
       if (userId === res.userId) {
         getUntouchedComments(userId);
+        getAllComments(res.itemId);
+      }
+    });
+
+    socket.on('block', (res: any) => {
+      if (userId === res.userId) {
+        logWarning('Your account has been blocked');
+        window.addEventListener('click', handlePolicy, {
+          capture: true,
+          once: true,
+        });
+      }
+    });
+
+    socket.on('unblock', (res: any) => {
+      if (userId === res.userId) {
+        logSuccess('Your account has been unblocked');
+
+        window.removeEventListener('click', handlePolicy, { capture: true });
       }
     });
 
@@ -161,6 +189,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   setSearchList: () => dispatch(setSearchListAction()),
   getUntouchedComments: (userId: number) => {
     dispatch(getUntouchedCommentsThunk(userId));
+  },
+  getAllComments: (itemId: number) => {
+    dispatch(getAllCommentsThunk(itemId));
   },
 });
 

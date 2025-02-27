@@ -21,7 +21,7 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import InputFile from '../../shared/components/InputFile/InputFile';
 import { ItemType } from '../../types';
 import CustomField from '../CustomField/CustomField';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
@@ -105,6 +105,8 @@ const ModalEditItem: FC<IModalEditItem> = ({
   const [image, setImage] = useState<any>();
   const [itemId, setItemId] = useState<any>('');
 
+  const { language } = useLanguage();
+
   const classes = useStyles();
 
   const handleDelete = (str: string) => {
@@ -174,237 +176,232 @@ const ModalEditItem: FC<IModalEditItem> = ({
   });
 
   return (
-    <LanguageContext.Consumer>
-      {({ language }) => (
-        <Backdrop className={classes.back} open={openModal}>
-          <Paper className={classes.paper}>
-            <StyledButton onClick={() => setOpen(false)} variant="contained">
-              <CloseIcon fontSize="large" />
-            </StyledButton>
-            <List
-              sx={{
-                bgcolor: 'background.paper',
-                overflow: 'auto',
-                paddingBottom: 0,
-                width: '100%',
-                height: {
-                  sm: '100%',
-                  '*': '300px',
-                },
-              }}
-              subheader={<li />}
-            >
-              <FormikProvider value={formik}>
-                <form
-                  encType="multipart/form-data"
-                  onSubmit={formik.handleSubmit}
+    <Backdrop className={classes.back} open={openModal}>
+      <Paper className={classes.paper}>
+        <StyledButton onClick={() => setOpen(false)} variant="contained">
+          <CloseIcon fontSize="large" />
+        </StyledButton>
+        <List
+          sx={{
+            bgcolor: 'background.paper',
+            overflow: 'auto',
+            paddingBottom: 0,
+            width: '100%',
+            height: '100%',
+          }}
+          subheader={<li />}
+        >
+          <FormikProvider value={formik}>
+            <form encType="multipart/form-data" onSubmit={formik.handleSubmit}>
+              {itemsEdit?.map(
+                (item: any) => item && (
+                <ListItem
+                  key={item.id}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 0,
+                  }}
                 >
-                  {itemsEdit?.map(
-                    (item: any) => item && (
-                    <ListItem
-                      key={item.id}
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        p: 0,
-                      }}
+                  <ListSubheader
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      zIndex: '1000',
+                      width: '100%',
+                      bgcolor: 'background.paper',
+                    }}
+                  >
+                    <Typography variant="h4">{item.title}</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ marginRight: '3.4rem' }}
                     >
-                      <ListSubheader
+                      {language.modalEditItem.created}
+                      {' '}
+                      {moment(item.createdAt).format('DD/MM/YYYY')}
+                    </Typography>
+                  </ListSubheader>
+                  <Box className={classes.listItem}>
+                    <Box>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {formik.values.title || item.title}
+                        </Typography>
+                        <Box>
+                          <IconButton
+                            onClick={() => {
+                              formik.resetForm({
+                                values: { ...formik.values, title: '' },
+                              });
+                            }}
+                          >
+                            <CleaningServicesIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <TextField
+                        name="title"
+                        fullWidth
+                        label={language.modalEditItem.title}
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        error={
+                              formik.touched.title
+                              && Boolean(formik.errors.title)
+                            }
+                        helperText={
+                              formik.touched.title && formik.errors.title
+                            }
+                      />
+                    </Box>
+                    <Box>
+                      <Box
                         sx={{
                           display: 'flex',
                           justifyContent: 'space-between',
-                          alignItems: 'center',
-                          zIndex: '1000',
-                          width: '100%',
-                          bgcolor: 'background.paper',
                         }}
                       >
-                        <Typography variant="h4">{item.title}</Typography>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ marginRight: '3.4rem' }}
-                        >
-                          {language.modalEditItem.created}
-                          {' '}
-                          {moment(item.createdAt).format('DD/MM/YYYY')}
-                        </Typography>
-                      </ListSubheader>
-                      <Box className={classes.listItem}>
                         <Box>
-                          <Box
-                            sx={{
-                              width: '100%',
-                              display: 'flex',
-                              justifyContent: 'space-between',
+                          <IconButton
+                            onClick={() => {
+                              setImage(null);
                             }}
                           >
-                            <Typography variant="body2">
-                              {formik.values.title || item.title}
-                            </Typography>
-                            <Box>
-                              <IconButton
-                                onClick={() => {
-                                  formik.resetForm({
-                                    values: { ...formik.values, title: '' },
-                                  });
-                                }}
-                              >
-                                <CleaningServicesIcon />
-                              </IconButton>
-                            </Box>
-                          </Box>
-                          <TextField
-                            name="title"
-                            fullWidth
-                            label={language.modalEditItem.title}
-                            value={formik.values.title}
-                            onChange={formik.handleChange}
-                            error={
-                                  formik.touched.title
-                                  && Boolean(formik.errors.title)
-                                }
-                            helperText={
-                                  formik.touched.title && formik.errors.title
-                                }
-                          />
+                            <CleaningServicesIcon />
+                          </IconButton>
                         </Box>
-                        <Box>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Box>
-                              <IconButton
-                                onClick={() => {
-                                  setImage(null);
-                                }}
-                              >
-                                <CleaningServicesIcon />
-                              </IconButton>
-                            </Box>
-                          </Box>
-                          <InputFile setImage={setImage} image={image} />
-                          {item.icon && !image && (
-                          <CardMedia
-                            component="img"
-                            height="194"
-                            image={`data:application/pdf;base64,${item.icon}`}
-                            alt={item.title}
-                          />
-                          )}
-                        </Box>
-                        <Box>
-                          <TextField
-                            fullWidth
-                            name="tags"
-                            label={language.modalEditItem.tags}
-                            value={formik.values.tags}
-                            onChange={formik.handleChange}
-                            onKeyDown={() => handleSetTag(formik)}
-                            error={
-                                  formik.touched.tags
-                                  && Boolean(formik.errors.tags)
-                                }
-                            helperText={
-                                  formik.touched.tags && formik.errors.tags
-                                }
-                            InputProps={{
-                              startAdornment: tags.map((tag, idx) => (
-                                <Chip
-                                      // eslint-disable-next-line react/no-array-index-key
-                                  key={idx}
-                                  label={tag}
-                                  onDelete={() => handleDelete(tag)}
-                                />
-                              )),
-                            }}
-                          />
-                          <Button
-                            fullWidth
-                            onClick={() => handlePushTag(formik)}
-                          >
-                            {language.modalEditItem.enterBtn}
-                          </Button>
-                        </Box>
-                        {matchTags
-                              && matchTags.map(
-                                (matchTag: { content: string }, idx: any) => (
-                                  <Chip
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    key={idx}
-                                    label={matchTag.content}
-                                    onClick={() => {
-                                      setTags([
-                                        ...tags.filter(
-                                          (tag) => matchTag.content !== tag,
-                                        ),
-                                        matchTag.content,
-                                      ]);
+                      </Box>
+                      <InputFile setImage={setImage} image={image} />
+                      {item.icon && !image && (
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={`data:application/pdf;base64,${item.icon}`}
+                        alt={item.title}
+                      />
+                      )}
+                    </Box>
+                    <Box>
+                      <TextField
+                        fullWidth
+                        name="tags"
+                        label={language.modalEditItem.tags}
+                        value={formik.values.tags}
+                        onChange={formik.handleChange}
+                        onKeyDown={() => handleSetTag(formik)}
+                        error={
+                              formik.touched.tags && Boolean(formik.errors.tags)
+                            }
+                        helperText={
+                              formik.touched.tags && formik.errors.tags
+                            }
+                        InputProps={{
+                          startAdornment: tags.map((tag, idx) => (
+                            <Chip
+                                  // eslint-disable-next-line react/no-array-index-key
+                              key={idx}
+                              label={tag}
+                              onDelete={() => handleDelete(tag)}
+                            />
+                          )),
+                        }}
+                      />
+                      <Button
+                        fullWidth
+                        onClick={() => handlePushTag(formik)}
+                      >
+                        {language.modalEditItem.enterBtn}
+                      </Button>
+                    </Box>
+                    <Box>
+                      <Box>
+                        {matchTags?.map(
+                          (matchTag: { content: string }, idx: any) => (
+                            <Chip
+                                  // eslint-disable-next-line react/no-array-index-key
+                              key={idx}
+                              sx={{
+                                marginRight: '.3rem',
+                              }}
+                              label={matchTag.content}
+                              onClick={() => {
+                                setTags([
+                                  ...tags.filter(
+                                    (tag) => matchTag.content !== tag,
+                                  ),
+                                  matchTag.content,
+                                ]);
 
-                                      formik.values.tags = '';
-                                    }}
-                                  />
-                                ),
-                              )}
-                        <Box>
-                          {customFields
-                                && customFields.map((field: any, idx: any) => (
-                                  <CustomField
-                                    typeField="update"
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    key={idx}
-                                    formik={formik}
-                                    field={field}
-                                  />
-                                ))}
-                        </Box>
+                                formik.values.tags = '';
+                              }}
+                            />
+                          ),
+                        )}
                       </Box>
-                      <Box className={classes.action}>
-                        <Button
-                          sx={{
-                            flex: 1,
-                          }}
-                          onClick={() => {
-                            setItemId(item.id);
-                            formik.handleSubmit();
-                          }}
-                          color="warning"
-                        >
-                          {language.modalEditItem.update}
-                        </Button>
-                        <Button
-                          sx={{
-                            flex: 1,
-                          }}
-                          type="reset"
-                          color="warning"
-                          onClick={formik.handleReset}
-                        >
-                          {language.modalEditItem.reset}
-                        </Button>
-                        <Button
-                          sx={{
-                            flex: 1,
-                          }}
-                          onClick={() => {
-                            if (item.id) pullOutItem(item.id);
-                          }}
-                        >
-                          {language.modalEditItem.pullOut}
-                        </Button>
-                      </Box>
-                    </ListItem>
-                    ),
-                  )}
-                </form>
-              </FormikProvider>
-            </List>
-          </Paper>
-        </Backdrop>
-      )}
-    </LanguageContext.Consumer>
+                    </Box>
+                    <Box>
+                      {customFields
+                            && customFields.map((field: any, idx: any) => (
+                              <CustomField
+                                typeField="update"
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={idx}
+                                formik={formik}
+                                field={field}
+                              />
+                            ))}
+                    </Box>
+                  </Box>
+                  <Box className={classes.action}>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        setItemId(item.id);
+                        formik.handleSubmit();
+                      }}
+                      color="warning"
+                    >
+                      {language.modalEditItem.update}
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      type="reset"
+                      color="warning"
+                      onClick={formik.handleReset}
+                    >
+                      {language.modalEditItem.reset}
+                    </Button>
+                    <Button
+                      sx={{
+                        flex: 1,
+                      }}
+                      onClick={() => {
+                        if (item.id) pullOutItem(item.id);
+                      }}
+                    >
+                      {language.modalEditItem.pullOut}
+                    </Button>
+                  </Box>
+                </ListItem>
+                ),
+              )}
+            </form>
+          </FormikProvider>
+        </List>
+      </Paper>
+    </Backdrop>
   );
 };
 

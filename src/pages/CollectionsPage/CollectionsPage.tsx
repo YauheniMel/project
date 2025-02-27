@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { CollectionType } from '../../types';
 import Slider from '../../components/Slider/Slider';
-import { LanguageContext } from '../../context/LanguageContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ICollectionsPage {
   id: number;
@@ -33,42 +33,41 @@ const CollectionsPage: FC<ICollectionsPage> = ({
   setCollection,
   getUserCollections,
   getMyCollections,
-}) => (
-  <LanguageContext.Consumer>
-    {({ language }) => (
-      <>
-        {myCollections.countCollections !== 0 && (
-          <Box>
-            <Typography variant="h3">
-              {language.collectionsPage.myCollections}
-            </Typography>
-            <Slider
-              id={id}
-              collections={myCollections}
-              setCollection={setCollection}
-              getUserCollections={getMyCollections}
-            />
-          </Box>
-        )}
-        {allCollections?.map(
-          (user) => user.collections.countCollections !== 0 && (
-          <Box key={user.id}>
-            <Typography variant="h3">{user.name}</Typography>
-            <Typography variant="h3">{user.surname}</Typography>
-            {user.collections && (
-            <Slider
-              id={user.id}
-              collections={user.collections}
-              setCollection={setCollection}
-              getUserCollections={getUserCollections}
-            />
-            )}
-          </Box>
-          ),
-        )}
-      </>
-    )}
-  </LanguageContext.Consumer>
-);
+}) => {
+  const { language } = useLanguage();
+  return (
+    <>
+      {myCollections.countCollections !== 0 && (
+        <Box>
+          <Typography variant="h3">
+            {language.collectionsPage.myCollections}
+          </Typography>
+          <Slider
+            id={id}
+            collections={myCollections}
+            setCollection={setCollection}
+            getUserCollections={getMyCollections}
+          />
+        </Box>
+      )}
+      {allCollections?.slice(id ? 1 : 0).map(
+        (user) => user.collections.countCollections !== 0 && (
+        <Box key={user.id}>
+          <Typography variant="h3">{user.name}</Typography>
+          <Typography variant="h3">{user.surname}</Typography>
+          {user.collections && (
+          <Slider
+            id={user.id}
+            collections={user.collections}
+            setCollection={setCollection}
+            getUserCollections={getUserCollections}
+          />
+          )}
+        </Box>
+        ),
+      )}
+    </>
+  );
+};
 
 export default CollectionsPage;

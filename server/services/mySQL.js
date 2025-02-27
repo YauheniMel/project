@@ -1,10 +1,11 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: 'eu-cdbr-west-02.cleardb.net',
-  user: 'b76365a37ff35f',
-  database: 'heroku_a2bd434709364ef',
-  password: 'f3c65d82',
+  host: process.env.HOST_MYSQL,
+  user: process.env.USERNAME_MYSQL,
+  port: process.env.PORT_MYSQL,
+  database: process.env.DATABASE_MYSQL,
+  password: process.env.PASSWORD_MYSQL,
   multipleStatements: true,
   connectionLimit: 100,
 });

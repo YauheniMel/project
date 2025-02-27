@@ -1,4 +1,11 @@
-import React from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+} from 'react';
 
 export const languages = {
   eng: {
@@ -14,12 +21,22 @@ export const languages = {
     },
     search: 'Search',
     userPage: {
-      createCollection: 'Create collection',
+      createCollection: 'Create',
       edit: 'Edit',
       delete: 'Garbage',
     },
+    adminPage: {
+      block: 'Block',
+      unblock: 'Unblock',
+      makeAdmin: 'Make an admin',
+      removeAdmin: 'Remove from admin',
+      delete: 'Delete the user',
+      active: 'active',
+      admin: 'admin',
+      blocked: 'blocked',
+    },
     collectionPage: {
-      createItem: 'Create item',
+      createItem: 'Create',
       edit: 'Edit',
       delete: 'Garbage',
       putDelete: 'Throw in the trash',
@@ -38,7 +55,7 @@ export const languages = {
     },
     modalCreateCollection: {
       title: 'Title',
-      theme: 'Theme',
+      theme: 'Subject',
       description: 'Description',
       nameField: 'Name field',
       nameOption: 'Name option',
@@ -55,7 +72,7 @@ export const languages = {
     },
     modalEditCollection: {
       title: 'Title',
-      theme: 'Theme',
+      theme: 'Subject',
       description: 'Description',
       variants: 'Variants',
       update: 'Update',
@@ -78,7 +95,7 @@ export const languages = {
       created: 'Created',
     },
     itemPage: {
-      updated: 'Updated',
+      created: 'Created',
       comments: 'Comments',
       addComment: 'Add comments',
       myComments: 'My Comments',
@@ -97,13 +114,23 @@ export const languages = {
       confirmPassword: 'Пацвердзіць пароль',
     },
     search: 'Знайсці',
+    adminPage: {
+      block: 'Блакаваць',
+      unblock: 'Разблакаваць',
+      makeAdmin: 'Зрабіць адмінам',
+      removeAdmin: 'Выдаліць з адміна',
+      delete: 'Выдаліць',
+      active: 'актыўны',
+      blocked: 'заблакаваны',
+      admin: 'адмін',
+    },
     userPage: {
-      createCollection: 'Стварыць калекцыю',
+      createCollection: 'Стварыць',
       edit: 'Рэдагаваць',
       delete: 'Кошык',
     },
     collectionPage: {
-      createItem: 'Стварыць элемент',
+      createItem: 'Стварыць',
       edit: 'Рэдагаваць',
       delete: 'Кошык',
       putDelete: 'Закінуць у кошык',
@@ -166,7 +193,7 @@ export const languages = {
       created: 'Створаны',
     },
     itemPage: {
-      updated: 'Абнавіць',
+      created: 'Створаны',
       comments: 'Каментары',
       addComment: 'Дадаць каментар',
       myComments: 'Мае каментары',
@@ -175,4 +202,56 @@ export const languages = {
   },
 };
 
-export const LanguageContext = React.createContext();
+type LanguageType = 'eng' | 'by';
+
+interface ILanguage {
+  language: any;
+  setLanguage:(language: any) => void;
+}
+
+export function setLanguageValue(value: LanguageType) {
+  localStorage.setItem('language', value);
+}
+
+export function getLanguage() {
+  return localStorage.getItem('language') as LanguageType | null;
+}
+
+const LanguageContext = createContext<ILanguage | null>(null);
+
+export const LanguageContextProvider: FC<{ children: ReactElement }> = ({
+  children,
+}) => {
+  const [language, setLanguage] = useState(languages[getLanguage() || 'eng']);
+
+  const handleSetLanguage = (language: LanguageType) => {
+    setLanguage(languages[language]);
+
+    setLanguageValue(language);
+  };
+
+  if (!getLanguage()) {
+    handleSetLanguage('eng');
+  }
+
+  const languageProviderValue = useMemo(
+    () => ({ language, setLanguage: handleSetLanguage }),
+    [language],
+  );
+
+  return (
+    <LanguageContext.Provider value={languageProviderValue}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => {
+  const languageContext = useContext(LanguageContext);
+
+  if (!languageContext) {
+    throw new Error('languageContext is not provided');
+  }
+
+  return languageContext;
+};

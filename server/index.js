@@ -12,6 +12,7 @@ const routerTag = require('./endpoints/tag');
 const routerFilters = require('./endpoints/filters');
 const connection = require('./services/mySQL');
 const models = require('./services/sequelize');
+const Roles = require('../seeders/utils/Roles');
 
 const port = process.env.PORT || 5000;
 
@@ -21,13 +22,11 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: '*',
+    origin: process.env.BASE_URL,
   },
 });
 
 io.on('connection', (socket) => {
-  console.log('USER CONNECTED: ', socket.id);
-
   socket.join('update');
 });
 
@@ -161,6 +160,7 @@ router.post('/api/addComment/', (req, res) => {
           .then((collection) => {
             io.to('update').emit('comment', {
               userId: collection.userId,
+              itemId,
             });
             return res.status(200).send('The message was sent!');
           });
@@ -212,7 +212,46 @@ router.post('/api/unblockUser', (req, res) => {
     }));
 });
 
-//
+
+router.post('/api/setIsAdmin', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ role: Roles.Admin }, { where: { id } })
+    .then(() => {
+      io.to('update').emit('isAdmin', {
+        userId: id,
+      });
+
+      return res.status(200).send({
+        code: 1,
+        message: 'Set isAdmin success!',
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/setIsNotAdmin', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ role: Roles.User }, { where: { id } })
+    .then(() => {
+      io.to('update').emit('isNotAdmin', {
+        userId: id,
+      });
+
+      return res.status(200).send({
+        code: 1,
+        message: 'Set isNotAdmin success!',
+      });
+    })
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
 
 app.use(router);
 
