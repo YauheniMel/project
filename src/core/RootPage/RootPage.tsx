@@ -82,6 +82,8 @@ const RootPage: FC<IRootPage> = ({
     }
 
     socket.on('comment', (res: any) => {
+      console.log(res);
+
       if (userId === res.userId) {
         getUntouchedComments(userId);
         getAllComments(res.itemId);
@@ -89,6 +91,25 @@ const RootPage: FC<IRootPage> = ({
     });
 
     socket.on('block', (res: any) => {
+      if (userId === res.userId) {
+        logWarning('Your account has been blocked');
+        window.addEventListener('click', handlePolicy, {
+          capture: true,
+          once: true,
+        });
+      }
+    });
+
+    socket.on('unblock', (res: any) => {
+      if (userId === res.userId) {
+        logSuccess('Your account has been unblocked');
+
+        window.removeEventListener('click', handlePolicy, { capture: true });
+      }
+    });
+
+    socket.on('block', (res: any) => {
+      console.log(res);
       if (userId === res.userId) {
         logWarning('Your account has been blocked');
         window.addEventListener('click', handlePolicy, {

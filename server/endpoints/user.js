@@ -117,6 +117,35 @@ router.post('/api/deleteUser', (req, res) => {
   models.User.destroy({
     where: { id },
   })
+    .then((res) => res.status(200).send({
+      code: 1,
+      message: 'Login success!',
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/setIsAdmin', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ role: Roles.Admin }, { where: { id } })
+    .then(() => res.status(200).send({
+      code: 1,
+      message: 'Unblocked success!',
+    }))
+    .catch((err) => res.status(400).send({
+      code: 0,
+      message: err,
+    }));
+});
+
+router.post('/api/setIsNotAdmin', (req, res) => {
+  const { id } = req.body;
+
+  models.User.update({ role: Roles.User }, { where: { id } })
+
     .then(() => res.status(200).send({
       code: 1,
       message: 'Delete success!',

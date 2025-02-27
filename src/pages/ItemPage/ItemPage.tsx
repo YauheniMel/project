@@ -121,28 +121,27 @@ const ItemPage: FC<IItemPage> = ({
             && getCollectionInfo(customFields).map(
               (obj: { [key: string]: string }) => {
                 const [key] = Object.keys(obj);
-
                 return (
                   targetItem[key as keyof ItemType] && (
-                    <Box
-                      key={key}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        columnGap: '3rem',
-                        padding: '1rem',
-                      }}
+                  <Box
+                    key={key}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      columnGap: '3rem',
+                      padding: '1rem',
+                    }}
+                  >
+                    <Typography
+                      sx={{ textDecoration: 'underline' }}
+                      variant="body2"
                     >
-                      <Typography
-                        sx={{ textDecoration: 'underline' }}
-                        variant="body2"
-                      >
-                        {obj[key].split(':')[0] || obj[key]}
-                      </Typography>
-                      <Typography variant="body1">
-                        {targetItem[key as keyof ItemType]}
-                      </Typography>
-                    </Box>
+                      {obj[key].split(':')[0] || obj[key]}
+                    </Typography>
+                    <Typography variant="body1">
+                      {targetItem[key as keyof ItemType]}
+                    </Typography>
+                  </Box>
                   )
                 );
               },
@@ -171,44 +170,45 @@ const ItemPage: FC<IItemPage> = ({
           {/* )} */}
           <hr />
           {targetItem.comments
-            && targetItem.comments.map((comment) => (
-              <Box
-                sx={{
-                  position: 'relative',
-                  backgroundColor:
-                    comment.status === 'untouched' ? 'gray' : 'none',
-                }}
-                key={comment.createdAt}
-              >
-                <Typography
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                  }}
-                  variant="body2"
-                >
-                  Created:
-                  {' '}
-                  {moment(comment.createdAt).format('DD/MM/YYYY')}
-                </Typography>
-                {comment.user.id !== userId ? (
-                  <Typography variant="body2">
-                    {comment.user.name}
-                    {' '}
-                    {comment.user.surname}
-                  </Typography>
-                ) : (
-                  <Typography variant="body2">
-                    {language.itemPage.myComments}
-                  </Typography>
-                )}
-                <Typography variant="body2">{comment.content}</Typography>
-              </Box>
-            ))}
+                && targetItem.comments.map((comment) => (
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      backgroundColor:
+                        comment.status === 'untouched' ? 'gray' : 'none',
+                    }}
+                    key={comment.createdAt}
+                  >
+                    <Typography
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                      }}
+                      variant="body2"
+                    >
+                      Created:
+                      {' '}
+                      {moment(comment.createdAt).format('DD/MM/YYYY')}
+                    </Typography>
+                    {comment.user.id !== userId ? (
+                      <Typography variant="body2">
+                        {comment.user.name}
+                        {' '}
+                        {comment.user.surname}
+                      </Typography>
+                    ) : (
+                      <Typography variant="body2">
+                        {language.itemPage.myComments}
+                      </Typography>
+                    )}
+                    <Typography variant="body2">{comment.content}</Typography>
+                  </Box>
+                ))}
         </Box>
       )}
     </Grid>
+
   );
 };
 

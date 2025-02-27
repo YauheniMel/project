@@ -1,6 +1,5 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
-// import { useNavigate } from 'react-router';
 import { AppStateType } from '../../redux';
 import { setTargetCollectionAction } from '../../redux/actions/collection-action';
 import {
@@ -15,6 +14,7 @@ import {
   setEditCollectionThunk,
   updateCollectionThunk,
 } from '../../redux/actions/user-action';
+import UserPage from './UserPage';
 import {
   getDeleteCollections,
   getEditCollections,
@@ -28,7 +28,6 @@ import {
 } from '../../redux/selectors/user-selector';
 import Preloader from '../../shared/components/Preloader/Preloader';
 import { CollectionInitType, CollectionType } from '../../types';
-import UserPage from './UserPage';
 
 interface IUserPageContainer {
   id: number;

@@ -27,6 +27,9 @@ const useStyles = makeStyles({
   card: {
     margin: '0.3rem',
     position: 'relative',
+    maxWidth: '12rem',
+    minWidth: '12rem',
+
   },
   body: {
     height: '20rem',

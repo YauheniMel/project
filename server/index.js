@@ -252,8 +252,6 @@ router.post('/api/setIsNotAdmin', (req, res) => {
     }));
 });
 
-//
-
 app.use(router);
 
 app.use(express.static(`${__dirname}./../build`));
