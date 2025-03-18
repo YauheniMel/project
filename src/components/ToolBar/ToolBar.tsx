@@ -10,8 +10,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import RoutesApp from '../../constants/routes';
-import logout from '../../auth/services/logout';
-import { logError } from '../../services/logger';
+import { useTypedDispatch, useTypedSelector } from '../../redux';
+import { logOutThunk } from '../../redux/actions/user-action';
+import {
+  userIdSelector,
+  userRoleSelector,
+} from '../../redux/selectors/user-selector';
 
 const ToggleButton = styled(Button)(({ theme }) => ({
   position: 'fixed',
@@ -42,14 +46,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IToolBar {
-  id: string;
-  logOutUser: (id: string) => void;
-  role: 'Admin' | 'User' | 'Reader' | null;
-}
-
-const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
+const ToolBar: FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  const dispatch = useTypedDispatch();
+
+  const userId = useTypedSelector(userIdSelector);
+  const role = useTypedSelector(userRoleSelector);
 
   const classes = useStyles();
 
@@ -58,13 +61,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
   }
 
   async function handleLogout() {
-    try {
-      await logout();
-
-      logOutUser(id);
-    } catch (error: any) {
-      logError(error.message);
-    }
+    if (userId) await dispatch(logOutThunk(userId));
   }
 
   return (
@@ -86,7 +83,7 @@ const ToolBar: FC<IToolBar> = ({ logOutUser, id, role }) => {
           </LinkButton>
         </Link>
         {role && role !== 'Reader' && (
-          <Link component={RouterLink} to={RoutesApp.User}>
+          <Link component={RouterLink} to={RoutesApp.Profile}>
             <LinkButton>
               <PersonIcon fontSize="large" />
             </LinkButton>
