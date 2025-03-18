@@ -6,8 +6,14 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
+import { ILanguage } from '../types';
 
-export const languages = {
+export enum LanguageEnum {
+  eng = 'eng',
+  by = 'by',
+}
+
+export const languages: { [key in LanguageEnum]: ILanguage } = {
   eng: {
     mode: 'eng',
     auth: {
@@ -43,6 +49,8 @@ export const languages = {
       putEdit: 'Make an edit',
       filterCleaning: 'Reset filter',
       export: 'Export',
+      ready: 'Ready',
+      addPhoto: 'Add photo',
       title: 'Title',
       tags: 'Tags',
       likes: 'Likes',
@@ -59,6 +67,7 @@ export const languages = {
       description: 'Description',
       nameField: 'Name field',
       nameOption: 'Name option',
+      addPhoto: 'Add photo',
       numbers: 'Fields for entering numbers',
       texts: 'Fields for entering single-line text',
       dates: 'Fields for entering dates',
@@ -66,6 +75,7 @@ export const languages = {
       radioFields: 'Fields with yes/no selection',
       checkboxFields: 'Fields with multiple choices',
       delete: 'Delete',
+      ready: 'Ready',
       addField: 'Add field',
       reset: 'Reset',
       confirm: 'Confirm',
@@ -202,41 +212,41 @@ export const languages = {
   },
 };
 
-type LanguageType = 'eng' | 'by';
-
-interface ILanguage {
-  language: any;
-  setLanguage:(language: any) => void;
+interface ILanguageContext {
+  language: ILanguage;
+  setLanguage: (language: LanguageEnum) => void;
 }
 
-export function setLanguageValue(value: LanguageType) {
+export function setLanguageValue(value: LanguageEnum) {
   localStorage.setItem('language', value);
 }
 
 export function getLanguage() {
-  return localStorage.getItem('language') as LanguageType | null;
+  return localStorage.getItem('language') as LanguageEnum | null;
 }
 
-const LanguageContext = createContext<ILanguage | null>(null);
+const LanguageContext = createContext<ILanguageContext | null>(null);
 
 export const LanguageContextProvider: FC<{ children: ReactElement }> = ({
   children,
 }) => {
-  const [language, setLanguage] = useState(languages[getLanguage() || 'eng']);
+  const [language, setLanguage] = useState<ILanguage>(
+    languages[getLanguage() || 'eng']
+  );
 
-  const handleSetLanguage = (language: LanguageType) => {
+  const handleSetLanguage = (language: LanguageEnum) => {
     setLanguage(languages[language]);
 
     setLanguageValue(language);
   };
 
   if (!getLanguage()) {
-    handleSetLanguage('eng');
+    handleSetLanguage(LanguageEnum.eng);
   }
 
   const languageProviderValue = useMemo(
     () => ({ language, setLanguage: handleSetLanguage }),
-    [language],
+    [language]
   );
 
   return (
